@@ -17,7 +17,7 @@ public class User extends BaseTimeEntity{
     private Long id;
     private String name;
     private String password;
-    private String trustScore;
+    private int trustScore;
 
     @Enumerated(EnumType.STRING)
     private Role role;

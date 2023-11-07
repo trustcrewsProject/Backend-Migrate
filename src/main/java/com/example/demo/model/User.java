@@ -22,7 +22,7 @@ public class User extends BaseTimeEntity{
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToOne(fetch= FetchType.LAZY)
-    @JoinColumn(name = "trust_grade_setting_id")
-    private TrustGradeSetting trustGradeSettingId;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "trust_grade_id")
+    private TrustGrade trustGradeId;
 }

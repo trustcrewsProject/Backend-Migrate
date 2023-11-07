@@ -6,12 +6,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TrustGradeResponseDto {
+    private Long id;
+    private String name;
+    private int trustScore;
 
-    public int id;
-    public String name;
-    public int trustScore;
-
-    public TrustGradeResponseDto(int id, String name, int trustScore) {
+    public TrustGradeResponseDto(Long id, String name, int trustScore) {
         this.id = id;
         this.name = name;
         this.trustScore = trustScore;

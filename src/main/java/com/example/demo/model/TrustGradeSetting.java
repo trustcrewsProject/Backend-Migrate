@@ -10,5 +10,5 @@ public class TrustGradeSetting extends BaseTimeEntity{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-    private int trsutScore;
+    private int score;
 }

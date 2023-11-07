@@ -1,5 +1,6 @@
 package com.example.demo.dto;
 
+import com.example.demo.constant.Role;
 import com.example.demo.model.TrustGrade;
 import com.example.demo.model.User;
 import lombok.Getter;
@@ -12,6 +13,7 @@ public class UserTrustGradeResponseDto {
     public String name;
     public String password;
     public int trustScore;
+    public Role role;
     public TrustGrade trustGrade;
 
     public UserTrustGradeResponseDto(User user) {
@@ -19,6 +21,7 @@ public class UserTrustGradeResponseDto {
         this.name = user.getName();
         this.password = user.getPassword();
         this.trustScore = user.getTrustScore();
+        this.role = user.getRole();
         this.trustGrade = user.getTrustGrade();
     }
 }

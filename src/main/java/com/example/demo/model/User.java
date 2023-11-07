@@ -17,7 +17,7 @@ public class User extends BaseTimeEntity{
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String name;
+    private String email;
     private String password;
     private int trustScore;
 

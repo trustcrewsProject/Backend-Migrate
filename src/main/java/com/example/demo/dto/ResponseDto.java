@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 /**
  *  ResponseDto
  *  Service return 값으로 사용
+ *  D에는 Entity, Dto, List<Entity>, List<Dto> 등이 들어올 수 있음.
  */
 
 @Data

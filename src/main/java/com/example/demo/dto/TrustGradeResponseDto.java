@@ -1,18 +1,16 @@
 package com.example.demo.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class TrustGradeResponseDto {
     private Long id;
     private String name;
     private int trustScore;
-
-    public TrustGradeResponseDto(Long id, String name, int trustScore) {
-        this.id = id;
-        this.name = name;
-        this.trustScore = trustScore;
-    }
 }

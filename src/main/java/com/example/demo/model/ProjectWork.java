@@ -24,7 +24,7 @@ public class ProjectWork extends BaseTimeEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User createUser;
+    private User assignedUserId;
 
     @Column(name = "work_content")
     private String content;

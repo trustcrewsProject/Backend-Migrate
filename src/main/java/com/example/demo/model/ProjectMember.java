@@ -22,7 +22,7 @@ public class ProjectMember extends BaseTimeEntity {
 
     @OneToOne
     @JoinColumn(name = "project_member_role_id")
-    private ProjectMemberRole projectRole;
+    private ProjectMemberRole projectMemberRole;
 
     @Column(name = "project_member_status")
     private String status;

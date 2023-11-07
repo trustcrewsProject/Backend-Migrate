@@ -29,17 +29,17 @@ public class ProjectWork extends BaseTimeEntity {
     @Column(name = "work_content")
     private String content;
 
+    @Column(name = "expire_statue")
+    private boolean expireStatus;
+
+    @Column(name = "completion_status")
+    private boolean completionStatus;
+
     @Column(name = "start_date")
     private LocalDateTime startDate;
 
     @Column(name = "end_date")
     private LocalDateTime endDate;
-
-    @Column(name = "expires_statue")
-    private boolean expiresStatus;
-
-    @Column(name = "completion_status")
-    private boolean completionStatus;
 
     @OneToOne
     @JoinColumn(name = "project_member_id")

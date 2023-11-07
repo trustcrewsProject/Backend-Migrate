@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import com.example.demo.constant.ProjectStatus;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -24,7 +26,8 @@ public class Project extends BaseTimeEntity {
 
     private String content;
 
-    private String status;
+    @Enumerated(value = EnumType.STRING)
+    private ProjectStatus status;
 
     private int fe;
 

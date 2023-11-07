@@ -24,5 +24,5 @@ public class User extends BaseTimeEntity{
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trust_grade_id")
-    private TrustGrade trustGradeId;
+    private TrustGrade trustGrade;
 }

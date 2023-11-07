@@ -13,6 +13,10 @@ public class ProjectMilestone {
     @Column(name = "project_milestone_id")
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
+
     @Column(name = "milestone_content")
     private String content;
 
@@ -22,12 +26,10 @@ public class ProjectMilestone {
     @Column(name = "end_date")
     private LocalDateTime endDate;
 
-    @ManyToOne
-    @JoinColumn(name = "project_id")
-    private Project project;
 
-    @Column(name = "expires_status")
-    private boolean expiresStatus;
+
+    @Column(name = "expire_status")
+    private boolean expireStatus;
 
     @Column(name = "completion_status")
     private boolean completionStatus;

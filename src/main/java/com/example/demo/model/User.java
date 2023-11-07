@@ -10,25 +10,19 @@ import javax.persistence.*;
 @Table(name = "user")
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User extends BaseTimeEntity{
     @Id
+    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-    private String email;
-
     private String password;
-    private String address;
-    private String address_detail;
+    private String trustScore;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public User(String name, String email, String address, Role role, String password){
-        this.name = name;
-        this.email = email;
-        this.address = address;
-        this.role = role;
-        this.password = password;
-    }
+    @OneToOne(fetch= FetchType.LAZY)
+    @JoinColumn(name = "trust_grade_setting_id")
+    private TrustGradeSetting trustGradeSettingId;
 }

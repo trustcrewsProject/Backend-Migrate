@@ -21,8 +21,4 @@ public class TrustGrade extends BaseTimeEntity{
     private String name;
     private int score;
 
-    public TrustGrade(TrustGradeRequestDto dto){
-        this.name = dto.getName();
-        this.score = dto.getScore();
-    }
 }

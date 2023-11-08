@@ -16,9 +16,9 @@ public class MilestoneCreateRequestDto {
 
     // 시작날짜
     @NotBlank(message = "마일스톤 시작날짜 설정은 필수입니다.")
-    private LocalDate startDate;
+    private String startDate;
 
     // 종료날짜
     @NotBlank(message = "마일스톤 종료날짜 설정은 필수입니다.")
-    private LocalDate endDate;
+    private String endDate;
 }

@@ -18,11 +18,11 @@ public class WorkInfoResponseDto {
 
     private User createUser;
 
-    private LocalDateTime createDate;
+    private String createDate;
 
     // 업무기간
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private String startDate;
+    private String endDate;
 
     // 업무 참여 멤버
 
@@ -34,7 +34,9 @@ public class WorkInfoResponseDto {
         return WorkInfoResponseDto.builder()
                 .workContent(work.getContent())
                 .createUser(work.getAssignedUserId())
-                .createDate(work.getCreateDate())
+                .createDate("")
+                .startDate("")
+                .endDate("")
                 .completionStatus(work.isCompletionStatus())
                 .projectMilestone(milestone)
                 .build();

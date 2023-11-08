@@ -7,7 +7,6 @@ import com.example.demo.model.User;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 // 프로젝트 정보 응답 DTO
@@ -21,7 +20,7 @@ public class ProjectInfoResponseDto {
 
     private TrustGrade trustGrade;
 
-    private LocalDateTime createProjectDate;
+    private String createProjectDate;
 
     private User createUser;
 
@@ -32,7 +31,7 @@ public class ProjectInfoResponseDto {
                 .projectName(project.getName())
                 .projectContent(project.getContent())
                 .trustGrade(project.getTrustGrade())
-                .createProjectDate(project.getCreateDate())
+                .createProjectDate("")
                 .createUser(project.getUser())
                 .projectMembers(projectMembers)
                 .build();

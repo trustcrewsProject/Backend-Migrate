@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import com.example.demo.constant.ParticipationStatus;
+import lombok.Getter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -8,6 +9,7 @@ import java.time.LocalDateTime;
 // 사용자 프로젝트 이력 엔티티
 @Entity
 @Table(name = "user_project_history")
+@Getter
 public class UserProjectHistory extends BaseTimeEntity {
 
     @Id

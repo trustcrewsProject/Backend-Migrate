@@ -1,12 +1,15 @@
 package com.example.demo.model;
 
 
+import lombok.Getter;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 // 프로젝트 업무 엔티티
 @Entity
 @Table(name = "project_work")
+@Getter
 public class ProjectWork extends BaseTimeEntity {
 
     @Id

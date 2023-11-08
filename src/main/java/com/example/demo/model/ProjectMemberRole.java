@@ -1,10 +1,13 @@
 package com.example.demo.model;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 
 // 프로젝트 구성원 역할 엔티티
 @Entity
 @Table(name = "project_member_role")
+@Getter
 public class ProjectMemberRole {
 
     @Id

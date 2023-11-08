@@ -1,12 +1,17 @@
 package com.example.demo.model;
 
 import com.example.demo.constant.ProjectStatus;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 // 프로젝트 엔티티
 @Entity
+@Getter
 public class Project extends BaseTimeEntity {
 
     @Id

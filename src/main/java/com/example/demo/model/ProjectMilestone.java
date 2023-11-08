@@ -1,11 +1,14 @@
 package com.example.demo.model;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 // 프로젝트 마일스톤 엔티티
 @Entity
 @Table(name = "project_milestone")
+@Getter
 public class ProjectMilestone {
 
     @Id

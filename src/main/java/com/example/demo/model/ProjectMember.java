@@ -1,10 +1,13 @@
 package com.example.demo.model;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 
 // 프로젝트 구성원 엔티티
 @Entity
 @Table(name = "project_member")
+@Getter
 public class ProjectMember extends BaseTimeEntity {
 
     @Id

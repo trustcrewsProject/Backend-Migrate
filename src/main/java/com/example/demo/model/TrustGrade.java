@@ -1,6 +1,5 @@
 package com.example.demo.model;
 
-import com.example.demo.dto.TrustGradeRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

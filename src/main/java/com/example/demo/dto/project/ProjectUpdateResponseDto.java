@@ -1,8 +1,6 @@
 package com.example.demo.dto.project;
 
 import com.example.demo.constant.ProjectStatus;
-import com.example.demo.dto.board.BoardCreateResponseDto;
-import com.example.demo.model.Board;
 import com.example.demo.model.Project;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +9,8 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
-public class ProjectCreateResponseDto {
+public class ProjectUpdateResponseDto {
+    private Long projectId;
     private String name;
     private String subject;
     private long trustGradeId;
@@ -22,8 +21,9 @@ public class ProjectCreateResponseDto {
     private LocalDateTime endDate;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
-    public static ProjectCreateResponseDto of(Project project) {
-        return ProjectCreateResponseDto.builder()
+    public static ProjectUpdateResponseDto of(Project project) {
+        return ProjectUpdateResponseDto.builder()
+                .projectId(project.getId())
                 .name(project.getName())
                 .subject(project.getSubject())
                 .trustGradeId(project.getTrustGrade().getId())

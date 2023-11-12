@@ -1,17 +1,12 @@
 package com.example.demo.model;
 
 
-import com.example.demo.dto.board.BoardCreateRequestDto;
-import com.example.demo.dto.board.BoardCreateResponseDto;
-import com.example.demo.dto.board.BoardProjectCreateRequestDto;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.annotation.processing.Generated;
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 

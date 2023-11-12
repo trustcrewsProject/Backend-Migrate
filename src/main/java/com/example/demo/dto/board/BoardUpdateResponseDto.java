@@ -1,20 +1,15 @@
 package com.example.demo.dto.board;
 
-import com.example.demo.dto.project.ProjectInfoResponseDto;
 import com.example.demo.model.Board;
-import com.example.demo.model.Project;
-import com.example.demo.model.ProjectMember;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Builder
-public class BoardCreateResponseDto {
+public class BoardUpdateResponseDto {
+    private Long boardId;
     private String boardTitle;
     private String boardContent;
     private long boardPageView;
@@ -24,8 +19,9 @@ public class BoardCreateResponseDto {
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 
-    public static BoardCreateResponseDto of(Board board) {
-        return BoardCreateResponseDto.builder()
+    public static BoardUpdateResponseDto of(Board board) {
+        return BoardUpdateResponseDto.builder()
+                .boardId(board.getId())
                 .boardTitle(board.getTitle())
                 .boardContent(board.getContent())
                 .boardPageView(board.getPageView())

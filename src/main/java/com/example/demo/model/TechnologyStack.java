@@ -6,8 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Getter
+@Table(name = "technology_stack")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class TechnologyStack {
 
     @Id

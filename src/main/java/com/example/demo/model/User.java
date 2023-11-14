@@ -6,7 +6,7 @@ import javax.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class User extends BaseTimeEntity {

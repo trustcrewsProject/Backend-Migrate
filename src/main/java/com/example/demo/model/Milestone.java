@@ -2,11 +2,16 @@ package com.example.demo.model;
 
 import java.time.LocalDateTime;
 import javax.persistence.*;
+
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 // 프로젝트 마일스톤 엔티티
 @Entity
 @Table(name = "milestone")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Milestone {
 
@@ -33,4 +38,15 @@ public class Milestone {
 
     @Column(name = "complete_status")
     private boolean completeStatus;
+
+    @Builder
+    public Milestone(Long id, Project project, String content, LocalDateTime startDate, LocalDateTime endDate, boolean expireStatus, boolean completeStatus) {
+        this.id = id;
+        this.project = project;
+        this.content = content;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.expireStatus = expireStatus;
+        this.completeStatus = completeStatus;
+    }
 }

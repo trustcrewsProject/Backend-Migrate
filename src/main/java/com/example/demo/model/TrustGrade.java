@@ -1,17 +1,13 @@
 package com.example.demo.model;
 
 import javax.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import lombok.*;
 
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
+@Table(name = "trsut_grade")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Setter
-@Table(name = "trust_grade")
 public class TrustGrade extends BaseTimeEntity {
     @Id
     @Column(name = "trust_grade_id")

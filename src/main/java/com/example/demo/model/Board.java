@@ -3,18 +3,16 @@ package com.example.demo.model;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
+
+import com.example.demo.constant.AlertType;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-@Setter
 @Entity
 @Table(name = "board")
-@AllArgsConstructor
-@NoArgsConstructor
-@DynamicInsert
-@DynamicUpdate
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Board extends BaseTimeEntity {
     @Id
@@ -43,4 +41,23 @@ public class Board extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "position", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<BoardPosition> position = new ArrayList<>();
+
+    @Builder
+    private Board(
+            String title,
+            String content,
+            Project project,
+            int pageView,
+            boolean completeStatus,
+            User user,
+            String contact
+    ) {
+        this.title = title;
+        this.content = content;
+        this.project = project;
+        this.pageView = pageView;
+        this.completeStatus = completeStatus;
+        this.user = user;
+        this.contact = contact;
+    }
 }

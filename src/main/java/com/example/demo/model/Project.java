@@ -7,11 +7,9 @@ import lombok.*;
 
 // 프로젝트 엔티티
 @Entity
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
-@Setter
 @Table(name = "project")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Project extends BaseTimeEntity {
 
     @Id
@@ -39,4 +37,17 @@ public class Project extends BaseTimeEntity {
 
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+
+    @Builder
+    public Project(Long id, String name, String subject, TrustGrade trustGrade, User user, ProjectStatus status, int crewNumber, LocalDateTime startDate, LocalDateTime endDate) {
+        this.id = id;
+        this.name = name;
+        this.subject = subject;
+        this.trustGrade = trustGrade;
+        this.user = user;
+        this.status = status;
+        this.crewNumber = crewNumber;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 }

@@ -1,10 +1,16 @@
 package com.example.demo.model;
 
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "project_technology")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class ProjectTechnology {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

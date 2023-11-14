@@ -2,11 +2,16 @@ package com.example.demo.model;
 
 import java.time.LocalDateTime;
 import javax.persistence.*;
+
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 // 프로젝트 업무 엔티티
 @Entity
 @Table(name = "work")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Work extends BaseTimeEntity {
 
@@ -45,4 +50,18 @@ public class Work extends BaseTimeEntity {
     @OneToOne
     @JoinColumn(name = "project_member_id")
     private ProjectMember lastModifiedMember;
+
+    @Builder
+    public Work(Long id, Project project, Milestone milestone, User assignedUserId, String content, boolean expireStatus, boolean completionStatus, LocalDateTime startDate, LocalDateTime endDate, ProjectMember lastModifiedMember) {
+        this.id = id;
+        this.project = project;
+        this.milestone = milestone;
+        this.assignedUserId = assignedUserId;
+        this.content = content;
+        this.expireStatus = expireStatus;
+        this.completionStatus = completionStatus;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.lastModifiedMember = lastModifiedMember;
+    }
 }

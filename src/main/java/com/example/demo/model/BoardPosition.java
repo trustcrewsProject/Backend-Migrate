@@ -3,12 +3,10 @@ package com.example.demo.model;
 import javax.persistence.*;
 import lombok.*;
 
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Table(name = "board_position")
 @Entity
-@Setter
+@Table(name = "board_position")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class BoardPosition extends BaseTimeEntity {
 
     @Id
@@ -24,6 +22,7 @@ public class BoardPosition extends BaseTimeEntity {
     @JoinColumn(name = "position_id")
     private Position position;
 
+    @Builder
     public BoardPosition(Board board, Position position) {
         this.board = board;
         this.position = position;

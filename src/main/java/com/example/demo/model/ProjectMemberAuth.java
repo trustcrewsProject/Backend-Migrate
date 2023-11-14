@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "project_manage_auth")
 @Getter
-public class ProjectManageAuth {
+public class ProjectMemberAuth {
 
     @Id
     @Column(name = "project_manage_auth_code")

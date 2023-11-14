@@ -31,6 +31,6 @@ public class ProjectMember extends BaseTimeEntity {
     private String status;
 
     @OneToOne
-    @JoinColumn(name = "project_manage_auth_code")
-    private ProjectManageAuth authCode;
+    @JoinColumn(name = "project_member_auth_code")
+    private ProjectMemberAuth authCode;
 }

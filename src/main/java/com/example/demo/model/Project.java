@@ -30,6 +30,7 @@ public class Project extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(name = "project_status")
     @Enumerated(value = EnumType.STRING)
     private ProjectStatus status;
 

@@ -2,6 +2,9 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.17'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+
+	/* 코드 포맷팅 */
+	id 'com.diffplug.spotless' version '6.11.0'
 }
 
 group = 'com.example'
@@ -34,4 +37,17 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+/* 코드 포맷팅 spotless 설정 */
+spotless {
+	java {
+		target("**/*.java")
+		removeUnusedImports()
+		trimTrailingWhitespace()
+		endWithNewline()
+		importOrder()
+		indentWithTabs()
+		googleJavaFormat().aosp()
+	}
 }

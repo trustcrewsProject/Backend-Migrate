@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
+@Table(name = "project")
 public class Project extends BaseTimeEntity {
 
     @Id

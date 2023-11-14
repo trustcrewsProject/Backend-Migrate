@@ -1,6 +1,5 @@
 package com.example.demo.dto.board;
 
-import com.example.demo.model.Position;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

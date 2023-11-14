@@ -1,8 +1,6 @@
 package com.example.demo.dto.user;
 
-import com.example.demo.model.Position;
 import com.example.demo.model.TrustGrade;
-import com.example.demo.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

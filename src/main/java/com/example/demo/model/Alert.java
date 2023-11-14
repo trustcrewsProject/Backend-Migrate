@@ -1,9 +1,8 @@
 package com.example.demo.model;
 
 import com.example.demo.constant.AlertType;
-import lombok.*;
-
 import javax.persistence.*;
+import lombok.*;
 
 @Entity
 @Table(name = "alert")
@@ -11,7 +10,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Alert extends BaseTimeEntity{
+public class Alert extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "alert_id")

@@ -1,8 +1,7 @@
 package com.example.demo.model;
 
-import lombok.Getter;
-
 import javax.persistence.*;
+import lombok.Getter;
 
 // 프로젝트 구성원 역할 엔티티
 @Entity

@@ -1,14 +1,12 @@
 package com.example.demo.model;
 
-
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Setter
 @Entity
@@ -18,7 +16,7 @@ import java.util.List;
 @DynamicInsert
 @DynamicUpdate
 @Getter
-public class Board extends BaseTimeEntity{
+public class Board extends BaseTimeEntity {
     @Id
     @Column(name = "board_id")
     @GeneratedValue(strategy = GenerationType.AUTO)

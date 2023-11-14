@@ -1,16 +1,15 @@
 package com.example.demo.model;
 
 import com.example.demo.constant.Role;
-import lombok.*;
-
-import javax.persistence.*;
 import java.util.List;
+import javax.persistence.*;
+import lombok.*;
 
 @Entity
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class User extends BaseTimeEntity{
+public class User extends BaseTimeEntity {
 
     @Id
     @Column(name = "user_id")
@@ -44,8 +43,17 @@ public class User extends BaseTimeEntity{
     private Role role;
 
     @Builder
-    private User(String email, String password, String nickname, String profileImgSrc, String intro,
-                 Position position, List<TechnologyStack> techStacks, TrustGrade trustGrade, int trustScore, Role role) {
+    private User(
+            String email,
+            String password,
+            String nickname,
+            String profileImgSrc,
+            String intro,
+            Position position,
+            List<TechnologyStack> techStacks,
+            TrustGrade trustGrade,
+            int trustScore,
+            Role role) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;

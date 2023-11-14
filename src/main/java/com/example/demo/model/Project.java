@@ -1,11 +1,9 @@
 package com.example.demo.model;
 
 import com.example.demo.constant.ProjectStatus;
-import lombok.*;
-import org.springframework.lang.Nullable;
-
-import javax.persistence.*;
 import java.time.LocalDateTime;
+import javax.persistence.*;
+import lombok.*;
 
 // 프로젝트 엔티티
 @Entity
@@ -19,6 +17,7 @@ public class Project extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "project_id")
     private Long id;
+
     private String name;
     private String subject;
 

@@ -1,10 +1,9 @@
 package com.example.demo.model;
 
 import com.example.demo.constant.ParticipationStatus;
-import lombok.Getter;
-
-import javax.persistence.*;
 import java.time.LocalDateTime;
+import javax.persistence.*;
+import lombok.Getter;
 
 // 사용자 프로젝트 이력 엔티티
 @Entity

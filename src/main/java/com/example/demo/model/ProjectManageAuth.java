@@ -1,8 +1,7 @@
 package com.example.demo.model;
 
-import lombok.Getter;
-
 import javax.persistence.*;
+import lombok.Getter;
 
 // 프로젝트 관리 권한 엔티티
 @Entity

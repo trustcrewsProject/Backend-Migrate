@@ -39,8 +39,8 @@ public class Board extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    private String contact;
+
     @OneToMany(mappedBy = "position", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<BoardPosition> position = new ArrayList<>();
-
-    private String contact;
 }

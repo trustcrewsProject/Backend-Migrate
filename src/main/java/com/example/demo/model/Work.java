@@ -6,13 +6,13 @@ import lombok.Getter;
 
 // 프로젝트 업무 엔티티
 @Entity
-@Table(name = "project_work")
+@Table(name = "work")
 @Getter
-public class ProjectWork extends BaseTimeEntity {
+public class Work extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "project_work_id")
+    @Column(name = "work_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -20,8 +20,8 @@ public class ProjectWork extends BaseTimeEntity {
     private Project project;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_milestone_id")
-    private ProjectMilestone projectMilestone;
+    @JoinColumn(name = "milestone_id")
+    private Milestone milestone;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

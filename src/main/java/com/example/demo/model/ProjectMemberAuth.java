@@ -7,18 +7,18 @@ import lombok.Getter;
 @Entity
 @Table(name = "project_manage_auth")
 @Getter
-public class ProjectManageAuth {
+public class ProjectMemberAuth {
 
     @Id
-    @Column(name = "project_manage_auth_code")
-    private String code;
+    @Column(name = "project_member_auth_id")
+    private Long id;
 
     @Column(name = "project_manage_auth_name")
     private String name;
 
-    @Column(name = "milestone_change_yn")
-    private boolean milestoneChangeStatus;
+    @Column(name = "milestone_change_YN")
+    private boolean milestoneChangeYN;
 
     @Column(name = "work_change_yn")
-    private boolean workChangeStatus;
+    private boolean workChangeYN;
 }

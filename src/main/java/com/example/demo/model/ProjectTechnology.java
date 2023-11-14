@@ -1,0 +1,21 @@
+package com.example.demo.model;
+
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "project_technology")
+public class ProjectTechnology {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "project_technology_id")
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "project_id")
+    private Project project;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "technology_stack_id")
+    private TechnologyStack technologyStack;
+}

@@ -1,23 +1,25 @@
 package com.example.demo.model;
 
 import javax.persistence.*;
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
-@Setter
-@Table(name = "trust_grade")
-public class TrustGrade extends BaseTimeEntity {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Position {
+
     @Id
-    @Column(name = "trust_grade_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "position_id")
     private Long id;
 
     private String name;
-    private int score;
+
+    @Builder
+    private Position(String name) {
+        this.name = name;
+    }
 }

@@ -1,8 +1,7 @@
 package com.example.demo.model;
 
-import lombok.Getter;
-
 import javax.persistence.*;
+import lombok.Getter;
 
 // 프로젝트 구성원 엔티티
 @Entity
@@ -24,13 +23,13 @@ public class ProjectMember extends BaseTimeEntity {
     private User user;
 
     @OneToOne
-    @JoinColumn(name = "project_member_role_id")
-    private ProjectMemberRole projectMemberRole;
+    @JoinColumn(name = "project_member_auth_id")
+    private ProjectMemberAuth projectMemberAuth;
 
     @Column(name = "project_member_status")
     private String status;
 
     @OneToOne
-    @JoinColumn(name = "project_manage_auth_code")
-    private ProjectManageAuth authCode;
+    @JoinColumn(name = "position_id")
+    private Position position;
 }

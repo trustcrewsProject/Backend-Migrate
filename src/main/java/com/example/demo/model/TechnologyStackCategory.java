@@ -1,23 +1,20 @@
 package com.example.demo.model;
 
 import javax.persistence.*;
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
-@Setter
-@Table(name = "trust_grade")
-public class TrustGrade extends BaseTimeEntity {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class TechnologyStackCategory {
+
     @Id
-    @Column(name = "trust_grade_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "technology_stack_category_id")
     private Long id;
 
+    // 프론트엔드, 백엔드, 디자이너 등
     private String name;
-    private int score;
 }

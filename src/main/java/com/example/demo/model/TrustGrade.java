@@ -5,7 +5,7 @@ import javax.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "trsut_grade")
+@Table(name = "trust_grade")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class TrustGrade extends BaseTimeEntity {

@@ -26,14 +26,14 @@ public class User extends BaseTimeEntity {
 
     private String intro;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "position_id")
     private Position position;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<TechnologyStack> techStacks;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<UserTechnologyStack> techStacks;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trust_grade_id")
     private TrustGrade trustGrade;
 
@@ -50,7 +50,7 @@ public class User extends BaseTimeEntity {
             String profileImgSrc,
             String intro,
             Position position,
-            List<TechnologyStack> techStacks,
+            List<UserTechnologyStack> techStacks,
             TrustGrade trustGrade,
             int trustScore,
             Role role) {

@@ -63,7 +63,7 @@ public class Project extends BaseTimeEntity {
         this.endDate = endDate;
     }
 
-    public void changeProjectMembers(List<ProjectMember> projectMembers){
+    public void changeProjectMembers(List<ProjectMember> projectMembers) {
         this.projectMembers = projectMembers;
     }
 }

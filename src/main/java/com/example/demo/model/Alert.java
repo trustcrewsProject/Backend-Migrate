@@ -2,12 +2,8 @@ package com.example.demo.model;
 
 import com.example.demo.constant.AlertType;
 import javax.persistence.*;
-
-import com.example.demo.constant.Role;
 import lombok.*;
 import org.springframework.lang.Nullable;
-
-import java.util.List;
 
 @Entity
 @Table(name = "alert")
@@ -40,7 +36,13 @@ public class Alert extends BaseTimeEntity {
     private boolean checked_YN;
 
     @Builder
-    private Alert(Project project, User user,Position position, String content, AlertType type, boolean checked_YN) {
+    private Alert(
+            Project project,
+            User user,
+            Position position,
+            String content,
+            AlertType type,
+            boolean checked_YN) {
         this.project = project;
         this.user = user;
         this.position = position;

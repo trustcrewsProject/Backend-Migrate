@@ -3,5 +3,4 @@ package com.example.demo.repository;
 import com.example.demo.model.Position;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PositionRepository extends JpaRepository<Position, Long> {
-}
+public interface PositionRepository extends JpaRepository<Position, Long> {}

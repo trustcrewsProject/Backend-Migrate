@@ -2,7 +2,6 @@ package com.example.demo.model;
 
 import java.time.LocalDateTime;
 import javax.persistence.*;
-
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "milestone")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Milestone extends BaseTimeEntity{
+public class Milestone extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

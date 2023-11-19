@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class PositionServiceImpl implements PositionService{
+public class PositionServiceImpl implements PositionService {
 
     private final PositionRepository positionRepository;
 }

@@ -14,7 +14,8 @@ public class GlobalExceptionHandler {
     // @Valid 어노테이션 유효성 검사 실패 시 발생 Exception
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> processValidationError(MethodArgumentNotValidException e) {
-        final ErrorResponse response = ErrorResponse.of(CommonErrorCode.INVALID_VALUE, e.getBindingResult());
+        final ErrorResponse response =
+                ErrorResponse.of(CommonErrorCode.INVALID_VALUE, e.getBindingResult());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 

@@ -1,7 +1,6 @@
 package com.example.demo.model;
 
 import javax.persistence.*;
-
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,7 +27,8 @@ public class ProjectMemberAuth {
     private boolean workChangeYN;
 
     @Builder
-    public ProjectMemberAuth(Long id, String name, boolean milestoneChangeYN, boolean workChangeYN) {
+    public ProjectMemberAuth(
+            Long id, String name, boolean milestoneChangeYN, boolean workChangeYN) {
         this.id = id;
         this.name = name;
         this.milestoneChangeYN = milestoneChangeYN;

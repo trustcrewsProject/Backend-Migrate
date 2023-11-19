@@ -11,7 +11,7 @@ public class SecurityUtil {
     // 시큐리티 컨텍스트에 저장된 회원조회
     public String getCurrentUserEmail() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(authentication != null || authentication.getPrincipal() instanceof UserDetails) {
+        if (authentication != null || authentication.getPrincipal() instanceof UserDetails) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             return userDetails.getUsername();
         }

@@ -38,8 +38,8 @@ public class Work extends BaseTimeEntity {
     @Column(name = "expire_statue")
     private boolean expireStatus;
 
-    @Column(name = "completion_status")
-    private boolean completionStatus;
+    @Column(name = "complete_status")
+    private boolean completeStatus;
 
     @Column(name = "start_date")
     private LocalDateTime startDate;

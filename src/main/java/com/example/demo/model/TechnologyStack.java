@@ -15,6 +15,7 @@ public class TechnologyStack {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "technology_stack_id")
     private Long id;
+    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "technology_stack_category_id")

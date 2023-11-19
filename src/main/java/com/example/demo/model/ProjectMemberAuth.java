@@ -18,7 +18,7 @@ public class ProjectMemberAuth {
     @Column(name = "project_member_auth_id")
     private Long id;
 
-    @Column(name = "project_manage_auth_name")
+    @Column(name = "project_member_auth_name")
     private String name;
 
     @Column(name = "milestone_change_YN")

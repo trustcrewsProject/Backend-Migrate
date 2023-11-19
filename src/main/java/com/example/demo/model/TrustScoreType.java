@@ -27,9 +27,13 @@ public class TrustScoreType {
     @Column(name = "distinguish_code")
     ScoreTypeDistinguishCode distinguishCode;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trust_grade_id")
     TrustGrade trustGrade;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "trust_point_type_parent_id")
+    TrustScoreType trustPointTypeParent;
 
     @Column(name = "create_date")
     LocalDateTime createDate;

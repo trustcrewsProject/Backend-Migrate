@@ -17,7 +17,7 @@ public class TrustScore {
     @Column(name = "trust_score_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 

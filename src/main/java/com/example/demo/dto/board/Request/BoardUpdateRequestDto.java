@@ -1,4 +1,4 @@
-package com.example.demo.dto.Board.Request;
+package com.example.demo.dto.board.Request;
 
 import java.util.List;
 import javax.validation.constraints.NotBlank;

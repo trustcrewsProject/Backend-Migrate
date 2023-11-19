@@ -52,14 +52,14 @@ public class Work extends BaseTimeEntity {
     private ProjectMember lastModifiedMember;
 
     @Builder
-    public Work(Long id, Project project, Milestone milestone, User assignedUserId, String content, boolean expireStatus, boolean completionStatus, LocalDateTime startDate, LocalDateTime endDate, ProjectMember lastModifiedMember) {
+    public Work(Long id, Project project, Milestone milestone, User assignedUserId, String content, boolean expireStatus, boolean completeStatus, LocalDateTime startDate, LocalDateTime endDate, ProjectMember lastModifiedMember) {
         this.id = id;
         this.project = project;
         this.milestone = milestone;
         this.assignedUserId = assignedUserId;
         this.content = content;
         this.expireStatus = expireStatus;
-        this.completionStatus = completionStatus;
+        this.completeStatus = completeStatus;
         this.startDate = startDate;
         this.endDate = endDate;
         this.lastModifiedMember = lastModifiedMember;

@@ -25,6 +25,7 @@ public class TrustScoreType extends BaseTimeEntity {
     Long score;
 
     @Column(name = "distinguish_code")
+    @Enumerated(EnumType.STRING)
     ScoreTypeDistinguishCode distinguishCode;
 
     @ManyToOne(fetch = FetchType.LAZY)

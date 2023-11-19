@@ -1,6 +1,5 @@
-package com.example.demo.dto.Project.Request;
+package com.example.demo.dto.project.Request;
 
-import com.example.demo.model.TrustGrade;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.validation.constraints.NotBlank;

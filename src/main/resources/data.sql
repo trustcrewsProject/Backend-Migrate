@@ -1,4 +1,5 @@
 
+
 -- POSITION 값 넣기.
 -- 포지션 값 넣기
 INSERT INTO position (position_id,name) VALUES (1,'프론트엔드');
@@ -55,3 +56,6 @@ INSERT INTO trust_grade (trust_grade_id, name, score, create_date, update_date) 
 INSERT INTO project_member_auth (project_member_auth_id, project_member_auth_name, milestone_change_yn, work_change_yn) VALUES (1,'매니저', true, false);
 INSERT INTO project_member_auth (project_member_auth_id, project_member_auth_name, milestone_change_yn, work_change_yn) VALUES (2,'부매니저', false, false);
 INSERT INTO project_member_auth (project_member_auth_id, project_member_auth_name, milestone_change_yn, work_change_yn) VALUES (3,'구성원', false, false);
+
+--user 테스트 넣기.
+INSERT INTO user(user_id,email,intro,nickname,password,profile_img_src,role,trust_score,position_id,trust_grade_id, create_date, update_date) VALUES (1,'test@naver.com','test','test','test',null,'USER',0,1,4,CURRENT_DATE, CURRENT_DATE);

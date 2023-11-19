@@ -3,6 +3,8 @@ package com.example.demo.model;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,6 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "trust_score_history")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(AuditingEntityListener.class)
 @Getter
 public class TrustScoreHistory {
     @Id
@@ -40,6 +43,7 @@ public class TrustScoreHistory {
     @Column(name = "score")
     Long score;
 
-    @Column(name = "create_date")
+    @CreatedDate
+    @Column(name = "create_date", updatable = false)
     LocalDateTime createDate;
 }

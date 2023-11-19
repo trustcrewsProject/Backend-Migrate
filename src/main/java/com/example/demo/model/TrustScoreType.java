@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Table(name = "trust_score_type")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class TrustScoreType {
+public class TrustScoreType extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "trust_score_type_id")
@@ -34,10 +34,4 @@ public class TrustScoreType {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trust_point_type_parent_id")
     TrustScoreType trustPointTypeParent;
-
-    @Column(name = "create_date")
-    LocalDateTime createDate;
-
-    @Column(name = "update_date")
-    LocalDateTime updateDate;
 }

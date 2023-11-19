@@ -38,8 +38,8 @@ public class Work extends BaseTimeEntity {
     @Column(name = "expire_statue")
     private boolean expireStatus;
 
-    @Column(name = "completion_status")
-    private boolean completionStatus;
+    @Column(name = "complete_status")
+    private boolean completeStatus;
 
     @Column(name = "start_date")
     private LocalDateTime startDate;
@@ -52,14 +52,13 @@ public class Work extends BaseTimeEntity {
     private ProjectMember lastModifiedMember;
 
     @Builder
-    public Work(Long id, Project project, Milestone milestone, User assignedUserId, String content, boolean expireStatus, boolean completionStatus, LocalDateTime startDate, LocalDateTime endDate, ProjectMember lastModifiedMember) {
-        this.id = id;
+    public Work(Project project, Milestone milestone, User assignedUserId, String content, boolean expireStatus, boolean completeStatus, LocalDateTime startDate, LocalDateTime endDate, ProjectMember lastModifiedMember) {
         this.project = project;
         this.milestone = milestone;
         this.assignedUserId = assignedUserId;
         this.content = content;
         this.expireStatus = expireStatus;
-        this.completionStatus = completionStatus;
+        this.completeStatus = completeStatus;
         this.startDate = startDate;
         this.endDate = endDate;
         this.lastModifiedMember = lastModifiedMember;

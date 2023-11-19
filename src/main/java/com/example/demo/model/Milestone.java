@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "milestone")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Milestone {
+public class Milestone extends BaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,8 +40,13 @@ public class Milestone {
     private boolean completeStatus;
 
     @Builder
-    public Milestone(Long id, Project project, String content, LocalDateTime startDate, LocalDateTime endDate, boolean expireStatus, boolean completeStatus) {
-        this.id = id;
+    public Milestone(
+            Project project,
+            String content,
+            LocalDateTime startDate,
+            LocalDateTime endDate,
+            boolean expireStatus,
+            boolean completeStatus) {
         this.project = project;
         this.content = content;
         this.startDate = startDate;

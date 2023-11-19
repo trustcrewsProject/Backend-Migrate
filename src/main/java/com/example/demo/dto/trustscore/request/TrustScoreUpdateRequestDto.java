@@ -17,11 +17,3 @@ public class TrustScoreUpdateRequestDto {
     Boolean isQuit;
     Boolean isForceQuit;
 }
-
-/*
-1. 회원가입
-2. 업무평가
-3. 프로젝트 탈퇴
-4. 프로젝트 강제 탈퇴
-5. 프로젝트 회원 이력
-*/

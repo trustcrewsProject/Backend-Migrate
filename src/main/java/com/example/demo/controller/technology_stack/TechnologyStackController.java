@@ -1,6 +1,6 @@
-package com.example.demo.controller.tech_stack;
+package com.example.demo.controller.technology_stack;
 
-import com.example.demo.service.tech_stack.TechnologyStackService;
+import com.example.demo.service.technology_stack.TechnologyStackService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 

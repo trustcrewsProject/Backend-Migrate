@@ -1,4 +1,4 @@
-package com.example.demo.repository.tech_stack;
+package com.example.demo.repository.technology_stack;
 
 import com.example.demo.model.TechnologyStack;
 import org.springframework.data.jpa.repository.JpaRepository;

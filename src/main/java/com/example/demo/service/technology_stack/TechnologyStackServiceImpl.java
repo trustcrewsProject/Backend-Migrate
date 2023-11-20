@@ -1,7 +1,6 @@
-package com.example.demo.service.tech_stack;
+package com.example.demo.service.technology_stack;
 
-import com.example.demo.repository.tech_stack.TechnologyStackRepository;
-import com.example.demo.service.tech_stack.TechnologyStackService;
+import com.example.demo.repository.technology_stack.TechnologyStackRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,8 @@
 package com.example.demo.model;
 
 import javax.persistence.*;
+
+import com.example.demo.global.common.BaseTimeEntity;
 import lombok.*;
 
 @Entity

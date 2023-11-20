@@ -3,6 +3,8 @@ package com.example.demo.model;
 import com.example.demo.constant.Role;
 import java.util.List;
 import javax.persistence.*;
+
+import com.example.demo.global.common.BaseTimeEntity;
 import lombok.*;
 
 @Entity

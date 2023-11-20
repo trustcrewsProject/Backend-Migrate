@@ -2,6 +2,8 @@ package com.example.demo.model;
 
 import com.example.demo.constant.ProjectMemberStatus;
 import javax.persistence.*;
+
+import com.example.demo.global.common.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

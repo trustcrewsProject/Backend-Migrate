@@ -1,4 +1,4 @@
-package com.example.demo.dto.project.Request;
+package com.example.demo.dto.project.request;
 
 import java.time.LocalDateTime;
 import java.util.List;

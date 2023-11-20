@@ -1,7 +1,8 @@
-package com.example.demo.model;
+package com.example.demo.model.trust_score;
 
 import com.example.demo.constant.ScoreTypeDistinguishCode;
 import com.example.demo.global.common.BaseTimeEntity;
+import com.example.demo.model.trust_grade.TrustGrade;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

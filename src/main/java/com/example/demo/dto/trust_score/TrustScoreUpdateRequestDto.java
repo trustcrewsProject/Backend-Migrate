@@ -1,4 +1,4 @@
-package com.example.demo.dto.trustscore.request;
+package com.example.demo.dto.trust_score;
 
 import lombok.*;
 import javax.validation.constraints.NotNull;

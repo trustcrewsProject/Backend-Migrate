@@ -1,7 +1,6 @@
-package com.example.demo.controller;
+package com.example.demo.controller.work;
 
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class TrustScoreController {
-}
+public class WorkController {}

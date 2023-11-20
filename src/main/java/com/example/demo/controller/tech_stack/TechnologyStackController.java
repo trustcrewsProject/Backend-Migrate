@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.example.demo.controller.tech_stack;
 
 import com.example.demo.service.TechnologyStackService;
 import lombok.RequiredArgsConstructor;

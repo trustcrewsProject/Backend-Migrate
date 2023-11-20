@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.example.demo.controller.position;
 
 import com.example.demo.service.PositionService;
 import lombok.RequiredArgsConstructor;

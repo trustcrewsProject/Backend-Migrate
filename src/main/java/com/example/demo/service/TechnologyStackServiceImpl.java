@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.repository.TechnologyStackRepository;
+import com.example.demo.repository.tech_stack.TechnologyStackRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

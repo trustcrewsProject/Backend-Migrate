@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.repository.TrustScoreHistoryRepository;
+import com.example.demo.repository.trust_score.TrustScoreHistoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

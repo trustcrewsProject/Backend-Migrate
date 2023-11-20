@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.repository.PositionRepository;
+import com.example.demo.repository.position.PositionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

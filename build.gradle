@@ -35,6 +35,9 @@ repositories {
 }
 
 dependencies {
+	/* Redis */
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
 	/* 스프링 시큐리티 */
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 

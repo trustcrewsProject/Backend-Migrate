@@ -1,6 +1,6 @@
 package com.example.demo.dto.board.Response;
 
-import com.example.demo.model.Board;
+import com.example.demo.model.board.Board;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

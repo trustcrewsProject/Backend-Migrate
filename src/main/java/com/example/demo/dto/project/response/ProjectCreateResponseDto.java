@@ -1,8 +1,9 @@
 package com.example.demo.dto.project.response;
 
 import com.example.demo.constant.ProjectStatus;
-import com.example.demo.model.Project;
 import java.time.LocalDateTime;
+
+import com.example.demo.model.project.Project;
 import lombok.Builder;
 import lombok.Getter;
 

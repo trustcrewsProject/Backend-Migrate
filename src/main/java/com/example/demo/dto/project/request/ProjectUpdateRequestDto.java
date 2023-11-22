@@ -1,4 +1,4 @@
-package com.example.demo.dto.project.request.request;
+package com.example.demo.dto.project.request;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;

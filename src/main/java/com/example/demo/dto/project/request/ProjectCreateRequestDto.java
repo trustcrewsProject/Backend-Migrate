@@ -11,23 +11,23 @@ import lombok.Getter;
 @AllArgsConstructor
 public class ProjectCreateRequestDto {
     @NotBlank(message = "프로젝트명은 필수 입력 값입니다.")
-    private String projectName;
+    private String name;
 
     @NotBlank(message = "프로젝트 주제명은 필수 입력 값입니다.")
-    private String projectSubject;
+    private String subject;
 
     @NotBlank(message = "프로젝트 신뢰등급은 필수 입력 값입니다.")
-    private Long projectTrustId;
+    private Long trustGradeId;
 
     @NotBlank(message = "프로젝트 인원 수는 필수 입력 값입니다.")
-    private int projectCrewNumber;
+    private int crewNumber;
 
     @NotBlank(message = "시작날짜는 필수 입력 값입니다.")
-    private LocalDateTime projectStartDate;
+    private LocalDateTime startDate;
 
     @NotBlank(message = "종료날짜는 필수 입력 값입니다.")
-    private LocalDateTime projectEndDate;
+    private LocalDateTime endDate;
 
     @NotBlank(message = "모집분야는 필수 입력 값입니다.")
-    private List<Long> projectTechnologyIds;
+    private List<Long> technologyIds;
 }

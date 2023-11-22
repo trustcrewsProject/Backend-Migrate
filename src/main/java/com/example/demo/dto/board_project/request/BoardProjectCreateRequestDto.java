@@ -1,7 +1,8 @@
 package com.example.demo.dto.board_project.request;
 
 import com.example.demo.dto.board.request.BoardCreateRequestDto;
-import com.example.demo.dto.project.request.request.ProjectCreateRequestDto;
+
+import com.example.demo.dto.project.request.ProjectCreateRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

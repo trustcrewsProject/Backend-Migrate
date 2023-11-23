@@ -17,21 +17,6 @@ public class ResponseDto<T> {
         this.data = data;
     }
 
-    @Getter
-    @AllArgsConstructor
-    public static class CustomFieldError {
-
-        private String field;
-        private String invalidValue;
-        private String reason;
-
-        public CustomFieldError(FieldError fieldError) {
-            this.field = fieldError.getField();
-            this.invalidValue = fieldError.getRejectedValue().toString();
-            this.reason = fieldError.getDefaultMessage();
-        }
-    }
-
     // 요청 성공 시, 응답 데이터가 없는 경우
     public static ResponseDto<Void> success(String message) {
         return ResponseDto.<Void>builder()

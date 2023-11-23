@@ -18,11 +18,11 @@ public class GlobalExceptionHandler {
     // @Valid 어노테이션 유효성 검사 실패 시 발생 Exception
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ResponseDto<?>> processValidationError(MethodArgumentNotValidException e) {
-        List<ResponseDto.CustomFieldError> errors = e.getFieldErrors().stream()
+        List<CustomFieldError> errors = e.getFieldErrors().stream()
                 .filter(fieldError -> fieldError != null)
-                .map(ResponseDto.CustomFieldError::new).collect(Collectors.toList());
+                .map(CustomFieldError::new).collect(Collectors.toList());
 
-        final ResponseDto<List<ResponseDto.CustomFieldError>> response =
+        final ResponseDto<List<CustomFieldError>> response =
                 ResponseDto.fail("", errors);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }

@@ -20,4 +20,10 @@ public class UserController {
     public ResponseEntity<ResponseDto<?>> checkEmail(@PathVariable String email) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.checkEmail(email));
     }
+
+    // 닉네임 중복확인 요청
+    @GetMapping("/api/user/check-nickname/{nickname}")
+    public ResponseEntity<ResponseDto<?>> checkNickname(@PathVariable String nickname) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.checkNickname(nickname));
+    }
 }

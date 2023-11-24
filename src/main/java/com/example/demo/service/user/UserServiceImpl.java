@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseDto<?> checkNickname(String nickname) {
-        if(userRepository.existsByNickname(nickname)) {
+        if (userRepository.existsByNickname(nickname)) {
             throw UserCustomException.ALREADY_NICKNAME;
         }
 

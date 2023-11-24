@@ -1,12 +1,11 @@
 package com.example.demo.model.user;
 
 import com.example.demo.constant.Role;
-import java.util.List;
-import javax.persistence.*;
-
 import com.example.demo.global.common.BaseTimeEntity;
 import com.example.demo.model.position.Position;
 import com.example.demo.model.trust_grade.TrustGrade;
+import java.util.List;
+import javax.persistence.*;
 import lombok.*;
 
 @Entity

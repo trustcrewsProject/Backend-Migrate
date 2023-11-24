@@ -1,14 +1,13 @@
 package com.example.demo.model.project;
 
 import com.example.demo.constant.ProjectStatus;
+import com.example.demo.global.common.BaseTimeEntity;
+import com.example.demo.model.trust_grade.TrustGrade;
+import com.example.demo.model.user.User;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
-
-import com.example.demo.global.common.BaseTimeEntity;
-import com.example.demo.model.trust_grade.TrustGrade;
-import com.example.demo.model.user.User;
 import lombok.*;
 
 // 프로젝트 엔티티

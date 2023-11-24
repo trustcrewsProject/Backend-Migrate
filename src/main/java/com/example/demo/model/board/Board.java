@@ -1,12 +1,11 @@
 package com.example.demo.model.board;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.*;
-
 import com.example.demo.global.common.BaseTimeEntity;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.user.User;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 

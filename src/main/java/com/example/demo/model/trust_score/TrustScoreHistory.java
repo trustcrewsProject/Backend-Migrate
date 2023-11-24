@@ -1,17 +1,16 @@
 package com.example.demo.model.trust_score;
 
-import com.example.demo.model.user.User;
-import com.example.demo.model.work.Work;
 import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.project.Project;
+import com.example.demo.model.user.User;
+import com.example.demo.model.work.Work;
+import java.time.LocalDateTime;
+import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "trust_score_history")

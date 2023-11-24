@@ -1,8 +1,7 @@
 package com.example.demo.model.trust_grade;
 
-import javax.persistence.*;
-
 import com.example.demo.global.common.BaseTimeEntity;
+import javax.persistence.*;
 import lombok.*;
 
 @Entity

@@ -1,11 +1,10 @@
 package com.example.demo.dto.board.response;
 
 import com.example.demo.model.board.Board;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
@@ -20,7 +19,7 @@ public class BoardCreateResponseDto {
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 
-    public BoardCreateResponseDto(Board board){
+    public BoardCreateResponseDto(Board board) {
         this.boardTitle = board.getTitle();
         this.boardContent = board.getContent();
         this.boardPageView = board.getPageView();

@@ -1,10 +1,9 @@
 package com.example.demo.dto.user.request;
 
+import java.util.List;
+import javax.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import javax.validation.constraints.*;
-import java.util.List;
 
 @Getter
 @AllArgsConstructor

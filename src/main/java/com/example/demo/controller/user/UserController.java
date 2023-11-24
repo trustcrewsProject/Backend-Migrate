@@ -18,7 +18,6 @@ public class UserController {
     // 이메일 중복확인 요청
     @GetMapping("/api/user/check-email/{email}")
     public ResponseEntity<ResponseDto<?>> checkEmail(@PathVariable String email) {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(userService.checkEmail(email));
+        return ResponseEntity.status(HttpStatus.OK).body(userService.checkEmail(email));
     }
 }

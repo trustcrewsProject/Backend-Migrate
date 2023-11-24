@@ -1,9 +1,7 @@
 package com.example.demo.model.user;
 
-import javax.persistence.*;
-
 import com.example.demo.model.technology_stack.TechnologyStack;
-import com.example.demo.model.user.User;
+import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

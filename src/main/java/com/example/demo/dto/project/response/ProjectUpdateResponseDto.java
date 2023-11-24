@@ -2,10 +2,9 @@ package com.example.demo.dto.project.response;
 
 import com.example.demo.constant.ProjectStatus;
 import com.example.demo.model.project.Project;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Builder
@@ -21,6 +20,7 @@ public class ProjectUpdateResponseDto {
     private LocalDateTime endDate;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
+
     public static ProjectUpdateResponseDto of(Project project) {
         return ProjectUpdateResponseDto.builder()
                 .projectId(project.getId())

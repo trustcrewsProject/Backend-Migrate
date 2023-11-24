@@ -1,7 +1,6 @@
 package com.example.demo.model.technology_stack;
 
 import javax.persistence.*;
-
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,14 +1,13 @@
 package com.example.demo.dto.trust_score.request;
 
-import lombok.*;
 import javax.validation.constraints.NotNull;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 public class TrustScoreUpdateRequestDto {
-    @NotNull
-    Long userId;
+    @NotNull Long userId;
     Long projectId;
     Long milestoneId;
     Long workId;

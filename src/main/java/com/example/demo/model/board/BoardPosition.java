@@ -1,9 +1,8 @@
 package com.example.demo.model.board;
 
-import javax.persistence.*;
-
 import com.example.demo.global.common.BaseTimeEntity;
 import com.example.demo.model.position.Position;
+import javax.persistence.*;
 import lombok.*;
 
 @Entity

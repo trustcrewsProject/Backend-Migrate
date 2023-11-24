@@ -1,4 +1,3 @@
 package com.example.demo.repository.trust_score;
 
-public interface TrustScoreTypeRepositoryCustom {
-}
+public interface TrustScoreTypeRepositoryCustom {}

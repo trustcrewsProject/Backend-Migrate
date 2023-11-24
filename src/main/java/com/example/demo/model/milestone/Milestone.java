@@ -1,10 +1,9 @@
 package com.example.demo.model.milestone;
 
-import java.time.LocalDateTime;
-import javax.persistence.*;
-
 import com.example.demo.global.common.BaseTimeEntity;
 import com.example.demo.model.project.Project;
+import java.time.LocalDateTime;
+import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

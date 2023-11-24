@@ -1,12 +1,10 @@
 package com.example.demo.model.user;
 
 import com.example.demo.constant.UserProjectHistoryStatus;
-import java.time.LocalDateTime;
-import javax.persistence.*;
-
 import com.example.demo.global.common.BaseTimeEntity;
 import com.example.demo.model.project.Project;
-import com.example.demo.model.user.User;
+import java.time.LocalDateTime;
+import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

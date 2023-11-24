@@ -8,4 +8,8 @@ public interface UserService {
     // 이메일 중복확인 로직
     @Transactional(readOnly = true)
     ResponseDto<?> checkEmail(String email);
+
+    // 닉네임 중복확인 로직
+    @Transactional(readOnly = true)
+    ResponseDto<?> checkNickname(String nickname);
 }

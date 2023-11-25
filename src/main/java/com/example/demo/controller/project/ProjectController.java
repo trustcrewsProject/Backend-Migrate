@@ -29,7 +29,6 @@ public class ProjectController {
         }catch (Exception ex){
             return new ResponseEntity<>(ResponseDto.fail(ex.getMessage()), HttpStatus.BAD_REQUEST);
         }
-
     }
 
     @GetMapping("/{projectId}")

@@ -23,6 +23,8 @@ import com.example.demo.model.position.Position;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
 import com.example.demo.model.project.ProjectMemberAuth;
+import com.example.demo.model.project.ProjectTechnology;
+import com.example.demo.model.technology_stack.TechnologyStack;
 import com.example.demo.model.trust_grade.TrustGrade;
 import com.example.demo.model.user.User;
 import com.example.demo.model.user.UserProjectHistory;
@@ -32,6 +34,7 @@ import com.example.demo.repository.position.PositionRepository;
 import com.example.demo.repository.project.ProjectMemberAuthRepository;
 import com.example.demo.repository.project.ProjectMemberRepository;
 import com.example.demo.repository.project.ProjectRepository;
+import com.example.demo.repository.technology_stack.TechnologyStackRepository;
 import com.example.demo.repository.trust_grade.TrustGradeRepository;
 import com.example.demo.repository.user.UserProjectHistoryRepository;
 import com.example.demo.repository.user.UserRepository;
@@ -66,6 +69,7 @@ public class BoardService {
     private final ProjectMemberAuthRepository projectMemberAuthRepository;
     private final ProjectMemberRepository projectMemberRepository;
     private final UserProjectHistoryRepository userProjectHistoryRepository;
+    private final TechnologyStackRepository technologyStackRepository;
 
     /**
      * 게시글 목록 검색
@@ -83,7 +87,7 @@ public class BoardService {
         Board board =
                 boardRepository
                         .findById(boardId)
-                        .orElseThrow(() -> BoardCustomException.NOT_FOUND_BOARD);
+                        .orElseThrow(() -> TechnologyStackCustomException.NOT_FOUND_BOARD);
         UserBoardDetailResponseDto userBoardDetailResponseDto =
                 UserBoardDetailResponseDto.of(board.getUser());
 
@@ -114,7 +118,7 @@ public class BoardService {
     }
 
     /**
-     * 게시글, 프로젝트 생성 , 프로젝트 멤버 생성, 사용자 이력 생성, 게시글-포지션 생성
+     * 게시글, 프로젝트 생성, 프로젝트 기술 생성, 프로젝트 멤버 생성, 사용자 이력 생성, 게시글-포지션 생성
      * @param dto
      * @return
      */
@@ -144,6 +148,16 @@ public class BoardService {
                         .build();
 
         Project savedProject = projectRepository.save(project);
+        
+        
+        //프로젝트 기술 생성
+        for (Long technolgoyId : dto.getProject().getTechnologyIds()) {
+            TechnologyStack technologyStack = technologyStackRepository.findById(technolgoyId).orElseThrow(() -> TechnologyStackCustomException.NOT_FOUND_TECHNOLOGY_STACK);
+            ProjectTechnology.builder()
+                    .project(savedProject)
+                    .technologyStack(technologyStack)
+                    .build();
+        }
 
         // board 생성
         Board board =
@@ -231,7 +245,7 @@ public class BoardService {
         Board board =
                 boardRepository
                         .findById(boardId)
-                        .orElseThrow(() -> BoardCustomException.NOT_FOUND_BOARD);
+                        .orElseThrow(() -> TechnologyStackCustomException.NOT_FOUND_BOARD);
 
         board =
                 Board.builder()
@@ -271,7 +285,7 @@ public class BoardService {
      * @param boardId
      */
     public void delete(Long boardId) {
-        Board board = boardRepository.findById(boardId).orElseThrow(() -> BoardCustomException.NOT_FOUND_BOARD);
+        Board board = boardRepository.findById(boardId).orElseThrow(() -> TechnologyStackCustomException.NOT_FOUND_BOARD);
         boardRepository.delete(board);
     }
 }

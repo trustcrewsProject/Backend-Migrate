@@ -23,8 +23,13 @@ public class ProjectController {
 
     @GetMapping("/me")
     public ResponseEntity<ResponseDto<?>> getMyProjects() {
-        List<ProjectMeResponseDto> result = projectService.getMyProjects();
-        return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
+        try{
+            List<ProjectMeResponseDto> result = projectService.getMyProjects();
+            return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
+        }catch (Exception ex){
+            return new ResponseEntity<>(ResponseDto.fail(ex.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     @GetMapping("/{projectId}")

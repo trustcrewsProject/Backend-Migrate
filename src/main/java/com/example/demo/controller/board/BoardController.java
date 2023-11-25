@@ -52,4 +52,10 @@ public class BoardController {
         BoardProjectUpdateResponseDto result = boardService.update(boardId, requestDto);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
+
+    @DeleteMapping("/{boardId}")
+    public ResponseEntity<ResponseDto<?>> delete(@PathVariable("boardId") Long boardId) {
+        boardService.delete(boardId);
+        return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.NO_CONTENT);
+    }
 }

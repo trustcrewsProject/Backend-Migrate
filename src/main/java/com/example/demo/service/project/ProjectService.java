@@ -1,13 +1,24 @@
 package com.example.demo.service.project;
 
+import com.example.demo.dto.position.response.PositionResponseDto;
 import com.example.demo.dto.project.response.ProjectMeResponseDto;
+import com.example.demo.dto.project.response.ProjectSpecificDetailResponseDto;
 import com.example.demo.dto.projectmember.response.MyProjectMemberResponseDto;
+import com.example.demo.dto.projectmember.response.ProjectMemberAuthResponseDto;
+import com.example.demo.dto.projectmember.response.ProjectMemberDetailResponseDto;
 import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
 import com.example.demo.dto.user.response.UserMyProjectResponseDto;
+import com.example.demo.dto.user.response.UserProjectDetailResponseDto;
+import com.example.demo.dto.user.response.UserProjectResponseDto;
+import com.example.demo.dto.work.response.WorkProjectDetailResponseDto;
+import com.example.demo.global.exception.customexception.ProjectCustomException;
+import com.example.demo.global.exception.customexception.ProjectMemberCustomException;
 import com.example.demo.global.exception.customexception.UserCustomException;
+import com.example.demo.global.exception.customexception.WorkCustomException;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
 import com.example.demo.model.user.User;
+import com.example.demo.model.work.Work;
 import com.example.demo.repository.alert.AlertRepository;
 import com.example.demo.repository.position.PositionRepository;
 import com.example.demo.repository.project.ProjectMemberAuthRepository;
@@ -61,5 +72,66 @@ public class ProjectService {
         }
 
         return result;
+    }
+
+    /**
+     * 프로젝트 상세 목록
+     * @param projectId
+     * @return
+     */
+    
+    @Transactional(readOnly = true)
+    public ProjectSpecificDetailResponseDto getDetail(Long projectId) {
+        Project project =
+                projectRepository
+                        .findById(projectId)
+                        .orElseThrow(() -> ProjectCustomException.NOT_FOUND_PROJECT);
+        TrustGradeResponseDto trustGradeDto = TrustGradeResponseDto.of(project.getTrustGrade());
+        UserProjectResponseDto userProjectResponseDto = UserProjectResponseDto.of(project);
+
+        // ProjectMember 부분
+        List<ProjectMember> projectMembers =
+                projectMemberRepository
+                        .findProjectsMemberByProject(project)
+                        .orElseThrow(() -> ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER);
+        List<ProjectMemberDetailResponseDto> projectMemberDetailResponseDtos = new ArrayList<>();
+
+        for (ProjectMember projectMember : projectMembers) {
+            UserProjectDetailResponseDto userProjectDetailResponseDto =
+                    UserProjectDetailResponseDto.of(projectMember.getUser());
+            ProjectMemberAuthResponseDto projectMemberAuthResponseDto =
+                    ProjectMemberAuthResponseDto.of(projectMember.getProjectMemberAuth());
+            PositionResponseDto positionResponseDto =
+                    PositionResponseDto.of(projectMember.getPosition());
+
+            ProjectMemberDetailResponseDto projectMemberDetailResponseDto =
+                    ProjectMemberDetailResponseDto.of(
+                            projectMember,
+                            userProjectDetailResponseDto,
+                            projectMemberAuthResponseDto,
+                            positionResponseDto);
+            projectMemberDetailResponseDtos.add(projectMemberDetailResponseDto);
+        }
+
+        // work 부분
+        List<Work> works =
+                workRepository
+                        .findWorksByProject(project)
+                        .orElseThrow(() -> WorkCustomException.NOT_FOUND_WORK);
+        List<WorkProjectDetailResponseDto> workProjectDetailResponseDtos = new ArrayList<>();
+        for (Work work : works) {
+            UserProjectDetailResponseDto userProjectDetailResponseDto =
+                    UserProjectDetailResponseDto.of(work.getAssignedUserId());
+            WorkProjectDetailResponseDto workProjectDetailResponseDto =
+                    WorkProjectDetailResponseDto.of(work, userProjectDetailResponseDto);
+            workProjectDetailResponseDtos.add(workProjectDetailResponseDto);
+        }
+
+        return ProjectSpecificDetailResponseDto.of(
+                project,
+                trustGradeDto,
+                userProjectResponseDto,
+                projectMemberDetailResponseDtos,
+                workProjectDetailResponseDtos);
     }
 }

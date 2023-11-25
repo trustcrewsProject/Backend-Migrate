@@ -20,4 +20,13 @@ public class UserServiceImpl implements UserService {
 
         return ResponseDto.success("사용가능한 이메일입니다.");
     }
+
+    @Override
+    public ResponseDto<?> checkNickname(String nickname) {
+        if (userRepository.existsByNickname(nickname)) {
+            throw UserCustomException.ALREADY_NICKNAME;
+        }
+
+        return ResponseDto.success("사용가능한 닉네임입니다.");
+    }
 }

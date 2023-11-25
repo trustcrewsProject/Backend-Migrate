@@ -50,7 +50,7 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
     }
 
     public BooleanExpression containsPosition(List<Long> positionIds){
-        if (positionIds.size() > 0) {
+        if (positionIds != null && positionIds.size() > 0) {
             List<Position> positionList = new ArrayList<>();
             for (Long positionId : positionIds) {
                 Position position = positionRepository
@@ -77,8 +77,10 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
                 .join(qBoard.project, qProject)
                 .join(qBoard.positions, qBoardPosition).fetchJoin()
                 .where(builder)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
-
+        
         List<BoardSearchResponseDto> boardSearchResponseDtos = new ArrayList<>();
 
         for (Board boardEntity : boards) {

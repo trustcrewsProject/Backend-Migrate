@@ -25,7 +25,7 @@ public class BoardCreateResponseDto {
                 .boardPageView(board.getPageView())
                 .boardCompleteStatus(board.isCompleteStatus())
                 .boardUserId(board.getUser().getId())
-                .boardContact(board.getContent())
+                .boardContact(board.getContact())
                 .createDate(board.getCreateDate())
                 .updateDate(board.getUpdateDate())
                 .build();

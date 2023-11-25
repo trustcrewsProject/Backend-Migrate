@@ -216,12 +216,14 @@ public class BoardService {
 
     /**
      * 게시글, 프로젝트 업데이트
+     * 게시글, 프로젝트, 프로젝트 기술, 게시글-포지션
      * TODO : 현재 유저가 업데이트 하도록 변경
      * @param dto
      * @return
      */
-    public BoardProjectUpdateResponseDto update(Long boardId, BoardProjectUpdateRequestDto dto) {
-        Project project = projectRepository.findById(dto.getProject().getProjectId()).get();
+    public BoardProjectUpdateResponseDto update(Long boardId, BoardProjectUpdateRequestDto dto) throws Exception{
+        Board board = boardRepository.findById(boardId).orElseThrow(() -> BoardCustomException.NOT_FOUND_BOARD);
+        Project project = board.getProject();
         User tempUser = userRepository.findById(1L).get(); // 나중에 Security로 고쳐야 함.
 
         TrustGrade trustGrade =
@@ -244,12 +246,6 @@ public class BoardService {
 
         Project savedProject = projectRepository.save(project);
 
-        // board 생성
-        Board board =
-                boardRepository
-                        .findById(boardId)
-                        .orElseThrow(() -> BoardCustomException.NOT_FOUND_BOARD);
-
         board =
                 Board.builder()
                         .title(dto.getBoard().getTitle())
@@ -263,8 +259,8 @@ public class BoardService {
 
         //프로젝트 기술 생성
         List<ProjectTechnology> projectTechnologyList = new ArrayList<>();
-        for (Long technolgoyId : dto.getProject().getTechnologyIds()) {
-            TechnologyStack technologyStack = technologyStackRepository.findById(technolgoyId).orElseThrow(() -> TechnologyStackCustomException.NOT_FOUND_TECHNOLOGY_STACK);
+        for (Long technologyId : dto.getProject().getTechnologyIds()) {
+            TechnologyStack technologyStack = technologyStackRepository.findById(technologyId).orElseThrow(() -> TechnologyStackCustomException.NOT_FOUND_TECHNOLOGY_STACK);
             ProjectTechnology projectTechnology = ProjectTechnology.builder()
                     .project(savedProject)
                     .technologyStack(technologyStack)
@@ -272,7 +268,7 @@ public class BoardService {
 
             projectTechnologyList.add(projectTechnology);
         }
-        project.changeProjectTechnologys(projectTechnologyList);
+        savedProject.changeProjectTechnologys(projectTechnologyList);
 
         // position 받아서 다시 보드-포지션 연결
         List<BoardPosition> boardPositionList = new ArrayList<>();

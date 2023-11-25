@@ -13,7 +13,6 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @AllArgsConstructor
 public class ProjectUpdateRequestDto {
-    private Long projectId;
     @NotBlank(message = "프로젝트명은 필수 입력 값입니다.")
     private String name;
 

@@ -8,9 +8,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class BoardUpdateRequestDto {
-    @NotBlank(message = "게시물 아이디는 필수 입력 값입니다.")
-    private long boardId;
-
     @NotBlank(message = "게시물 제목은 필수 입력 값입니다.")
     private String title;
 

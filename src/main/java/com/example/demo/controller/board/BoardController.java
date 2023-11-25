@@ -4,7 +4,9 @@ import com.example.demo.dto.board.request.BoardSearchRequestDto;
 import com.example.demo.dto.board.response.BoardSearchResponseDto;
 import com.example.demo.dto.board.response.BoardTotalDetailResponseDto;
 import com.example.demo.dto.board_project.request.BoardProjectCreateRequestDto;
+import com.example.demo.dto.board_project.request.BoardProjectUpdateRequestDto;
 import com.example.demo.dto.board_project.response.BoardProjectCreateResponseDto;
+import com.example.demo.dto.board_project.response.BoardProjectUpdateResponseDto;
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +43,13 @@ public class BoardController {
     public ResponseEntity<ResponseDto<?>> create(
             @RequestBody BoardProjectCreateRequestDto requestDto) {
         BoardProjectCreateResponseDto result = boardService.create(requestDto);
+        return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
+    }
+
+    @PatchMapping("/{boardId}")
+    public ResponseEntity<ResponseDto<?>> update(
+            @PathVariable("boardId") Long boardId, BoardProjectUpdateRequestDto requestDto) {
+        BoardProjectUpdateResponseDto result = boardService.update(boardId, requestDto);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 }

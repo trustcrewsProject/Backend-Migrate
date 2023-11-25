@@ -2,9 +2,10 @@ package com.example.demo.dto.project.response;
 
 import com.example.demo.constant.ProjectStatus;
 import com.example.demo.model.project.Project;
-import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Builder

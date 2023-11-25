@@ -3,16 +3,16 @@ package com.example.demo.service.board;
 import com.example.demo.constant.ProjectMemberStatus;
 import com.example.demo.constant.UserProjectHistoryStatus;
 import com.example.demo.dto.board.request.BoardSearchRequestDto;
-import com.example.demo.dto.board.response.BoardCreateResponseDto;
-import com.example.demo.dto.board.response.BoardDetailResponseDto;
-import com.example.demo.dto.board.response.BoardSearchResponseDto;
-import com.example.demo.dto.board.response.BoardTotalDetailResponseDto;
+import com.example.demo.dto.board.response.*;
 import com.example.demo.dto.board_project.request.BoardProjectCreateRequestDto;
+import com.example.demo.dto.board_project.request.BoardProjectUpdateRequestDto;
 import com.example.demo.dto.board_project.response.BoardProjectCreateResponseDto;
+import com.example.demo.dto.board_project.response.BoardProjectUpdateResponseDto;
 import com.example.demo.dto.boardposition.BoardPositionDetailResponseDto;
 import com.example.demo.dto.position.response.PositionResponseDto;
 import com.example.demo.dto.project.response.ProjectCreateResponseDto;
 import com.example.demo.dto.project.response.ProjectDetailResponseDto;
+import com.example.demo.dto.project.response.ProjectUpdateResponseDto;
 import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
 import com.example.demo.dto.user.response.UserBoardDetailResponseDto;
 import com.example.demo.dto.user.response.UserProjectResponseDto;
@@ -195,5 +195,73 @@ public class BoardService {
         ProjectCreateResponseDto projectCreateResponseDto = ProjectCreateResponseDto.of(project);
 
         return new BoardProjectCreateResponseDto(boardCreateResponseDto, projectCreateResponseDto);
+    }
+
+    /**
+     * 게시글, 프로젝트 업데이트
+     * TODO : 현재 유저가 업데이트 하도록 변경
+     * @param dto
+     * @return
+     */
+    public BoardProjectUpdateResponseDto update(Long boardId, BoardProjectUpdateRequestDto dto) {
+        Project project = projectRepository.findById(dto.getProject().getProjectId()).get();
+        User tempUser = userRepository.findById(1L).get(); // 나중에 Security로 고쳐야 함.
+
+        TrustGrade trustGrade =
+                trustGradeRepository
+                        .findById(dto.getProject().getProjectTrustId())
+                        .orElseThrow(() -> TrustGradeCustomException.NOT_FOUND_TRUST_GRADE);
+
+        // project 생성
+        project =
+                Project.builder()
+                        .name(dto.getProject().getProjectName())
+                        .subject(dto.getProject().getProjectSubject())
+                        .trustGrade(trustGrade)
+                        .user(project.getUser())
+                        .status(project.getStatus())
+                        .crewNumber(dto.getProject().getProjectCrewNumber())
+                        .startDate(dto.getProject().getProjectStartDate())
+                        .endDate(dto.getProject().getProjectEndDate())
+                        .build();
+
+        Project savedProject = projectRepository.save(project);
+
+        // board 생성
+        Board board =
+                boardRepository
+                        .findById(boardId)
+                        .orElseThrow(() -> BoardCustomException.NOT_FOUND_BOARD);
+
+        board =
+                Board.builder()
+                        .title(dto.getBoard().getTitle())
+                        .content(dto.getBoard().getContent())
+                        .project(board.getProject())
+                        .user(board.getUser())
+                        .contact(dto.getBoard().getContent())
+                        .build();
+
+        Board savedBoard = boardRepository.save(board);
+
+        // position 받아서 다시 보드-포지션 연결
+        List<BoardPosition> boardPositionList = new ArrayList<>();
+        for (Long positionId : dto.getBoard().getPositions()) {
+            Position position =
+                    positionRepository
+                            .findById(positionId)
+                            .orElseThrow(() -> PositionCustomException.NOT_FOUND_POSITION);
+            BoardPosition boardPosition = new BoardPosition(savedBoard, position);
+            // boardPositionRepository.save(boardPosition);
+            boardPositionList.add(boardPosition);
+        }
+        savedBoard.setPositions(boardPositionList);
+
+
+        // response값 생성
+        BoardUpdateResponseDto boardUpdateResponseDto = BoardUpdateResponseDto.of(board);
+        ProjectUpdateResponseDto projectUpdateResponseDto = ProjectUpdateResponseDto.of(project);
+
+        return new BoardProjectUpdateResponseDto(boardUpdateResponseDto, projectUpdateResponseDto);
     }
 }

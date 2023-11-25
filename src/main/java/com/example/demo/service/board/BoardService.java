@@ -13,6 +13,7 @@ import com.example.demo.dto.position.response.PositionResponseDto;
 import com.example.demo.dto.project.response.ProjectCreateResponseDto;
 import com.example.demo.dto.project.response.ProjectDetailResponseDto;
 import com.example.demo.dto.project.response.ProjectUpdateResponseDto;
+import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
 import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
 import com.example.demo.dto.user.response.UserBoardDetailResponseDto;
 import com.example.demo.dto.user.response.UserProjectResponseDto;
@@ -82,40 +83,42 @@ public class BoardService {
     public Page<BoardSearchResponseDto> search(BoardSearchRequestDto dto, Pageable pageable) {
        return boardRepository.getBoardSearchPage(dto, pageable);
     }
-    
-    // 게시글 상세 조회
-    public BoardTotalDetailResponseDto getDetail(Long boardId) {
-        Board board =
-                boardRepository
-                        .findById(boardId)
-                        .orElseThrow(() -> BoardCustomException.NOT_FOUND_BOARD);
-        UserBoardDetailResponseDto userBoardDetailResponseDto =
-                UserBoardDetailResponseDto.of(board.getUser());
 
+    /**
+     * 게시글 상세 조회
+     * @param boardId
+     * @return
+     */
+    public BoardTotalDetailResponseDto getDetail(Long boardId) {
+        Board board = boardRepository.findById(boardId).orElseThrow(() -> BoardCustomException.NOT_FOUND_BOARD);
+
+        //boardDetailResponseDto 생성
+        UserBoardDetailResponseDto userBoardDetailResponseDto = UserBoardDetailResponseDto.of(board.getUser());
+        
         List<BoardPositionDetailResponseDto> boardPositionDetailResponseDtos = new ArrayList<>();
         for (BoardPosition boardPosition : board.getPositions()) {
-            PositionResponseDto positionResponseDto =
-                    PositionResponseDto.of(boardPosition.getPosition());
-            BoardPositionDetailResponseDto boardPositionDetailResponseDto =
-                    BoardPositionDetailResponseDto.of(boardPosition, positionResponseDto);
+            PositionResponseDto positionResponseDto = PositionResponseDto.of(boardPosition.getPosition());
+            BoardPositionDetailResponseDto boardPositionDetailResponseDto = BoardPositionDetailResponseDto.of(boardPosition, positionResponseDto);
             boardPositionDetailResponseDtos.add(boardPositionDetailResponseDto);
         }
-        BoardDetailResponseDto boardDetailResponseDto =
-                BoardDetailResponseDto.of(
-                        board, userBoardDetailResponseDto, boardPositionDetailResponseDtos);
+        BoardDetailResponseDto boardDetailResponseDto = BoardDetailResponseDto.of(board, userBoardDetailResponseDto, boardPositionDetailResponseDtos);
 
         // ProjectDetailResponseDto 부분
         TrustGradeResponseDto trustGradeDto = TrustGradeResponseDto.of(board.getProject().getTrustGrade());
-        UserProjectResponseDto userProjectResponseDto =
-                UserProjectResponseDto.of(board.getProject());
-        ProjectDetailResponseDto projectDetailResponseDto =
-                ProjectDetailResponseDto.of(
-                        board.getProject(), trustGradeDto, userProjectResponseDto);
+        UserProjectResponseDto userProjectResponseDto = UserProjectResponseDto.of(board.getProject());
 
-        BoardTotalDetailResponseDto boardTotalDetailResponseDto =
-                BoardTotalDetailResponseDto.of(boardDetailResponseDto, projectDetailResponseDto);
+        //기술 스택 부분
+        List<TechnologyStackInfoResponseDto> technologyStackInfoResponseDtos = new ArrayList<>();
+        for (ProjectTechnology projectTechnology : board.getProject().getProjectTechnologies()) {
+            TechnologyStack technologyStack = projectTechnology.getTechnologyStack();
 
-        return boardTotalDetailResponseDto;
+            TechnologyStackInfoResponseDto technologyStackInfoResponseDto = TechnologyStackInfoResponseDto.of(technologyStack.getId(), technologyStack.getName());
+            technologyStackInfoResponseDtos.add(technologyStackInfoResponseDto);
+        }
+        ProjectDetailResponseDto projectDetailResponseDto = ProjectDetailResponseDto.of(board.getProject(), trustGradeDto, userProjectResponseDto, technologyStackInfoResponseDtos);
+
+
+        return BoardTotalDetailResponseDto.of(boardDetailResponseDto, projectDetailResponseDto);
     }
 
     /**

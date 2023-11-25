@@ -1,6 +1,7 @@
 package com.example.demo.model.project;
 
 import com.example.demo.constant.ProjectStatus;
+import com.example.demo.dto.project.request.ProjectUpdateRequestDto;
 import com.example.demo.global.common.BaseTimeEntity;
 import com.example.demo.model.trust_grade.TrustGrade;
 import com.example.demo.model.user.User;
@@ -69,11 +70,22 @@ public class Project extends BaseTimeEntity {
         this.endDate = endDate;
     }
 
+    public void updateProject(ProjectUpdateRequestDto dto, TrustGrade trustGrade){
+        this.name = dto.getName();
+        this.subject = dto.getSubject();
+        this.trustGrade = trustGrade;
+        this.crewNumber = dto.getCrewNumber();
+        this.startDate = dto.getStartDate();
+        this.endDate = dto.getEndDate();
+    }
+
     public void changeProjectMembers(List<ProjectMember> projectMembers) {
-        this.projectMembers = projectMembers;
+        this.projectMembers.clear();
+        this.projectMembers.addAll(projectMembers);
     }
 
     public void changeProjectTechnologys(List<ProjectTechnology> projectTechnologies){
-        this.projectTechnologies = projectTechnologies;
+        this.projectTechnologies.clear();
+        this.projectTechnologies.addAll(projectTechnologies);
     }
 }

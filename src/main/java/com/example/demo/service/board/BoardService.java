@@ -129,7 +129,7 @@ public class BoardService {
                         .findById(1L)
                         .orElseThrow(
                                 () -> UserCustomException.NOT_FOUND_USER); // 나중에 Security로 고쳐야 함.
-
+        //신뢰등급 설정
         TrustGrade trustGrade =
                 trustGradeRepository
                         .findById(dto.getProject().getTrustGradeId())
@@ -186,6 +186,8 @@ public class BoardService {
         }
         savedBoard.setPositions(boardPositionList);
 
+        //프로젝트 멤버 권한 일반인으로 설정
+        //프로젝트 멤버 생성
         ProjectMemberAuth projectMemberAuth = projectMemberAuthRepository.findById(1L).orElseThrow(() -> ProjectMemberAuthCustomException.NOT_FOUND_PROJECT_MEMBER_AUTH);
         ProjectMember projectMember = ProjectMember.builder()
                 .project(savedProject)
@@ -197,6 +199,7 @@ public class BoardService {
 
         projectMemberRepository.save(projectMember);
 
+        //사용자 프로젝트 이력 생성
         UserProjectHistory userProjectHistory = UserProjectHistory.builder()
                 .user(tempUser)
                 .project(savedProject)
@@ -231,57 +234,35 @@ public class BoardService {
                         .findById(dto.getProject().getTrustGradeId())
                         .orElseThrow(() -> TrustGradeCustomException.NOT_FOUND_TRUST_GRADE);
 
-        // project 생성
-        project =
-                Project.builder()
-                        .name(dto.getProject().getName())
-                        .subject(dto.getProject().getSubject())
-                        .trustGrade(trustGrade)
-                        .user(project.getUser())
-                        .status(project.getStatus())
-                        .crewNumber(dto.getProject().getCrewNumber())
-                        .startDate(dto.getProject().getStartDate())
-                        .endDate(dto.getProject().getEndDate())
-                        .build();
+        // project 업데이트
+        project.updateProject(dto.getProject(), trustGrade);
 
-        Project savedProject = projectRepository.save(project);
+        //board 업데이트
+        board.updateBoard(dto.getBoard());
 
-        board =
-                Board.builder()
-                        .title(dto.getBoard().getTitle())
-                        .content(dto.getBoard().getContent())
-                        .project(board.getProject())
-                        .user(board.getUser())
-                        .contact(dto.getBoard().getContact())
-                        .build();
-
-        Board savedBoard = boardRepository.save(board);
-
-        //프로젝트 기술 생성
+        //프로젝트 기술 업데이트
         List<ProjectTechnology> projectTechnologyList = new ArrayList<>();
         for (Long technologyId : dto.getProject().getTechnologyIds()) {
             TechnologyStack technologyStack = technologyStackRepository.findById(technologyId).orElseThrow(() -> TechnologyStackCustomException.NOT_FOUND_TECHNOLOGY_STACK);
             ProjectTechnology projectTechnology = ProjectTechnology.builder()
-                    .project(savedProject)
+                    .project(project)
                     .technologyStack(technologyStack)
                     .build();
 
             projectTechnologyList.add(projectTechnology);
         }
-        savedProject.changeProjectTechnologys(projectTechnologyList);
+        project.changeProjectTechnologys(projectTechnologyList);
 
-        // position 받아서 다시 보드-포지션 연결
+        // position 받아서 다시 게시글-포지션 연결
         List<BoardPosition> boardPositionList = new ArrayList<>();
-        for (Long positionId : dto.getBoard().getPositions()) {
-            Position position =
-                    positionRepository
+        for (Long positionId : dto.getBoard().getPositionIds()) {
+            Position position = positionRepository
                             .findById(positionId)
                             .orElseThrow(() -> PositionCustomException.NOT_FOUND_POSITION);
-            BoardPosition boardPosition = new BoardPosition(savedBoard, position);
-            // boardPositionRepository.save(boardPosition);
+            BoardPosition boardPosition = new BoardPosition(board, position);
             boardPositionList.add(boardPosition);
         }
-        savedBoard.setPositions(boardPositionList);
+        board.setPositions(boardPositionList);
 
 
         // response값 생성

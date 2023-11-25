@@ -18,5 +18,5 @@ public class BoardUpdateRequestDto {
     private String content;
 
     @NotBlank(message = "게시물 모집 분야는 필수 입력 값입니다.")
-    private List<Long> positions;
+    private List<Long> positionIds;
 }

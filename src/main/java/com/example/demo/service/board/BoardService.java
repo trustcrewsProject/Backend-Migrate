@@ -158,7 +158,7 @@ public class BoardService {
                     .project(savedProject)
                     .technologyStack(technologyStack)
                     .build();
-            
+
             projectTechnologyRepository.save(projectTechnology);
         }
 
@@ -226,20 +226,20 @@ public class BoardService {
 
         TrustGrade trustGrade =
                 trustGradeRepository
-                        .findById(dto.getProject().getProjectTrustId())
+                        .findById(dto.getProject().getTrustGradeId())
                         .orElseThrow(() -> TrustGradeCustomException.NOT_FOUND_TRUST_GRADE);
 
         // project 생성
         project =
                 Project.builder()
-                        .name(dto.getProject().getProjectName())
-                        .subject(dto.getProject().getProjectSubject())
+                        .name(dto.getProject().getName())
+                        .subject(dto.getProject().getSubject())
                         .trustGrade(trustGrade)
                         .user(project.getUser())
                         .status(project.getStatus())
-                        .crewNumber(dto.getProject().getProjectCrewNumber())
-                        .startDate(dto.getProject().getProjectStartDate())
-                        .endDate(dto.getProject().getProjectEndDate())
+                        .crewNumber(dto.getProject().getCrewNumber())
+                        .startDate(dto.getProject().getStartDate())
+                        .endDate(dto.getProject().getEndDate())
                         .build();
 
         Project savedProject = projectRepository.save(project);
@@ -260,6 +260,19 @@ public class BoardService {
                         .build();
 
         Board savedBoard = boardRepository.save(board);
+
+        //프로젝트 기술 생성
+        List<ProjectTechnology> projectTechnologyList = new ArrayList<>();
+        for (Long technolgoyId : dto.getProject().getTechnologyIds()) {
+            TechnologyStack technologyStack = technologyStackRepository.findById(technolgoyId).orElseThrow(() -> TechnologyStackCustomException.NOT_FOUND_TECHNOLOGY_STACK);
+            ProjectTechnology projectTechnology = ProjectTechnology.builder()
+                    .project(savedProject)
+                    .technologyStack(technologyStack)
+                    .build();
+
+            projectTechnologyList.add(projectTechnology);
+        }
+        project.changeProjectTechnologys(projectTechnologyList);
 
         // position 받아서 다시 보드-포지션 연결
         List<BoardPosition> boardPositionList = new ArrayList<>();

@@ -2,6 +2,7 @@ package com.example.demo.controller.project;
 
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.dto.project.response.ProjectMeResponseDto;
+import com.example.demo.dto.project.response.ProjectSpecificDetailResponseDto;
 import com.example.demo.service.project.ProjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,6 @@ public class ProjectController {
     @GetMapping("/{projectId}")
     public ResponseEntity<ResponseDto<?>> getDetail(@PathVariable("projectId") Long projectId) {
         ProjectSpecificDetailResponseDto result = projectService.getDetail(projectId);
-        return new ResponseEntity<>(new ResponseDto<>("success", result), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 }

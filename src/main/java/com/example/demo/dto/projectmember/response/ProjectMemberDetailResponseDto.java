@@ -1,13 +1,13 @@
 package com.example.demo.dto.projectmember.response;
 
 import com.example.demo.constant.ProjectMemberStatus;
-import com.example.demo.dto.User.Response.UserProjectDetailResponseDto;
-import com.example.demo.dto.position.Response.PositionResponseDto;
-import com.example.demo.dto.projectmemberauth.Response.ProjectMemberAuthResponseDto;
-import com.example.demo.model.ProjectMember;
-import java.time.LocalDateTime;
+import com.example.demo.dto.position.response.PositionResponseDto;
+import com.example.demo.dto.user.response.UserProjectDetailResponseDto;
+import com.example.demo.model.project.ProjectMember;
 import lombok.Builder;
 import lombok.Getter;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Builder

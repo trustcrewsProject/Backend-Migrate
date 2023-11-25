@@ -52,9 +52,9 @@ public class ProjectService {
      */
 
     @Transactional(readOnly = true)
-    public List<ProjectMeResponseDto> getMyProjects() {
+    public List<ProjectMeResponseDto> getMyProjects() throws Exception {
         User user = userRepository.findById(1L).orElseThrow(() -> UserCustomException.NOT_FOUND_USER);
-        List<Project> projects = projectRepository.findProjectsByUser(user);
+        List<Project> projects = projectRepository.findProjectsByUser(user).orElseThrow(() -> ProjectCustomException.NOT_FOUND_PROJECT);
         List<ProjectMeResponseDto> result = new ArrayList<>();
 
         for (Project project : projects) {

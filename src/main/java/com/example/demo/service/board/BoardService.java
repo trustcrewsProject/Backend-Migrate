@@ -264,4 +264,14 @@ public class BoardService {
 
         return new BoardProjectUpdateResponseDto(boardUpdateResponseDto, projectUpdateResponseDto);
     }
+
+    /**
+     * 게시글 삭제
+     *
+     * @param boardId
+     */
+    public void delete(Long boardId) {
+        Board board = boardRepository.findById(boardId).orElseThrow(() -> BoardCustomException.NOT_FOUND_BOARD);
+        boardRepository.delete(board);
+    }
 }

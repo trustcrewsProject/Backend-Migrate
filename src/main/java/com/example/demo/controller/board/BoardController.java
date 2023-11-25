@@ -2,6 +2,7 @@ package com.example.demo.controller.board;
 
 import com.example.demo.dto.board.request.BoardSearchRequestDto;
 import com.example.demo.dto.board.response.BoardSearchResponseDto;
+import com.example.demo.dto.board.response.BoardTotalDetailResponseDto;
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -26,5 +27,11 @@ public class BoardController {
         Pageable pageable = PageRequest.of(page.isPresent()? page.get() : 0 , 5);
         Page<BoardSearchResponseDto> result = boardService.search(dto, pageable);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
+    }
+
+    @GetMapping("/{boardId}")
+    public ResponseEntity<ResponseDto<?>> getDetail(@PathVariable("boardId") Long boardId) {
+        BoardTotalDetailResponseDto result = boardService.getDetail(boardId);
+        return new ResponseEntity<>(new ResponseDto<>("success", result), HttpStatus.OK);
     }
 }

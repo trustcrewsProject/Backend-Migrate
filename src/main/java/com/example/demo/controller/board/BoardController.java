@@ -32,6 +32,6 @@ public class BoardController {
     @GetMapping("/{boardId}")
     public ResponseEntity<ResponseDto<?>> getDetail(@PathVariable("boardId") Long boardId) {
         BoardTotalDetailResponseDto result = boardService.getDetail(boardId);
-        return new ResponseEntity<>(new ResponseDto<>("success", result), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 }

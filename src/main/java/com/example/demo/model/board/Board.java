@@ -37,9 +37,9 @@ public class Board extends BaseTimeEntity {
     private User user;
 
     private String contact;
-
-    @OneToMany(mappedBy = "position", orphanRemoval = true, cascade = CascadeType.ALL)
-    private List<BoardPosition> position = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "board", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<BoardPosition> positions = new ArrayList<>();
 
     @Builder
     private Board(
@@ -57,5 +57,9 @@ public class Board extends BaseTimeEntity {
         this.completeStatus = completeStatus;
         this.user = user;
         this.contact = contact;
+    }
+
+    public void setPositions(List<BoardPosition> list) {
+        this.positions = list;
     }
 }

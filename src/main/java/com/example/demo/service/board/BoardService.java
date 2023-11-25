@@ -34,6 +34,7 @@ import com.example.demo.repository.position.PositionRepository;
 import com.example.demo.repository.project.ProjectMemberAuthRepository;
 import com.example.demo.repository.project.ProjectMemberRepository;
 import com.example.demo.repository.project.ProjectRepository;
+import com.example.demo.repository.project.ProjectTechnologyRepository;
 import com.example.demo.repository.technology_stack.TechnologyStackRepository;
 import com.example.demo.repository.trust_grade.TrustGradeRepository;
 import com.example.demo.repository.user.UserProjectHistoryRepository;
@@ -70,7 +71,7 @@ public class BoardService {
     private final ProjectMemberRepository projectMemberRepository;
     private final UserProjectHistoryRepository userProjectHistoryRepository;
     private final TechnologyStackRepository technologyStackRepository;
-
+    private final ProjectTechnologyRepository projectTechnologyRepository;
     /**
      * 게시글 목록 검색
      *
@@ -153,10 +154,12 @@ public class BoardService {
         //프로젝트 기술 생성
         for (Long technolgoyId : dto.getProject().getTechnologyIds()) {
             TechnologyStack technologyStack = technologyStackRepository.findById(technolgoyId).orElseThrow(() -> TechnologyStackCustomException.NOT_FOUND_TECHNOLOGY_STACK);
-            ProjectTechnology.builder()
+            ProjectTechnology projectTechnology = ProjectTechnology.builder()
                     .project(savedProject)
                     .technologyStack(technologyStack)
                     .build();
+            
+            projectTechnologyRepository.save(projectTechnology);
         }
 
         // board 생성

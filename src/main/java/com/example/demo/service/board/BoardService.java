@@ -1,7 +1,9 @@
 package com.example.demo.service.board;
 
 import com.example.demo.dto.board.Request.BoardSearchRequestDto;
+import com.example.demo.dto.board.request.BoardSearchRequestDto;
 import com.example.demo.dto.board.response.BoardSearchResponseDto;
+import com.example.demo.global.exception.customexception.PositionCustomException;
 import com.example.demo.model.board.Board;
 import com.example.demo.model.board.QBoard;
 import com.example.demo.model.board.QBoardPosition;

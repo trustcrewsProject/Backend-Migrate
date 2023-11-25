@@ -16,7 +16,10 @@ import com.example.demo.dto.project.response.ProjectDetailResponseDto;
 import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
 import com.example.demo.dto.user.response.UserBoardDetailResponseDto;
 import com.example.demo.dto.user.response.UserProjectResponseDto;
+import com.example.demo.global.exception.customexception.BoardCustomException;
 import com.example.demo.global.exception.customexception.PositionCustomException;
+import com.example.demo.global.exception.customexception.TrustGradeCustomException;
+import com.example.demo.global.exception.customexception.UserCustomException;
 import com.example.demo.model.board.Board;
 import com.example.demo.model.board.BoardPosition;
 import com.example.demo.model.board.QBoard;
@@ -117,5 +120,89 @@ public class BoardService {
                 BoardTotalDetailResponseDto.of(boardDetailResponseDto, projectDetailResponseDto);
 
         return boardTotalDetailResponseDto;
+    }
+
+    /**
+     * 게시글, 프로젝트 생성 , 프로젝트 멤버 생성, 사용자 이력 생성, 게시글-포지션 생성
+     * @param dto
+     * @return
+     */
+    public BoardProjectCreateResponseDto create(BoardProjectCreateRequestDto dto) {
+        User tempUser =
+                userRepository
+                        .findById(1L)
+                        .orElseThrow(
+                                () -> UserCustomException.NOT_FOUND_USER); // 나중에 Security로 고쳐야 함.
+
+        TrustGrade trustGrade =
+                trustGradeRepository
+                        .findById(dto.getProject().getTrustGradeId())
+                        .orElseThrow(() -> TrustGradeCustomException.NOT_FOUND_TRUST_GRADE);
+
+        // project 생성
+        Project project =
+                Project.builder()
+                        .name(dto.getProject().getName())
+                        .subject(dto.getProject().getSubject())
+                        .trustGrade(trustGrade)
+                        .user(tempUser)
+                        .status(RECRUITING)
+                        .crewNumber(dto.getProject().getCrewNumber())
+                        .startDate(dto.getProject().getStartDate())
+                        .endDate(dto.getProject().getEndDate())
+                        .build();
+
+        Project savedProject = projectRepository.save(project);
+
+        // board 생성
+        Board board =
+                Board.builder()
+                        .title(dto.getBoard().getTitle())
+                        .content(dto.getBoard().getContent())
+                        .project(savedProject)
+                        .user(tempUser)
+                        .contact(dto.getBoard().getContent())
+                        .build();
+
+        Board savedBoard = boardRepository.save(board);
+
+        // boardPosition 생성
+        List<BoardPosition> boardPositionList = new ArrayList<>();
+        for (Long positionId : dto.getBoard().getPositionIds()) {
+            Position position =
+                    positionRepository
+                            .findById(positionId)
+                            .orElseThrow(() -> PositionCustomException.NOT_FOUND_POSITION);
+            BoardPosition boardPosition = new BoardPosition(savedBoard, position);
+            boardPositionRepository.save(boardPosition);
+        }
+        savedBoard.setPositions(boardPositionList);
+
+        ProjectMemberAuth projectMemberAuth = projectMemberAuthRepository.findById(1L).orElseThrow(() -> ProjectMemberAuthCustomException.NOT_FOUND_PROJECT_MEMBER_AUTH);
+        ProjectMember projectMember = ProjectMember.builder()
+                .project(savedProject)
+                .user(tempUser)
+                .projectMemberAuth(projectMemberAuth)
+                .status(ProjectMemberStatus.PARTICIPATING)
+                .position(savedProject.getUser().getPosition())
+                .build();
+
+        projectMemberRepository.save(projectMember);
+
+        UserProjectHistory userProjectHistory = UserProjectHistory.builder()
+                .user(tempUser)
+                .project(savedProject)
+                .startDate(LocalDateTime.now())
+                .endDate(savedProject.getEndDate())
+                .status(UserProjectHistoryStatus.PARTICIPATING)
+                .build();
+
+        userProjectHistoryRepository.save(userProjectHistory);
+
+        // response값 생성
+        BoardCreateResponseDto boardCreateResponseDto = BoardCreateResponseDto.of(board);
+        ProjectCreateResponseDto projectCreateResponseDto = ProjectCreateResponseDto.of(project);
+
+        return new BoardProjectCreateResponseDto(boardCreateResponseDto, projectCreateResponseDto);
     }
 }

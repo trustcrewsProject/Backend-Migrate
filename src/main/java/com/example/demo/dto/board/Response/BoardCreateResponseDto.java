@@ -1,14 +1,13 @@
 package com.example.demo.dto.board.response;
 
-import com.example.demo.model.board.Board;
 import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
+
+import com.example.demo.model.board.Board;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
+@Builder
 public class BoardCreateResponseDto {
     private String boardTitle;
     private String boardContent;
@@ -19,14 +18,16 @@ public class BoardCreateResponseDto {
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 
-    public BoardCreateResponseDto(Board board) {
-        this.boardTitle = board.getTitle();
-        this.boardContent = board.getContent();
-        this.boardPageView = board.getPageView();
-        this.boardCompleteStatus = board.isCompleteStatus();
-        this.boardUserId = board.getUser().getId();
-        this.boardContact = board.getContent();
-        this.createDate = board.getCreateDate();
-        this.updateDate = board.getUpdateDate();
+    public static BoardCreateResponseDto of(Board board) {
+        return BoardCreateResponseDto.builder()
+                .boardTitle(board.getTitle())
+                .boardContent(board.getContent())
+                .boardPageView(board.getPageView())
+                .boardCompleteStatus(board.isCompleteStatus())
+                .boardUserId(board.getUser().getId())
+                .boardContact(board.getContent())
+                .createDate(board.getCreateDate())
+                .updateDate(board.getUpdateDate())
+                .build();
     }
 }

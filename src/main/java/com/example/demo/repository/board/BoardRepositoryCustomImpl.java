@@ -4,6 +4,7 @@ import com.example.demo.dto.board.request.BoardSearchRequestDto;
 import com.example.demo.dto.board.response.BoardSearchResponseDto;
 import com.example.demo.dto.board.response.QBoardSearchResponseDto;
 import com.example.demo.dto.project.response.ProjectSearchResponseDto;
+import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
 import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
 import com.example.demo.dto.user.response.UserSearchResponseDto;
 import com.example.demo.global.exception.customexception.PositionCustomException;
@@ -13,6 +14,7 @@ import com.example.demo.model.board.QBoard;
 import com.example.demo.model.board.QBoardPosition;
 import com.example.demo.model.position.Position;
 import com.example.demo.model.project.Project;
+import com.example.demo.model.project.ProjectTechnology;
 import com.example.demo.model.project.QProject;
 import com.example.demo.model.project.QProjectTechnology;
 import com.example.demo.model.technology_stack.QTechnologyStack;
@@ -109,8 +111,16 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
 
         for (Board boardEntity : boards) {
             Project project = boardEntity.getProject();
-            TrustGradeResponseDto trustGradeResponseDto = TrustGradeResponseDto.of(project.getTrustGrade());
-            ProjectSearchResponseDto projectSearchResponseDto = ProjectSearchResponseDto.of(project, trustGradeResponseDto);
+            TrustGradeResponseDto projectTrustGradeResponseDto = TrustGradeResponseDto.of(project.getTrustGrade());
+
+            List<TechnologyStackInfoResponseDto> technologyStacks = new ArrayList<>();
+            for (ProjectTechnology projectTechnology : project.getProjectTechnologies()){
+                TechnologyStack technologyStack = projectTechnology.getTechnologyStack();
+                TechnologyStackInfoResponseDto technologyStackInfoResponseDto = TechnologyStackInfoResponseDto.of(technologyStack.getId(), technologyStack.getName());
+                technologyStacks.add(technologyStackInfoResponseDto);
+            }
+
+            ProjectSearchResponseDto projectSearchResponseDto = ProjectSearchResponseDto.of(project, projectTrustGradeResponseDto, technologyStacks);
 
             User user = boardEntity.getUser();
             TrustGradeResponseDto userTrustGradeResponseDto = TrustGradeResponseDto.of(user.getTrustGrade());

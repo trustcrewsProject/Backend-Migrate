@@ -27,7 +27,7 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping(value = {"/search", "/search/{page}"})
-    public ResponseEntity<ResponseDto<?>> get(@RequestBody BoardSearchRequestDto dto, @PathVariable("page")Optional<Integer> page) {
+    public ResponseEntity<ResponseDto<?>> search(@RequestBody BoardSearchRequestDto dto, @PathVariable("page")Optional<Integer> page) {
         Pageable pageable = PageRequest.of(page.isPresent()? page.get() : 0 , 5);
         Page<BoardSearchResponseDto> result = boardService.search(dto, pageable);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);

@@ -75,7 +75,7 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
                 .selectDistinct(qBoard)
                 .from(qBoard)
                 .join(qBoard.project, qProject)
-                .join(qBoard.position, qBoardPosition).fetchJoin()
+                .join(qBoard.positions, qBoardPosition).fetchJoin()
                 .where(builder)
                 .fetch();
 

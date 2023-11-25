@@ -74,6 +74,12 @@ public class ProjectService {
         return result;
     }
 
+    /**
+     * 프로젝트 상세 목록
+     * @param projectId
+     * @return
+     */
+    
     @Transactional(readOnly = true)
     public ProjectSpecificDetailResponseDto getDetail(Long projectId) {
         Project project =

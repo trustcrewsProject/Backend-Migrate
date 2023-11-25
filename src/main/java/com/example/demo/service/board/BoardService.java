@@ -87,7 +87,7 @@ public class BoardService {
         Board board =
                 boardRepository
                         .findById(boardId)
-                        .orElseThrow(() -> TechnologyStackCustomException.NOT_FOUND_BOARD);
+                        .orElseThrow(() -> BoardCustomException.NOT_FOUND_BOARD);
         UserBoardDetailResponseDto userBoardDetailResponseDto =
                 UserBoardDetailResponseDto.of(board.getUser());
 
@@ -245,7 +245,7 @@ public class BoardService {
         Board board =
                 boardRepository
                         .findById(boardId)
-                        .orElseThrow(() -> TechnologyStackCustomException.NOT_FOUND_BOARD);
+                        .orElseThrow(() -> BoardCustomException.NOT_FOUND_BOARD);
 
         board =
                 Board.builder()
@@ -285,7 +285,7 @@ public class BoardService {
      * @param boardId
      */
     public void delete(Long boardId) {
-        Board board = boardRepository.findById(boardId).orElseThrow(() -> TechnologyStackCustomException.NOT_FOUND_BOARD);
+        Board board = boardRepository.findById(boardId).orElseThrow(() -> BoardCustomException.NOT_FOUND_BOARD);
         boardRepository.delete(board);
     }
 }

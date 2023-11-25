@@ -152,7 +152,7 @@ public class BoardService {
                         .content(dto.getBoard().getContent())
                         .project(savedProject)
                         .user(tempUser)
-                        .contact(dto.getBoard().getContent())
+                        .contact(dto.getBoard().getContact())
                         .build();
 
         Board savedBoard = boardRepository.save(board);
@@ -239,7 +239,7 @@ public class BoardService {
                         .content(dto.getBoard().getContent())
                         .project(board.getProject())
                         .user(board.getUser())
-                        .contact(dto.getBoard().getContent())
+                        .contact(dto.getBoard().getContact())
                         .build();
 
         Board savedBoard = boardRepository.save(board);

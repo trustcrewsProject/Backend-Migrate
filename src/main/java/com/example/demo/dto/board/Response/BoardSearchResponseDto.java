@@ -3,6 +3,7 @@ package com.example.demo.dto.board.response;
 import com.example.demo.dto.project.response.ProjectSearchResponseDto;
 import com.example.demo.dto.user.response.UserSearchResponseDto;
 import com.example.demo.model.board.Board;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -23,6 +24,22 @@ public class BoardSearchResponseDto {
     private String boardContact;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
+
+    @QueryProjection
+    public BoardSearchResponseDto(Long boardId, String boardTitle, String boardContent, ProjectSearchResponseDto project, LocalDateTime startDate, LocalDateTime endDate, int boardPageView, boolean boardCompleteStatus, UserSearchResponseDto user, String boardContact, LocalDateTime createDate, LocalDateTime updateDate) {
+        this.boardId = boardId;
+        this.boardTitle = boardTitle;
+        this.boardContent = boardContent;
+        this.project = project;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.boardPageView = boardPageView;
+        this.boardCompleteStatus = boardCompleteStatus;
+        this.user = user;
+        this.boardContact = boardContact;
+        this.createDate = createDate;
+        this.updateDate = updateDate;
+    }
 
     public static BoardSearchResponseDto of(Board board, ProjectSearchResponseDto boardProjectSearchResponseDto, UserSearchResponseDto userSearchResponseDto) {
         return BoardSearchResponseDto.builder()

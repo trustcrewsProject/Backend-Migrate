@@ -8,11 +8,15 @@ import com.example.demo.dto.common.ResponseDto;
 
 import com.example.demo.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,9 +25,10 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    @PostMapping("/search")
-    public ResponseEntity<ResponseDto<?>> get(@RequestBody BoardSearchRequestDto dto) {
-        List<BoardSearchResponseDto> result = boardService.search(dto);
-        return new ResponseEntity<>(new ResponseDto<>("success", result), HttpStatus.OK);
+    @PostMapping(value = {"/search", "/search/{page}"})
+    public ResponseEntity<ResponseDto<?>> get(@RequestBody BoardSearchRequestDto dto, @PathVariable("page")Optional<Integer> page) {
+        Pageable pageable = PageRequest.of(page.isPresent()? page.get() : 0 , 5);
+        Page<BoardSearchResponseDto> result = boardService.search(dto, pageable);
+        return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 }

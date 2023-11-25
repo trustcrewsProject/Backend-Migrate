@@ -40,14 +40,13 @@ public class BoardController {
     }
 
     @PostMapping("")
-    public ResponseEntity<ResponseDto<?>> create(
-            @RequestBody BoardProjectCreateRequestDto requestDto) {
+    public ResponseEntity<ResponseDto<?>> create(@RequestBody BoardProjectCreateRequestDto requestDto) {
         BoardProjectCreateResponseDto result = boardService.create(requestDto);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 
     @PatchMapping("/{boardId}")
-    public ResponseEntity<ResponseDto<?>> update(@PathVariable("boardId") Long boardId, BoardProjectUpdateRequestDto requestDto) {
+    public ResponseEntity<ResponseDto<?>> update(@PathVariable("boardId") Long boardId, @RequestBody BoardProjectUpdateRequestDto requestDto) {
         try{
             BoardProjectUpdateResponseDto result = boardService.update(boardId, requestDto);
             return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);

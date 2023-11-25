@@ -1,5 +1,6 @@
 package com.example.demo.model.board;
 
+import com.example.demo.dto.board.request.BoardUpdateRequestDto;
 import com.example.demo.global.common.BaseTimeEntity;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.user.User;
@@ -59,7 +60,14 @@ public class Board extends BaseTimeEntity {
         this.contact = contact;
     }
 
+    public void updateBoard(BoardUpdateRequestDto dto){
+        this.title = dto.getTitle();
+        this.content = dto.getContent();
+        this.contact = dto.getContact();
+    }
+
     public void setPositions(List<BoardPosition> list) {
-        this.positions = list;
+        this.positions.clear();
+        this.positions.addAll(list);
     }
 }

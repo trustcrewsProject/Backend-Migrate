@@ -43,8 +43,11 @@ public class Project extends BaseTimeEntity {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<ProjectMember> projectMembers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<ProjectTechnology> projectTechnologies = new ArrayList<>();
 
     @Builder
     public Project(
@@ -68,5 +71,9 @@ public class Project extends BaseTimeEntity {
 
     public void changeProjectMembers(List<ProjectMember> projectMembers) {
         this.projectMembers = projectMembers;
+    }
+
+    public void changeProjectTechnologys(List<ProjectTechnology> projectTechnologies){
+        this.projectTechnologies = projectTechnologies;
     }
 }

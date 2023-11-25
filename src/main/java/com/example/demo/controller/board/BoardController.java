@@ -47,10 +47,14 @@ public class BoardController {
     }
 
     @PatchMapping("/{boardId}")
-    public ResponseEntity<ResponseDto<?>> update(
-            @PathVariable("boardId") Long boardId, BoardProjectUpdateRequestDto requestDto) {
-        BoardProjectUpdateResponseDto result = boardService.update(boardId, requestDto);
-        return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
+    public ResponseEntity<ResponseDto<?>> update(@PathVariable("boardId") Long boardId, BoardProjectUpdateRequestDto requestDto) {
+        try{
+            BoardProjectUpdateResponseDto result = boardService.update(boardId, requestDto);
+            return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return new ResponseEntity<>(ResponseDto.fail(ex.getMessage()), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping("/{boardId}")

@@ -24,11 +24,11 @@ public class Alert extends BaseTimeEntity {
     private Project project;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "check_user_id", referencedColumnName = "user_id", nullable = false)
     private User checkUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "apply_user_id", referencedColumnName = "user_id", nullable = false)
     private User applyUser;
 
     @ManyToOne(fetch = FetchType.LAZY)

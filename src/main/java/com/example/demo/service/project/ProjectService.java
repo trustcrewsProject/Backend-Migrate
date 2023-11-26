@@ -168,7 +168,7 @@ public class ProjectService {
 
     /**
      * 참여 수락하기
-     *
+     * TODO : 사용자 jwt token으로 사용하기
      * @param projectId
      * @param projectConfirmRequestDto
      */

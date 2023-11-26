@@ -1,17 +1,16 @@
 package com.example.demo.controller.project;
 
 import com.example.demo.dto.common.ResponseDto;
+import com.example.demo.dto.project.request.ProjectParticipateRequestDto;
 import com.example.demo.dto.project.response.ProjectMeResponseDto;
 import com.example.demo.dto.project.response.ProjectSpecificDetailResponseDto;
 import com.example.demo.service.project.ProjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -35,5 +34,13 @@ public class ProjectController {
     public ResponseEntity<ResponseDto<?>> getDetail(@PathVariable("projectId") Long projectId) {
         ProjectSpecificDetailResponseDto result = projectService.getDetail(projectId);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
+    }
+
+    @PostMapping("/{projectId}/participate")
+    public ResponseEntity<ResponseDto<?>> participate(
+            @PathVariable("projectId") Long projectId,
+            @RequestBody @Valid ProjectParticipateRequestDto projectParticipateRequestDto) {
+        projectService.sendParticipateAlert(projectId, projectParticipateRequestDto);
+        return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.OK);
     }
 }

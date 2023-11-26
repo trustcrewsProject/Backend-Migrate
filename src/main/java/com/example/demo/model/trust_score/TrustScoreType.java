@@ -1,12 +1,11 @@
 package com.example.demo.model.trust_score;
 
-import com.example.demo.constant.ScoreTypeDistinguishCode;
 import com.example.demo.global.common.BaseTimeEntity;
-import com.example.demo.model.trust_grade.TrustGrade;
-import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "trust_score_type")
@@ -16,23 +15,30 @@ public class TrustScoreType extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "trust_score_type_id")
-    Long id;
-
-    @Column(name = "name")
-    String name;
-
-    @Column(name = "score")
-    Long score;
-
-    @Column(name = "distinguish_code")
-    @Enumerated(EnumType.STRING)
-    ScoreTypeDistinguishCode distinguishCode;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "trust_grade_id")
-    TrustGrade trustGrade;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "trust_point_type_parent_id")
-    TrustScoreType trustPointTypeParent;
+    private Long id;
+    /**
+     * 신뢰점수타입부 자동생성 식별자
+     */
+    @Column
+    private Long upTrustScoreTypeId;
+    /**
+     * 신뢰점수타입명
+     */
+    @Column
+    private String trustScoreTypeName;
+    /**
+     * 신뢰등급명
+     */
+    @Column
+    private String trustGradeName;
+    /**
+     * 유저자동생성식별자
+     */
+    @Column
+    private int score;
+    /**
+     * 유저자동생성식별자
+     */
+    @Column
+    private String gubunCode;
 }

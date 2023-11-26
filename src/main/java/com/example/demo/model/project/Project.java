@@ -79,6 +79,10 @@ public class Project extends BaseTimeEntity {
         this.endDate = dto.getEndDate();
     }
 
+    public void endProject(){
+        this.status = ProjectStatus.FINISH;
+    }
+
     public void changeProjectMembers(List<ProjectMember> projectMembers) {
         this.projectMembers.clear();
         this.projectMembers.addAll(projectMembers);

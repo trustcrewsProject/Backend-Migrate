@@ -51,4 +51,17 @@ public class ProjectMemberService {
                         .orElseThrow(() -> ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER);
         projectMemberRepository.delete(projectMember);
     }
+
+    /**
+     * 프로젝트 멤버 강제 탈퇴하기.
+     *
+     * @param projectMemberId
+     */
+    public void withdrawlForce(Long projectMemberId) {
+        ProjectMember projectMember =
+                projectMemberRepository
+                        .findById(projectMemberId)
+                        .orElseThrow(() -> ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER);
+        projectMemberRepository.delete(projectMember);
+    }
 }

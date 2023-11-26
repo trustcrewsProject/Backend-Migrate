@@ -29,4 +29,11 @@ public class ProjectMemberController {
         projectMemberService.withdrawlConfirm(projectMemberId);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
+
+    @PostMapping("/{projectMemberId}/withdrawl/force")
+    public ResponseEntity<ResponseDto<?>> withdrawlForce(
+            @PathVariable("projectMemberId") Long projectMemberId) {
+        projectMemberService.withdrawlForce(projectMemberId);
+        return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
+    }
 }

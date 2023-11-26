@@ -7,12 +7,11 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 public class TrustScoreUpdateRequestDto {
-    @NotNull Long userId;
-    Long projectId;
-    Long milestoneId;
-    Long workId;
-    Boolean isPlus;
-    Boolean isNewUser;
-    Boolean isQuit;
-    Boolean isForceQuit;
+    @NotNull(message = "사용자값은 필수입니다.")
+    private Long userId;
+    private Long projectId;
+    private Long milestoneId;
+    private Long workId;
+    @NotNull(message = "점수타입값은 필수입니다.")
+    private Long scoreTypeId;
 }

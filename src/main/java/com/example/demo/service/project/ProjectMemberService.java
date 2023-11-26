@@ -38,4 +38,17 @@ public class ProjectMemberService {
 
         alertRepository.save(alert);
     }
+
+    /**
+     * 프로젝트 멤버 탈퇴 수락하기
+     *
+     * @param projectMemberId
+     */
+    public void withdrawlConfirm(Long projectMemberId) {
+        ProjectMember projectMember =
+                projectMemberRepository
+                        .findById(projectMemberId)
+                        .orElseThrow(() -> ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER);
+        projectMemberRepository.delete(projectMember);
+    }
 }

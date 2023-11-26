@@ -52,4 +52,10 @@ public class ProjectController {
         projectService.confirm(projectId, projectConfirmRequestDto);
         return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.OK);
     }
+
+    @PostMapping("/{projectId}/end")
+    public ResponseEntity<ResponseDto<?>> end(@PathVariable("projectId") Long projectId) {
+        projectService.end(projectId);
+        return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.OK);
+    }
 }

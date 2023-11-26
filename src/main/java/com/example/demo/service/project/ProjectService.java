@@ -2,6 +2,7 @@ package com.example.demo.service.project;
 
 import com.example.demo.constant.AlertType;
 import com.example.demo.constant.ProjectMemberStatus;
+import com.example.demo.constant.ProjectStatus;
 import com.example.demo.dto.position.response.PositionResponseDto;
 import com.example.demo.dto.project.request.ProjectConfirmRequestDto;
 import com.example.demo.dto.project.request.ProjectParticipateRequestDto;
@@ -173,17 +174,17 @@ public class ProjectService {
      * @param projectConfirmRequestDto
      */
     public void confirm(Long projectId, ProjectConfirmRequestDto projectConfirmRequestDto) {
-        Project project =
-                projectRepository
+        Project project = projectRepository
                         .findById(projectId)
                         .orElseThrow(() -> ProjectCustomException.NOT_FOUND_PROJECT);
-        User user =
-                userRepository.findById(1L).orElseThrow(() -> UserCustomException.NOT_FOUND_USER);
 
-        ProjectMemberAuth projectMemberAuth = projectMemberAuthRepository.findTopByOrderByIdDesc().orElseThrow(() -> ProjectMemberAuthCustomException.NOT_FOUND_PROJECT_MEMBER_AUTH);
+        User user = userRepository.findById(1L).orElseThrow(() -> UserCustomException.NOT_FOUND_USER);
 
-        Position position =
-                positionRepository
+        ProjectMemberAuth projectMemberAuth = projectMemberAuthRepository
+                .findTopByOrderByIdDesc()
+                .orElseThrow(() -> ProjectMemberAuthCustomException.NOT_FOUND_PROJECT_MEMBER_AUTH);
+
+        Position position = positionRepository
                         .findById(projectConfirmRequestDto.getPositionId())
                         .orElseThrow(() -> PositionCustomException.NOT_FOUND_POSITION);
 
@@ -199,4 +200,16 @@ public class ProjectService {
         projectMemberRepository.save(projectMember);
     }
 
+    /**
+     * 프로젝트 종료하기
+     *
+     * @param projectId
+     */
+    public void end(Long projectId) {
+        Project project = projectRepository
+                        .findById(projectId)
+                        .orElseThrow(() -> ProjectCustomException.NOT_FOUND_PROJECT);
+
+        project.endProject();
+    }
 }

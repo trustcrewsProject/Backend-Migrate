@@ -22,4 +22,11 @@ public class ProjectMemberController {
         projectMemberService.sendWithdrawlAlert(projectMemberId);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
+
+    @PostMapping("/{projectMemberId}/withdrawl/confirm")
+    public ResponseEntity<ResponseDto<?>> withdrawlConfirm(
+            @PathVariable("projectMemberId") Long projectMemberId) {
+        projectMemberService.withdrawlConfirm(projectMemberId);
+        return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
+    }
 }

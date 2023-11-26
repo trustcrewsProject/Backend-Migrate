@@ -1,7 +1,9 @@
 package com.example.demo.service.project;
 
 import com.example.demo.constant.AlertType;
+import com.example.demo.constant.ProjectMemberStatus;
 import com.example.demo.dto.position.response.PositionResponseDto;
+import com.example.demo.dto.project.request.ProjectConfirmRequestDto;
 import com.example.demo.dto.project.request.ProjectParticipateRequestDto;
 import com.example.demo.dto.project.response.ProjectMeResponseDto;
 import com.example.demo.dto.project.response.ProjectSpecificDetailResponseDto;
@@ -18,6 +20,7 @@ import com.example.demo.model.alert.Alert;
 import com.example.demo.model.position.Position;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
+import com.example.demo.model.project.ProjectMemberAuth;
 import com.example.demo.model.user.User;
 import com.example.demo.model.work.Work;
 import com.example.demo.repository.alert.AlertRepository;
@@ -161,6 +164,39 @@ public class ProjectService {
                         .build();
 
         alertRepository.save(alert);
+    }
+
+    /**
+     * 참여 수락하기
+     *
+     * @param projectId
+     * @param projectConfirmRequestDto
+     */
+    public void confirm(Long projectId, ProjectConfirmRequestDto projectConfirmRequestDto) {
+        Project project =
+                projectRepository
+                        .findById(projectId)
+                        .orElseThrow(() -> ProjectCustomException.NOT_FOUND_PROJECT);
+        User user =
+                userRepository.findById(1L).orElseThrow(() -> UserCustomException.NOT_FOUND_USER);
+
+        ProjectMemberAuth projectMemberAuth = projectMemberAuthRepository.findTopByOrderByIdDesc().orElseThrow(() -> ProjectMemberAuthCustomException.NOT_FOUND_PROJECT_MEMBER_AUTH);
+
+        Position position =
+                positionRepository
+                        .findById(projectConfirmRequestDto.getPositionId())
+                        .orElseThrow(() -> PositionCustomException.NOT_FOUND_POSITION);
+
+        ProjectMember projectMember =
+                ProjectMember.builder()
+                        .project(project)
+                        .user(user)
+                        .projectMemberAuth(projectMemberAuth)
+                        .status(ProjectMemberStatus.PARTICIPATING)
+                        .position(position)
+                        .build();
+
+        projectMemberRepository.save(projectMember);
     }
 
 }

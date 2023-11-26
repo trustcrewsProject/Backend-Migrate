@@ -24,8 +24,12 @@ public class Alert extends BaseTimeEntity {
     private Project project;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "check_user_id", referencedColumnName = "user_id", nullable = false)
+    private User checkUser;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "apply_user_id", referencedColumnName = "user_id", nullable = false)
+    private User applyUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "position_id")
@@ -42,13 +46,15 @@ public class Alert extends BaseTimeEntity {
     @Builder
     private Alert(
             Project project,
-            User user,
+            User checkUser,
+            User applyUser,
             Position position,
             String content,
             AlertType type,
             boolean checked_YN) {
         this.project = project;
-        this.user = user;
+        this.checkUser = checkUser;
+        this.applyUser = applyUser;
         this.position = position;
         this.content = content;
         this.type = type;

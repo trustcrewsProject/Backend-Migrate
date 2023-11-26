@@ -1,6 +1,8 @@
 package com.example.demo.service.project;
 
+import com.example.demo.constant.AlertType;
 import com.example.demo.dto.position.response.PositionResponseDto;
+import com.example.demo.dto.project.request.ProjectParticipateRequestDto;
 import com.example.demo.dto.project.response.ProjectMeResponseDto;
 import com.example.demo.dto.project.response.ProjectSpecificDetailResponseDto;
 import com.example.demo.dto.projectmember.response.MyProjectMemberResponseDto;
@@ -11,10 +13,9 @@ import com.example.demo.dto.user.response.UserMyProjectResponseDto;
 import com.example.demo.dto.user.response.UserProjectDetailResponseDto;
 import com.example.demo.dto.user.response.UserProjectResponseDto;
 import com.example.demo.dto.work.response.WorkProjectDetailResponseDto;
-import com.example.demo.global.exception.customexception.ProjectCustomException;
-import com.example.demo.global.exception.customexception.ProjectMemberCustomException;
-import com.example.demo.global.exception.customexception.UserCustomException;
-import com.example.demo.global.exception.customexception.WorkCustomException;
+import com.example.demo.global.exception.customexception.*;
+import com.example.demo.model.alert.Alert;
+import com.example.demo.model.position.Position;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
 import com.example.demo.model.user.User;
@@ -134,4 +135,32 @@ public class ProjectService {
                 projectMemberDetailResponseDtos,
                 workProjectDetailResponseDtos);
     }
+
+    /**
+     * 참여하기 참여하는 경우 알림보내기
+     * TODO : 지원자 아이디 jwt token으로 받기.
+     * @param projectId
+     * @param projectParticipateRequestDto
+     */
+    public void sendParticipateAlert(Long projectId, ProjectParticipateRequestDto projectParticipateRequestDto) {
+        Project project = projectRepository
+                        .findById(projectId)
+                        .orElseThrow(() -> ProjectCustomException.NOT_FOUND_PROJECT);
+        User user = userRepository.findById(1L).orElseThrow(() -> UserCustomException.NOT_FOUND_USER);
+
+        Position position = positionRepository.findById(projectParticipateRequestDto.getPositionId()).orElseThrow(() -> PositionCustomException.NOT_FOUND_POSITION);
+
+        Alert alert = Alert.builder()
+                        .project(project)
+                        .checkUser(project.getUser())
+                        .applyUser(user)
+                        .content("프로젝트 지원했습니다.")
+                        .position(position)
+                        .type(AlertType.RECRUIT)
+                        .checked_YN(false)
+                        .build();
+
+        alertRepository.save(alert);
+    }
+
 }

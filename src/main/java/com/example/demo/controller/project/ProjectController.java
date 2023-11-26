@@ -1,6 +1,7 @@
 package com.example.demo.controller.project;
 
 import com.example.demo.dto.common.ResponseDto;
+import com.example.demo.dto.project.request.ProjectConfirmRequestDto;
 import com.example.demo.dto.project.request.ProjectParticipateRequestDto;
 import com.example.demo.dto.project.response.ProjectMeResponseDto;
 import com.example.demo.dto.project.response.ProjectSpecificDetailResponseDto;
@@ -41,6 +42,14 @@ public class ProjectController {
             @PathVariable("projectId") Long projectId,
             @RequestBody @Valid ProjectParticipateRequestDto projectParticipateRequestDto) {
         projectService.sendParticipateAlert(projectId, projectParticipateRequestDto);
+        return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.OK);
+    }
+
+    @PostMapping("/{projectId}/participate/confirm")
+    public ResponseEntity<ResponseDto<?>> confirm(
+            @PathVariable("projectId") Long projectId,
+            @RequestBody @Valid ProjectConfirmRequestDto projectConfirmRequestDto) {
+        projectService.confirm(projectId, projectConfirmRequestDto);
         return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.OK);
     }
 }

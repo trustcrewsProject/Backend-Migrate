@@ -1,3 +1,9 @@
 package com.example.demo.repository.trust_score;
 
-public interface TrustScoreHistoryRepositoryCustom {}
+import com.example.demo.dto.trust_score.ProjectUserHistoryDto;
+
+import java.util.List;
+
+public interface TrustScoreHistoryRepositoryCustom {
+    List<ProjectUserHistoryDto> getProjectUserHistory(Long projectId, Long userId);
+}

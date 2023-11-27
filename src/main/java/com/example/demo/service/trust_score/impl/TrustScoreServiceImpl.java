@@ -2,7 +2,7 @@ package com.example.demo.service.trust_score.impl;
 
 import com.example.demo.dto.trust_score.request.TrustScoreUpdateRequestDto;
 import com.example.demo.dto.trust_score.response.TrustScoreUpdateResponseDto;
-import com.example.demo.model.trustscore.TrustScoreHistory;
+import com.example.demo.model.trust_score.TrustScoreHistory;
 import com.example.demo.repository.trust_score.TrustScoreHistoryRepository;
 import com.example.demo.repository.trust_score.TrustScoreRepository;
 import com.example.demo.repository.trust_score.TrustScoreTypeRepository;

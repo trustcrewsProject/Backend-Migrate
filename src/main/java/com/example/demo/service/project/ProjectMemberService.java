@@ -19,4 +19,5 @@ public interface ProjectMemberService {
     public List<ProjectMember> findProjectsMemberByProject(Project project);
 
     public void withdrawlConfirm(Long projectMemberId);
+    public void withdrawlForce(Long projectMemberId);
 }

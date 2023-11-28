@@ -59,11 +59,8 @@ public class ProjectMemberServiceImpl implements ProjectMemberService{
      *
      * @param projectMemberId
      */
-//    public void withdrawlForce(Long projectMemberId) {
-//        ProjectMember projectMember =
-//                projectMemberRepository
-//                        .findById(projectMemberId)
-//                        .orElseThrow(() -> ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER);
-//        projectMemberRepository.delete(projectMember);
-//    }
+    public void withdrawlForce(Long projectMemberId) {
+        ProjectMember projectMember = findById(projectMemberId);
+        projectMemberRepository.delete(projectMember);
+    }
 }

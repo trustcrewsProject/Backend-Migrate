@@ -1,11 +1,11 @@
 package com.example.demo.security.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.example.demo.global.exception.customexception.TokenCustomException;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -89,5 +89,32 @@ public class JsonWebTokenProvider {
     private Date getTokenExpiration(long expirationMillisecond) {
         Date date = new Date();
         return new Date(date.getTime() + expirationMillisecond);
+    }
+
+    // 토큰 검증
+    public boolean validateToken(String token) {
+        try {
+            parseClaims(token);
+            return true;
+        } catch (MalformedJwtException e) {
+            throw TokenCustomException.MALFORMED_TOKEN;
+        } catch (UnsupportedJwtException e) {
+            throw TokenCustomException.WRONG_TYPE_TOKEN;
+        } catch (SignatureException e) {
+            throw TokenCustomException.WRONG_TYPE_SIGNATURE;
+        } catch (ExpiredJwtException e) {
+            throw TokenCustomException.EXPIRED_TOKEN;
+        } catch (IllegalArgumentException e) {
+            throw TokenCustomException.NON_ACCESS_TOKEN;
+        }
+    }
+
+    // 토큰 복호화
+    private Claims parseClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(this.key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 }

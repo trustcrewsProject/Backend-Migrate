@@ -15,9 +15,11 @@ public interface BoardService {
     @Transactional(readOnly = true)
     public Page<BoardSearchResponseDto> search(BoardSearchRequestDto dto, Pageable pageable);
 
-    public Board findBoardById(Long boardId);
+    public Board findById(Long boardId);
 
     public Board save(Board board);
 
     public BoardTotalDetailResponseDto getDetail(Long boardId);
+
+    public void delete(Long boardId);
 }

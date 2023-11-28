@@ -10,5 +10,5 @@ public interface TechnologyStackService {
     ResponseDto<?> getTechnologyStackList();
 
     @Transactional(readOnly = true)
-    TechnologyStack getTechnologyStackById(Long id);
+    TechnologyStack findById(Long id);
 }

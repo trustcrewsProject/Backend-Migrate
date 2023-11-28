@@ -12,5 +12,5 @@ public interface PositionService {
 
     public Position save(Position position);
 
-    public Position findPositionById(Long id);
+    public Position findById(Long id);
 }

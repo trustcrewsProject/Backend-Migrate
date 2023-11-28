@@ -46,17 +46,17 @@ public class BoardController {
         BoardProjectCreateResponseDto result = boardProjectFacade.create(requestDto);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
-//
-//    @PatchMapping("/{boardId}")
-//    public ResponseEntity<ResponseDto<?>> update(@PathVariable("boardId") Long boardId, @RequestBody BoardProjectUpdateRequestDto requestDto) {
-//        try{
-//            BoardProjectUpdateResponseDto result = boardService.update(boardId, requestDto);
-//            return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
-//        }catch (Exception ex){
-//            ex.printStackTrace();
-//            return new ResponseEntity<>(ResponseDto.fail(ex.getMessage()), HttpStatus.BAD_REQUEST);
-//        }
-//    }
+
+    @PatchMapping("/{boardId}")
+    public ResponseEntity<ResponseDto<?>> update(@PathVariable("boardId") Long boardId, @RequestBody BoardProjectUpdateRequestDto requestDto) {
+        try{
+            BoardProjectUpdateResponseDto result = boardProjectFacade.update(boardId, requestDto);
+            return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return new ResponseEntity<>(ResponseDto.fail(ex.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+    }
 //
 //    @DeleteMapping("/{boardId}")
 //    public ResponseEntity<ResponseDto<?>> delete(@PathVariable("boardId") Long boardId) {

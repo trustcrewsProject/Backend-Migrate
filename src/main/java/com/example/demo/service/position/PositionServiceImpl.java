@@ -32,7 +32,7 @@ public class PositionServiceImpl implements PositionService {
     }
 
     @Override
-    public Position findPositionById(Long id) {
+    public Position findById(Long id) {
         return positionRepository
                 .findById(id)
                 .orElseThrow(() -> PositionCustomException.NOT_FOUND_POSITION);

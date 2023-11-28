@@ -27,7 +27,7 @@ public class TechnologyStackServiceImpl implements TechnologyStackService {
     }
 
     @Override
-    public TechnologyStack getTechnologyStackById(Long id) {
+    public TechnologyStack findById(Long id) {
         return technologyStackRepository.findById(id).orElseThrow(() -> TechnologyStackCustomException.NOT_FOUND_TECHNOLOGY_STACK);
     }
 }

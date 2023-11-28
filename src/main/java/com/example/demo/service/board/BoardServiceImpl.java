@@ -1,7 +1,9 @@
 package com.example.demo.service.board;
 
 import com.example.demo.dto.board.request.BoardSearchRequestDto;
-import com.example.demo.dto.board.response.*;
+import com.example.demo.dto.board.response.BoardDetailResponseDto;
+import com.example.demo.dto.board.response.BoardSearchResponseDto;
+import com.example.demo.dto.board.response.BoardTotalDetailResponseDto;
 import com.example.demo.dto.boardposition.BoardPositionDetailResponseDto;
 import com.example.demo.dto.position.response.PositionResponseDto;
 import com.example.demo.dto.project.response.ProjectDetailResponseDto;
@@ -9,7 +11,7 @@ import com.example.demo.dto.technology_stack.response.TechnologyStackInfoRespons
 import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
 import com.example.demo.dto.user.response.UserBoardDetailResponseDto;
 import com.example.demo.dto.user.response.UserProjectResponseDto;
-import com.example.demo.global.exception.customexception.*;
+import com.example.demo.global.exception.customexception.BoardCustomException;
 import com.example.demo.model.board.Board;
 import com.example.demo.model.board.BoardPosition;
 import com.example.demo.model.project.ProjectTechnology;
@@ -41,7 +43,7 @@ public class BoardServiceImpl implements BoardService {
        return boardRepository.getBoardSearchPage(dto, pageable);
     }
 
-    public Board findBoardById(Long boardId){
+    public Board findById(Long boardId){
         return boardRepository.findById(boardId).orElseThrow(() -> BoardCustomException.NOT_FOUND_BOARD);
     }
 
@@ -55,7 +57,7 @@ public class BoardServiceImpl implements BoardService {
      * @return
      */
     public BoardTotalDetailResponseDto getDetail(Long boardId) {
-        Board board = findBoardById(boardId);
+        Board board = findById(boardId);
 
         //boardDetailResponseDto 생성
         UserBoardDetailResponseDto userBoardDetailResponseDto = UserBoardDetailResponseDto.of(board.getUser());
@@ -93,8 +95,8 @@ public class BoardServiceImpl implements BoardService {
      *
      * @param boardId
      */
-//    public void delete(Long boardId) {
-//        Board board = boardRepository.findById(boardId).orElseThrow(() -> BoardCustomException.NOT_FOUND_BOARD);
-//        boardRepository.delete(board);
-//    }
+    public void delete(Long boardId) {
+        Board board = findById(boardId);
+        boardRepository.delete(board);
+    }
 }

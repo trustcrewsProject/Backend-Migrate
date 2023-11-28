@@ -57,10 +57,10 @@ public class BoardController {
             return new ResponseEntity<>(ResponseDto.fail(ex.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
-//
-//    @DeleteMapping("/{boardId}")
-//    public ResponseEntity<ResponseDto<?>> delete(@PathVariable("boardId") Long boardId) {
-//        boardService.delete(boardId);
-//        return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.NO_CONTENT);
-//    }
+
+    @DeleteMapping("/{boardId}")
+    public ResponseEntity<ResponseDto<?>> delete(@PathVariable("boardId") Long boardId) {
+        boardService.delete(boardId);
+        return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.NO_CONTENT);
+    }
 }

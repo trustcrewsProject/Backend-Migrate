@@ -2,6 +2,7 @@ package com.example.demo.service.position;
 
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.dto.position.response.PositionInfoResponseDto;
+import com.example.demo.global.exception.customexception.PositionCustomException;
 import com.example.demo.model.position.Position;
 import com.example.demo.repository.position.PositionRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,4 +25,18 @@ public class PositionServiceImpl implements PositionService {
 
        return ResponseDto.success("포지션 목록 조회가 완료되었습니다.", positionList);
     }
+
+    @Override
+    public Position save(Position position) {
+        return positionRepository.save(position);
+    }
+
+    @Override
+    public Position findPositionById(Long id) {
+        return positionRepository
+                .findById(id)
+                .orElseThrow(() -> PositionCustomException.NOT_FOUND_POSITION);
+    }
+
+
 }

@@ -68,32 +68,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 
 
-    /**
-     * 참여하기 참여하는 경우 알림보내기
-     * TODO : 지원자 아이디 jwt token으로 받기.
-     * @param projectId
-     * @param projectParticipateRequestDto
-     */
-    public void sendParticipateAlert(Long projectId, ProjectParticipateRequestDto projectParticipateRequestDto) {
-        Project project = projectRepository
-                        .findById(projectId)
-                        .orElseThrow(() -> ProjectCustomException.NOT_FOUND_PROJECT);
-        User user = userRepository.findById(1L).orElseThrow(() -> UserCustomException.NOT_FOUND_USER);
 
-        Position position = positionRepository.findById(projectParticipateRequestDto.getPositionId()).orElseThrow(() -> PositionCustomException.NOT_FOUND_POSITION);
-
-        Alert alert = Alert.builder()
-                        .project(project)
-                        .checkUser(project.getUser())
-                        .applyUser(user)
-                        .content("프로젝트 지원했습니다.")
-                        .position(position)
-                        .type(AlertType.RECRUIT)
-                        .checked_YN(false)
-                        .build();
-
-        alertRepository.save(alert);
-    }
 
     /**
      * 참여 수락하기

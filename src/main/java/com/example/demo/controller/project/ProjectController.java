@@ -43,7 +43,7 @@ public class ProjectController {
     public ResponseEntity<ResponseDto<?>> participate(
             @PathVariable("projectId") Long projectId,
             @RequestBody @Valid ProjectParticipateRequestDto projectParticipateRequestDto) {
-        projectServiceImpl.sendParticipateAlert(projectId, projectParticipateRequestDto);
+        projectFacade.sendParticipateAlert(projectId, projectParticipateRequestDto);
         return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.OK);
     }
 

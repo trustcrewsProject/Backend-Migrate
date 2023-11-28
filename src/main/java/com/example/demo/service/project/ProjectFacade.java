@@ -1,6 +1,7 @@
 package com.example.demo.service.project;
 
 import com.example.demo.dto.position.response.PositionResponseDto;
+import com.example.demo.dto.project.request.ProjectParticipateRequestDto;
 import com.example.demo.dto.project.response.ProjectMeResponseDto;
 import com.example.demo.dto.project.response.ProjectSpecificDetailResponseDto;
 import com.example.demo.dto.projectmember.response.MyProjectMemberResponseDto;
@@ -11,14 +12,14 @@ import com.example.demo.dto.user.response.UserMyProjectResponseDto;
 import com.example.demo.dto.user.response.UserProjectDetailResponseDto;
 import com.example.demo.dto.user.response.UserProjectResponseDto;
 import com.example.demo.dto.work.response.WorkProjectDetailResponseDto;
-import com.example.demo.global.exception.customexception.ProjectCustomException;
-import com.example.demo.global.exception.customexception.ProjectMemberCustomException;
-import com.example.demo.global.exception.customexception.UserCustomException;
-import com.example.demo.global.exception.customexception.WorkCustomException;
+import com.example.demo.model.alert.Alert;
+import com.example.demo.model.position.Position;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
 import com.example.demo.model.user.User;
 import com.example.demo.model.work.Work;
+import com.example.demo.service.alert.AlertService;
+import com.example.demo.service.position.PositionService;
 import com.example.demo.service.user.UserService;
 import com.example.demo.service.work.WorkService;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,8 @@ public class ProjectFacade {
 
     private ProjectMemberService projectMemberService;
     private WorkService workService;
+    private PositionService positionService;
+    private AlertService alertService;
 
     /**
      * 내 프로젝트 목록 조회
@@ -44,7 +47,7 @@ public class ProjectFacade {
 
     @Transactional(readOnly = true)
     public List<ProjectMeResponseDto> getMyProjects() throws Exception {
-        User user = userService.getUserById(1L);
+        User user = userService.findById(1L);
 
         List<Project> projects = projectService.findProjectsByUser(user);
         List<ProjectMeResponseDto> result = new ArrayList<>();
@@ -116,5 +119,20 @@ public class ProjectFacade {
                 userProjectResponseDto,
                 projectMemberDetailResponseDtos,
                 workProjectDetailResponseDtos);
+    }
+
+    /**
+     * 참여하기 참여하는 경우 알림보내기
+     * TODO : 지원자 아이디 jwt token으로 받기.
+     * @param projectId
+     * @param projectParticipateRequestDto
+     */
+    public void sendParticipateAlert(Long projectId, ProjectParticipateRequestDto projectParticipateRequestDto) {
+        Project project = projectService.findById(projectId);
+        User user = userService.findById(1L);
+        Position position = positionService.findById(projectParticipateRequestDto.getPositionId());
+
+        Alert alert = alertService.toAlertEntity(project,user,position);
+        alertService.save(alert);
     }
 }

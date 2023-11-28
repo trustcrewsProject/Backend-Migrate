@@ -10,8 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Calendar;
@@ -116,5 +118,25 @@ public class JsonWebTokenProvider {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    // Request Header 에서 Access Token 정보 추출
+    public String resolveAccessToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+        if(StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
+            return bearerToken;
+        }
+
+        return null;
+    }
+
+    // Request Header 에서 Refresh Token 정보 추출
+    public String resolveRefreshToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader(REFRESH_HEADER);
+        if(StringUtils.hasText(bearerToken)) {
+            return bearerToken;
+        }
+
+        return null;
     }
 }

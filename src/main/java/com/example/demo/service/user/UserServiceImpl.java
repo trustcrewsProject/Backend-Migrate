@@ -2,9 +2,12 @@ package com.example.demo.service.user;
 
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.global.exception.customexception.UserCustomException;
+import com.example.demo.model.user.User;
 import com.example.demo.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,5 +31,12 @@ public class UserServiceImpl implements UserService {
         }
 
         return ResponseDto.success("사용가능한 닉네임입니다.");
+    }
+
+    @Override
+    public User getUserById(Long id){
+        return userRepository
+                        .findById(id)
+                        .orElseThrow(() -> UserCustomException.NOT_FOUND_USER);
     }
 }

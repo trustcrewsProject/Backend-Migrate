@@ -1,6 +1,12 @@
 package com.example.demo.service.user;
 
-import org.springframework.stereotype.Service;
+import com.example.demo.model.project.Project;
+import com.example.demo.model.user.User;
+import com.example.demo.model.user.UserProjectHistory;
 
-@Service
-public class UserProjectHistoryService {}
+public interface UserProjectHistoryService {
+
+    public UserProjectHistory toUserProjectHistoryEntity(User user, Project project);
+
+    public UserProjectHistory save(UserProjectHistory userProjectHistory);
+}

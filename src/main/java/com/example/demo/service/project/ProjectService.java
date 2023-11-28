@@ -3,6 +3,7 @@ package com.example.demo.service.project;
 import com.example.demo.constant.AlertType;
 import com.example.demo.constant.ProjectMemberStatus;
 import com.example.demo.constant.ProjectStatus;
+import com.example.demo.dto.board_project.request.BoardProjectCreateRequestDto;
 import com.example.demo.dto.position.response.PositionResponseDto;
 import com.example.demo.dto.project.request.ProjectConfirmRequestDto;
 import com.example.demo.dto.project.request.ProjectParticipateRequestDto;
@@ -22,6 +23,7 @@ import com.example.demo.model.position.Position;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
 import com.example.demo.model.project.ProjectMemberAuth;
+import com.example.demo.model.trust_grade.TrustGrade;
 import com.example.demo.model.user.User;
 import com.example.demo.model.work.Work;
 import com.example.demo.repository.alert.AlertRepository;
@@ -38,6 +40,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.demo.constant.ProjectStatus.RECRUITING;
+
 @Service
 @AllArgsConstructor
 @Transactional
@@ -49,6 +53,11 @@ public class ProjectService {
     private final ProjectMemberAuthRepository projectMemberAuthRepository;
     private final PositionRepository positionRepository;
     private final AlertRepository alertRepository;
+
+    public Project save(Project project){
+        return projectRepository.save(project);
+    }
+
 
     /**
      * 내 프로젝트 목록 조회

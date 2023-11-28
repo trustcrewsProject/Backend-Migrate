@@ -3,8 +3,14 @@ package com.example.demo.dto.project.request;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
+
+import com.example.demo.model.project.Project;
+import com.example.demo.model.trust_grade.TrustGrade;
+import com.example.demo.model.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import static com.example.demo.constant.ProjectStatus.RECRUITING;
 
 // 프로젝트 개설 요청 DTO
 @Getter
@@ -30,4 +36,18 @@ public class ProjectCreateRequestDto {
 
     @NotBlank(message = "모집분야는 필수 입력 값입니다.")
     private List<Long> technologyIds;
+
+
+    public Project toProjectEntity(TrustGrade trustGrade, User user){
+        return Project.builder()
+                .name(this.getName())
+                .subject(this.getSubject())
+                .trustGrade(trustGrade)
+                .user(user)
+                .status(RECRUITING)
+                .crewNumber(this.getCrewNumber())
+                .startDate(this.getStartDate())
+                .endDate(this.getEndDate())
+                .build();
+    }
 }

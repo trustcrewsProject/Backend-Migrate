@@ -16,5 +16,5 @@ public interface UserService {
     @Transactional(readOnly = true)
     ResponseDto<?> checkNickname(String nickname);
 
-    User getUserById(Long userId);
+    User findById(Long userId);
 }

@@ -40,12 +40,12 @@ public class BoardController {
         BoardTotalDetailResponseDto result = boardService.getDetail(boardId);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
-//
-//    @PostMapping("")
-//    public ResponseEntity<ResponseDto<?>> create(@RequestBody BoardProjectCreateRequestDto requestDto) {
-//        BoardProjectCreateResponseDto result = boardProjectFacade.create(requestDto);
-//        return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
-//    }
+
+    @PostMapping("")
+    public ResponseEntity<ResponseDto<?>> create(@RequestBody BoardProjectCreateRequestDto requestDto) {
+        BoardProjectCreateResponseDto result = boardProjectFacade.create(requestDto);
+        return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
+    }
 //
 //    @PatchMapping("/{boardId}")
 //    public ResponseEntity<ResponseDto<?>> update(@PathVariable("boardId") Long boardId, @RequestBody BoardProjectUpdateRequestDto requestDto) {

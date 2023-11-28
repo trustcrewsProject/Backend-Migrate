@@ -27,14 +27,14 @@ public class JsonWebTokenProvider {
     public static final String REFRESH_HEADER = "Refresh";
     public static final String BEARER_PREFIX = "Bearer ";
 
-    // public static final long ACCESS_TOKEN_EXPIRE_MILLIS_TEST = 1000 * 60; // 1분
-    public static final long ACCESS_TOKEN_EXPIRE_MILLIS = 1000 * 60 * 30; // 30분
-
-    // public static final long REFRESH_TOKEN_EXPIRE_MILLIS_TEST = 1000 * 60 * 2; // 2분
-    public static final long REFRESH_TOKEN_EXPIRE_MILLIS = 1000 * 60 * 60 * 24 * 7; // 7일
-
     @Value("${jwt.secret}")
     private String secretKey;
+
+    @Value("${jwt.access.token.expiration.millis}")
+    private long accessTokenExpirationMillis;
+
+    @Value("${jwt.refresh.token.expiration.millis}")
+    private long refreshTokenExpirationMillis;
 
     private Key key;
 
@@ -60,7 +60,7 @@ public class JsonWebTokenProvider {
     public JsonWebTokenDto generateToken(UserDetails userDetails) {
 
         // Access Token 생성
-        Date accessTokenExpiresIn = getTokenExpiration(ACCESS_TOKEN_EXPIRE_MILLIS);
+        Date accessTokenExpiresIn = getTokenExpiration(accessTokenExpirationMillis);
 
         Claims claims = Jwts.claims().setSubject(userDetails.getUsername());
         claims.put("role", userDetails.getAuthorities());
@@ -73,7 +73,7 @@ public class JsonWebTokenProvider {
                 .compact();
 
         // Refresh Token 생성
-        Date refreshTokenExpiresIn = getTokenExpiration(REFRESH_TOKEN_EXPIRE_MILLIS);
+        Date refreshTokenExpiresIn = getTokenExpiration(refreshTokenExpirationMillis);
 
         String refreshToken = Jwts.builder()
                 .setIssuedAt(Calendar.getInstance().getTime())

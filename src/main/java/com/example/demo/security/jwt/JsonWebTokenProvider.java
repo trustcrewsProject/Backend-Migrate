@@ -27,14 +27,14 @@ public class JsonWebTokenProvider {
     public static final String REFRESH_HEADER = "Refresh";
     public static final String BEARER_PREFIX = "Bearer ";
 
-    // public static final long ACCESS_TOKEN_EXPIRE_MILLIS_TEST = 1000 * 60; // 1분
-    public static final long ACCESS_TOKEN_EXPIRE_MILLIS = 1000 * 60 * 30; // 30분
-
-    // public static final long REFRESH_TOKEN_EXPIRE_MILLIS_TEST = 1000 * 60 * 2; // 2분
-    public static final long REFRESH_TOKEN_EXPIRE_MILLIS = 1000 * 60 * 60 * 24 * 7; // 7일
-
     @Value("${jwt.secret}")
     private String secretKey;
+
+    @Value("${jwt.access.token.expiration.millis}")
+    private long ACCESS_TOKEN_EXPIRE_MILLIS;
+
+    @Value("${jwt.refresh.token.expiration.millis}")
+    private long REFRESH_TOKEN_EXPIRE_MILLIS;
 
     private Key key;
 

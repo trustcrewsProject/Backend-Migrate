@@ -117,7 +117,7 @@ public class BoardProjectFacade {
      * @return
      */
     public BoardProjectUpdateResponseDto update(Long boardId, BoardProjectUpdateRequestDto dto){
-        Board board = boardService.findBoardById(boardId);
+        Board board = boardService.findById(boardId);
         Project project = board.getProject();
         User tempUser = userService.getUserById(1L); // 나중에 Security로 고쳐야 함.
 

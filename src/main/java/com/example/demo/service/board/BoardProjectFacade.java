@@ -1,12 +1,9 @@
 package com.example.demo.service.board;
 
-import com.example.demo.constant.ProjectMemberStatus;
-import com.example.demo.constant.UserProjectHistoryStatus;
 import com.example.demo.dto.board.response.BoardCreateResponseDto;
 import com.example.demo.dto.board_project.request.BoardProjectCreateRequestDto;
 import com.example.demo.dto.board_project.response.BoardProjectCreateResponseDto;
 import com.example.demo.dto.project.response.ProjectCreateResponseDto;
-import com.example.demo.global.exception.customexception.ProjectMemberAuthCustomException;
 import com.example.demo.model.board.Board;
 import com.example.demo.model.board.BoardPosition;
 import com.example.demo.model.position.Position;
@@ -31,7 +28,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 

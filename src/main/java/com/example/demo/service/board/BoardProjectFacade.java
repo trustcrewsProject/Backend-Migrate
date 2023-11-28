@@ -56,6 +56,7 @@ public class BoardProjectFacade {
 
     /**
      * 게시글, 프로젝트 생성, 프로젝트 기술 생성, 프로젝트 멤버 생성, 사용자 이력 생성, 게시글-포지션 생성
+     * TODO : 현재 유저가 개발하도록 작성
      * @param dto
      * @return
      */
@@ -117,7 +118,7 @@ public class BoardProjectFacade {
      * @return
      */
     public BoardProjectUpdateResponseDto update(Long boardId, BoardProjectUpdateRequestDto dto){
-        Board board = boardService.findBoardById(boardId);
+        Board board = boardService.findById(boardId);
         Project project = board.getProject();
         User tempUser = userService.getUserById(1L); // 나중에 Security로 고쳐야 함.
 

@@ -35,32 +35,32 @@ public class BoardController {
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 
-    @GetMapping("/{boardId}")
-    public ResponseEntity<ResponseDto<?>> getDetail(@PathVariable("boardId") Long boardId) {
-        BoardTotalDetailResponseDto result = boardProjectFacade.getDetail(boardId);
-        return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
-    }
-
-    @PostMapping("")
-    public ResponseEntity<ResponseDto<?>> create(@RequestBody BoardProjectCreateRequestDto requestDto) {
-        BoardProjectCreateResponseDto result = boardProjectFacade.create(requestDto);
-        return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
-    }
-
-    @PatchMapping("/{boardId}")
-    public ResponseEntity<ResponseDto<?>> update(@PathVariable("boardId") Long boardId, @RequestBody BoardProjectUpdateRequestDto requestDto) {
-        try{
-            BoardProjectUpdateResponseDto result = boardService.update(boardId, requestDto);
-            return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
-        }catch (Exception ex){
-            ex.printStackTrace();
-            return new ResponseEntity<>(ResponseDto.fail(ex.getMessage()), HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @DeleteMapping("/{boardId}")
-    public ResponseEntity<ResponseDto<?>> delete(@PathVariable("boardId") Long boardId) {
-        boardService.delete(boardId);
-        return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.NO_CONTENT);
-    }
+//    @GetMapping("/{boardId}")
+//    public ResponseEntity<ResponseDto<?>> getDetail(@PathVariable("boardId") Long boardId) {
+//        BoardTotalDetailResponseDto result = boardProjectFacade.getDetail(boardId);
+//        return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
+//    }
+//
+//    @PostMapping("")
+//    public ResponseEntity<ResponseDto<?>> create(@RequestBody BoardProjectCreateRequestDto requestDto) {
+//        BoardProjectCreateResponseDto result = boardProjectFacade.create(requestDto);
+//        return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
+//    }
+//
+//    @PatchMapping("/{boardId}")
+//    public ResponseEntity<ResponseDto<?>> update(@PathVariable("boardId") Long boardId, @RequestBody BoardProjectUpdateRequestDto requestDto) {
+//        try{
+//            BoardProjectUpdateResponseDto result = boardService.update(boardId, requestDto);
+//            return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
+//        }catch (Exception ex){
+//            ex.printStackTrace();
+//            return new ResponseEntity<>(ResponseDto.fail(ex.getMessage()), HttpStatus.BAD_REQUEST);
+//        }
+//    }
+//
+//    @DeleteMapping("/{boardId}")
+//    public ResponseEntity<ResponseDto<?>> delete(@PathVariable("boardId") Long boardId) {
+//        boardService.delete(boardId);
+//        return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.NO_CONTENT);
+//    }
 }

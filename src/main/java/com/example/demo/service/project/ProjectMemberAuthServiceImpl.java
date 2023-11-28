@@ -21,4 +21,10 @@ public class ProjectMemberAuthServiceImpl implements ProjectMemberAuthService {
     public ProjectMemberAuth findProjectMemberAuthById(Long id){
         return projectMemberAuthRepository.findById(1L).orElseThrow(() -> ProjectMemberAuthCustomException.NOT_FOUND_PROJECT_MEMBER_AUTH);
     }
+
+    public ProjectMemberAuth findTopByOrderByIdDesc(){
+        return projectMemberAuthRepository
+                .findTopByOrderByIdDesc()
+                .orElseThrow(() -> ProjectMemberAuthCustomException.NOT_FOUND_PROJECT_MEMBER_AUTH);
+    }
 }

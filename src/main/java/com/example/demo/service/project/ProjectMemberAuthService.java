@@ -8,4 +8,6 @@ public interface ProjectMemberAuthService {
     public ProjectMemberAuth save(ProjectMemberAuth projectMemberAuth);
 
     public ProjectMemberAuth findProjectMemberAuthById(Long id);
+
+    public ProjectMemberAuth findTopByOrderByIdDesc();
 }

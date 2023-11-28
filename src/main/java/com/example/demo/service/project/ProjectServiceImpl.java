@@ -70,38 +70,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 
 
-    /**
-     * 참여 수락하기
-     * TODO : 사용자 jwt token으로 사용하기
-     * @param projectId
-     * @param projectConfirmRequestDto
-     */
-    public void confirm(Long projectId, ProjectConfirmRequestDto projectConfirmRequestDto) {
-        Project project = projectRepository
-                        .findById(projectId)
-                        .orElseThrow(() -> ProjectCustomException.NOT_FOUND_PROJECT);
 
-        User user = userRepository.findById(1L).orElseThrow(() -> UserCustomException.NOT_FOUND_USER);
-
-        ProjectMemberAuth projectMemberAuth = projectMemberAuthRepository
-                .findTopByOrderByIdDesc()
-                .orElseThrow(() -> ProjectMemberAuthCustomException.NOT_FOUND_PROJECT_MEMBER_AUTH);
-
-        Position position = positionRepository
-                        .findById(projectConfirmRequestDto.getPositionId())
-                        .orElseThrow(() -> PositionCustomException.NOT_FOUND_POSITION);
-
-        ProjectMember projectMember =
-                ProjectMember.builder()
-                        .project(project)
-                        .user(user)
-                        .projectMemberAuth(projectMemberAuth)
-                        .status(ProjectMemberStatus.PARTICIPATING)
-                        .position(position)
-                        .build();
-
-        projectMemberRepository.save(projectMember);
-    }
 
     /**
      * 프로젝트 종료하기

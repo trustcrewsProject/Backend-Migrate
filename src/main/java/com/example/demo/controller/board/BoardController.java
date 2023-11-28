@@ -4,7 +4,9 @@ import com.example.demo.dto.board.request.BoardSearchRequestDto;
 import com.example.demo.dto.board.response.BoardSearchResponseDto;
 import com.example.demo.dto.board.response.BoardTotalDetailResponseDto;
 import com.example.demo.dto.board_project.request.BoardProjectCreateRequestDto;
+import com.example.demo.dto.board_project.request.BoardProjectUpdateRequestDto;
 import com.example.demo.dto.board_project.response.BoardProjectCreateResponseDto;
+import com.example.demo.dto.board_project.response.BoardProjectUpdateResponseDto;
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.service.board.BoardFacade;
 import com.example.demo.service.board.BoardService;
@@ -48,7 +50,7 @@ public class BoardController {
     @PatchMapping("/{boardId}")
     public ResponseEntity<ResponseDto<?>> update(@PathVariable("boardId") Long boardId, @RequestBody BoardProjectUpdateRequestDto requestDto) {
         try{
-            BoardProjectUpdateResponseDto result = boardProjectFacade.update(boardId, requestDto);
+            BoardProjectUpdateResponseDto result = boardFacade.update(boardId, requestDto);
             return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
         }catch (Exception ex){
             ex.printStackTrace();

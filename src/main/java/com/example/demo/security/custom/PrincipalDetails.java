@@ -17,6 +17,7 @@ public class PrincipalDetails implements UserDetails {
     private String email;
     private String password;
     private String nickname;
+    private String profileImgSrc;
     private String role;
 
     public PrincipalDetails(User user) {
@@ -24,6 +25,7 @@ public class PrincipalDetails implements UserDetails {
         this.email = user.getEmail();
         this.password = user.getPassword();
         this.nickname = user.getNickname();
+        this.profileImgSrc = user.getProfileImgSrc();
         this.role = user.getRole().name();
     }
 

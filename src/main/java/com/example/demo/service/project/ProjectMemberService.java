@@ -5,8 +5,14 @@ import com.example.demo.model.project.ProjectMember;
 import com.example.demo.model.project.ProjectMemberAuth;
 import com.example.demo.model.user.User;
 
+import java.util.List;
+
 public interface ProjectMemberService {
 
     public ProjectMember toProjectMemberEntity(Project project, User user, ProjectMemberAuth projectMemberAuth);
+
+    public ProjectMember findById(Long id);
     public ProjectMember save(ProjectMember projectMember);
+
+    public List<ProjectMember> findProjectsMemberByProject(Project project);
 }

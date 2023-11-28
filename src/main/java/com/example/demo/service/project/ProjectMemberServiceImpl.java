@@ -12,6 +12,8 @@ import com.example.demo.repository.project.ProjectMemberRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class ProjectMemberServiceImpl implements ProjectMemberService{
@@ -25,6 +27,15 @@ public class ProjectMemberServiceImpl implements ProjectMemberService{
                 .status(ProjectMemberStatus.PARTICIPATING)
                 .position(project.getUser().getPosition())
                 .build();
+    }
+
+    @Override
+    public ProjectMember findById(Long id) {
+        return projectMemberRepository.findById(id).orElseThrow(() -> ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER);
+    }
+
+    public List<ProjectMember> findProjectsMemberByProject(Project project){
+        return projectMemberRepository.findProjectsMemberByProject(project).orElseThrow(() -> ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER);
     }
 
     @Override

@@ -78,10 +78,7 @@ public class ProjectServiceImpl implements ProjectService {
      * @param projectId
      */
     public void end(Long projectId) {
-        Project project = projectRepository
-                        .findById(projectId)
-                        .orElseThrow(() -> ProjectCustomException.NOT_FOUND_PROJECT);
-
+        Project project = findById(projectId);
         project.endProject();
     }
 }

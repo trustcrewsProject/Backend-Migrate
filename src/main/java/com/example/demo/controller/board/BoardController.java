@@ -8,7 +8,7 @@ import com.example.demo.dto.board_project.request.BoardProjectUpdateRequestDto;
 import com.example.demo.dto.board_project.response.BoardProjectCreateResponseDto;
 import com.example.demo.dto.board_project.response.BoardProjectUpdateResponseDto;
 import com.example.demo.dto.common.ResponseDto;
-import com.example.demo.service.board.BoardProjectFacade;
+import com.example.demo.service.board.BoardFacade;
 import com.example.demo.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,7 +26,7 @@ import java.util.Optional;
 public class BoardController {
 
     private final BoardService boardService;
-    private final BoardProjectFacade boardProjectFacade;
+    private final BoardFacade boardFacade;
 
     @PostMapping(value = {"/search", "/search/{page}"})
     public ResponseEntity<ResponseDto<?>> search(@RequestBody BoardSearchRequestDto dto, @PathVariable("page")Optional<Integer> page) {
@@ -43,14 +43,14 @@ public class BoardController {
 
     @PostMapping("")
     public ResponseEntity<ResponseDto<?>> create(@RequestBody BoardProjectCreateRequestDto requestDto) {
-        BoardProjectCreateResponseDto result = boardProjectFacade.create(requestDto);
+        BoardProjectCreateResponseDto result = boardFacade.create(requestDto);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 
     @PatchMapping("/{boardId}")
     public ResponseEntity<ResponseDto<?>> update(@PathVariable("boardId") Long boardId, @RequestBody BoardProjectUpdateRequestDto requestDto) {
         try{
-            BoardProjectUpdateResponseDto result = boardProjectFacade.update(boardId, requestDto);
+            BoardProjectUpdateResponseDto result = boardFacade.update(boardId, requestDto);
             return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
         }catch (Exception ex){
             ex.printStackTrace();

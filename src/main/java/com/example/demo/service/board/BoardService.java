@@ -2,6 +2,7 @@ package com.example.demo.service.board;
 
 import com.example.demo.dto.board.request.BoardSearchRequestDto;
 import com.example.demo.dto.board.response.BoardSearchResponseDto;
+import com.example.demo.dto.board.response.BoardTotalDetailResponseDto;
 import com.example.demo.model.board.Board;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,4 +18,6 @@ public interface BoardService {
     public Board findBoardById(Long boardId);
 
     public Board save(Board board);
+
+    public BoardTotalDetailResponseDto getDetail(Long boardId);
 }

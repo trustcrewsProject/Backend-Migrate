@@ -35,11 +35,11 @@ public class BoardController {
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 
-//    @GetMapping("/{boardId}")
-//    public ResponseEntity<ResponseDto<?>> getDetail(@PathVariable("boardId") Long boardId) {
-//        BoardTotalDetailResponseDto result = boardProjectFacade.getDetail(boardId);
-//        return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
-//    }
+    @GetMapping("/{boardId}")
+    public ResponseEntity<ResponseDto<?>> getDetail(@PathVariable("boardId") Long boardId) {
+        BoardTotalDetailResponseDto result = boardService.getDetail(boardId);
+        return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
+    }
 //
 //    @PostMapping("")
 //    public ResponseEntity<ResponseDto<?>> create(@RequestBody BoardProjectCreateRequestDto requestDto) {

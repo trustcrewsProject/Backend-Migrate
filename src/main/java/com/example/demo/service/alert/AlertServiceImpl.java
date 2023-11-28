@@ -5,6 +5,7 @@ import com.example.demo.global.exception.customexception.AlertCustomException;
 import com.example.demo.model.alert.Alert;
 import com.example.demo.model.position.Position;
 import com.example.demo.model.project.Project;
+import com.example.demo.model.project.ProjectMember;
 import com.example.demo.model.user.User;
 import com.example.demo.repository.alert.AlertRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,18 @@ public class AlertServiceImpl implements AlertService {
                 .project(project)
                 .checkUser(project.getUser())
                 .applyUser(user)
+                .content("프로젝트 지원했습니다.")
+                .position(position)
+                .type(AlertType.RECRUIT)
+                .checked_YN(false)
+                .build();
+    }
+
+    public Alert toAlertEntity(ProjectMember projectMember, Position position){
+        return Alert.builder()
+                .project(projectMember.getProject())
+                .checkUser(projectMember.getProject().getUser())
+                .applyUser(projectMember.getUser())
                 .content("프로젝트 지원했습니다.")
                 .position(position)
                 .type(AlertType.RECRUIT)

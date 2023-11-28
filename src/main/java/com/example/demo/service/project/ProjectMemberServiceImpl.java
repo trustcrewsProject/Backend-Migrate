@@ -44,43 +44,15 @@ public class ProjectMemberServiceImpl implements ProjectMemberService{
         return projectMemberRepository.save(projectMember);
     }
 
-
-    /**
-     * 프로젝트 멤버 탈퇴 알림 보내기
-     *
-     * @param projectMemberId
-     */
-//    public void sendWithdrawlAlert(Long projectMemberId) {
-//        ProjectMember projectMember =
-//                projectMemberRepository
-//                        .findById(projectMemberId)
-//                        .orElseThrow(() -> ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER);
-//
-//        Alert alert =
-//                Alert.builder()
-//                        .project(projectMember.getProject())
-//                        .checkUser(projectMember.getProject().getUser())
-//                        .applyUser(projectMember.getUser())
-//                        .content("프로젝트 탈퇴")
-//                        .type(AlertType.WITHDRWAL)
-//                        .checked_YN(false)
-//                        .build();
-//
-//        alertRepository.save(alert);
-//    }
-
     /**
      * 프로젝트 멤버 탈퇴 수락하기
      *
      * @param projectMemberId
      */
-//    public void withdrawlConfirm(Long projectMemberId) {
-//        ProjectMember projectMember =
-//                projectMemberRepository
-//                        .findById(projectMemberId)
-//                        .orElseThrow(() -> ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER);
-//        projectMemberRepository.delete(projectMember);
-//    }
+    public void withdrawlConfirm(Long projectMemberId) {
+        ProjectMember projectMember = findById(projectMemberId);
+        projectMemberRepository.delete(projectMember);
+    }
 
     /**
      * 프로젝트 멤버 강제 탈퇴하기.

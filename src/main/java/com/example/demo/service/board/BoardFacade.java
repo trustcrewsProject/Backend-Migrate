@@ -18,7 +18,7 @@ import com.example.demo.model.user.UserProjectHistory;
 import com.example.demo.service.position.PositionService;
 import com.example.demo.service.project.ProjectMemberAuthService;
 import com.example.demo.service.project.ProjectMemberService;
-import com.example.demo.service.project.ProjectService;
+import com.example.demo.service.project.ProjectServiceImpl;
 import com.example.demo.service.project.ProjectTechnologyService;
 import com.example.demo.service.technology_stack.TechnologyStackService;
 import com.example.demo.service.trust_grade.TrustGradeService;
@@ -33,11 +33,11 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class BoardProjectFacade {
+public class BoardFacade {
     private final BoardService boardService;
     private final UserService userService;
     private final TrustGradeService trustGradeService;
-    private final ProjectService projectService;
+    private final ProjectServiceImpl projectServiceImpl;
     private final TechnologyStackService technologyStackService;
     private final ProjectTechnologyService projectTechnologyService;
     private final PositionService positionService;
@@ -61,7 +61,7 @@ public class BoardProjectFacade {
 
         // project 생성
         Project project = dto.getProject().toProjectEntity(trustGrade, tempUser);
-        Project savedProject = projectService.save(project);
+        Project savedProject = projectServiceImpl.save(project);
 
         //프로젝트 기술 생성
         for (Long technolgoyId : dto.getProject().getTechnologyIds()) {

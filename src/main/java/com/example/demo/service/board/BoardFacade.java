@@ -1,5 +1,6 @@
 package com.example.demo.service.board;
 
+import com.example.demo.constant.ProjectMemberStatus;
 import com.example.demo.dto.board.response.BoardCreateResponseDto;
 import com.example.demo.dto.board.response.BoardUpdateResponseDto;
 import com.example.demo.dto.board_project.request.BoardProjectCreateRequestDto;
@@ -63,7 +64,7 @@ public class BoardFacade {
 
     @Transactional
     public BoardProjectCreateResponseDto create(BoardProjectCreateRequestDto dto) {
-        User tempUser = userService.getUserById(1L);
+        User tempUser = userService.findById(1L);
 
         //신뢰등급 설정
         TrustGrade trustGrade = trustGradeService.getTrustGradeById(dto.getProject().getTrustGradeId());
@@ -96,7 +97,7 @@ public class BoardFacade {
         //프로젝트 멤버 권한 일반인으로 설정
         //프로젝트 멤버 생성
         ProjectMemberAuth projectMemberAuth = projectMemberAuthService.findProjectMemberAuthById(1L);
-        ProjectMember projectMember = projectMemberService.toProjectMemberEntity(project, tempUser,projectMemberAuth);
+        ProjectMember projectMember = projectMemberService.toProjectMemberEntity(project, tempUser,projectMemberAuth, ProjectMemberStatus.PARTICIPATING, project.getUser().getPosition());
         projectMemberService.save(projectMember);
 
         //사용자 프로젝트 이력 생성
@@ -120,7 +121,7 @@ public class BoardFacade {
     public BoardProjectUpdateResponseDto update(Long boardId, BoardProjectUpdateRequestDto dto){
         Board board = boardService.findById(boardId);
         Project project = board.getProject();
-        User tempUser = userService.getUserById(1L); // 나중에 Security로 고쳐야 함.
+        User tempUser = userService.findById(1L); // 나중에 Security로 고쳐야 함.
 
         TrustGrade trustGrade = trustGradeService.getTrustGradeById(dto.getProject().getTrustGradeId());
 

@@ -4,6 +4,7 @@ import com.example.demo.constant.AlertType;
 import com.example.demo.constant.ProjectMemberStatus;
 import com.example.demo.global.exception.customexception.ProjectMemberCustomException;
 import com.example.demo.model.alert.Alert;
+import com.example.demo.model.position.Position;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
 import com.example.demo.model.project.ProjectMemberAuth;
@@ -19,13 +20,13 @@ import java.util.List;
 public class ProjectMemberServiceImpl implements ProjectMemberService{
     private final ProjectMemberRepository projectMemberRepository;
 
-    public ProjectMember toProjectMemberEntity(Project project, User user, ProjectMemberAuth projectMemberAuth){
+    public ProjectMember toProjectMemberEntity(Project project, User user, ProjectMemberAuth projectMemberAuth, ProjectMemberStatus projectMemberStatus, Position position){
         return ProjectMember.builder()
                 .project(project)
                 .user(user)
                 .projectMemberAuth(projectMemberAuth)
-                .status(ProjectMemberStatus.PARTICIPATING)
-                .position(project.getUser().getPosition())
+                .status(projectMemberStatus)
+                .position(position)
                 .build();
     }
 

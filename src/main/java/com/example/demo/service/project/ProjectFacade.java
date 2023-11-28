@@ -1,6 +1,8 @@
 package com.example.demo.service.project;
 
+import com.example.demo.constant.ProjectMemberStatus;
 import com.example.demo.dto.position.response.PositionResponseDto;
+import com.example.demo.dto.project.request.ProjectConfirmRequestDto;
 import com.example.demo.dto.project.request.ProjectParticipateRequestDto;
 import com.example.demo.dto.project.response.ProjectMeResponseDto;
 import com.example.demo.dto.project.response.ProjectSpecificDetailResponseDto;
@@ -12,10 +14,15 @@ import com.example.demo.dto.user.response.UserMyProjectResponseDto;
 import com.example.demo.dto.user.response.UserProjectDetailResponseDto;
 import com.example.demo.dto.user.response.UserProjectResponseDto;
 import com.example.demo.dto.work.response.WorkProjectDetailResponseDto;
+import com.example.demo.global.exception.customexception.PositionCustomException;
+import com.example.demo.global.exception.customexception.ProjectCustomException;
+import com.example.demo.global.exception.customexception.ProjectMemberAuthCustomException;
+import com.example.demo.global.exception.customexception.UserCustomException;
 import com.example.demo.model.alert.Alert;
 import com.example.demo.model.position.Position;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
+import com.example.demo.model.project.ProjectMemberAuth;
 import com.example.demo.model.user.User;
 import com.example.demo.model.work.Work;
 import com.example.demo.service.alert.AlertService;
@@ -38,6 +45,8 @@ public class ProjectFacade {
     private WorkService workService;
     private PositionService positionService;
     private AlertService alertService;
+
+    private ProjectMemberAuthService projectMemberAuthService;
 
     /**
      * 내 프로젝트 목록 조회
@@ -134,5 +143,21 @@ public class ProjectFacade {
 
         Alert alert = alertService.toAlertEntity(project,user,position);
         alertService.save(alert);
+    }
+
+    /**
+     * 참여 수락하기
+     * TODO : 사용자 jwt token으로 사용하기
+     * @param projectId
+     * @param projectConfirmRequestDto
+     */
+    public void confirm(Long projectId, ProjectConfirmRequestDto projectConfirmRequestDto) {
+        Project project = projectService.findById(projectId);
+        User user = userService.findById(1L);
+        ProjectMemberAuth projectMemberAuth = projectMemberAuthService.findTopByOrderByIdDesc();
+        Position position = positionService.findById(projectConfirmRequestDto.getPositionId());
+
+        ProjectMember projectMember = projectMemberService.toProjectMemberEntity(project, user, projectMemberAuth,ProjectMemberStatus.PARTICIPATING, position);
+        projectMemberService.save(projectMember);
     }
 }

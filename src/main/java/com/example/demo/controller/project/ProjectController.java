@@ -51,7 +51,7 @@ public class ProjectController {
     public ResponseEntity<ResponseDto<?>> confirm(
             @PathVariable("projectId") Long projectId,
             @RequestBody @Valid ProjectConfirmRequestDto projectConfirmRequestDto) {
-        projectServiceImpl.confirm(projectId, projectConfirmRequestDto);
+        projectFacade.confirm(projectId, projectConfirmRequestDto);
         return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.OK);
     }
 

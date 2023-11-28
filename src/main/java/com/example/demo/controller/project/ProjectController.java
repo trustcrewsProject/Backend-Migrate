@@ -5,7 +5,8 @@ import com.example.demo.dto.project.request.ProjectConfirmRequestDto;
 import com.example.demo.dto.project.request.ProjectParticipateRequestDto;
 import com.example.demo.dto.project.response.ProjectMeResponseDto;
 import com.example.demo.dto.project.response.ProjectSpecificDetailResponseDto;
-import com.example.demo.service.project.ProjectService;
+import com.example.demo.service.project.ProjectFacade;
+import com.example.demo.service.project.ProjectServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +20,13 @@ import java.util.List;
 @AllArgsConstructor
 public class ProjectController {
 
-    public final ProjectService projectService;
+    public final ProjectServiceImpl projectServiceImpl;
+    public final ProjectFacade projectFacade;
 
     @GetMapping("/me")
     public ResponseEntity<ResponseDto<?>> getMyProjects() {
         try{
-            List<ProjectMeResponseDto> result = projectService.getMyProjects();
+            List<ProjectMeResponseDto> result = projectFacade.getMyProjects();
             return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
         }catch (Exception ex){
             return new ResponseEntity<>(ResponseDto.fail(ex.getMessage()), HttpStatus.BAD_REQUEST);
@@ -33,7 +35,7 @@ public class ProjectController {
 
     @GetMapping("/{projectId}")
     public ResponseEntity<ResponseDto<?>> getDetail(@PathVariable("projectId") Long projectId) {
-        ProjectSpecificDetailResponseDto result = projectService.getDetail(projectId);
+        ProjectSpecificDetailResponseDto result = projectFacade.getDetail(projectId);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 
@@ -41,7 +43,7 @@ public class ProjectController {
     public ResponseEntity<ResponseDto<?>> participate(
             @PathVariable("projectId") Long projectId,
             @RequestBody @Valid ProjectParticipateRequestDto projectParticipateRequestDto) {
-        projectService.sendParticipateAlert(projectId, projectParticipateRequestDto);
+        projectServiceImpl.sendParticipateAlert(projectId, projectParticipateRequestDto);
         return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.OK);
     }
 
@@ -49,13 +51,13 @@ public class ProjectController {
     public ResponseEntity<ResponseDto<?>> confirm(
             @PathVariable("projectId") Long projectId,
             @RequestBody @Valid ProjectConfirmRequestDto projectConfirmRequestDto) {
-        projectService.confirm(projectId, projectConfirmRequestDto);
+        projectServiceImpl.confirm(projectId, projectConfirmRequestDto);
         return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.OK);
     }
 
     @PostMapping("/{projectId}/end")
     public ResponseEntity<ResponseDto<?>> end(@PathVariable("projectId") Long projectId) {
-        projectService.end(projectId);
+        projectServiceImpl.end(projectId);
         return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.OK);
     }
 }

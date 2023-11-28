@@ -1,6 +1,14 @@
 package com.example.demo.service.work;
 
+import com.example.demo.model.project.Project;
+import com.example.demo.model.work.Work;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public class WorkService {}
+public interface WorkService {
+    public Work findById(Long id);
+
+    public List<Work> findWorksByProject(Project project);
+}

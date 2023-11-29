@@ -56,6 +56,8 @@ public class SecurityConfig {
                 .disable()
                 .httpBasic()
                 .disable()
+                .apply(new JsonWebTokenAuthenticationFilterConfigurer())
+                .and()
                 .build();
     }
 

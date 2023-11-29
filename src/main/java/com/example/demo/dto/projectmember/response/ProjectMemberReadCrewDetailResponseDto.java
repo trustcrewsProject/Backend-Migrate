@@ -1,4 +1,4 @@
-package com.example.demo.dto.project.response;
+package com.example.demo.dto.projectmember.response;
 
 import com.example.demo.constant.ProjectMemberStatus;
 import com.example.demo.dto.position.response.PositionResponseDto;

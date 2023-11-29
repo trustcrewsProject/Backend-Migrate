@@ -1,23 +1,31 @@
 package com.example.demo.service.project;
 
 import com.example.demo.dto.position.response.PositionResponseDto;
-import com.example.demo.dto.project.response.ProjectMemberReadCrewDetailResponseDto;
+import com.example.demo.dto.projectmember.response.ProjectMemberAuthResponseDto;
+import com.example.demo.dto.projectmember.response.ProjectMemberDetailResponseDto;
+import com.example.demo.dto.projectmember.response.ProjectMemberReadCrewDetailResponseDto;
+import com.example.demo.dto.projectmember.response.ProjectMemberReadProjectCrewsResponseDto;
 import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
 import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
+import com.example.demo.dto.user.response.UserReadProjectCrewResponseDto;
 import com.example.demo.model.alert.Alert;
+import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
+import com.example.demo.model.project.ProjectMemberAuth;
 import com.example.demo.model.technology_stack.TechnologyStack;
 import com.example.demo.model.user.UserTechnologyStack;
 import com.example.demo.service.alert.AlertService;
 import com.example.demo.dto.user.response.UserCrewDetailResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ProjectMemberFacade {
 
     private final ProjectMemberService projectMemberService;
@@ -41,6 +49,7 @@ public class ProjectMemberFacade {
      * 유저 정보들, 유저 기술들, 프로젝트 개수, 신뢰점수 이력들
      * @param projectMemberId
      */
+    @Transactional(readOnly = true)
     public ProjectMemberReadCrewDetailResponseDto getCrewDetail(Long projectMemberId){
         ProjectMember projectMember = projectMemberService.findById(projectMemberId);
 
@@ -67,5 +76,28 @@ public class ProjectMemberFacade {
                 userCrewDetailResponseDto,
                 positionResponseDto
         );
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProjectMemberReadProjectCrewsResponseDto> getCrewsByProject(Long projectId){
+        Project project = projectService.findById(projectId);
+
+        List<ProjectMemberReadProjectCrewsResponseDto> result = new ArrayList<>();
+        for (ProjectMember projectMember : project.getProjectMembers()) {
+            UserReadProjectCrewResponseDto userReadProjectCrewResponseDto = UserReadProjectCrewResponseDto.of(projectMember.getUser());
+            ProjectMemberAuthResponseDto projectMemberAuthResponseDto = ProjectMemberAuthResponseDto.of(projectMember.getProjectMemberAuth());
+            PositionResponseDto positionResponseDto = PositionResponseDto.of(projectMember.getPosition());
+
+            ProjectMemberReadProjectCrewsResponseDto projectMemberReadProjectCrewsResponseDto = ProjectMemberReadProjectCrewsResponseDto.of(
+                    projectMember,
+                    userReadProjectCrewResponseDto,
+                    projectMemberAuthResponseDto,
+                    positionResponseDto
+            );
+            result.add(projectMemberReadProjectCrewsResponseDto);
+        }
+
+
+        return result;
     }
 }

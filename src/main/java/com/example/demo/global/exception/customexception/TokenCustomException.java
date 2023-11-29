@@ -19,6 +19,9 @@ public class TokenCustomException extends CustomException{
     public static final TokenCustomException MALFORMED_TOKEN =
             new TokenCustomException(TokenErrorCode.MALFORMED_TOKEN);
 
+    public static final TokenCustomException DOES_NOT_REFRESH_TOKEN =
+            new TokenCustomException(TokenErrorCode.DOES_NOT_REFRESH_TOKEN);
+
     public TokenCustomException(TokenErrorCode tokenErrorCode) {
         super(tokenErrorCode);
     }

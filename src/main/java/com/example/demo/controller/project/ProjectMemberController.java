@@ -1,13 +1,16 @@
 package com.example.demo.controller.project;
 
 import com.example.demo.dto.common.ResponseDto;
-import com.example.demo.dto.project.response.ProjectMemberReadCrewDetailResponseDto;
+import com.example.demo.dto.projectmember.response.ProjectMemberReadCrewDetailResponseDto;
+import com.example.demo.dto.projectmember.response.ProjectMemberReadProjectCrewsResponseDto;
 import com.example.demo.service.project.ProjectMemberFacade;
 import com.example.demo.service.project.ProjectMemberService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/projectmember")
@@ -41,6 +44,12 @@ public class ProjectMemberController {
     @GetMapping("/{projectMemberId}")
     public ResponseEntity<ResponseDto<?>> getDetail(@PathVariable("projectMemberId") Long projectMemberId) {
         ProjectMemberReadCrewDetailResponseDto result = projectMemberFacade.getCrewDetail(projectMemberId);
+        return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
+    }
+
+    @GetMapping("/project/{projectId}")
+    public ResponseEntity<ResponseDto<?>> getCrewDetailsByProject(@PathVariable("projectId") Long projectId){
+        List<ProjectMemberReadProjectCrewsResponseDto> result = projectMemberFacade.getCrewsByProject(projectId);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 }

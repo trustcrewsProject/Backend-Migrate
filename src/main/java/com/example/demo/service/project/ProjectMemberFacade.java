@@ -2,13 +2,19 @@ package com.example.demo.service.project;
 
 import com.example.demo.dto.position.response.PositionResponseDto;
 import com.example.demo.dto.project.response.ProjectMemberReadCrewDetailResponseDto;
+import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
 import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
 import com.example.demo.model.alert.Alert;
 import com.example.demo.model.project.ProjectMember;
+import com.example.demo.model.technology_stack.TechnologyStack;
+import com.example.demo.model.user.UserTechnologyStack;
 import com.example.demo.service.alert.AlertService;
 import com.example.demo.dto.user.response.UserCrewDetailResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +46,19 @@ public class ProjectMemberFacade {
         int projectCount = projectService.countProjectsByUser(projectMember.getUser());
         TrustGradeResponseDto trustGradeResponseDto = TrustGradeResponseDto.of(projectMember.getProject().getTrustGrade());
         PositionResponseDto positionResponseDto = PositionResponseDto.of(projectMember.getPosition());
-        UserCrewDetailResponseDto userCrewDetailResponseDto = UserCrewDetailResponseDto.of(projectMember.getUser(),positionResponseDto, trustGradeResponseDto);
+        List<TechnologyStackInfoResponseDto> technologyStackInfoResponseDtoList = new ArrayList<>();
+
+        for(UserTechnologyStack userTechnologyStack : projectMember.getUser().getTechStacks()){
+            TechnologyStack technologyStack = userTechnologyStack.getTechnologyStack();
+
+            TechnologyStackInfoResponseDto technologyStackInfoResponseDto = TechnologyStackInfoResponseDto.of(
+                    technologyStack.getId(),
+                    technologyStack.getName()
+            );
+            technologyStackInfoResponseDtoList.add(technologyStackInfoResponseDto);
+        }
+
+        UserCrewDetailResponseDto userCrewDetailResponseDto = UserCrewDetailResponseDto.of(projectMember.getUser(),positionResponseDto, trustGradeResponseDto, technologyStackInfoResponseDtoList);
 
         return ProjectMemberReadCrewDetailResponseDto.of(
                 projectMember,

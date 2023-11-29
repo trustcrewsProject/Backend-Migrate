@@ -2,6 +2,7 @@ package com.example.demo.repository.trust_score;
 
 import com.example.demo.dto.trust_score.ProjectUserHistoryDto;
 import com.example.demo.model.trust_score.QTrustScoreHistory;
+import com.example.demo.model.work.QWork;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -21,17 +22,21 @@ public class TrustScoreHistoryRepositoryImpl implements TrustScoreHistoryReposit
     @Override
     public List<ProjectUserHistoryDto> getProjectUserHistory(Long projectId, Long userId) {
         QTrustScoreHistory trustScoreHistory = QTrustScoreHistory.trustScoreHistory;
+        QWork work = QWork.work;
         return jpaQueryFactory
-                .select(trustScoreHistory.workId, trustScoreHistory.score)
+                .select(trustScoreHistory.workId, trustScoreHistory.score, work.completeStatus, work.content, trustScoreHistory.createDate)
                 .from(trustScoreHistory)
                 .where(trustScoreHistory.projectId.eq(projectId)
                         .and(trustScoreHistory.userId.eq(userId)))
-                .orderBy(trustScoreHistory.createDate.asc())
+                .join(work)
+                .on(trustScoreHistory.workId.eq(work.id))
                 .fetch()
                 .stream()
                 .map(history -> ProjectUserHistoryDto.builder()
-                        .workId(history.get(trustScoreHistory.workId))
-                        .scoreChange(history.get(trustScoreHistory.score))
+                        .id(history.get(trustScoreHistory.workId))
+                        .completeStatus(history.get(work.completeStatus))
+                        .trustScore(history.get(trustScoreHistory.score))
+                        .date(history.get(trustScoreHistory.createDate))
                         .build())
                 .collect(Collectors.toList());
     }

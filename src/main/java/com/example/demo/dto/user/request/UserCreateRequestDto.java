@@ -14,7 +14,7 @@ public class UserCreateRequestDto {
     private String email;
 
     @NotBlank(message = "비밀번호는 필수 입력 값입니다.")
-    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{6,12}$")
+    @Pattern(regexp = "^(?=.*[a-zA-Z0-9])(?=.*[^a-zA-Z0-9]).{6,12}$")
     private String password;
 
     @NotBlank(message = "닉네임은 필수 입력 값입니다.")

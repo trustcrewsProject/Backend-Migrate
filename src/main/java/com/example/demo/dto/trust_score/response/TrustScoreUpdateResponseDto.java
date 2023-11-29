@@ -9,5 +9,6 @@ import javax.validation.constraints.NotNull;
 public class TrustScoreUpdateResponseDto {
     @NotNull(message = "사용자값은 필수입니다.")
     private Long userId;
-    private int score;
+    private int totalScore;
+    private int scoreChange;
 }

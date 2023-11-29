@@ -28,7 +28,7 @@ public class WorkServiceImpl implements WorkService{
 
     @Override
     public Work findFirstByProjectAndUserOrderByProjectDesc(Project project, User user) {
-        return workRepository.findFirstByProjectAndAssignedUserIdAndOrderByProjectDesc(project, user)
+        return workRepository.findFirstByProjectAndAssignedUserIdOrderByProjectDesc(project, user)
                 .orElseThrow(() -> WorkCustomException.NOT_FOUND_WORK);
     }
 

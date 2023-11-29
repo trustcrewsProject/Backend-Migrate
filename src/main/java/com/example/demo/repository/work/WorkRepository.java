@@ -14,5 +14,5 @@ public interface WorkRepository extends JpaRepository<Work, Long> {
 
     Optional<List<Work>> findWorksByProjectAndMilestone(Project project, Milestone milestone);
 
-    Optional<Work> findFirstByProjectAndAssignedUserIdAndOrderByProjectDesc(Project project, User user);
+    Optional<Work> findFirstByProjectAndAssignedUserIdOrderByProjectDesc(Project project, User user);
 }

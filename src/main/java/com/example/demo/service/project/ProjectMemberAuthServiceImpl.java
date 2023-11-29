@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class ProjectMemberAuthServiceImpl implements ProjectMemberAuthService {
-    private final TrustScoreRepository trustScoreRepository;
     private final ProjectMemberAuthRepository projectMemberAuthRepository;
 
     @Override

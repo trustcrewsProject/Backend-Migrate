@@ -14,7 +14,11 @@ public class BoardPositionServiceImpl implements BoardPositionService {
     private final BoardPositionRepository boardPositionRepository;
 
     public BoardPosition getBoardPositionEntity(Board board, Position position){
-        return new BoardPosition(board, position);
+        return BoardPosition
+                .builder()
+                .board(board)
+                .position(position)
+                .build();
     }
 
     @Override

@@ -10,9 +10,9 @@ import java.util.Date;
 @Setter
 @Builder
 public class ProjectUserHistoryDto {
-    Long workId;
-    Long workStatus;
-    String workName;
-    Integer scoreChange;
-    Date historyDate;
+    Long id;
+    Boolean completeStatus;
+    String name;
+    Integer trustScore;
+    Date date;
 }

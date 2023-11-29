@@ -1,4 +1,4 @@
-package com.example.demo.service.user;
+package com.example.demo.dto.user.response;
 
 import com.example.demo.constant.Role;
 import com.example.demo.dto.position.response.PositionResponseDto;

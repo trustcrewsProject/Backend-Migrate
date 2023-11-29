@@ -3,7 +3,7 @@ package com.example.demo.dto.project.response;
 import com.example.demo.constant.ProjectMemberStatus;
 import com.example.demo.dto.position.response.PositionResponseDto;
 import com.example.demo.model.project.ProjectMember;
-import com.example.demo.service.user.UserCrewDetailResponseDto;
+import com.example.demo.dto.user.response.UserCrewDetailResponseDto;
 import lombok.Builder;
 import lombok.Getter;
 

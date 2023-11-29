@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface TrustScoreHistoryRepositoryCustom {
     List<ProjectUserHistoryDto> getProjectUserHistory(Long projectId, Long userId);
+    int calculateCurrentScore(Long userId);
 }

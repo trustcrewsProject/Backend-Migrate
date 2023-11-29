@@ -20,7 +20,7 @@ public class TrustScoreController {
     @PostMapping("/api/trust-score")
     public ResponseEntity<ResponseDto<?>> updateScoreByManager(
             @RequestBody @Valid TrustScoreUpdateRequestDto requestDto) {
-        TrustScoreUpdateResponseDto responseDto = trustScoreService.updateTrustScore(requestDto);
+        TrustScoreUpdateResponseDto responseDto = trustScoreService.addPoint(requestDto);
         return new ResponseEntity<>(new ResponseDto<>("HttpStatusOK", "success", responseDto), HttpStatus.OK);
     }
 }

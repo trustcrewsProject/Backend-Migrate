@@ -4,10 +4,15 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @Builder
 public class ProjectUserHistoryDto {
     Long workId;
-    Integer score;
+    Long workStatus;
+    String workName;
+    Integer scoreChange;
+    Date historyDate;
 }

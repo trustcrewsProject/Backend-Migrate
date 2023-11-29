@@ -1,18 +1,19 @@
 package com.example.demo.model.trust_score;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
 @Table(name = "trust_score")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Getter
+@Builder
 public class TrustScore {
 
     @Id
@@ -22,7 +23,7 @@ public class TrustScore {
     /**
      * 유저자동생성식별자
      */
-    @Column
+    @Column // PK
     private Long userId;
 
     /**
@@ -36,4 +37,10 @@ public class TrustScore {
      */
     @Column
     private Date updateDate;
+    @Builder
+    public TrustScore(Long userId, int score) {
+        this.userId = userId;
+        this.score = score;
+        this.updateDate = new Date();
+    }
 }

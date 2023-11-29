@@ -7,6 +7,7 @@ import com.example.demo.model.project.ProjectMember;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -16,12 +17,14 @@ public class ProjectMemberReadProjectCrewsResponseDto {
     private UserReadProjectCrewResponseDto user;
     private ProjectMemberAuthResponseDto projectMemberAuth;
     private PositionResponseDto position;
+    private LocalDateTime lastWorkDate;
 
     public static ProjectMemberReadProjectCrewsResponseDto of(
             ProjectMember projectMember,
             UserReadProjectCrewResponseDto user,
             ProjectMemberAuthResponseDto projectMemberAuth,
-            PositionResponseDto position
+            PositionResponseDto position,
+            LocalDateTime lastWorkDate
     ) {
 
         return ProjectMemberReadProjectCrewsResponseDto.builder()
@@ -29,6 +32,7 @@ public class ProjectMemberReadProjectCrewsResponseDto {
                 .user(user)
                 .projectMemberAuth(projectMemberAuth)
                 .position(position)
+                .lastWorkDate(lastWorkDate)
                 .build();
     }
 }

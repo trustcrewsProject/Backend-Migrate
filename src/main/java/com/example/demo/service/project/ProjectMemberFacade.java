@@ -1,10 +1,7 @@
 package com.example.demo.service.project;
 
 import com.example.demo.dto.position.response.PositionResponseDto;
-import com.example.demo.dto.projectmember.response.ProjectMemberAuthResponseDto;
-import com.example.demo.dto.projectmember.response.ProjectMemberDetailResponseDto;
-import com.example.demo.dto.projectmember.response.ProjectMemberReadCrewDetailResponseDto;
-import com.example.demo.dto.projectmember.response.ProjectMemberReadProjectCrewsResponseDto;
+import com.example.demo.dto.projectmember.response.*;
 import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
 import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
 import com.example.demo.dto.user.response.UserReadProjectCrewResponseDto;
@@ -14,12 +11,15 @@ import com.example.demo.model.project.ProjectMember;
 import com.example.demo.model.project.ProjectMemberAuth;
 import com.example.demo.model.technology_stack.TechnologyStack;
 import com.example.demo.model.user.UserTechnologyStack;
+import com.example.demo.model.work.Work;
 import com.example.demo.service.alert.AlertService;
 import com.example.demo.dto.user.response.UserCrewDetailResponseDto;
+import com.example.demo.service.work.WorkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +31,7 @@ public class ProjectMemberFacade {
     private final ProjectMemberService projectMemberService;
     private final AlertService alertService;
     private final ProjectService projectService;
+    private final WorkService workService;
 
     /**
      * 프로젝트 멤버 탈퇴 알림 보내기
@@ -79,25 +80,30 @@ public class ProjectMemberFacade {
     }
 
     @Transactional(readOnly = true)
-    public List<ProjectMemberReadProjectCrewsResponseDto> getCrewsByProject(Long projectId){
+    public ProjectMemberReadTotalProjectCrewsResponseDto getCrewsByProject(Long projectId){
         Project project = projectService.findById(projectId);
 
-        List<ProjectMemberReadProjectCrewsResponseDto> result = new ArrayList<>();
+        List<ProjectMemberReadProjectCrewsResponseDto> projectMemberReadProjectCrewsResponseDtos = new ArrayList<>();
         for (ProjectMember projectMember : project.getProjectMembers()) {
             UserReadProjectCrewResponseDto userReadProjectCrewResponseDto = UserReadProjectCrewResponseDto.of(projectMember.getUser());
             ProjectMemberAuthResponseDto projectMemberAuthResponseDto = ProjectMemberAuthResponseDto.of(projectMember.getProjectMemberAuth());
             PositionResponseDto positionResponseDto = PositionResponseDto.of(projectMember.getPosition());
+            Work lastWork = workService.findFirstByProjectAndUserOrderByProjectDesc(project, projectMember.getUser());
 
             ProjectMemberReadProjectCrewsResponseDto projectMemberReadProjectCrewsResponseDto = ProjectMemberReadProjectCrewsResponseDto.of(
                     projectMember,
                     userReadProjectCrewResponseDto,
                     projectMemberAuthResponseDto,
-                    positionResponseDto
+                    positionResponseDto,
+                    lastWork.getEndDate()
             );
-            result.add(projectMemberReadProjectCrewsResponseDto);
+            projectMemberReadProjectCrewsResponseDtos.add(projectMemberReadProjectCrewsResponseDto);
         }
 
 
+        ProjectMemberReadTotalProjectCrewsResponseDto result = ProjectMemberReadTotalProjectCrewsResponseDto.of(
+                projectMemberReadProjectCrewsResponseDtos
+        );
         return result;
     }
 }

@@ -2,6 +2,7 @@ package com.example.demo.service.work;
 
 import com.example.demo.global.exception.customexception.WorkCustomException;
 import com.example.demo.model.project.Project;
+import com.example.demo.model.user.User;
 import com.example.demo.model.work.Work;
 import com.example.demo.repository.work.WorkRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,12 @@ public class WorkServiceImpl implements WorkService{
     public List<Work> findWorksByProject(Project project) {
         return workRepository
                 .findWorksByProject(project)
+                .orElseThrow(() -> WorkCustomException.NOT_FOUND_WORK);
+    }
+
+    @Override
+    public Work findFirstByProjectAndUserOrderByProjectDesc(Project project, User user) {
+        return workRepository.findFirstByProjectAndAssignedUserIdAndOrderByProjectDesc(project, user)
                 .orElseThrow(() -> WorkCustomException.NOT_FOUND_WORK);
     }
 

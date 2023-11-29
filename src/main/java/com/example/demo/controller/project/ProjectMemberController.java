@@ -3,6 +3,7 @@ package com.example.demo.controller.project;
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.dto.projectmember.response.ProjectMemberReadCrewDetailResponseDto;
 import com.example.demo.dto.projectmember.response.ProjectMemberReadProjectCrewsResponseDto;
+import com.example.demo.dto.projectmember.response.ProjectMemberReadTotalProjectCrewsResponseDto;
 import com.example.demo.service.project.ProjectMemberFacade;
 import com.example.demo.service.project.ProjectMemberService;
 import lombok.AllArgsConstructor;
@@ -49,7 +50,7 @@ public class ProjectMemberController {
 
     @GetMapping("/project/{projectId}")
     public ResponseEntity<ResponseDto<?>> getCrewDetailsByProject(@PathVariable("projectId") Long projectId){
-        List<ProjectMemberReadProjectCrewsResponseDto> result = projectMemberFacade.getCrewsByProject(projectId);
+        ProjectMemberReadTotalProjectCrewsResponseDto result = projectMemberFacade.getCrewsByProject(projectId);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 }

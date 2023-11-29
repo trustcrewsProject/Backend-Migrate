@@ -7,6 +7,9 @@ public class CommonCustomException extends CustomException {
     public static final CommonCustomException DOES_NOT_EXIST_PARAMETER_IN_METHOD =
             new CommonCustomException(CommonErrorCode.DOES_NOT_EXIST_PARAMETER_IN_METHOD);
 
+    public static final CommonCustomException INTERNAL_SERVER_ERROR =
+            new CommonCustomException(CommonErrorCode.INTERNAL_SERVER_ERROR);
+
     public CommonCustomException(CommonErrorCode commonErrorCode) {
         super(commonErrorCode);
     }

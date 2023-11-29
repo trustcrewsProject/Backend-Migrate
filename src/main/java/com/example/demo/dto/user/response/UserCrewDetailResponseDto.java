@@ -20,6 +20,7 @@ public class UserCrewDetailResponseDto {
     private TrustGradeResponseDto trustGrade;
     private int trustScore;
     private Role role;
+    private String intro;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 
@@ -33,6 +34,7 @@ public class UserCrewDetailResponseDto {
                 .trustGrade(trustGrade)
                 .trustScore(user.getTrustScore())
                 .role(user.getRole())
+                .intro(user.getIntro())
                 .createDate(user.getCreateDate())
                 .updateDate(user.getUpdateDate())
                 .build();

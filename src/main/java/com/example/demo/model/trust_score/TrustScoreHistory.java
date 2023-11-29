@@ -1,15 +1,16 @@
-package com.example.demo.model.trustscore;
+package com.example.demo.model.trust_score;
 
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
 /**
- * com.example.demo.model.trustscore.TrustScoreHistory
+ * com.example.demo.model.trust_score.TrustScoreHistory
  * <p>
  * 신뢰점수이력 Entity
  *
@@ -18,7 +19,7 @@ import java.util.Date;
  * @since 2023/11/19
  * </p>
  * <pre>
- * << 개정이력(Modification Information) >>
+ * << 개정 이력 (Modification History) >>
  *
  *     수정일        수정자           수정내용
  *  ----------    --------    ---------------------------

@@ -1,18 +1,17 @@
-package com.example.demo.service.trust_score.impl;
+package com.example.demo.service.trust_score;
 
 import com.example.demo.dto.trust_score.request.TrustScoreUpdateRequestDto;
 import com.example.demo.dto.trust_score.response.TrustScoreUpdateResponseDto;
-import com.example.demo.model.trustscore.TrustScoreHistory;
+import com.example.demo.model.trust_score.TrustScore;
+import com.example.demo.model.trust_score.TrustScoreHistory;
 import com.example.demo.repository.trust_score.TrustScoreHistoryRepository;
 import com.example.demo.repository.trust_score.TrustScoreRepository;
 import com.example.demo.repository.trust_score.TrustScoreTypeRepository;
-import com.example.demo.service.trust_score.TrustScoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-
 @Service
 @RequiredArgsConstructor
 public class TrustScoreServiceImpl implements TrustScoreService {
@@ -21,16 +20,29 @@ public class TrustScoreServiceImpl implements TrustScoreService {
     private final TrustScoreTypeRepository trustScoreTypeRepository;
     @Override
     @Transactional
-    public TrustScoreUpdateResponseDto updateTrustScore(TrustScoreUpdateRequestDto requestDto) {
-        // 신뢰점수 조회
-        int score = getScore(requestDto);
-        // 신뢰점수내역 저장
-        createAndSaveHistory(requestDto, score);
+    public TrustScoreUpdateResponseDto addPoint(TrustScoreUpdateRequestDto requestDto) {
+        Long userId = requestDto.getUserId();
+        // 요청에 맞는 신뢰점수 증감 조회
+        int scoreChange = getScore(requestDto);
+        // 신뢰점수내역 추가
+        createAndSaveHistory(requestDto, scoreChange);
+        // 신뢰점수내역 합산
+        int calculatedScore = trustScoreHistoryRepository.calculateCurrentScore(userId);
+        // 기존의 신뢰점수 테이블에 해당 유저에 대한 레코드가 없으면 생성, 있으면 업데이트
+        if (!trustScoreRepository.existsByUserId(userId)) {
+            trustScoreRepository.save(TrustScore.builder()
+                    .userId(userId)
+                    .score(calculatedScore)
+                    .updateDate(new Date())
+                    .build());
+        } else {
+            trustScoreRepository.updateUserTrustScore(userId, calculatedScore);
+        }
         // 마일리지 누적점수 업데이트
-        trustScoreRepository.updateScore(requestDto.getUserId(), score);
         return TrustScoreUpdateResponseDto.builder()
-                .userId(requestDto.getUserId())
-                .score(score)
+                .userId(userId)
+                .totalScore(calculatedScore)
+                .scoreChange(scoreChange)
                 .build();
     }
     /**

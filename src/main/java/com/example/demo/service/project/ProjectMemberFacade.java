@@ -37,6 +37,7 @@ public class ProjectMemberFacade {
 
     /**
      * 크루정보 상세 페이지
+     * TODO : 프로젝트 신뢰 이력 추가 해야함
      * 유저 정보들, 유저 기술들, 프로젝트 개수, 신뢰점수 이력들
      * @param projectMemberId
      */

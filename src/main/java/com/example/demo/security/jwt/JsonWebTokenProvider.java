@@ -64,6 +64,8 @@ public class JsonWebTokenProvider {
         Date accessTokenExpiresIn = getTokenExpiration(accessTokenExpirationMillis);
 
         Claims claims = Jwts.claims().setSubject(principalDetails.getUsername());
+        claims.put("email", principalDetails.getEmail());
+        claims.put("nickname", principalDetails.getNickname());
         claims.put("role", principalDetails.getAuthorities());
 
         String accessToken = Jwts.builder()

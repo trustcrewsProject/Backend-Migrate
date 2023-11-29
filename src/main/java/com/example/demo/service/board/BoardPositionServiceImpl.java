@@ -5,7 +5,9 @@ import com.example.demo.model.board.BoardPosition;
 import com.example.demo.model.position.Position;
 import com.example.demo.repository.board.BoardPositionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
+@Service
 @RequiredArgsConstructor
 public class BoardPositionServiceImpl implements BoardPositionService {
 

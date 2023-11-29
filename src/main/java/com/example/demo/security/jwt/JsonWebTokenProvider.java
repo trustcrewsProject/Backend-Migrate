@@ -1,6 +1,7 @@
 package com.example.demo.security.jwt;
 
 import com.example.demo.global.exception.customexception.TokenCustomException;
+import com.example.demo.security.custom.PrincipalDetails;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
@@ -57,13 +58,13 @@ public class JsonWebTokenProvider {
     }
 
     // 토큰 발급 (Access Token & Refresh Token 함께 발급)
-    public JsonWebTokenDto generateToken(UserDetails userDetails) {
+    public JsonWebTokenDto generateToken(PrincipalDetails principalDetails) {
 
         // Access Token 생성
         Date accessTokenExpiresIn = getTokenExpiration(accessTokenExpirationMillis);
 
-        Claims claims = Jwts.claims().setSubject(userDetails.getUsername());
-        claims.put("role", userDetails.getAuthorities());
+        Claims claims = Jwts.claims().setSubject(principalDetails.getUsername());
+        claims.put("role", principalDetails.getAuthorities());
 
         String accessToken = Jwts.builder()
                 .setClaims(claims)

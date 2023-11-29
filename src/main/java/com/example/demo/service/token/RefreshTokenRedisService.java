@@ -27,4 +27,10 @@ public class RefreshTokenRedisService {
         ValueOperations<String, String> values = redisTemplate.opsForValue();
         values.set(key, refreshToken, refreshTokenExpiresMillis, TimeUnit.MILLISECONDS);
     }
+
+    // Refresh Token 조회
+    public String get(final Long userId) {
+        String key = KEY_PREFIX + userId;
+        return Optional.ofNullable(redisTemplate.opsForValue().get(key)).orElse(null);
+    }
 }

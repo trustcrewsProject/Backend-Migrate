@@ -14,9 +14,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -135,7 +137,13 @@ public class JsonWebTokenProvider {
 
     // Request Header 에서 Refresh Token 정보 추출
     public String resolveRefreshToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader(REFRESH_HEADER);
+        Cookie[] cookies = request.getCookies();
+        String bearerToken = Arrays.stream(cookies)
+                .filter(cookie -> cookie.getName().equals(REFRESH_HEADER))
+                .findFirst()
+                .orElseThrow(() -> TokenCustomException.DOES_NOT_REFRESH_TOKEN)
+                .getValue();
+
         if(StringUtils.hasText(bearerToken)) {
             return bearerToken;
         }

@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class WorkServiceImpl implements WorkService{
-    private WorkRepository workRepository;
+    private final WorkRepository workRepository;
 
     public Work findById(Long id){
         return workRepository.findById(id).orElseThrow(() -> WorkCustomException.NOT_FOUND_WORK);

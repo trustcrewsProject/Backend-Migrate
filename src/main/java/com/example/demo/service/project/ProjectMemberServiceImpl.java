@@ -2,6 +2,9 @@ package com.example.demo.service.project;
 
 import com.example.demo.constant.AlertType;
 import com.example.demo.constant.ProjectMemberStatus;
+import com.example.demo.dto.position.response.PositionResponseDto;
+import com.example.demo.dto.project.response.ProjectMemberReadCrewDetailResponseDto;
+import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
 import com.example.demo.global.exception.customexception.ProjectMemberCustomException;
 import com.example.demo.model.alert.Alert;
 import com.example.demo.model.position.Position;
@@ -11,12 +14,14 @@ import com.example.demo.model.project.ProjectMemberAuth;
 import com.example.demo.model.user.User;
 import com.example.demo.repository.project.ProjectMemberRepository;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ProjectMemberServiceImpl implements ProjectMemberService{
     private final ProjectMemberRepository projectMemberRepository;
 

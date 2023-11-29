@@ -6,7 +6,7 @@ import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
 import com.example.demo.model.alert.Alert;
 import com.example.demo.model.project.ProjectMember;
 import com.example.demo.service.alert.AlertService;
-import com.example.demo.service.user.UserCrewDetailResponseDto;
+import com.example.demo.dto.user.response.UserCrewDetailResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

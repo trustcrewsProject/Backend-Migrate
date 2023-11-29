@@ -33,4 +33,13 @@ public class RefreshTokenRedisService {
         String key = KEY_PREFIX + userId;
         return Optional.ofNullable(redisTemplate.opsForValue().get(key)).orElse(null);
     }
+
+    // Refresh Token 삭제
+    public void delete(Long userId) {
+        String key = KEY_PREFIX + userId;
+
+        if(redisTemplate.hasKey(key)) {
+            redisTemplate.delete(key);
+        }
+    }
 }

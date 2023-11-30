@@ -20,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @Transactional
 public class MileStoneFacade {
-    private final MileStoneRepository mileStoneService;
+    private final MilestoneService mileStoneService;
     private final ProjectService projectService;
 
     /**
@@ -36,5 +36,20 @@ public class MileStoneFacade {
         Milestone savedMilestone = mileStoneService.save(milestone);
 
         return MilestoneCreateResponseDto.of(savedMilestone);
+    }
+
+    @Transactional(readOnly = true)
+    public List<MilestoneReadResponseDto> getAll(Long projectId) {
+        Project project = projectService.findById(projectId);
+        List<Milestone> milestonesByProject = mileStoneService.findMilestonesByProject(project);
+
+        List<MilestoneReadResponseDto> milestoneReadResponseDtos = new ArrayList<>();
+        for (Milestone milestone : milestonesByProject) {
+            MilestoneReadResponseDto milestoneReadResponseDto =
+                    MilestoneReadResponseDto.of(milestone);
+            milestoneReadResponseDtos.add(milestoneReadResponseDto);
+        }
+
+        return milestoneReadResponseDtos;
     }
 }

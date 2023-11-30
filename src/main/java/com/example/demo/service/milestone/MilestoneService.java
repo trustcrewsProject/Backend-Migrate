@@ -3,6 +3,7 @@ package com.example.demo.service.milestone;
 import com.example.demo.global.exception.customexception.ProjectCustomException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.project.Project;
@@ -12,13 +13,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@AllArgsConstructor
-@Transactional
-public class MilestoneService {
-    private final MileStoneRepository mileStoneRepository;
+public interface MilestoneService {
 
-    public Milestone save(Milestone milestone){
-        return mileStoneRepository.save(milestone);
-    }
+    public Milestone findById(Long id);
+
+    public Milestone save(Milestone milestone);
+
+    public List<Milestone> findMilestonesByProject(Project project);
 
 }

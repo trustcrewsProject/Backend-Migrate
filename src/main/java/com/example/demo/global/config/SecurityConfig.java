@@ -26,6 +26,7 @@ public class SecurityConfig {
 
     private final JsonWebTokenProvider jsonWebTokenProvider;
     private final RefreshTokenRedisService refreshTokenRedisService;
+    private final AuthenticationConfiguration authenticationConfiguration;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -33,8 +34,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManagerBean() throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 

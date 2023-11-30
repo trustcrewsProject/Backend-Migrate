@@ -49,4 +49,9 @@ public class MileStoneController {
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 
+    @DeleteMapping("/api/milestone/{milestoneId}")
+    public ResponseEntity<ResponseDto<?>> delete(@PathVariable("milestoneId") Long mileStoneId) {
+        milestoneService.delete(mileStoneId);
+        return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
+    }
 }

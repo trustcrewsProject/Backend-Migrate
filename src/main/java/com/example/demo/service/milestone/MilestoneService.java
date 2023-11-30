@@ -26,4 +26,6 @@ public interface MilestoneService {
     public MilestoneReadResponseDto getOne(Long milestoneId);
 
     public void update(Long milestoneId, MileStoneUpdateRequestDto mileStoneUpdateRequestDto);
+
+    public void delete(Long milestoneId);
 }

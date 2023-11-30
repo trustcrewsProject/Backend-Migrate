@@ -1,5 +1,6 @@
 package com.example.demo.model.milestone;
 
+import com.example.demo.dto.milestone.request.MileStoneUpdateRequestDto;
 import com.example.demo.global.common.BaseTimeEntity;
 import com.example.demo.model.project.Project;
 import java.time.LocalDateTime;
@@ -54,5 +55,11 @@ public class Milestone extends BaseTimeEntity {
         this.endDate = endDate;
         this.expireStatus = expireStatus;
         this.completeStatus = completeStatus;
+    }
+
+    public void update(MileStoneUpdateRequestDto dto){
+        this.content = dto.getContent();
+        this.startDate = dto.getStartDate();
+        this.endDate = dto.getEndDate();
     }
 }

@@ -3,12 +3,12 @@ package com.example.demo.repository.trust_score;
 import com.example.demo.dto.trust_score.ProjectUserHistoryDto;
 import com.example.demo.model.trust_score.QTrustScoreHistory;
 import com.example.demo.model.work.QWork;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 @Repository
 @RequiredArgsConstructor
 public class TrustScoreHistoryRepositoryImpl implements TrustScoreHistoryRepositoryCustom {
@@ -24,21 +24,18 @@ public class TrustScoreHistoryRepositoryImpl implements TrustScoreHistoryReposit
         QTrustScoreHistory trustScoreHistory = QTrustScoreHistory.trustScoreHistory;
         QWork work = QWork.work;
         return jpaQueryFactory
-                .select(trustScoreHistory.workId, trustScoreHistory.score, work.completeStatus, work.content, trustScoreHistory.createDate)
+                .select(Projections.constructor(ProjectUserHistoryDto.class,
+                                trustScoreHistory.workId,
+                                trustScoreHistory.score,
+                                work.completeStatus,
+                                work.content,
+                                trustScoreHistory.createDate))
                 .from(trustScoreHistory)
                 .where(trustScoreHistory.projectId.eq(projectId)
                         .and(trustScoreHistory.userId.eq(userId)))
                 .join(work)
                 .on(trustScoreHistory.workId.eq(work.id))
-                .fetch()
-                .stream()
-                .map(history -> ProjectUserHistoryDto.builder()
-                        .id(history.get(trustScoreHistory.workId))
-                        .completeStatus(history.get(work.completeStatus))
-                        .trustScore(history.get(trustScoreHistory.score))
-                        .date(history.get(trustScoreHistory.createDate))
-                        .build())
-                .collect(Collectors.toList());
+                .fetch();
     }
 
     @Override

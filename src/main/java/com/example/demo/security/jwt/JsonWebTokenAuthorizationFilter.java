@@ -27,6 +27,7 @@ public class JsonWebTokenAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String requestUri = request.getRequestURI();
         String accessToken = jsonWebTokenProvider.resolveAccessToken(request);
+        log.info("AccessToken : {}", accessToken);
 
         // 요청 URI 확인 및 토큰 검증
         if(!PERMIT_URI.contains(requestUri) && jsonWebTokenProvider.validateToken(accessToken)) {

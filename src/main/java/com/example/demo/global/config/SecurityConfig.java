@@ -56,13 +56,13 @@ public class SecurityConfig {
                 .disable()
                 .httpBasic()
                 .disable()
-                .apply(new JsonWebTokenAuthenticationFilterConfigurer())
+                .apply(new UserAuthenticationFilterConfigurer())
                 .and()
                 .build();
     }
 
     // 로그인 요청을 담당하는 필터를 관리하는 클래스
-    public class JsonWebTokenAuthenticationFilterConfigurer extends AbstractHttpConfigurer<JsonWebTokenAuthenticationFilterConfigurer, HttpSecurity> {
+    public class UserAuthenticationFilterConfigurer extends AbstractHttpConfigurer<UserAuthenticationFilterConfigurer, HttpSecurity> {
         @Override
         public void configure(HttpSecurity http) throws Exception {
             AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);

@@ -65,7 +65,7 @@ public class SecurityConfig {
     public class UserAuthenticationFilterConfigurer extends AbstractHttpConfigurer<UserAuthenticationFilterConfigurer, HttpSecurity> {
         @Override
         public void configure(HttpSecurity http) throws Exception {
-            AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
+            AuthenticationManager authenticationManager = authenticationManagerBean();
             UserAuthenticationFilter userAuthenticationFilter = new UserAuthenticationFilter(authenticationManager, jsonWebTokenProvider, refreshTokenRedisService);
 
             // 해당 필터가 동작할 URL 설정

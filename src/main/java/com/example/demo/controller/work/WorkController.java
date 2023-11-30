@@ -39,4 +39,10 @@ public class WorkController {
         List<WorkReadResponseDto> result = workFacade.getAllByMilestone(projectId, milestoneId);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
+
+    @GetMapping("/api/work/{workId}")
+    public ResponseEntity<ResponseDto<?>> getOne(@PathVariable("workId") Long workId) {
+        WorkReadResponseDto result = workService.getOne(workId);
+        return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
+    }
 }

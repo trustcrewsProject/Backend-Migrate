@@ -1,5 +1,6 @@
 package com.example.demo.service.work;
 
+import com.example.demo.dto.work.request.WorkReadResponseDto;
 import com.example.demo.global.exception.customexception.WorkCustomException;
 import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.project.Project;
@@ -39,6 +40,11 @@ public class WorkServiceImpl implements WorkService{
     public List<Work> findWorksByProjectAndMilestone(Project project, Milestone milestone){
         return workRepository.findWorksByProjectAndMilestone(project, milestone)
                 .orElseThrow(() -> WorkCustomException.NOT_FOUND_WORK);
+    }
+
+    public WorkReadResponseDto getOne(Long workId) {
+        Work work = findById(workId);
+        return WorkReadResponseDto.of(work);
     }
 
 

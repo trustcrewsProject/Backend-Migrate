@@ -4,6 +4,7 @@ import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.model.position.Position;
 import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public interface PositionService {
 
     // 포지션 목록 가져오기

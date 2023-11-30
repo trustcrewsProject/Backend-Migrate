@@ -1,9 +1,6 @@
 package com.example.demo.service.work;
 
-import com.example.demo.dto.work.request.WorkCreateRequestDto;
-import com.example.demo.dto.work.request.WorkReadResponseDto;
-import com.example.demo.dto.work.request.WorkUpdateContentRequestDto;
-import com.example.demo.dto.work.request.WorkUpdateRequestDto;
+import com.example.demo.dto.work.request.*;
 import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
@@ -79,5 +76,18 @@ public class WorkFacade {
         User user = userService.findById(1L);
         ProjectMember projectMember = projectMemberService.findProjectMemberByProjectAndUser(work.getProject(), user);
         work.updateContent(workUpdateContentRequestDto, projectMember);
+    }
+
+    /**
+     * 업무 완료 여부 수정 TODO : 마지막 변경자 바꿔줘야 함.
+     *
+     * @param workId
+     * @param workUpdateCompleteStatusRequestDto
+     */
+    public void updateCompleteStatus(Long workId, WorkUpdateCompleteStatusRequestDto workUpdateCompleteStatusRequestDto) {
+        Work work = workService.findById(workId);
+        User user = userService.findById(1L);
+        ProjectMember projectMember = projectMemberService.findProjectMemberByProjectAndUser(work.getProject(), user);
+        work.updateCompleteStatus(workUpdateCompleteStatusRequestDto, projectMember);
     }
 }

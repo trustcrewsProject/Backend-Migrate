@@ -1,6 +1,7 @@
 package com.example.demo.global.config;
 
 import com.example.demo.security.custom.UserAuthenticationFilter;
+import com.example.demo.security.jwt.JsonWebTokenAuthorizationFilter;
 import com.example.demo.security.jwt.JsonWebTokenProvider;
 import com.example.demo.service.token.RefreshTokenRedisService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Slf4j
 @Configuration
@@ -45,19 +47,17 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.csrf()
-                .disable()
+        return http.csrf().disable()
                 .cors()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .formLogin()
-                .disable()
-                .httpBasic()
-                .disable()
+                .formLogin().disable()
+                .httpBasic().disable()
                 .apply(new UserAuthenticationFilterConfigurer())
                 .and()
+                .addFilterBefore(new JsonWebTokenAuthorizationFilter(jsonWebTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

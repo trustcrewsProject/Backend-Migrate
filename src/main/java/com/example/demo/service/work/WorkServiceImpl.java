@@ -1,6 +1,7 @@
 package com.example.demo.service.work;
 
 import com.example.demo.global.exception.customexception.WorkCustomException;
+import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.user.User;
 import com.example.demo.model.work.Work;
@@ -32,6 +33,11 @@ public class WorkServiceImpl implements WorkService{
 
     public Work findLastCompleteWork(Project project, User user, Boolean completeStatus) {
         return workRepository.findFirstByProjectAndAssignedUserIdAndCompleteStatusOrderByIdDesc(project, user, completeStatus)
+                .orElseThrow(() -> WorkCustomException.NOT_FOUND_WORK);
+    }
+
+    public List<Work> findWorksByProjectAndMilestone(Project project, Milestone milestone){
+        return workRepository.findWorksByProjectAndMilestone(project, milestone)
                 .orElseThrow(() -> WorkCustomException.NOT_FOUND_WORK);
     }
 

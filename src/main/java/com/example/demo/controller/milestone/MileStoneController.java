@@ -9,7 +9,7 @@ import com.example.demo.dto.milestone.request.MilestoneUpdateDateRequestDto;
 import com.example.demo.dto.milestone.response.MilestoneReadResponseDto;
 import com.example.demo.service.milestone.MileStoneFacade;
 import com.example.demo.service.milestone.MilestoneService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class MileStoneController {
 
     private final MilestoneService milestoneService;
-    private MileStoneFacade mileStoneFacade;
+    private final MileStoneFacade mileStoneFacade;
 
     @PostMapping("/api/project/{projectId}/milestone")
     public ResponseEntity<ResponseDto<?>> create(

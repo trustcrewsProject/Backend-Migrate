@@ -7,9 +7,12 @@ import com.example.demo.dto.milestone.response.MilestoneReadResponseDto;
 import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.project.Project;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Service
+@Transactional
 public interface MilestoneService {
 
     public Milestone findById(Long id);

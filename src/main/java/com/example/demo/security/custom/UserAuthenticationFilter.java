@@ -1,4 +1,4 @@
-package com.example.demo.security.jwt;
+package com.example.demo.security.custom;
 
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.dto.user.request.UserLoginRequestDto;
@@ -6,13 +6,14 @@ import com.example.demo.dto.user.response.UserLoginSuccessResponseDto;
 import com.example.demo.global.exception.customexception.CommonCustomException;
 import com.example.demo.global.exception.customexception.UserCustomException;
 import com.example.demo.security.custom.PrincipalDetails;
+import com.example.demo.security.jwt.JsonWebTokenDto;
+import com.example.demo.security.jwt.JsonWebTokenProvider;
 import com.example.demo.service.token.RefreshTokenRedisService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -29,7 +30,7 @@ import java.io.IOException;
 // 인증에 성공하면 JWT 발급
 @RequiredArgsConstructor
 @Slf4j
-public class JsonWebTokenAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+public class UserAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
     private final JsonWebTokenProvider jsonWebTokenProvider;

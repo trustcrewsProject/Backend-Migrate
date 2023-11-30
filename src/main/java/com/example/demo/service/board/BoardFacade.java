@@ -42,6 +42,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BoardFacade {
     private final BoardService boardService;
     private final UserService userService;

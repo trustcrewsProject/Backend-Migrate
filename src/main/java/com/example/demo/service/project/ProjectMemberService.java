@@ -6,9 +6,11 @@ import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
 import com.example.demo.model.project.ProjectMemberAuth;
 import com.example.demo.model.user.User;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
+@Transactional
 public interface ProjectMemberService {
 
     public ProjectMember toProjectMemberEntity(Project project, User user, ProjectMemberAuth projectMemberAuth, ProjectMemberStatus projectMemberStatus, Position position);

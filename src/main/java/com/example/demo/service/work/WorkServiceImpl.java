@@ -26,9 +26,8 @@ public class WorkServiceImpl implements WorkService{
                 .orElseThrow(() -> WorkCustomException.NOT_FOUND_WORK);
     }
 
-    @Override
-    public Work findFirstByProjectAndUserOrderByProjectDesc(Project project, User user) {
-        return workRepository.findFirstByProjectAndAssignedUserIdOrderByIdDesc(project, user)
+    public Work findLastCompleteWork(Project project, User user, Boolean completeStatus) {
+        return workRepository.findFirstByProjectAndAssignedUserIdAndCompleteStatusOrderByIdDesc(project, user, completeStatus)
                 .orElseThrow(() -> WorkCustomException.NOT_FOUND_WORK);
     }
 

@@ -13,5 +13,5 @@ public interface WorkService {
 
     public List<Work> findWorksByProject(Project project);
 
-    public Work findFirstByProjectAndUserOrderByProjectDesc(Project project, User user);
+    public Work findLastCompleteWork(Project project, User user, Boolean completeStatus);
 }

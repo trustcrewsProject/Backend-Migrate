@@ -1,14 +1,20 @@
 package com.example.demo.service.milestone;
 
+import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.dto.milestone.request.MileStoneUpdateRequestDto;
+import com.example.demo.dto.milestone.request.MilestoneUpdateContentRequestDto;
+import com.example.demo.dto.milestone.request.MilestoneUpdateDateRequestDto;
 import com.example.demo.dto.milestone.response.MilestoneReadResponseDto;
 import com.example.demo.global.exception.customexception.MilestoneCustomException;
 import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.project.Project;
 import com.example.demo.repository.milestone.MileStoneRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Optional;
@@ -51,4 +57,20 @@ public class MilestoneServiceImpl {
         Milestone milestone = findById(milestoneId);
         milestone.update(mileStoneUpdateRequestDto);
     }
+
+    public void delete(Long milestoneId) {
+        Milestone milestone = findById(milestoneId);
+        mileStoneRepository.delete(milestone);
+    }
+
+    public void updateContent(Long milestoneId, MilestoneUpdateContentRequestDto milestoneUpdateContentRequestDto) {
+        Milestone milestone = findById(milestoneId);
+        milestone.updateContent(milestoneUpdateContentRequestDto);
+    }
+
+    public void updateDate(Long milestoneId, MilestoneUpdateDateRequestDto milestoneUpdateDateRequestDto) {
+        Milestone milestone = findById(milestoneId);
+        milestone.updateDate(milestoneUpdateDateRequestDto);
+    }
+
 }

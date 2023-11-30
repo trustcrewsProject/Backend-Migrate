@@ -3,6 +3,7 @@ package com.example.demo.service.milestone;
 import com.example.demo.dto.milestone.request.MileStoneUpdateRequestDto;
 import com.example.demo.dto.milestone.request.MilestoneUpdateContentRequestDto;
 import com.example.demo.dto.milestone.request.MilestoneUpdateDateRequestDto;
+import com.example.demo.dto.milestone.response.MilestoneReadResponseDto;
 import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.project.Project;
 import org.springframework.stereotype.Service;

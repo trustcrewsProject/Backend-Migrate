@@ -12,7 +12,6 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-@Transactional
 public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
 

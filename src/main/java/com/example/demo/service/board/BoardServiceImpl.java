@@ -27,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-@Transactional
 @Service
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {

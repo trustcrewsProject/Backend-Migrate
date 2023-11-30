@@ -9,15 +9,15 @@ import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.project.Project;
 import com.example.demo.repository.milestone.MileStoneRepository;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
-@Transactional
-public class MilestoneServiceImpl {
+@RequiredArgsConstructor
+public class MilestoneServiceImpl implements MilestoneService {
     private final MileStoneRepository mileStoneRepository;
 
     public Milestone findById(Long id){

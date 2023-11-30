@@ -71,4 +71,12 @@ public class WorkController {
         workFacade.updateCompleteStatus(workId, workUpdateCompleteStatusRequestDto);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
+
+    @PatchMapping("/api/work/{workId}/assgin")
+    public ResponseEntity<ResponseDto<?>> updateAssign(
+            @PathVariable("workId") Long workId,
+            WorkUpdateAssignUserRequestDto workUpdateAssignUserRequestDto) {
+        workFacade.updateAssignUser(workId, workUpdateAssignUserRequestDto);
+        return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
+    }
 }

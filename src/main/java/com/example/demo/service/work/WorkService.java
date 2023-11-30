@@ -21,4 +21,6 @@ public interface WorkService {
 
     public List<Work> findWorksByProjectAndMilestone(Project project, Milestone milestone);
     public WorkReadResponseDto getOne(Long workId);
+
+    public void delete(Long workId);
 }

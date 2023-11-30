@@ -9,6 +9,8 @@ import java.util.List;
 
 @Service
 public interface WorkService {
+
+    public Work save(Work work);
     public Work findById(Long id);
 
     public List<Work> findWorksByProject(Project project);

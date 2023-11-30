@@ -20,4 +20,6 @@ public interface ProjectMemberService {
 
     public void withdrawlConfirm(Long projectMemberId);
     public void withdrawlForce(Long projectMemberId);
+
+    public ProjectMember findProjectMemberByProjectAndUser(Project project, User user);
 }

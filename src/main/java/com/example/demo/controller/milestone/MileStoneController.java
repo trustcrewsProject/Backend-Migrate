@@ -5,6 +5,7 @@ import com.example.demo.dto.milestone.MilestoneCreateResponseDto;
 import com.example.demo.dto.milestone.request.MileStoneUpdateRequestDto;
 import com.example.demo.dto.milestone.request.MilestoneCreateRequestDto;
 import com.example.demo.dto.milestone.request.MilestoneUpdateContentRequestDto;
+import com.example.demo.dto.milestone.request.MilestoneUpdateDateRequestDto;
 import com.example.demo.dto.milestone.response.MilestoneReadResponseDto;
 import com.example.demo.service.milestone.MileStoneFacade;
 import com.example.demo.service.milestone.MilestoneService;
@@ -61,6 +62,14 @@ public class MileStoneController {
             @PathVariable("milestoneId") Long mileStoneId,
             MilestoneUpdateContentRequestDto milestoneUpdateContentRequestDto) {
         milestoneService.updateContent(mileStoneId, milestoneUpdateContentRequestDto);
-        return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
+    }
+
+    @PatchMapping("/api/milestone/{milestoneId}/date")
+    public ResponseEntity<ResponseDto<?>> updateDate(
+            @PathVariable("milestoneId") Long mileStoneId,
+            MilestoneUpdateDateRequestDto milestoneUpdateDateRequestDto) {
+        milestoneService.updateDate(mileStoneId, milestoneUpdateDateRequestDto);
+        return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 }

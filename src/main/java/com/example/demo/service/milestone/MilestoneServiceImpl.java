@@ -3,6 +3,7 @@ package com.example.demo.service.milestone;
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.dto.milestone.request.MileStoneUpdateRequestDto;
 import com.example.demo.dto.milestone.request.MilestoneUpdateContentRequestDto;
+import com.example.demo.dto.milestone.request.MilestoneUpdateDateRequestDto;
 import com.example.demo.dto.milestone.response.MilestoneReadResponseDto;
 import com.example.demo.global.exception.customexception.MilestoneCustomException;
 import com.example.demo.model.milestone.Milestone;
@@ -65,6 +66,11 @@ public class MilestoneServiceImpl {
     public void updateContent(Long milestoneId, MilestoneUpdateContentRequestDto milestoneUpdateContentRequestDto) {
         Milestone milestone = findById(milestoneId);
         milestone.updateContent(milestoneUpdateContentRequestDto);
+    }
+
+    public void updateDate(Long milestoneId, MilestoneUpdateDateRequestDto milestoneUpdateDateRequestDto) {
+        Milestone milestone = findById(milestoneId);
+        milestone.updateDate(milestoneUpdateDateRequestDto);
     }
 
 }

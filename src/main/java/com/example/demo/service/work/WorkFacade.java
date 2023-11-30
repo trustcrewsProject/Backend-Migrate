@@ -2,6 +2,7 @@ package com.example.demo.service.work;
 
 import com.example.demo.dto.work.request.WorkCreateRequestDto;
 import com.example.demo.dto.work.request.WorkReadResponseDto;
+import com.example.demo.dto.work.request.WorkUpdateRequestDto;
 import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
@@ -52,6 +53,18 @@ public class WorkFacade {
         }
 
         return workReadResponseDtos;
+    }
+
+    /**
+     * 업무 수정 TODO : 마지막 수정자 현재 유저인 구성원으로 변경
+     *
+     * @param workId
+     */
+    public void update(Long workId, WorkUpdateRequestDto workUpdateRequestDto) {
+        Work work = workService.findById(workId);
+        User user = userService.findById(1L);
+        ProjectMember projectMember = projectMemberService.findProjectMemberByProjectAndUser(work.getProject(), user);
+        work.update(workUpdateRequestDto);
     }
 
 }

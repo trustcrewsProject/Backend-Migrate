@@ -4,17 +4,10 @@ import com.example.demo.dto.milestone.request.MileStoneUpdateRequestDto;
 import com.example.demo.dto.milestone.request.MilestoneUpdateContentRequestDto;
 import com.example.demo.dto.milestone.request.MilestoneUpdateDateRequestDto;
 import com.example.demo.dto.milestone.response.MilestoneReadResponseDto;
-import com.example.demo.global.exception.customexception.ProjectCustomException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.project.Project;
-import com.example.demo.repository.milestone.MileStoneRepository;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
 
 @Service
 public interface MilestoneService {

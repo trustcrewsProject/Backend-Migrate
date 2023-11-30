@@ -15,6 +15,10 @@ import java.util.List;
 public class WorkServiceImpl implements WorkService{
     private final WorkRepository workRepository;
 
+    public Work save(Work work){
+        return workRepository.save(work);
+    }
+
     public Work findById(Long id){
         return workRepository.findById(id).orElseThrow(() -> WorkCustomException.NOT_FOUND_WORK);
     }
@@ -30,6 +34,7 @@ public class WorkServiceImpl implements WorkService{
         return workRepository.findFirstByProjectAndAssignedUserIdAndCompleteStatusOrderByIdDesc(project, user, completeStatus)
                 .orElseThrow(() -> WorkCustomException.NOT_FOUND_WORK);
     }
+
 
 
 }

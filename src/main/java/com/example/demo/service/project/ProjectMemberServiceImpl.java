@@ -37,6 +37,10 @@ public class ProjectMemberServiceImpl implements ProjectMemberService{
         return projectMemberRepository.findProjectsMemberByProject(project).orElseThrow(() -> ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER);
     }
 
+    public ProjectMember findProjectMemberByProjectAndUser(Project project, User user){
+        return  projectMemberRepository.findProjectMemberByProjectAndUser(project, user).orElseThrow(() -> ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER);
+    }
+
     @Override
     public ProjectMember save(ProjectMember projectMember) {
         return projectMemberRepository.save(projectMember);

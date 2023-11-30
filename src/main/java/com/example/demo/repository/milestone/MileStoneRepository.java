@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MileStoneRepository extends JpaRepository<Milestone, Long> {
-
+    @Override
+    Optional<Milestone> findById(Long id);
     Optional<List<Milestone>> findMilestonesByProject(Project project);
 }

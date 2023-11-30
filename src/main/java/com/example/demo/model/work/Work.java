@@ -1,5 +1,6 @@
 package com.example.demo.model.work;
 
+import com.example.demo.dto.work.request.WorkUpdateContentRequestDto;
 import com.example.demo.dto.work.request.WorkUpdateRequestDto;
 import com.example.demo.global.common.BaseTimeEntity;
 import com.example.demo.model.milestone.Milestone;
@@ -82,5 +83,10 @@ public class Work extends BaseTimeEntity {
         this.content = dto.getContent();
         this.startDate = dto.getStartDate();
         this.endDate = dto.getEndDate();
+    }
+
+    public void updateContent(WorkUpdateContentRequestDto dto, ProjectMember projectMember){
+        this.content = dto.getContent();
+        this.lastModifiedMember = projectMember;
     }
 }

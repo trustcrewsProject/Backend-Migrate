@@ -3,6 +3,7 @@ package com.example.demo.controller.work;
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.dto.work.request.WorkCreateRequestDto;
 import com.example.demo.dto.work.request.WorkReadResponseDto;
+import com.example.demo.dto.work.request.WorkUpdateContentRequestDto;
 import com.example.demo.dto.work.request.WorkUpdateRequestDto;
 import com.example.demo.service.work.WorkFacade;
 import com.example.demo.service.work.WorkService;
@@ -54,6 +55,15 @@ public class WorkController {
     @DeleteMapping("/api/work/{workId}")
     public ResponseEntity<ResponseDto<?>> update(@PathVariable("workId") Long workId) {
         workService.delete(workId);
+        return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
+    }
+
+
+    @PatchMapping("/api/work/{workId}/content")
+    public ResponseEntity<ResponseDto<?>> updateContent(
+            @PathVariable("workId") Long workId,
+            WorkUpdateContentRequestDto workUpdateContentRequestDto) {
+        workFacade.updateContent(workId, workUpdateContentRequestDto);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 }

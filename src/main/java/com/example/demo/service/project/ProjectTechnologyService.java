@@ -6,8 +6,9 @@ import com.example.demo.model.technology_stack.TechnologyStack;
 import com.example.demo.repository.technology_stack.TechnologyStackRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-
+@Transactional
 public interface ProjectTechnologyService {
 
     public ProjectTechnology save(ProjectTechnology projectTechnology);

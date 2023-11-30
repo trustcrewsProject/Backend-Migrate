@@ -38,6 +38,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ProjectFacade {
 
     private final UserService userService;

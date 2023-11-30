@@ -19,6 +19,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class WorkFacade {
     private final WorkService workService;
     private final ProjectService projectService;

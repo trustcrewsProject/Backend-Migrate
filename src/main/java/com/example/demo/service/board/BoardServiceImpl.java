@@ -18,6 +18,7 @@ import com.example.demo.model.project.ProjectTechnology;
 import com.example.demo.model.technology_stack.TechnologyStack;
 import com.example.demo.repository.board.BoardRepository;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ import java.util.List;
 
 @Transactional
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
     private final BoardRepository boardRepository;
 

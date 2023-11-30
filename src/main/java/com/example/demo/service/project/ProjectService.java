@@ -3,10 +3,10 @@ package com.example.demo.service.project;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.user.User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
-@Service
+@Transactional
 public interface ProjectService {
 
     public Project save(Project project);

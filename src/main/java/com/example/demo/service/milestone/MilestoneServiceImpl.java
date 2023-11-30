@@ -1,5 +1,6 @@
 package com.example.demo.service.milestone;
 
+import com.example.demo.dto.milestone.response.MilestoneReadResponseDto;
 import com.example.demo.global.exception.customexception.MilestoneCustomException;
 import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.project.Project;
@@ -27,5 +28,15 @@ public class MilestoneServiceImpl {
 
     public List<Milestone> findMilestonesByProject(Project project){
         return mileStoneRepository.findMilestonesByProject(project).orElseThrow(() -> MilestoneCustomException.NOT_FOUND_MILESTONE);
+    }
+
+    @Transactional(readOnly = true)
+    public MilestoneReadResponseDto getOne(Long milestoneId) {
+        Milestone milestone =
+                mileStoneRepository
+                        .findById(milestoneId)
+                        .orElseThrow(() -> MilestoneCustomException.NOT_FOUND_MILESTONE);
+
+        return MilestoneReadResponseDto.of(milestone);
     }
 }

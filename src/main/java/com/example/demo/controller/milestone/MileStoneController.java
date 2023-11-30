@@ -33,4 +33,11 @@ public class MileStoneController {
         List<MilestoneReadResponseDto> result = mileStoneFacade.getAll(projectId);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
+
+    @GetMapping("/api/milestone/{milestoneId}")
+    public ResponseEntity<ResponseDto<?>> getOne(@PathVariable("milestoneId") Long mileStoneId) {
+        MilestoneReadResponseDto result = milestoneService.getOne(mileStoneId);
+        return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
+    }
+
 }

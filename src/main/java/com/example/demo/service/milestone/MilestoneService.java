@@ -1,5 +1,6 @@
 package com.example.demo.service.milestone;
 
+import com.example.demo.dto.milestone.response.MilestoneReadResponseDto;
 import com.example.demo.global.exception.customexception.ProjectCustomException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,5 +21,7 @@ public interface MilestoneService {
     public Milestone save(Milestone milestone);
 
     public List<Milestone> findMilestonesByProject(Project project);
+
+    public MilestoneReadResponseDto getOne(Long milestoneId);
 
 }

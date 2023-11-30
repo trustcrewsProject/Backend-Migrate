@@ -1,5 +1,6 @@
 package com.example.demo.service.work;
 
+import com.example.demo.dto.work.request.WorkReadResponseDto;
 import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.user.User;
@@ -19,4 +20,5 @@ public interface WorkService {
     public Work findLastCompleteWork(Project project, User user, Boolean completeStatus);
 
     public List<Work> findWorksByProjectAndMilestone(Project project, Milestone milestone);
+    public WorkReadResponseDto getOne(Long workId);
 }

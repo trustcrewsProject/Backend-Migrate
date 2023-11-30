@@ -1,6 +1,6 @@
 package com.example.demo.global.config;
 
-import com.example.demo.security.jwt.JsonWebTokenAuthenticationFilter;
+import com.example.demo.security.custom.UserAuthenticationFilter;
 import com.example.demo.security.jwt.JsonWebTokenProvider;
 import com.example.demo.service.token.RefreshTokenRedisService;
 import lombok.RequiredArgsConstructor;
@@ -66,12 +66,12 @@ public class SecurityConfig {
         @Override
         public void configure(HttpSecurity http) throws Exception {
             AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
-            JsonWebTokenAuthenticationFilter jsonWebTokenAuthenticationFilter = new JsonWebTokenAuthenticationFilter(authenticationManager, jsonWebTokenProvider, refreshTokenRedisService);
+            UserAuthenticationFilter userAuthenticationFilter = new UserAuthenticationFilter(authenticationManager, jsonWebTokenProvider, refreshTokenRedisService);
 
             // 해당 필터가 동작할 URL 설정
-            jsonWebTokenAuthenticationFilter.setFilterProcessesUrl("/api/user/login");
+            userAuthenticationFilter.setFilterProcessesUrl("/api/user/login");
 
-            http.addFilter(jsonWebTokenAuthenticationFilter);
+            http.addFilter(userAuthenticationFilter);
         }
     }
 }

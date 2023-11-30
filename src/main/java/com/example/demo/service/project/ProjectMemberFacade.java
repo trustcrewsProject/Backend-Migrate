@@ -14,6 +14,7 @@ import com.example.demo.model.user.UserTechnologyStack;
 import com.example.demo.model.work.Work;
 import com.example.demo.service.alert.AlertService;
 import com.example.demo.dto.user.response.UserCrewDetailResponseDto;
+import com.example.demo.service.trust_score.TrustScoreHistoryService;
 import com.example.demo.service.work.WorkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,7 @@ public class ProjectMemberFacade {
     private final AlertService alertService;
     private final ProjectService projectService;
     private final WorkService workService;
+    private final TrustScoreHistoryService trustScoreHistoryService;
 
     /**
      * 프로젝트 멤버 탈퇴 알림 보내기
@@ -88,14 +90,14 @@ public class ProjectMemberFacade {
             UserReadProjectCrewResponseDto userReadProjectCrewResponseDto = UserReadProjectCrewResponseDto.of(projectMember.getUser());
             ProjectMemberAuthResponseDto projectMemberAuthResponseDto = ProjectMemberAuthResponseDto.of(projectMember.getProjectMemberAuth());
             PositionResponseDto positionResponseDto = PositionResponseDto.of(projectMember.getPosition());
-            Work lastWork = workService.findFirstByProjectAndUserOrderByProjectDesc(project, projectMember.getUser());
+            Work lastCompleteWork = workService.findLastCompleteWork(project, projectMember.getUser(), true);
 
             ProjectMemberReadProjectCrewsResponseDto projectMemberReadProjectCrewsResponseDto = ProjectMemberReadProjectCrewsResponseDto.of(
                     projectMember,
                     userReadProjectCrewResponseDto,
                     projectMemberAuthResponseDto,
                     positionResponseDto,
-                    lastWork.getEndDate()
+                    lastCompleteWork.getUpdateDate()
             );
             projectMemberReadProjectCrewsResponseDtos.add(projectMemberReadProjectCrewsResponseDto);
         }

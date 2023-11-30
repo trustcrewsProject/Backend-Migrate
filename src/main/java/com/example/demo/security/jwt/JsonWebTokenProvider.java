@@ -9,6 +9,8 @@ import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -114,6 +116,19 @@ public class JsonWebTokenProvider {
         } catch (IllegalArgumentException e) {
             throw TokenCustomException.NON_ACCESS_TOKEN;
         }
+    }
+
+    // 토큰에서 회원정보를 추출해 사용자 인증 Authentication 객체로 반환
+    public Authentication getAuthentication(String token) {
+        Claims claims = parseClaims(token);
+
+        String email = String.valueOf(claims.get("email"));
+        String nickname = String.valueOf(claims.get("nickname"));
+        String authority = String.valueOf(claims.get("role"));
+
+        PrincipalDetails principalDetails = PrincipalDetails.of(claims.getSubject(), email, nickname, authority);
+
+        return new UsernamePasswordAuthenticationToken(principalDetails, "", principalDetails.getAuthorities());
     }
 
     // 토큰 복호화

@@ -1,5 +1,6 @@
 package com.example.demo.service.milestone;
 
+import com.example.demo.dto.milestone.request.MileStoneUpdateRequestDto;
 import com.example.demo.dto.milestone.response.MilestoneReadResponseDto;
 import com.example.demo.global.exception.customexception.ProjectCustomException;
 import java.util.ArrayList;
@@ -24,4 +25,5 @@ public interface MilestoneService {
 
     public MilestoneReadResponseDto getOne(Long milestoneId);
 
+    public void update(Long milestoneId, MileStoneUpdateRequestDto mileStoneUpdateRequestDto);
 }

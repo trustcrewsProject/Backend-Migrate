@@ -2,6 +2,7 @@ package com.example.demo.controller.milestone;
 
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.dto.milestone.MilestoneCreateResponseDto;
+import com.example.demo.dto.milestone.request.MileStoneUpdateRequestDto;
 import com.example.demo.dto.milestone.request.MilestoneCreateRequestDto;
 import com.example.demo.dto.milestone.response.MilestoneReadResponseDto;
 import com.example.demo.service.milestone.MileStoneFacade;
@@ -38,6 +39,14 @@ public class MileStoneController {
     public ResponseEntity<ResponseDto<?>> getOne(@PathVariable("milestoneId") Long mileStoneId) {
         MilestoneReadResponseDto result = milestoneService.getOne(mileStoneId);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
+    }
+
+    @PatchMapping("/api/milestone/{milestoneId}")
+    public ResponseEntity<ResponseDto<?>> update(
+            @PathVariable("milestoneId") Long mileStoneId,
+            MileStoneUpdateRequestDto mileStoneUpdateRequestDto) {
+        milestoneService.update(mileStoneId, mileStoneUpdateRequestDto);
+        return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 
 }

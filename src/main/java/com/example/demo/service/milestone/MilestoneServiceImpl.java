@@ -1,5 +1,6 @@
 package com.example.demo.service.milestone;
 
+import com.example.demo.dto.milestone.request.MileStoneUpdateRequestDto;
 import com.example.demo.dto.milestone.response.MilestoneReadResponseDto;
 import com.example.demo.global.exception.customexception.MilestoneCustomException;
 import com.example.demo.model.milestone.Milestone;
@@ -38,5 +39,16 @@ public class MilestoneServiceImpl {
                         .orElseThrow(() -> MilestoneCustomException.NOT_FOUND_MILESTONE);
 
         return MilestoneReadResponseDto.of(milestone);
+    }
+
+    /**
+     * 프로젝트 내 마일스톤 수정(*매니저만 가능) 
+     * TODO : 매니저만 수정 가능하도록 변경
+     * @param milestoneId
+     * @param mileStoneUpdateRequestDto
+     */
+    public void update(Long milestoneId, MileStoneUpdateRequestDto mileStoneUpdateRequestDto) {
+        Milestone milestone = findById(milestoneId);
+        milestone.update(mileStoneUpdateRequestDto);
     }
 }

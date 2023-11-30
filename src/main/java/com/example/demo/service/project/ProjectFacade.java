@@ -29,6 +29,7 @@ import com.example.demo.service.alert.AlertService;
 import com.example.demo.service.position.PositionService;
 import com.example.demo.service.user.UserService;
 import com.example.demo.service.work.WorkService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,17 +37,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ProjectFacade {
 
-    private UserService userService;
-    private ProjectService projectService;
-
-    private ProjectMemberService projectMemberService;
-    private WorkService workService;
-    private PositionService positionService;
-    private AlertService alertService;
-
-    private ProjectMemberAuthService projectMemberAuthService;
+    private final UserService userService;
+    private final ProjectService projectService;
+    private final ProjectMemberService projectMemberService;
+    private final WorkService workService;
+    private final PositionService positionService;
+    private final AlertService alertService;
+    private final ProjectMemberAuthService projectMemberAuthService;
 
     /**
      * 내 프로젝트 목록 조회
@@ -55,7 +55,7 @@ public class ProjectFacade {
      */
 
     @Transactional(readOnly = true)
-    public List<ProjectMeResponseDto> getMyProjects() throws Exception {
+    public List<ProjectMeResponseDto> getMyProjects(){
         User user = userService.findById(1L);
 
         List<Project> projects = projectService.findProjectsByUser(user);

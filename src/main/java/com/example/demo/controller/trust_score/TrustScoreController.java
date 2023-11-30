@@ -1,6 +1,8 @@
 package com.example.demo.controller.trust_score;
 
+import com.example.demo.constant.TrustScoreTypeIdentifier;
 import com.example.demo.dto.common.ResponseDto;
+import com.example.demo.dto.trust_score.AddPointDto;
 import com.example.demo.dto.trust_score.request.TrustScoreUpdateRequestDto;
 import com.example.demo.dto.trust_score.response.TrustScoreUpdateResponseDto;
 import com.example.demo.service.trust_score.TrustScoreService;
@@ -18,9 +20,10 @@ import javax.validation.Valid;
 public class TrustScoreController {
     private final TrustScoreService trustScoreService;
     @PostMapping("/api/trust-score")
-    public ResponseEntity<ResponseDto<?>> updateScoreByManager(
+    public ResponseEntity<ResponseDto<?>> updateScoreByApi(
             @RequestBody @Valid TrustScoreUpdateRequestDto requestDto) {
-        TrustScoreUpdateResponseDto responseDto = trustScoreService.addPoint(requestDto);
+        AddPointDto addPointDto = AddPointDto.builder().requestDto(requestDto).build();
+        TrustScoreUpdateResponseDto responseDto = trustScoreService.addPoint(addPointDto);
         return new ResponseEntity<>(new ResponseDto<>("HttpStatusOK", "success", responseDto), HttpStatus.OK);
     }
 }

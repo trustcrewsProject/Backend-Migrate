@@ -90,4 +90,12 @@ public class WorkFacade {
         ProjectMember projectMember = projectMemberService.findProjectMemberByProjectAndUser(work.getProject(), user);
         work.updateCompleteStatus(workUpdateCompleteStatusRequestDto, projectMember);
     }
+
+    public void updateAssignUser(Long workId, WorkUpdateAssignUserRequestDto workUpdateAssignUserRequestDto) {
+        Work work = workService.findById(workId);
+        User user = userService.findById(workUpdateAssignUserRequestDto.getAssignedUserId());
+        ProjectMember projectMember = projectMemberService.findProjectMemberByProjectAndUser(work.getProject(), user);
+
+        work.updateAssignedUserId(user, projectMember);
+    }
 }

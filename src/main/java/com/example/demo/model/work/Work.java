@@ -58,6 +58,9 @@ public class Work extends BaseTimeEntity {
     @JoinColumn(name = "project_member_id")
     private ProjectMember lastModifiedMember;
 
+    @Column(name = "complete_date")
+    private LocalDateTime completeDate;
+
     @Builder
     public Work(
             Project project,
@@ -78,6 +81,7 @@ public class Work extends BaseTimeEntity {
         this.startDate = startDate;
         this.endDate = endDate;
         this.lastModifiedMember = lastModifiedMember;
+        this.completeDate = null;
     }
 
     public void update(WorkUpdateRequestDto dto){
@@ -98,6 +102,11 @@ public class Work extends BaseTimeEntity {
 
     public void updateAssignedUserId(User user, ProjectMember projectMember){
         this.assignedUserId = user;
+        this.lastModifiedMember = projectMember;
+    }
+
+    public void updateCompleteDate(LocalDateTime completeDate, ProjectMember projectMember){
+        this.completeDate = completeDate;
         this.lastModifiedMember = projectMember;
     }
 }

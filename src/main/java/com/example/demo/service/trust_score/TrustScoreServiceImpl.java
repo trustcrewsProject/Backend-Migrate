@@ -1,5 +1,6 @@
 package com.example.demo.service.trust_score;
 
+import com.example.demo.dto.trust_score.AddPointDto;
 import com.example.demo.dto.trust_score.request.TrustScoreUpdateRequestDto;
 import com.example.demo.dto.trust_score.response.TrustScoreUpdateResponseDto;
 import com.example.demo.model.trust_score.TrustScore;
@@ -20,14 +21,18 @@ public class TrustScoreServiceImpl implements TrustScoreService {
     private final TrustScoreTypeRepository trustScoreTypeRepository;
     @Override
     @Transactional
-    public TrustScoreUpdateResponseDto addPoint(TrustScoreUpdateRequestDto requestDto) {
-        Long userId = requestDto.getUserId();
+    public TrustScoreUpdateResponseDto addPoint(AddPointDto addPointDto) {
+        Long userId = addPointDto.getUserId();
+
         // 요청에 맞는 신뢰점수 증감 조회
-        int scoreChange = getScore(requestDto);
+        int scoreChange = getScore(addPointDto);
+
         // 신뢰점수내역 추가
-        createAndSaveHistory(requestDto, scoreChange);
+        createAndSaveHistory(addPointDto, scoreChange);
+
         // 신뢰점수내역 합산
         int calculatedScore = trustScoreHistoryRepository.calculateCurrentScore(userId);
+
         // 기존의 신뢰점수 테이블에 해당 유저에 대한 레코드가 없으면 생성, 있으면 업데이트
         if (!trustScoreRepository.existsByUserId(userId)) {
             trustScoreRepository.save(TrustScore.builder()
@@ -47,16 +52,16 @@ public class TrustScoreServiceImpl implements TrustScoreService {
     }
     /**
      * 신뢰점수이력 생성 및 조회
-     * @param requestDto, score
+     * @param addPointDto, score
      * @return TrustScoreHistory
      */
-    private TrustScoreHistory createAndSaveHistory(TrustScoreUpdateRequestDto requestDto, int score) {
+    private TrustScoreHistory createAndSaveHistory(AddPointDto addPointDto, int score) {
         TrustScoreHistory history = TrustScoreHistory.builder()
-                .userId(requestDto.getUserId())
-                .trustScoreTypeId(requestDto.getScoreTypeId())
-                .projectId(requestDto.getProjectId())
-                .milestoneId(requestDto.getMilestoneId())
-                .workId(requestDto.getWorkId())
+                .userId(addPointDto.getUserId())
+                .trustScoreTypeId(addPointDto.getScoreTypeId())
+                .projectId(addPointDto.getProjectId())
+                .milestoneId(addPointDto.getMilestoneId())
+                .workId(addPointDto.getWorkId())
                 .score(score)
                 .createDate(new Date())
                 .build();
@@ -64,15 +69,15 @@ public class TrustScoreServiceImpl implements TrustScoreService {
     }
     /**
      * 신뢰점수 조회
-     * @param requestDto
+     * @param addPointDto
      * @return int
      */
-    private int getScore(TrustScoreUpdateRequestDto requestDto) {
+    private int getScore(AddPointDto addPointDto) {
         int score = 0;
-        if (requestDto.getProjectId() == null) {
-            score = trustScoreTypeRepository.getScore(requestDto.getScoreTypeId());
+        if (addPointDto.getProjectId() == null) {
+            score = trustScoreTypeRepository.getScore(addPointDto.getScoreTypeId());
         } else {
-            score = trustScoreTypeRepository.getScoreByProject(requestDto.getProjectId(), requestDto.getScoreTypeId());
+            score = trustScoreTypeRepository.getScoreByProject(addPointDto.getProjectId(), addPointDto.getScoreTypeId());
         }
         return score;
     }

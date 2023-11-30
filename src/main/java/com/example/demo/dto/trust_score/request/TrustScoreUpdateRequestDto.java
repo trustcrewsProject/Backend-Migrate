@@ -1,11 +1,14 @@
 package com.example.demo.dto.trust_score.request;
 
 import javax.validation.constraints.NotNull;
+
+import com.example.demo.global.validation.annotation.ValidTrustScoreUpdateRequest;
 import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@ValidTrustScoreUpdateRequest
 public class TrustScoreUpdateRequestDto {
     @NotNull(message = "사용자값은 필수입니다.")
     private Long userId;

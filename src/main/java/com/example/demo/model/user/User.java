@@ -36,12 +36,6 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<UserTechnologyStack> techStacks;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "trust_grade_id")
-    private TrustGrade trustGrade;
-
-    private int trustScore;
-
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -53,9 +47,6 @@ public class User extends BaseTimeEntity {
             String profileImgSrc,
             String intro,
             Position position,
-            List<UserTechnologyStack> techStacks,
-            TrustGrade trustGrade,
-            int trustScore,
             Role role) {
         this.email = email;
         this.password = password;
@@ -64,8 +55,11 @@ public class User extends BaseTimeEntity {
         this.intro = intro;
         this.position = position;
         this.techStacks = techStacks;
-        this.trustGrade = trustGrade;
-        this.trustScore = trustScore;
         this.role = role;
+    }
+
+    // 기술스택 목록 등록
+    public void setTechStacks(List<UserTechnologyStack> techStacks) {
+        this.techStacks = techStacks;
     }
 }

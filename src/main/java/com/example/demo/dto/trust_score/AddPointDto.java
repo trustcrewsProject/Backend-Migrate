@@ -1,10 +1,12 @@
 package com.example.demo.dto.trust_score;
 
 import com.example.demo.dto.trust_score.request.TrustScoreUpdateRequestDto;
+import com.example.demo.global.validation.annotation.ValidAddPointDto;
 import lombok.Builder;
 import lombok.Data;
 
 @Data
+@ValidAddPointDto
 public class AddPointDto {
     private Long userId;
     private Long projectId;

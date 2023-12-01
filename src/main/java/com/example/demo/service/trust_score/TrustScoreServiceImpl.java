@@ -1,7 +1,6 @@
 package com.example.demo.service.trust_score;
 
 import com.example.demo.dto.trust_score.AddPointDto;
-import com.example.demo.dto.trust_score.request.TrustScoreUpdateRequestDto;
 import com.example.demo.dto.trust_score.response.TrustScoreUpdateResponseDto;
 import com.example.demo.model.trust_score.TrustScore;
 import com.example.demo.model.trust_score.TrustScoreHistory;
@@ -12,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.Valid;
 import java.util.Date;
 @Service
 @RequiredArgsConstructor
@@ -19,9 +19,14 @@ public class TrustScoreServiceImpl implements TrustScoreService {
     private final TrustScoreRepository trustScoreRepository;
     private final TrustScoreHistoryRepository trustScoreHistoryRepository;
     private final TrustScoreTypeRepository trustScoreTypeRepository;
+    /**
+     * DTO를 통한
+     * @param addPointDto
+     * @return TrustScoreUpdateResponseDto
+     */
     @Override
     @Transactional
-    public TrustScoreUpdateResponseDto addPoint(AddPointDto addPointDto) {
+    public TrustScoreUpdateResponseDto addPoint(@Valid AddPointDto addPointDto) {
         Long userId = addPointDto.getUserId();
 
         // 요청에 맞는 신뢰점수 증감 조회
@@ -43,7 +48,8 @@ public class TrustScoreServiceImpl implements TrustScoreService {
         } else {
             trustScoreRepository.updateUserTrustScore(userId, calculatedScore);
         }
-        // 마일리지 누적점수 업데이트
+
+        //
         return TrustScoreUpdateResponseDto.builder()
                 .userId(userId)
                 .totalScore(calculatedScore)

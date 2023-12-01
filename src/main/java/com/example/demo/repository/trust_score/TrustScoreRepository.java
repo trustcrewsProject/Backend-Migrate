@@ -6,9 +6,12 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface TrustScoreRepository
         extends JpaRepository<TrustScore, Long>, TrustScoreRepositoryCustom {
     boolean existsByUserId(Long userId);
+    Optional<Integer> findScoreByUserId(Long userId);
     @Modifying
     @Query("update TrustScore ts set ts.score = (case when :score < 0 then 0 else :score end) where ts.userId = :userId")
     void updateUserTrustScore(@Param("userId")Long userId, @Param("score")int score);

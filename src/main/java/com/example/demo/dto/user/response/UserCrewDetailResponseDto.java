@@ -27,7 +27,7 @@ public class UserCrewDetailResponseDto {
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 
-    public static UserCrewDetailResponseDto of(User user, PositionResponseDto position, TrustGradeResponseDto trustGrade, List<TechnologyStackInfoResponseDto> technologyStacks) {
+    public static UserCrewDetailResponseDto of(User user, int trustScore, PositionResponseDto position, TrustGradeResponseDto trustGrade, List<TechnologyStackInfoResponseDto> technologyStacks) {
         return UserCrewDetailResponseDto.builder()
                 .userId(user.getId())
                 .email(user.getEmail())
@@ -35,7 +35,7 @@ public class UserCrewDetailResponseDto {
                 .profileImgSrc(user.getProfileImgSrc())
                 .position(position)
                 .trustGrade(trustGrade)
-                .trustScore(user.getTrustScore())
+                .trustScore(trustScore)
                 .role(user.getRole())
                 .intro(user.getIntro())
                 .technologyStacks(technologyStacks)

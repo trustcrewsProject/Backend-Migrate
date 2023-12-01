@@ -19,6 +19,7 @@ import com.example.demo.model.project.QProject;
 import com.example.demo.model.project.QProjectTechnology;
 import com.example.demo.model.technology_stack.QTechnologyStack;
 import com.example.demo.model.technology_stack.TechnologyStack;
+import com.example.demo.model.trust_grade.TrustGrade;
 import com.example.demo.model.user.QUser;
 import com.example.demo.model.user.User;
 import com.example.demo.repository.position.PositionRepository;
@@ -123,7 +124,9 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
             ProjectSearchResponseDto projectSearchResponseDto = ProjectSearchResponseDto.of(project, projectTrustGradeResponseDto, technologyStacks);
 
             User user = boardEntity.getUser();
-            TrustGradeResponseDto userTrustGradeResponseDto = TrustGradeResponseDto.of(user.getTrustGrade());
+
+            // 임시수정
+            TrustGradeResponseDto userTrustGradeResponseDto = TrustGradeResponseDto.of(null);
             UserSearchResponseDto userSearchResponseDto = UserSearchResponseDto.of(user, userTrustGradeResponseDto);
 
             boardSearchResponseDtos.add(BoardSearchResponseDto.of(boardEntity, projectSearchResponseDto,userSearchResponseDto));

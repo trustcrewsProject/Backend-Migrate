@@ -71,7 +71,8 @@ public class ProjectMemberFacade {
             technologyStackInfoResponseDtoList.add(technologyStackInfoResponseDto);
         }
 
-        UserCrewDetailResponseDto userCrewDetailResponseDto = UserCrewDetailResponseDto.of(projectMember.getUser(),positionResponseDto, trustGradeResponseDto, technologyStackInfoResponseDtoList);
+        // 임시
+        UserCrewDetailResponseDto userCrewDetailResponseDto = UserCrewDetailResponseDto.of(projectMember.getUser(),1,positionResponseDto, trustGradeResponseDto, technologyStackInfoResponseDtoList);
 
         return ProjectMemberReadCrewDetailResponseDto.of(
                 projectMember,

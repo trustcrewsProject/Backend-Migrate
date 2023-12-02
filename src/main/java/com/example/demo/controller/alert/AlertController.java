@@ -36,19 +36,19 @@ public class AlertController {
 
     @GetMapping("/api/alert/project/{projectId}/recruits")
     public ResponseEntity<ResponseDto<?>> getRecruitsByProject(@PathVariable("projectId") Long projectId){
-        alertFacade.getRecruitsByProject(projectId);
-        return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
+        List<Alert> result = alertFacade.getRecruitsByProject(projectId);
+        return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 
     @GetMapping("/api/alert/project/{projectId}/works")
     public ResponseEntity<ResponseDto<?>> getWorksByProject(@PathVariable("projectId") Long projectId){
-        alertFacade.getWorksByProject(projectId);
-        return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
+        List<Alert> result = alertFacade.getWorksByProject(projectId);
+        return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 
     @GetMapping("/api/alert/project/{projectId}/crews")
     public ResponseEntity<ResponseDto<?>> getCrewsByProject(@PathVariable("projectId") Long projectId){
-        alertFacade.getCrewsByProject(projectId);
-        return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
+        List<Alert> result = alertFacade.getCrewsByProject(projectId);
+        return new ResponseEntity<>(ResponseDto.success("success",result), HttpStatus.OK);
     }
 }

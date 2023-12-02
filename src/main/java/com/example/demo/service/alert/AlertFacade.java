@@ -45,12 +45,27 @@ public class AlertFacade {
            position = positionService.findById(alertCreateRequestDto.getPositionId());
         }
 
-        Alert alert = alertService.toAlertEntity(alertCreateRequestDto, project, checkUser, sendUser, work, position);
+        Alert alert = alertCreateRequestDto.toAlertEntity(project, checkUser, sendUser, work, position);
         alertService.save(alert);
     }
 
     public List<Alert> getAllByProject(Long projectId){
         Project project = projectService.findById(projectId);
         return alertService.findAlertsByProjectId(project);
+    }
+  
+    public List<Alert> getRecruitsByProject(Long projectId){
+        Project project = projectService.findById(projectId);
+        return alertService.findRecruitAlertsByProject(project);
+    }
+
+    public List<Alert> getWorksByProject(Long projectId){
+        Project project = projectService.findById(projectId);
+        return alertService.findWorkAlertsByProject(project);
+    }
+
+    public List<Alert> getCrewsByProject(Long projectId){
+        Project project = projectService.findById(projectId);
+        return alertService.findCrewAlertsByProject(project);
     }
 }

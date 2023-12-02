@@ -97,12 +97,14 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
         BooleanBuilder builder = new BooleanBuilder();
         builder.or(searchByLike(dto.getKeyWord()));
         builder.or(containsPosition(dto.getPositionIds()));
+        builder.or(containsProjectTechnologyStack(dto.getTechnologyIds()));
 
         List<Board> boards = queryFactory
                 .selectDistinct(qBoard)
                 .from(qBoard)
                 .join(qBoard.project, qProject)
                 .join(qBoard.positions, qBoardPosition)
+                .join(qBoard.project.projectTechnologies, qProjectTechnology)
                 .where(builder)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())

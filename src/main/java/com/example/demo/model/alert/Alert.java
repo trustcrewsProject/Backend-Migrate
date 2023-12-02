@@ -6,6 +6,8 @@ import com.example.demo.model.position.Position;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.user.User;
 import javax.persistence.*;
+
+import com.example.demo.model.work.Work;
 import lombok.*;
 import org.springframework.lang.Nullable;
 
@@ -28,8 +30,12 @@ public class Alert extends BaseTimeEntity {
     private User checkUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "apply_user_id", referencedColumnName = "user_id", nullable = false)
-    private User applyUser;
+    @JoinColumn(name = "send_user_id", referencedColumnName = "user_id", nullable = false)
+    private User sendUser;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "work_id")
+    private Work work;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "position_id")
@@ -47,14 +53,16 @@ public class Alert extends BaseTimeEntity {
     private Alert(
             Project project,
             User checkUser,
-            User applyUser,
+            User sendUser,
+            Work work,
             Position position,
             String content,
             AlertType type,
             boolean checked_YN) {
         this.project = project;
         this.checkUser = checkUser;
-        this.applyUser = applyUser;
+        this.sendUser = sendUser;
+        this.work = work;
         this.position = position;
         this.content = content;
         this.type = type;

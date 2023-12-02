@@ -14,8 +14,6 @@ import java.util.List;
 @Service
 public interface AlertService {
 
-    public Alert toAlertEntity(AlertCreateRequestDto alertCreateRequestDto, Project project, User checkUser, User sendUser, Work work, Position position);
-
     public Alert toAlertEntity(Project project, User user, Position position);
 
     public Alert toAlertEntity(ProjectMember projectMember, Position position);

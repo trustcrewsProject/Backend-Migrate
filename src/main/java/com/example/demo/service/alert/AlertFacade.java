@@ -45,7 +45,7 @@ public class AlertFacade {
            position = positionService.findById(alertCreateRequestDto.getPositionId());
         }
 
-        Alert alert = alertService.toAlertEntity(alertCreateRequestDto, project, checkUser, sendUser, work, position);
+        Alert alert = alertCreateRequestDto.toAlertEntity(project, checkUser, sendUser, work, position);
         alertService.save(alert);
     }
 

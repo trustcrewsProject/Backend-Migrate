@@ -20,26 +20,6 @@ import java.util.List;
 public class AlertServiceImpl implements AlertService {
     private final AlertRepository alertRepository;
 
-    public Alert toAlertEntity(
-            AlertCreateRequestDto alertCreateRequestDto,
-            Project project,
-            User checkUser,
-            User sendUser,
-            Work work,
-            Position position
-    ){
-        return Alert.builder()
-                .project(project)
-                .checkUser(checkUser)
-                .sendUser(sendUser)
-                .work(work)
-                .position(position)
-                .content(alertCreateRequestDto.getContent())
-                .type(alertCreateRequestDto.getType())
-                .checked_YN(alertCreateRequestDto.getChecked_yn())
-                .build();
-    }
-
     public Alert toAlertEntity(Project project, User user, Position position){
         return Alert.builder()
                 .project(project)

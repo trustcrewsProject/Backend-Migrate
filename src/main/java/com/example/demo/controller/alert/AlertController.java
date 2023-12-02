@@ -7,6 +7,8 @@ import com.example.demo.service.alert.AlertService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,9 +19,15 @@ public class AlertController {
     private final AlertFacade alertFacade;
     private final AlertService alertService;
 
-    @PostMapping("/api/alert/}")
+    @PostMapping("/api/alert}")
     public ResponseEntity<ResponseDto<?>> send(AlertCreateRequestDto alertCreateRequestDto){
         alertFacade.send(alertCreateRequestDto);
+        return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
+    }
+
+    @GetMapping("/api/alert/project/{projectId}")
+    public ResponseEntity<ResponseDto<?>> getAllByProject(@PathVariable("projectId") Long projectId){
+        alertFacade.getAllByProject(projectId);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 }

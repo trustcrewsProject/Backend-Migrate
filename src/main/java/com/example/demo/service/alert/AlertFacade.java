@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class AlertFacade {
@@ -45,5 +47,10 @@ public class AlertFacade {
 
         Alert alert = alertService.toAlertEntity(alertCreateRequestDto, project, checkUser, sendUser, work, position);
         alertService.save(alert);
+    }
+
+    public List<Alert> getAllByProject(Long projectId){
+        Project project = projectService.findById(projectId);
+        return alertService.findAlertsByProjectId(project);
     }
 }

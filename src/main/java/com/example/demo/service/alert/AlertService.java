@@ -9,6 +9,8 @@ import com.example.demo.model.user.User;
 import com.example.demo.model.work.Work;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface AlertService {
 
@@ -20,4 +22,6 @@ public interface AlertService {
 
     public Alert findById(Long id);
     public Alert save(Alert alert);
+
+    public List<Alert> findAlertsByProjectId(Project project);
 }

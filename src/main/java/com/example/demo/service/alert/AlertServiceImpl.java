@@ -13,6 +13,8 @@ import com.example.demo.repository.alert.AlertRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class AlertServiceImpl implements AlertService {
@@ -72,5 +74,9 @@ public class AlertServiceImpl implements AlertService {
     @Override
     public Alert save(Alert alert) {
         return alertRepository.save(alert);
+    }
+
+    public List<Alert> findAlertsByProjectId(Project project){
+        return alertRepository.findAlertsByProject(project).orElseThrow(() -> AlertCustomException.NOT_FOUND_ALERT);
     }
 }

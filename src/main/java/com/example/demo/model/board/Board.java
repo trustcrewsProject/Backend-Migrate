@@ -70,4 +70,8 @@ public class Board extends BaseTimeEntity {
         this.positions.clear();
         this.positions.addAll(list);
     }
+
+    public void updatePageView(){
+        this.pageView++;
+    }
 }

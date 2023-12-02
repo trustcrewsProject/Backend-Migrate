@@ -84,6 +84,8 @@ public class BoardServiceImpl implements BoardService {
         }
         ProjectDetailResponseDto projectDetailResponseDto = ProjectDetailResponseDto.of(board.getProject(), trustGradeDto, userProjectResponseDto, technologyStackInfoResponseDtos);
 
+        //boardPageView 증가
+        board.updatePageView();
 
         return BoardTotalDetailResponseDto.of(boardDetailResponseDto, projectDetailResponseDto);
     }

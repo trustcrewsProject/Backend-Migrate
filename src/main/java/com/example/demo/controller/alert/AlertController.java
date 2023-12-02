@@ -22,7 +22,7 @@ public class AlertController {
     private final AlertFacade alertFacade;
     private final AlertService alertService;
 
-    @PostMapping("/api/alert}")
+    @PostMapping("/api/alert")
     public ResponseEntity<ResponseDto<?>> send(AlertCreateRequestDto alertCreateRequestDto){
         alertFacade.send(alertCreateRequestDto);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);

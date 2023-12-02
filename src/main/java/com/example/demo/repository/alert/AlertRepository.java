@@ -13,12 +13,12 @@ public interface AlertRepository extends JpaRepository<Alert, Long> {
 
     Optional<List<Alert>> findAlertsByProject(Project project);
   
-    @Query("select alert from Alert alert where alert.project = :#{project.id} and alert.type = 'RECRUIT'")
+    @Query("select alert from Alert alert where alert.project = :#{#project.id} and alert.type = 'RECRUIT'")
     Optional<List<Alert>> findRecruitAlertsByProject(@Param(value ="project") Project project);
 
-    @Query("select alert from Alert alert where alert.project = :#{project.id} and alert.type = 'WORK'")
-    Optional<List<Alert>> findWorkAlertsByProject(Project project);
+    @Query("select alert from Alert alert where alert.project = :#{#project.id} and alert.type = 'WORK'")
+    Optional<List<Alert>> findWorkAlertsByProject(@Param(value ="project") Project project);
 
-    @Query("select alert from Alert alert where alert.project = :#{project.id} and alert.type = 'ADD' or alert.type = 'WITHDRAWL' or alert.type = 'FORCEDWITHDRAWL'")
-    Optional<List<Alert>> findCrewAlertsByProject(Project project);
+    @Query("select alert from Alert alert where alert.project = :#{#project.id} and alert.type = 'ADD' or alert.type = 'WITHDRAWL' or alert.type = 'FORCEDWITHDRAWL'")
+    Optional<List<Alert>> findCrewAlertsByProject(@Param(value ="project") Project project);
 }

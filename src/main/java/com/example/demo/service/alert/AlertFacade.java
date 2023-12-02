@@ -53,7 +53,7 @@ public class AlertFacade {
         Project project = projectService.findById(projectId);
         return alertService.findAlertsByProjectId(project);
     }
-
+  
     public List<Alert> getRecruitsByProject(Long projectId){
         Project project = projectService.findById(projectId);
         return alertService.findRecruitAlertsByProject(project);

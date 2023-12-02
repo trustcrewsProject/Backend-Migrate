@@ -71,5 +71,4 @@ public class AlertServiceImpl implements AlertService {
     public List<Alert> findCrewAlertsByProject(Project project){
         return alertRepository.findCrewAlertsByProject(project).orElseThrow(() -> AlertCustomException.NOT_FOUND_ALERT);
     }
-
 }

@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface AlertRepository extends JpaRepository<Alert, Long> {
 
     Optional<List<Alert>> findAlertsByProject(Project project);
-
+  
     @Query("select alert from Alert alert where alert.project = :#{project.id} and alert.type = 'RECRUIT'")
     Optional<List<Alert>> findRecruitAlertsByProject(@Param(value ="project") Project project);
 

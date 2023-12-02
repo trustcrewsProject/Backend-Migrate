@@ -53,4 +53,19 @@ public class AlertFacade {
         Project project = projectService.findById(projectId);
         return alertService.findAlertsByProjectId(project);
     }
+
+    public List<Alert> getRecruitsByProject(Long projectId){
+        Project project = projectService.findById(projectId);
+        return alertService.findRecruitAlertsByProject(project);
+    }
+
+    public List<Alert> getWorksByProject(Long projectId){
+        Project project = projectService.findById(projectId);
+        return alertService.findWorkAlertsByProject(project);
+    }
+
+    public List<Alert> getCrewsByProject(Long projectId){
+        Project project = projectService.findById(projectId);
+        return alertService.findCrewAlertsByProject(project);
+    }
 }

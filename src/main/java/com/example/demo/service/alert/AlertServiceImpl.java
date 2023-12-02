@@ -59,4 +59,17 @@ public class AlertServiceImpl implements AlertService {
     public List<Alert> findAlertsByProjectId(Project project){
         return alertRepository.findAlertsByProject(project).orElseThrow(() -> AlertCustomException.NOT_FOUND_ALERT);
     }
+
+    public List<Alert> findRecruitAlertsByProject(Project project){
+        return alertRepository.findRecruitAlertsByProject(project).orElseThrow(() -> AlertCustomException.NOT_FOUND_ALERT);
+    }
+
+    public List<Alert> findWorkAlertsByProject(Project project){
+        return alertRepository.findWorkAlertsByProject(project).orElseThrow(() -> AlertCustomException.NOT_FOUND_ALERT);
+    }
+
+    public List<Alert> findCrewAlertsByProject(Project project){
+        return alertRepository.findCrewAlertsByProject(project).orElseThrow(() -> AlertCustomException.NOT_FOUND_ALERT);
+    }
+
 }

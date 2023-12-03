@@ -39,4 +39,9 @@ public class UserServiceImpl implements UserService {
                         .findById(id)
                         .orElseThrow(() -> UserCustomException.NOT_FOUND_USER);
     }
+
+    @Override
+    public User save(User user) {
+        return userRepository.save(user);
+    }
 }

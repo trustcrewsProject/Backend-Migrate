@@ -17,4 +17,6 @@ public interface UserService {
     ResponseDto<?> checkNickname(String nickname);
 
     User findById(Long userId);
+
+    User save(User user);
 }

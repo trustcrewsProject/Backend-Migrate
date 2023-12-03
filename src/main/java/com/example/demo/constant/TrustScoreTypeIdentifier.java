@@ -38,4 +38,8 @@ public class TrustScoreTypeIdentifier {
      * 프로젝트 강제 탈퇴에 대한 상수
      */
     public static final Long FORCE_WITHDRAWAL = 5L;
+    /**
+     * 업무 지연에 대한 상수
+     */
+    public static final Long LATE_WORK = 22L;
 }

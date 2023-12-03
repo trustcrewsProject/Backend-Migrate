@@ -41,4 +41,9 @@ public class TrustScoreType extends BaseTimeEntity {
      */
     @Column
     private String gubunCode;
+    /**
+     * 삭제여부
+     */
+    @Column
+    private String deleteStatus;
 }

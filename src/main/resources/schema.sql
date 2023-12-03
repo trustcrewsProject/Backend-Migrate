@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS technology_stack_category;
 DROP TABLE IF EXISTS technology_stack;
 DROP TABLE IF EXISTS trust_grade;
 DROP TABLE IF EXISTS project_member_auth;
+DROP TABLE IF EXISTS trust_score_type;
 
 CREATE TABLE `user` (
     `user_id` bigint NOT NULL,
@@ -61,3 +62,15 @@ CREATE TABLE `project_member_auth` (
    PRIMARY KEY (`project_member_auth_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 SET FOREIGN_KEY_CHECKS=1;
+
+CREATE TABLE `trust_score_type` (
+    `trust_score_type_id` BIGINT NOT NULL,
+    `up_trust_score_type_id` BIGINT NULL,
+    `trust_score_type_name` VARCHAR(40) NULL,
+    `trust_grade_name` VARCHAR(20) NULL,
+    `score` INT NULL,
+    `gubun_code` VARCHAR(1) NULL,
+    `delete_status` VARCHAR(1) NULL,
+    `create_date` DATE NOT NULL,
+    `update_date` DATE NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

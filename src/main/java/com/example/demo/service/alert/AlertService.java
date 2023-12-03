@@ -13,11 +13,7 @@ import java.util.List;
 
 @Service
 public interface AlertService {
-
-    public Alert toAlertEntity(Project project, User user, Position position);
-
-    public Alert toAlertEntity(ProjectMember projectMember, Position position);
-
+    
     public Alert findById(Long id);
     public Alert save(Alert alert);
 

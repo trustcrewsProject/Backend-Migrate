@@ -20,32 +20,6 @@ import java.util.List;
 public class AlertServiceImpl implements AlertService {
     private final AlertRepository alertRepository;
 
-    public Alert toAlertEntity(Project project, User user, Position position){
-        return Alert.builder()
-                .project(project)
-                .checkUser(project.getUser())
-                .sendUser(user)
-                .work(null)
-                .content("프로젝트 지원했습니다.")
-                .position(position)
-                .type(AlertType.RECRUIT)
-                .checked_YN(false)
-                .build();
-    }
-
-    public Alert toAlertEntity(ProjectMember projectMember, Position position){
-        return Alert.builder()
-                .project(projectMember.getProject())
-                .checkUser(projectMember.getProject().getUser())
-                .sendUser(projectMember.getUser())
-                .work(null)
-                .content("프로젝트 지원했습니다.")
-                .position(position)
-                .type(AlertType.RECRUIT)
-                .checked_YN(false)
-                .build();
-    }
-
     @Override
     public Alert findById(Long id) {
         return alertRepository.findById(id).orElseThrow(() -> AlertCustomException.NOT_FOUND_ALERT);

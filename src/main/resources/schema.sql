@@ -17,12 +17,9 @@ CREATE TABLE `user` (
     `password` varchar(255) DEFAULT NULL,
     `profile_img_src` varchar(255) DEFAULT NULL,
     `role` varchar(255) DEFAULT NULL,
-    `trust_score` int NOT NULL,
     `position_id` bigint DEFAULT NULL,
-    `trust_grade_id` bigint DEFAULT NULL,
     PRIMARY KEY (`user_id`),
-    FOREIGN KEY (`position_id`) REFERENCES `position` (`position_id`),
-    FOREIGN KEY (`trust_grade_id`) REFERENCES `trust_grade` (`trust_grade_id`)
+    FOREIGN KEY (`position_id`) REFERENCES `position` (`position_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `position` (

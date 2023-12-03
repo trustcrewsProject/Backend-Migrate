@@ -3,6 +3,7 @@ package com.example.demo.global.validation.validator;
 import com.example.demo.dto.trust_score.request.TrustScoreUpdateRequestDto;
 import com.example.demo.global.validation.annotation.ValidTrustScoreUpdateRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import static com.example.demo.constant.TrustScoreTypeIdentifier.*;
 
@@ -10,6 +11,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 // TODO : 메시지 추가 고민
 @Slf4j
+@Component
 public class TrustScoreUpdateRequestValidator
         implements ConstraintValidator<ValidTrustScoreUpdateRequest, TrustScoreUpdateRequestDto> {
     @Override

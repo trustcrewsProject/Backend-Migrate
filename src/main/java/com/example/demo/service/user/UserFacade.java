@@ -13,13 +13,12 @@ import com.example.demo.model.user.UserTechnologyStack;
 import com.example.demo.service.position.PositionService;
 import com.example.demo.service.technology_stack.TechnologyStackService;
 import com.example.demo.service.trust_score.TrustScoreService;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -41,24 +40,26 @@ public class UserFacade {
         // 회원 포지션
         Position position = positionService.findById(createRequest.getPositionId());
 
-        User user = User.builder()
-                .email(createRequest.getEmail())
-                .password(encryptPassword)
-                .nickname(createRequest.getNickname())
-                .profileImgSrc("")
-                .intro(createRequest.getIntro())
-                .position(position)
-                .role(Role.USER)
-                .build();
+        User user =
+                User.builder()
+                        .email(createRequest.getEmail())
+                        .password(encryptPassword)
+                        .nickname(createRequest.getNickname())
+                        .profileImgSrc("")
+                        .intro(createRequest.getIntro())
+                        .position(position)
+                        .role(Role.USER)
+                        .build();
 
         // 회원 기술스택 목록
         List<UserTechnologyStack> techStacks = new ArrayList<>();
-        for(Long techStackId : createRequest.getTechStackIds()) {
+        for (Long techStackId : createRequest.getTechStackIds()) {
             TechnologyStack technologyStack = technologyStackService.findById(techStackId);
-            UserTechnologyStack userTechnologyStack = UserTechnologyStack.builder()
-                    .user(user)
-                    .technologyStack(technologyStack)
-                    .build();
+            UserTechnologyStack userTechnologyStack =
+                    UserTechnologyStack.builder()
+                            .user(user)
+                            .technologyStack(technologyStack)
+                            .build();
 
             techStacks.add(userTechnologyStack);
         }

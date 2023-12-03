@@ -7,7 +7,6 @@ import com.example.demo.model.project.Project;
 import com.example.demo.model.user.User;
 import com.example.demo.model.work.Work;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -23,12 +22,7 @@ public class AlertCreateRequestDto {
     private Boolean checked_yn;
 
     public Alert toAlertEntity(
-            Project project,
-            User checkUser,
-            User sendUser,
-            Work work,
-            Position position
-    ){
+            Project project, User checkUser, User sendUser, Work work, Position position) {
         return Alert.builder()
                 .project(project)
                 .checkUser(checkUser)

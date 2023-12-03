@@ -4,13 +4,11 @@ import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.dto.work.request.*;
 import com.example.demo.service.work.WorkFacade;
 import com.example.demo.service.work.WorkService;
-import lombok.AllArgsConstructor;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -54,7 +52,6 @@ public class WorkController {
         workService.delete(workId);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
-
 
     @PatchMapping("/api/work/{workId}/content")
     public ResponseEntity<ResponseDto<?>> updateContent(

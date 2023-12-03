@@ -7,22 +7,20 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
-
-import javax.annotation.PostConstruct;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import javax.annotation.PostConstruct;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 @Slf4j
 @Component
@@ -72,21 +70,23 @@ public class JsonWebTokenProvider {
         claims.put("nickname", principalDetails.getNickname());
         claims.put("role", principalDetails.getAuthorities());
 
-        String accessToken = Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(Calendar.getInstance().getTime())
-                .setExpiration(accessTokenExpiresIn)
-                .signWith(SignatureAlgorithm.HS512, key)
-                .compact();
+        String accessToken =
+                Jwts.builder()
+                        .setClaims(claims)
+                        .setIssuedAt(Calendar.getInstance().getTime())
+                        .setExpiration(accessTokenExpiresIn)
+                        .signWith(SignatureAlgorithm.HS512, key)
+                        .compact();
 
         // Refresh Token 생성
         Date refreshTokenExpiresIn = getTokenExpiration(refreshTokenExpirationMillis);
 
-        String refreshToken = Jwts.builder()
-                .setIssuedAt(Calendar.getInstance().getTime())
-                .setExpiration(refreshTokenExpiresIn)
-                .signWith(SignatureAlgorithm.HS512, key)
-                .compact();
+        String refreshToken =
+                Jwts.builder()
+                        .setIssuedAt(Calendar.getInstance().getTime())
+                        .setExpiration(refreshTokenExpiresIn)
+                        .signWith(SignatureAlgorithm.HS512, key)
+                        .compact();
 
         return JsonWebTokenDto.builder()
                 .accessToken(accessToken)
@@ -126,24 +126,22 @@ public class JsonWebTokenProvider {
         String nickname = String.valueOf(claims.get("nickname"));
         String authority = String.valueOf(claims.get("role"));
 
-        PrincipalDetails principalDetails = PrincipalDetails.of(claims.getSubject(), email, nickname, authority);
+        PrincipalDetails principalDetails =
+                PrincipalDetails.of(claims.getSubject(), email, nickname, authority);
 
-        return new UsernamePasswordAuthenticationToken(principalDetails, "", principalDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(
+                principalDetails, "", principalDetails.getAuthorities());
     }
 
     // 토큰 복호화
     private Claims parseClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(this.key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+        return Jwts.parserBuilder().setSigningKey(this.key).build().parseClaimsJws(token).getBody();
     }
 
     // Request Header 에서 Access Token 정보 추출
     public String resolveAccessToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-        if(StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
             return bearerToken.substring(7);
         }
 
@@ -153,13 +151,14 @@ public class JsonWebTokenProvider {
     // Request Header 에서 Refresh Token 정보 추출
     public String resolveRefreshToken(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
-        String bearerToken = Arrays.stream(cookies)
-                .filter(cookie -> cookie.getName().equals(REFRESH_HEADER))
-                .findFirst()
-                .orElseThrow(() -> TokenCustomException.DOES_NOT_REFRESH_TOKEN)
-                .getValue();
+        String bearerToken =
+                Arrays.stream(cookies)
+                        .filter(cookie -> cookie.getName().equals(REFRESH_HEADER))
+                        .findFirst()
+                        .orElseThrow(() -> TokenCustomException.DOES_NOT_REFRESH_TOKEN)
+                        .getValue();
 
-        if(StringUtils.hasText(bearerToken)) {
+        if (StringUtils.hasText(bearerToken)) {
             return bearerToken;
         }
 

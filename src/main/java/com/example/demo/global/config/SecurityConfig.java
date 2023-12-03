@@ -47,26 +47,34 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.csrf().disable()
+        return http.csrf()
+                .disable()
                 .cors()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .formLogin().disable()
-                .httpBasic().disable()
+                .formLogin()
+                .disable()
+                .httpBasic()
+                .disable()
                 .apply(new UserAuthenticationFilterConfigurer())
                 .and()
-                .addFilterBefore(new JsonWebTokenAuthorizationFilter(jsonWebTokenProvider), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(
+                        new JsonWebTokenAuthorizationFilter(jsonWebTokenProvider),
+                        UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
     // 로그인 요청을 담당하는 필터를 관리하는 클래스
-    public class UserAuthenticationFilterConfigurer extends AbstractHttpConfigurer<UserAuthenticationFilterConfigurer, HttpSecurity> {
+    public class UserAuthenticationFilterConfigurer
+            extends AbstractHttpConfigurer<UserAuthenticationFilterConfigurer, HttpSecurity> {
         @Override
         public void configure(HttpSecurity http) throws Exception {
             AuthenticationManager authenticationManager = authenticationManagerBean();
-            UserAuthenticationFilter userAuthenticationFilter = new UserAuthenticationFilter(authenticationManager, jsonWebTokenProvider, refreshTokenRedisService);
+            UserAuthenticationFilter userAuthenticationFilter =
+                    new UserAuthenticationFilter(
+                            authenticationManager, jsonWebTokenProvider, refreshTokenRedisService);
 
             // 해당 필터가 동작할 URL 설정
             userAuthenticationFilter.setFilterProcessesUrl("/api/user/login");

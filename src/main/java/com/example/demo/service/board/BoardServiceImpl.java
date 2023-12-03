@@ -17,15 +17,13 @@ import com.example.demo.model.board.BoardPosition;
 import com.example.demo.model.project.ProjectTechnology;
 import com.example.demo.model.technology_stack.TechnologyStack;
 import com.example.demo.repository.board.BoardRepository;
-import lombok.AllArgsConstructor;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -40,57 +38,72 @@ public class BoardServiceImpl implements BoardService {
      */
     @Transactional(readOnly = true)
     public Page<BoardSearchResponseDto> search(BoardSearchRequestDto dto, Pageable pageable) {
-       return boardRepository.getBoardSearchPage(dto, pageable);
+        return boardRepository.getBoardSearchPage(dto, pageable);
     }
 
-    public Board findById(Long boardId){
-        return boardRepository.findById(boardId).orElseThrow(() -> BoardCustomException.NOT_FOUND_BOARD);
+    public Board findById(Long boardId) {
+        return boardRepository
+                .findById(boardId)
+                .orElseThrow(() -> BoardCustomException.NOT_FOUND_BOARD);
     }
 
-    public Board save(Board board){
+    public Board save(Board board) {
         return boardRepository.save(board);
     }
 
     /**
      * 게시글 상세 조회
+     *
      * @param boardId
      * @return
      */
     public BoardTotalDetailResponseDto getDetail(Long boardId) {
         Board board = findById(boardId);
 
-        //boardDetailResponseDto 생성
-        UserBoardDetailResponseDto userBoardDetailResponseDto = UserBoardDetailResponseDto.of(board.getUser());
+        // boardDetailResponseDto 생성
+        UserBoardDetailResponseDto userBoardDetailResponseDto =
+                UserBoardDetailResponseDto.of(board.getUser());
 
         List<BoardPositionDetailResponseDto> boardPositionDetailResponseDtos = new ArrayList<>();
         for (BoardPosition boardPosition : board.getPositions()) {
-            PositionResponseDto positionResponseDto = PositionResponseDto.of(boardPosition.getPosition());
-            BoardPositionDetailResponseDto boardPositionDetailResponseDto = BoardPositionDetailResponseDto.of(boardPosition, positionResponseDto);
+            PositionResponseDto positionResponseDto =
+                    PositionResponseDto.of(boardPosition.getPosition());
+            BoardPositionDetailResponseDto boardPositionDetailResponseDto =
+                    BoardPositionDetailResponseDto.of(boardPosition, positionResponseDto);
             boardPositionDetailResponseDtos.add(boardPositionDetailResponseDto);
         }
-        BoardDetailResponseDto boardDetailResponseDto = BoardDetailResponseDto.of(board, userBoardDetailResponseDto, boardPositionDetailResponseDtos);
+        BoardDetailResponseDto boardDetailResponseDto =
+                BoardDetailResponseDto.of(
+                        board, userBoardDetailResponseDto, boardPositionDetailResponseDtos);
 
         // ProjectDetailResponseDto 부분
-        TrustGradeResponseDto trustGradeDto = TrustGradeResponseDto.of(board.getProject().getTrustGrade());
-        UserProjectResponseDto userProjectResponseDto = UserProjectResponseDto.of(board.getProject());
+        TrustGradeResponseDto trustGradeDto =
+                TrustGradeResponseDto.of(board.getProject().getTrustGrade());
+        UserProjectResponseDto userProjectResponseDto =
+                UserProjectResponseDto.of(board.getProject());
 
-        //기술 스택 부분
+        // 기술 스택 부분
         List<TechnologyStackInfoResponseDto> technologyStackInfoResponseDtos = new ArrayList<>();
         for (ProjectTechnology projectTechnology : board.getProject().getProjectTechnologies()) {
             TechnologyStack technologyStack = projectTechnology.getTechnologyStack();
 
-            TechnologyStackInfoResponseDto technologyStackInfoResponseDto = TechnologyStackInfoResponseDto.of(technologyStack.getId(), technologyStack.getName());
+            TechnologyStackInfoResponseDto technologyStackInfoResponseDto =
+                    TechnologyStackInfoResponseDto.of(
+                            technologyStack.getId(), technologyStack.getName());
             technologyStackInfoResponseDtos.add(technologyStackInfoResponseDto);
         }
-        ProjectDetailResponseDto projectDetailResponseDto = ProjectDetailResponseDto.of(board.getProject(), trustGradeDto, userProjectResponseDto, technologyStackInfoResponseDtos);
+        ProjectDetailResponseDto projectDetailResponseDto =
+                ProjectDetailResponseDto.of(
+                        board.getProject(),
+                        trustGradeDto,
+                        userProjectResponseDto,
+                        technologyStackInfoResponseDtos);
 
-        //boardPageView 증가
+        // boardPageView 증가
         board.updatePageView();
 
         return BoardTotalDetailResponseDto.of(boardDetailResponseDto, projectDetailResponseDto);
     }
-
-
 
     /**
      * 게시글 삭제

@@ -5,11 +5,16 @@ import com.example.demo.dto.user.request.UserLoginRequestDto;
 import com.example.demo.dto.user.response.UserLoginSuccessResponseDto;
 import com.example.demo.global.exception.customexception.CommonCustomException;
 import com.example.demo.global.exception.customexception.UserCustomException;
-import com.example.demo.security.custom.PrincipalDetails;
 import com.example.demo.security.jwt.JsonWebTokenDto;
 import com.example.demo.security.jwt.JsonWebTokenProvider;
 import com.example.demo.service.token.RefreshTokenRedisService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -18,13 +23,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 // 인증 필터
 // 인증에 성공하면 JWT 발급
@@ -38,13 +36,18 @@ public class UserAuthenticationFilter extends UsernamePasswordAuthenticationFilt
 
     // 로그인을 요청했을 때 실행되는 로직
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+    public Authentication attemptAuthentication(
+            HttpServletRequest request, HttpServletResponse response)
+            throws AuthenticationException {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            UserLoginRequestDto loginRequest = objectMapper.readValue(request.getInputStream(), UserLoginRequestDto.class);
+            UserLoginRequestDto loginRequest =
+                    objectMapper.readValue(request.getInputStream(), UserLoginRequestDto.class);
 
             // 토큰생성
-            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
+            UsernamePasswordAuthenticationToken token =
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequest.getEmail(), loginRequest.getPassword());
             Authentication authentication = authenticationManager.authenticate(token);
 
             return authentication;
@@ -59,7 +62,12 @@ public class UserAuthenticationFilter extends UsernamePasswordAuthenticationFilt
 
     // 인증에 성공했을 경우 실행되는 로직
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain, Authentication authResult) throws IOException, ServletException {
+    protected void successfulAuthentication(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain,
+            Authentication authResult)
+            throws IOException, ServletException {
         PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
 
         // 토큰 발급
@@ -73,15 +81,17 @@ public class UserAuthenticationFilter extends UsernamePasswordAuthenticationFilt
         refreshTokenRedisService.save(principalDetails.getId(), tokens.getRefreshToken());
 
         // UserLoginSuccessResponseDto 셋팅
-        UserLoginSuccessResponseDto loginSuccessResponse = UserLoginSuccessResponseDto.builder()
-                .userId(principalDetails.getId())
-                .email(principalDetails.getEmail())
-                .nickname(principalDetails.getNickname())
-                .profileImgSrc(principalDetails.getProfileImgSrc())
-                .build();
+        UserLoginSuccessResponseDto loginSuccessResponse =
+                UserLoginSuccessResponseDto.builder()
+                        .userId(principalDetails.getId())
+                        .email(principalDetails.getEmail())
+                        .nickname(principalDetails.getNickname())
+                        .profileImgSrc(principalDetails.getProfileImgSrc())
+                        .build();
 
         // ResponseDto<> 형으로 변환
-        ResponseDto<UserLoginSuccessResponseDto> responseDto = ResponseDto.success("로그인에 성공하였습니다.", loginSuccessResponse);
+        ResponseDto<UserLoginSuccessResponseDto> responseDto =
+                ResponseDto.success("로그인에 성공하였습니다.", loginSuccessResponse);
 
         // ResponseEntity 응답 생성 및 반환
         ObjectMapper objectMapper = new ObjectMapper();

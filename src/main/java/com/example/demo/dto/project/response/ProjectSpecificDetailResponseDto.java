@@ -6,11 +6,10 @@ import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
 import com.example.demo.dto.user.response.UserProjectResponseDto;
 import com.example.demo.dto.work.response.WorkProjectDetailResponseDto;
 import com.example.demo.model.project.Project;
-import lombok.Builder;
-import lombok.Getter;
-
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.Builder;
+import lombok.Getter;
 
 @Getter
 @Builder

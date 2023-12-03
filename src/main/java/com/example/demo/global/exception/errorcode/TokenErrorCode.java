@@ -6,8 +6,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
-public enum TokenErrorCode implements ErrorCode{
-
+public enum TokenErrorCode implements ErrorCode {
     NON_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "엑세스 토큰 정보가 존재하지 않습니다."),
     WRONG_TYPE_SIGNATURE(HttpStatus.UNAUTHORIZED, "잘못된 JWT 시그니처입니다."),
     WRONG_TYPE_TOKEN(HttpStatus.UNAUTHORIZED, "지원되지 않는 형식이나 구성의 토큰입니다."),

@@ -1,8 +1,7 @@
 package com.example.demo.dto.milestone;
 
-import java.time.LocalDateTime;
-
 import com.example.demo.model.milestone.Milestone;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 

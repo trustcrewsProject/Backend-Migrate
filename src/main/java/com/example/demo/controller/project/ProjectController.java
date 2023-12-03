@@ -7,15 +7,12 @@ import com.example.demo.dto.project.response.ProjectMeResponseDto;
 import com.example.demo.dto.project.response.ProjectSpecificDetailResponseDto;
 import com.example.demo.service.project.ProjectFacade;
 import com.example.demo.service.project.ProjectService;
-import com.example.demo.service.project.ProjectServiceImpl;
-import lombok.AllArgsConstructor;
+import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/project")

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class TrustGradeService {
     private final TrustGradeRepository trustGradeRepository;
 
-    public TrustGrade getTrustGradeById(Long id){
+    public TrustGrade getTrustGradeById(Long id) {
         return trustGradeRepository
                 .findById(id)
                 .orElseThrow(() -> TrustGradeCustomException.NOT_FOUND_TRUST_GRADE);

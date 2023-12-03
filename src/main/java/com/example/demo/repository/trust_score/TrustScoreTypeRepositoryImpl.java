@@ -6,9 +6,9 @@ import com.example.demo.model.trust_score.QTrustScoreType;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -37,16 +37,20 @@ public class TrustScoreTypeRepositoryImpl implements TrustScoreTypeRepositoryCus
         QTrustGrade trustGrade = QTrustGrade.trustGrade;
         QProject project = QProject.project;
         return jpaQueryFactory
-                .select(new CaseBuilder()
-                        .when(trustScoreType.gubunCode.eq("M"))
-                        .then(trustScoreType.score.multiply(-1))
-                        .otherwise(trustScoreType.score))
+                .select(
+                        new CaseBuilder()
+                                .when(trustScoreType.gubunCode.eq("M"))
+                                .then(trustScoreType.score.multiply(-1))
+                                .otherwise(trustScoreType.score))
                 .from(project)
                 .join(trustGrade)
                 .on(trustGrade.id.eq(project.trustGrade.id))
                 .join(trustScoreType)
-                .on(trustScoreType.upTrustScoreTypeId.eq(trustScoreTypeId)
-                        .and(trustScoreType.trustGradeName.eq(trustGrade.name)))
+                .on(
+                        trustScoreType
+                                .upTrustScoreTypeId
+                                .eq(trustScoreTypeId)
+                                .and(trustScoreType.trustGradeName.eq(trustGrade.name)))
                 .where(project.id.eq(projectId))
                 .fetchFirst();
     }

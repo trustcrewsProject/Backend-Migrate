@@ -7,8 +7,6 @@ import com.example.demo.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -34,10 +32,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findById(Long id){
-        return userRepository
-                        .findById(id)
-                        .orElseThrow(() -> UserCustomException.NOT_FOUND_USER);
+    public User findById(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> UserCustomException.NOT_FOUND_USER);
     }
 
     @Override

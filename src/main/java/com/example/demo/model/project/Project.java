@@ -70,7 +70,7 @@ public class Project extends BaseTimeEntity {
         this.endDate = endDate;
     }
 
-    public void updateProject(ProjectUpdateRequestDto dto, TrustGrade trustGrade){
+    public void updateProject(ProjectUpdateRequestDto dto, TrustGrade trustGrade) {
         this.name = dto.getName();
         this.subject = dto.getSubject();
         this.trustGrade = trustGrade;
@@ -79,7 +79,7 @@ public class Project extends BaseTimeEntity {
         this.endDate = dto.getEndDate();
     }
 
-    public void endProject(){
+    public void endProject() {
         this.status = ProjectStatus.FINISH;
     }
 
@@ -88,7 +88,7 @@ public class Project extends BaseTimeEntity {
         this.projectMembers.addAll(projectMembers);
     }
 
-    public void changeProjectTechnologys(List<ProjectTechnology> projectTechnologies){
+    public void changeProjectTechnologys(List<ProjectTechnology> projectTechnologies) {
         this.projectTechnologies.clear();
         this.projectTechnologies.addAll(projectTechnologies);
     }

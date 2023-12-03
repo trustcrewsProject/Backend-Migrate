@@ -1,14 +1,11 @@
 package com.example.demo.dto.projectmember.response;
 
 import com.example.demo.dto.position.response.PositionResponseDto;
-import com.example.demo.dto.user.response.UserInfoResponseDto;
 import com.example.demo.dto.user.response.UserReadProjectCrewResponseDto;
 import com.example.demo.model.project.ProjectMember;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Builder
@@ -24,8 +21,7 @@ public class ProjectMemberReadProjectCrewsResponseDto {
             UserReadProjectCrewResponseDto user,
             ProjectMemberAuthResponseDto projectMemberAuth,
             PositionResponseDto position,
-            LocalDateTime lastWorkDate
-    ) {
+            LocalDateTime lastWorkDate) {
 
         return ProjectMemberReadProjectCrewsResponseDto.builder()
                 .projectMemberId(projectMember.getId())

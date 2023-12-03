@@ -1,7 +1,6 @@
 package com.example.demo.service.project;
 
 import com.example.demo.model.project.ProjectMemberAuth;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional

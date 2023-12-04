@@ -72,5 +72,6 @@ CREATE TABLE `trust_score_type` (
     `gubun_code` VARCHAR(1) NULL,
     `delete_status` VARCHAR(1) NULL,
     `create_date` DATE NOT NULL,
-    `update_date` DATE NOT NULL
+    `update_date` DATE NOT NULL,
+     PRIMARY KEY (`trust_score_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

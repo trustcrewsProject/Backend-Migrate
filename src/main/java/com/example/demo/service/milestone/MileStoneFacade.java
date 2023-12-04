@@ -36,7 +36,7 @@ public class MileStoneFacade {
     }
 
     @Transactional(readOnly = true)
-    public List<MilestoneReadResponseDto> getAll(Long projectId) {
+    public List<MilestoneReadResponseDto> getAllByProject(Long projectId) {
         Project project = projectService.findById(projectId);
         List<Milestone> milestonesByProject = mileStoneService.findMilestonesByProject(project);
 

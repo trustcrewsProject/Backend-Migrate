@@ -39,6 +39,20 @@ public class WorkFacade {
     }
 
     @Transactional(readOnly = true)
+    public List<WorkReadResponseDto> getAllByProject(Long projectId) {
+        Project project = projectService.findById(projectId);
+        List<Work> works = workService.findWorksByProject(project);
+
+        List<WorkReadResponseDto> workReadResponseDtos = new ArrayList<>();
+        for (Work work : works) {
+            WorkReadResponseDto workReadResponseDto = WorkReadResponseDto.of(work);
+            workReadResponseDtos.add(workReadResponseDto);
+        }
+
+        return workReadResponseDtos;
+    }
+
+    @Transactional(readOnly = true)
     public List<WorkReadResponseDto> getAllByMilestone(Long projectId, Long milestoneId) {
         Project project = projectService.findById(projectId);
 

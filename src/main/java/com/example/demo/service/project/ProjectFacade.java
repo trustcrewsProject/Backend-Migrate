@@ -86,47 +86,11 @@ public class ProjectFacade {
     public ProjectSpecificDetailResponseDto getDetail(Long projectId) {
         Project project = projectService.findById(projectId);
         TrustGradeResponseDto trustGradeDto = TrustGradeResponseDto.of(project.getTrustGrade());
-        UserProjectResponseDto userProjectResponseDto = UserProjectResponseDto.of(project);
-
-        // ProjectMember 부분
-        List<ProjectMember> projectMembers =
-                projectMemberService.findProjectsMemberByProject(project);
-        List<ProjectMemberDetailResponseDto> projectMemberDetailResponseDtos = new ArrayList<>();
-
-        for (ProjectMember projectMember : projectMembers) {
-            UserProjectDetailResponseDto userProjectDetailResponseDto =
-                    UserProjectDetailResponseDto.of(projectMember.getUser());
-            ProjectMemberAuthResponseDto projectMemberAuthResponseDto =
-                    ProjectMemberAuthResponseDto.of(projectMember.getProjectMemberAuth());
-            PositionResponseDto positionResponseDto =
-                    PositionResponseDto.of(projectMember.getPosition());
-
-            ProjectMemberDetailResponseDto projectMemberDetailResponseDto =
-                    ProjectMemberDetailResponseDto.of(
-                            projectMember,
-                            userProjectDetailResponseDto,
-                            projectMemberAuthResponseDto,
-                            positionResponseDto);
-            projectMemberDetailResponseDtos.add(projectMemberDetailResponseDto);
-        }
-
-        // work 부분
-        List<Work> works = workService.findWorksByProject(project);
-        List<WorkProjectDetailResponseDto> workProjectDetailResponseDtos = new ArrayList<>();
-        for (Work work : works) {
-            UserProjectDetailResponseDto userProjectDetailResponseDto =
-                    UserProjectDetailResponseDto.of(work.getAssignedUserId());
-            WorkProjectDetailResponseDto workProjectDetailResponseDto =
-                    WorkProjectDetailResponseDto.of(work, userProjectDetailResponseDto);
-            workProjectDetailResponseDtos.add(workProjectDetailResponseDto);
-        }
 
         return ProjectSpecificDetailResponseDto.of(
                 project,
-                trustGradeDto,
-                userProjectResponseDto,
-                projectMemberDetailResponseDtos,
-                workProjectDetailResponseDtos);
+                trustGradeDto
+                );
     }
 
     /**

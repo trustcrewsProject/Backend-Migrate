@@ -4,7 +4,7 @@ import com.example.demo.security.custom.AuthenticationExceptionFilter;
 import com.example.demo.security.custom.UserAuthenticationFailureHandler;
 import com.example.demo.security.custom.UserAuthenticationFilter;
 import com.example.demo.security.custom.UserAuthenticationSuccessHandler;
-import com.example.demo.security.jwt.JsonWebTokenAuthorizationFilter;
+import com.example.demo.security.jwt.JsonWebTokenAuthenticationFilter;
 import com.example.demo.security.jwt.JsonWebTokenProvider;
 import com.example.demo.service.token.RefreshTokenRedisService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -77,8 +77,8 @@ public class SecurityConfig {
                 .disable();
 
         http.addFilterAfter(userAuthenticationFilter(), LogoutFilter.class);
-        http.addFilterBefore(new JsonWebTokenAuthorizationFilter(jsonWebTokenProvider), UsernamePasswordAuthenticationFilter.class);
-        http.addFilterBefore(new AuthenticationExceptionFilter(objectMapper), JsonWebTokenAuthorizationFilter.class);
+        http.addFilterBefore(new JsonWebTokenAuthenticationFilter(jsonWebTokenProvider), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new AuthenticationExceptionFilter(objectMapper), JsonWebTokenAuthenticationFilter.class);
 
         return http.build();
     }

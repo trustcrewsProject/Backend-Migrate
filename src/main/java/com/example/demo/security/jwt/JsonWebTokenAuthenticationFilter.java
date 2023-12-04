@@ -13,12 +13,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 // JWT 검증하고 인가를 처리하는 필터
 @Slf4j
-public class JsonWebTokenAuthorizationFilter extends OncePerRequestFilter {
+public class JsonWebTokenAuthenticationFilter extends OncePerRequestFilter {
 
     private static final List<String> PERMIT_URI = List.of("/api/user/login");
     private JsonWebTokenProvider jsonWebTokenProvider;
 
-    public JsonWebTokenAuthorizationFilter(JsonWebTokenProvider jsonWebTokenProvider) {
+    public JsonWebTokenAuthenticationFilter(JsonWebTokenProvider jsonWebTokenProvider) {
         this.jsonWebTokenProvider = jsonWebTokenProvider;
     }
 

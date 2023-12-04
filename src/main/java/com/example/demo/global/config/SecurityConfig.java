@@ -1,6 +1,6 @@
 package com.example.demo.global.config;
 
-import com.example.demo.security.custom.AuthenticationExceptionFilter;
+import com.example.demo.security.jwt.JsonWebTokenExceptionFilter;
 import com.example.demo.security.custom.UserAuthenticationFailureHandler;
 import com.example.demo.security.custom.UserAuthenticationFilter;
 import com.example.demo.security.custom.UserAuthenticationSuccessHandler;
@@ -78,7 +78,7 @@ public class SecurityConfig {
 
         http.addFilterAfter(userAuthenticationFilter(), LogoutFilter.class);
         http.addFilterBefore(new JsonWebTokenAuthenticationFilter(jsonWebTokenProvider), UsernamePasswordAuthenticationFilter.class);
-        http.addFilterBefore(new AuthenticationExceptionFilter(objectMapper), JsonWebTokenAuthenticationFilter.class);
+        http.addFilterBefore(new JsonWebTokenExceptionFilter(objectMapper), JsonWebTokenAuthenticationFilter.class);
 
         return http.build();
     }

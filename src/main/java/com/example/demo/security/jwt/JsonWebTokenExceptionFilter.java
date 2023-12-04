@@ -1,4 +1,4 @@
-package com.example.demo.security.custom;
+package com.example.demo.security.jwt;
 
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.global.exception.customexception.CustomException;
@@ -18,7 +18,7 @@ import java.io.IOException;
 // Security Authentication Exception 처리 커스텀 필터 (회원 인증, JsonWebToken 인증)
 @Slf4j
 @RequiredArgsConstructor
-public class AuthenticationExceptionFilter extends OncePerRequestFilter {
+public class JsonWebTokenExceptionFilter extends OncePerRequestFilter {
 
     private final ObjectMapper objectMapper;
 

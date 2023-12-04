@@ -2,6 +2,7 @@ package com.example.demo.security.jwt;
 
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.global.exception.customexception.CustomException;
+import com.example.demo.global.exception.customexception.TokenCustomException;
 import com.example.demo.global.exception.errorcode.ErrorCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -29,12 +30,12 @@ public class JsonWebTokenExceptionFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             filterChain.doFilter(request, response);
-        } catch (CustomException customException) {
-            setExceptionResponse(response, customException.getErrorCode());
+        } catch (TokenCustomException TokenCustomException) {
+            setExceptionResponse(response, TokenCustomException.getErrorCode());
         }
     }
 
-    // 예외 응답 셋팅 및 반환
+    // JWT 예외 응답 셋팅 및 반환
     private void setExceptionResponse(HttpServletResponse response, ErrorCode errorCode) throws IOException {
         String exceptionResponse = objectMapper.writeValueAsString(ResponseDto.fail(errorCode.getMessage()));
         response.setStatus(errorCode.getStatus().value());

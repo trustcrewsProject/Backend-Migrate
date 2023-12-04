@@ -1,9 +1,11 @@
 package com.example.demo.global.config;
 
+import com.example.demo.security.custom.AuthenticationExceptionFilter;
 import com.example.demo.security.custom.UserAuthenticationFilter;
 import com.example.demo.security.jwt.JsonWebTokenAuthorizationFilter;
 import com.example.demo.security.jwt.JsonWebTokenProvider;
 import com.example.demo.service.token.RefreshTokenRedisService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -63,6 +65,7 @@ public class SecurityConfig {
                 .addFilterBefore(
                         new JsonWebTokenAuthorizationFilter(jsonWebTokenProvider),
                         UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new AuthenticationExceptionFilter(new ObjectMapper()), JsonWebTokenAuthorizationFilter.class)
                 .build();
     }
 

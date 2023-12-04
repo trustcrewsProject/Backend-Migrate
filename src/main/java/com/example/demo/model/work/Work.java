@@ -84,28 +84,29 @@ public class Work extends BaseTimeEntity {
         this.completeDate = null;
     }
 
-    public void update(WorkUpdateRequestDto dto){
+    public void update(WorkUpdateRequestDto dto) {
         this.content = dto.getContent();
         this.startDate = dto.getStartDate();
         this.endDate = dto.getEndDate();
     }
 
-    public void updateContent(WorkUpdateContentRequestDto dto, ProjectMember projectMember){
+    public void updateContent(WorkUpdateContentRequestDto dto, ProjectMember projectMember) {
         this.content = dto.getContent();
         this.lastModifiedMember = projectMember;
     }
 
-    public void updateCompleteStatus(WorkUpdateCompleteStatusRequestDto dto, ProjectMember projectMember){
+    public void updateCompleteStatus(
+            WorkUpdateCompleteStatusRequestDto dto, ProjectMember projectMember) {
         this.completeStatus = dto.getCompleteStatus();
         this.lastModifiedMember = projectMember;
     }
 
-    public void updateAssignedUserId(User user, ProjectMember projectMember){
+    public void updateAssignedUserId(User user, ProjectMember projectMember) {
         this.assignedUserId = user;
         this.lastModifiedMember = projectMember;
     }
 
-    public void updateCompleteDate(LocalDateTime completeDate, ProjectMember projectMember){
+    public void updateCompleteDate(LocalDateTime completeDate, ProjectMember projectMember) {
         this.completeDate = completeDate;
         this.lastModifiedMember = projectMember;
     }

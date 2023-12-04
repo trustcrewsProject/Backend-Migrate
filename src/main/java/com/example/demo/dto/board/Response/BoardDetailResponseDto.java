@@ -3,11 +3,10 @@ package com.example.demo.dto.board.response;
 import com.example.demo.dto.boardposition.BoardPositionDetailResponseDto;
 import com.example.demo.dto.user.response.UserBoardDetailResponseDto;
 import com.example.demo.model.board.Board;
-import lombok.Builder;
-import lombok.Getter;
-
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.Builder;
+import lombok.Getter;
 
 @Getter
 @Builder

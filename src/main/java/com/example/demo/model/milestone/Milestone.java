@@ -59,17 +59,17 @@ public class Milestone extends BaseTimeEntity {
         this.completeStatus = completeStatus;
     }
 
-    public void update(MileStoneUpdateRequestDto dto){
+    public void update(MileStoneUpdateRequestDto dto) {
         this.content = dto.getContent();
         this.startDate = dto.getStartDate();
         this.endDate = dto.getEndDate();
     }
 
-    public void updateContent(MilestoneUpdateContentRequestDto dto){
+    public void updateContent(MilestoneUpdateContentRequestDto dto) {
         this.content = dto.getContent();
     }
 
-    public void updateDate(MilestoneUpdateDateRequestDto dto){
+    public void updateDate(MilestoneUpdateDateRequestDto dto) {
         this.startDate = dto.getStartDate();
         this.endDate = dto.getEndDate();
     }

@@ -1,9 +1,8 @@
 package com.example.demo.global.validation.validator;
 
+import static com.example.demo.constant.TrustScoreTypeIdentifier.*;
+
 import com.example.demo.dto.trust_score.AddPointDto;
-import com.example.demo.global.exception.customexception.ProjectCustomException;
-import com.example.demo.global.exception.customexception.UserCustomException;
-import com.example.demo.global.exception.customexception.WorkCustomException;
 import com.example.demo.global.validation.annotation.ValidAddPointDto;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
@@ -15,20 +14,14 @@ import com.example.demo.repository.trust_score.TrustScoreRepository;
 import com.example.demo.repository.trust_score.TrustScoreTypeRepository;
 import com.example.demo.repository.user.UserRepository;
 import com.example.demo.repository.work.WorkRepository;
+import java.util.List;
+import java.util.Optional;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-
-import java.util.List;
-import java.util.Optional;
-
-import static com.example.demo.constant.TrustScoreTypeIdentifier.*;
-/*
-TODO : CustomException 생성
- */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -39,12 +32,13 @@ public class AddPointDtoValidator implements ConstraintValidator<ValidAddPointDt
     private final ProjectMemberRepository projectMemberRepository;
     private final ProjectRepository projectRepository;
     private final TrustScoreTypeRepository trustScoreTypeRepository;
+
     @Override
-    public void initialize(ValidAddPointDto constraintAnnotation) {
-    }
+    public void initialize(ValidAddPointDto constraintAnnotation) {}
 
     /**
      * AddPointDto 유효성 검증(validate)
+     *
      * @param dto object to validate
      * @param context context in which the constraint is evaluated
      * @return
@@ -57,99 +51,208 @@ public class AddPointDtoValidator implements ConstraintValidator<ValidAddPointDt
         Long milestoneId = dto.getMilestoneId();
         Long workId = dto.getWorkId();
 
-        validateScoreType(scoreTypeId);
+        if (!isValidScoreTypeId(scoreTypeId)) {
+            return false;
+        }
 
         if (scoreTypeId.equals(WORK_COMPLETE) || scoreTypeId.equals(WORK_INCOMPLETE)) {
-            validateWorkAndUser(userId, workId, projectId, milestoneId);
+            return isValidScoreRequest(userId, workId, projectId, milestoneId);
         } else if (scoreTypeId.equals(NEW_MEMBER)) {
-            validateNewMember(userId, projectId, milestoneId, workId);
+            return isValidNewMemberRequest(userId, projectId, milestoneId, workId);
+        } else if (scoreTypeId.equals(SELF_WITHDRAWAL) || scoreTypeId.equals(FORCE_WITHDRAWAL)) {
+            return isValidWithdrawal(projectId, userId, milestoneId, workId);
+        } else if (scoreTypeId.equals(LATE_WORK)) {
+            return isValidLateWorkRequest(userId, workId, projectId, milestoneId);
         }
-        else if (scoreTypeId.equals(SELF_WITHDRAWAL) || scoreTypeId.equals(FORCE_WITHDRAWAL)) {
-            validateWithdrawal(projectId, userId, milestoneId, workId);
-        } else {
-            throw new RuntimeException("1L~5L까지만 가능함");
+
+        return true;
+    }
+
+    private boolean isValidLateWorkRequest(
+            Long userId, Long workId, Long projectId, Long milestoneId) {
+
+        if (!isValidWorkUserInput(userId, workId, projectId, milestoneId)) {
+            log.info("데이터 무결성 위배");
+            return false;
+        }
+
+        Work work = workRepository.findById(workId).get();
+
+        if (work.isCompleteStatus()) {
+            log.info("데이터 무결성 위배. 업무 완료여부 불일치. workId : {}", workId);
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean isValidWorkUserInput(
+            Long userId, Long workId, Long projectId, Long milestoneId) {
+        if (projectId == null || milestoneId == null || workId == null) {
+            log.info(
+                    "잘못된 입력값. 프로젝트, 마일스톤, 업무 정보값 하나 이상 부재."
+                            + " projectId : {}, milestoneId : {}, workId : {}",
+                    projectId,
+                    milestoneId,
+                    workId);
+            return false;
+        }
+
+        Optional<User> findUser = userRepository.findById(userId);
+        Optional<Work> findWork = workRepository.findById(workId);
+
+        if (findWork.isEmpty()) {
+            log.info("잘못된 입력값. 해당 입력값과 일치하는 업무 없음. workId : {}", workId);
+            return false;
+        }
+
+        if (findUser.isEmpty()) {
+            log.info("잘못된 입력값. 해당 입력값과 일치하는 사용자 없음. userId : {}", userId);
+            return false;
+        }
+
+        if (!trustScoreRepository.existsByUserId(userId)) {
+            log.info("데이터 무결성 위배. 신뢰점수 테이블에 사용자가 존재하지 않음. userId : {}", userId);
+            return false;
+        }
+
+        try {
+            Long findProjectId = findWork.get().getProject().getId();
+            Long findMilestoneId = findWork.get().getMilestone().getId();
+            if (!findProjectId.equals(projectId) || !findMilestoneId.equals(milestoneId)) {
+                log.info(
+                        "잘못된 입력값. 업무의 프로젝트와 마일스톤 값과 입력값 불일치. projectId : {}, milestoneId : {}",
+                        projectId,
+                        milestoneId);
+                return false;
+            }
+        } catch (NullPointerException npe) {
+            log.error("데이터 무결성 위배. 업무가 마일스톤, 프로젝트 값을 가지고 있지 않음. workId : {}", workId);
+            return false;
+        }
+
+        Work work = findWork.get();
+        User user = findUser.get();
+
+        if (!work.getAssignedUserId().equals(user)) {
+            log.info("잘못된 입력값. 입력값과 업무 배정 사용자 불울치. workId : {}, userId : {}", workId, userId);
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * 입력값과 일치하는 신뢰점수타입 대분류 존재여부 검증
+     *
+     * @param scoreTypeId
+     * @return boolean
+     */
+    private boolean isValidScoreTypeId(Long scoreTypeId) {
+        List<Long> upScoreTypeListList = trustScoreTypeRepository.findAllUpScoreTypeId();
+        if (!upScoreTypeListList.contains(scoreTypeId)) {
+            log.info("잘못된 입력값. 일치하는 대분류 신뢰점수타입 없음. scoreTypeId : {}", scoreTypeId);
+            return false;
         }
         return true;
     }
 
     /**
-     *
-     * @param scoreTypeId
-     */
-
-    private void validateScoreType(Long scoreTypeId) {
-        List<Long> upScoreTypeListList = trustScoreTypeRepository.findAllUpScoreTypeId();
-        if (!upScoreTypeListList.contains(scoreTypeId)) {
-            throw new RuntimeException("입력값과 매칭되는 대분류 신뢰점수타입이 없습니다");
-        }
-    }
-
-    /**
      * 자진탈퇴, 강제탈퇴 유효성 검증
+     *
      * @param projectId
      * @param userId
      * @param milestoneId
      * @param workId
      */
-    private void validateWithdrawal(Long projectId, Long userId, Long milestoneId, Long workId) {
-        Project findProject = projectRepository.findById(projectId)
-                .orElseThrow(() -> ProjectCustomException.NOT_FOUND_PROJECT);
-        User findUser = userRepository.findById(userId)
-                .orElseThrow(() -> UserCustomException.NOT_FOUND_USER);
+    private boolean isValidWithdrawal(Long projectId, Long userId, Long milestoneId, Long workId) {
+        Optional<Project> findProject = projectRepository.findById(projectId);
+        Optional<User> findUser = userRepository.findById(userId);
+
+        if (findProject.isEmpty() || findUser.isEmpty()) {
+            log.info(
+                    "잘못된 입력값. 프로젝트 혹은 사용자 입력값 존재하지 않음. " + "projectId : {}, userId : {}",
+                    projectId,
+                    userId);
+            return false;
+        }
+
+        Project project = findProject.get();
+        User user = findUser.get();
+
         Optional<ProjectMember> findProjectMember =
-                projectMemberRepository.findProjectMemberByProjectAndUser(findProject, findUser);
+                projectMemberRepository.findProjectMemberByProjectAndUser(project, user);
+
         if (findProjectMember.isPresent()) {
-            throw new RuntimeException("회원이 아직 있음.");
+            log.info(
+                    "잘못된 입력값. 프로젝트에 회원 정보 존재. findProjectMemberId : {}",
+                    findProjectMember.get().getId());
+            return false;
         }
-        if (milestoneId == null && workId == null) {
-            throw new RuntimeException("잘못된 입력값. 마일스톤, 업무 아이디 있으면 안 됨");
+
+        if (milestoneId != null || workId != null) {
+            log.info(
+                    "잘못된 입력값. 불필요한 마일스톤, 업무 식별자. milestoneId : {}, workId : {}",
+                    milestoneId,
+                    workId);
+            return false;
         }
+
+        return true;
     }
 
     /**
      * 신규회원 유효성 검증
+     *
      * @param userId
      * @param projectId
      * @param milestoneId
      * @param workId
      */
-    private void validateNewMember(Long userId, Long projectId, Long milestoneId, Long workId) {
+    private boolean isValidNewMemberRequest(
+            Long userId, Long projectId, Long milestoneId, Long workId) {
+
         if (trustScoreRepository.existsByUserId(userId)) {
-            throw new RuntimeException("신뢰점수 테이블엔 있는 회원임");
+            log.info("잘못된 입력값. 신뢰점수 테이블 회원 존재여부 불일치. userId : {}", userId);
+            return false;
         }
+
         if (projectId != null || milestoneId != null || workId != null) {
-            throw new RuntimeException("");
+            log.info(
+                    "잘못된 입력값. 불필요한 프로젝트, 마일스톤, 업무 식별자. "
+                            + "projectId : {}, milestoneId : {}, workId : {}",
+                    projectId,
+                    milestoneId,
+                    workId);
+            return false;
         }
+
+        return true;
     }
 
     /**
      * 업무완수 및 미흡 유효성 검증
+     *
      * @param userId
      * @param workId
      * @param projectId
      * @param milestoneId
      */
-    private void validateWorkAndUser(Long userId, Long workId, Long projectId, Long milestoneId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> UserCustomException.NOT_FOUND_USER);
-        Work work = workRepository.findById(workId).orElseThrow(() -> WorkCustomException.NOT_FOUND_WORK);
-        if (!trustScoreRepository.existsByUserId(userId)) {
-            throw new RuntimeException();
+    private boolean isValidScoreRequest(
+            Long userId, Long workId, Long projectId, Long milestoneId) {
+
+        if (!isValidWorkUserInput(userId, workId, projectId, milestoneId)) {
+            log.info("데이터 무결성 위배");
+            return false;
         }
-        try {
-            Long findProjectId = work.getProject().getId();
-            Long findMilestoneId = work.getMilestone().getId();
-            if (!findProjectId.equals(projectId) || !findMilestoneId.equals(milestoneId)) {
-                throw new RuntimeException();
-            }
-        } catch (NullPointerException npe) {
-            log.error("업무가 프로젝트, 마일스톤 값을 가지고 있지 않음.", npe);
-            throw new RuntimeException("업무가 프로젝트, 마일스톤 값을 가지고 있지 않음");
-        }
+
+        Work work = workRepository.findById(workId).get();
+
         if (!work.isCompleteStatus()) {
-            throw new RuntimeException("업무 미완성이다.");
+            log.info("데이터 무결성 위배. 업무 미완성. workId : {}", workId);
+            return false;
         }
-        if (!work.getAssignedUserId().equals(user)) {
-            throw new RuntimeException("업무 배정 사용자랑 입력값 사용자가 다르다");
-        }
+
+        return true;
     }
 }

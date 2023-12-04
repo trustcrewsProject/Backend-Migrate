@@ -12,14 +12,14 @@ import org.springframework.stereotype.Service;
 public class ProjectTechnologyServiceImpl implements ProjectTechnologyService {
     private final ProjectTechnologyRepository projectTechnologyRepository;
 
-
     @Override
     public ProjectTechnology save(ProjectTechnology projectTechnology) {
         return projectTechnologyRepository.save(projectTechnology);
     }
 
     @Override
-    public ProjectTechnology getProjectTechnologyEntity(Project project, TechnologyStack technologyStack) {
+    public ProjectTechnology getProjectTechnologyEntity(
+            Project project, TechnologyStack technologyStack) {
         return ProjectTechnology.builder()
                 .project(project)
                 .technologyStack(technologyStack)

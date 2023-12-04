@@ -8,28 +8,30 @@ import com.example.demo.global.exception.customexception.MilestoneCustomExceptio
 import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.project.Project;
 import com.example.demo.repository.milestone.MileStoneRepository;
-import lombok.AllArgsConstructor;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class MilestoneServiceImpl implements MilestoneService {
     private final MileStoneRepository mileStoneRepository;
 
-    public Milestone findById(Long id){
-        return mileStoneRepository.findById(id).orElseThrow(() -> MilestoneCustomException.NOT_FOUND_MILESTONE);
+    public Milestone findById(Long id) {
+        return mileStoneRepository
+                .findById(id)
+                .orElseThrow(() -> MilestoneCustomException.NOT_FOUND_MILESTONE);
     }
 
-    public Milestone save(Milestone milestone){
+    public Milestone save(Milestone milestone) {
         return mileStoneRepository.save(milestone);
     }
 
-    public List<Milestone> findMilestonesByProject(Project project){
-        return mileStoneRepository.findMilestonesByProject(project).orElseThrow(() -> MilestoneCustomException.NOT_FOUND_MILESTONE);
+    public List<Milestone> findMilestonesByProject(Project project) {
+        return mileStoneRepository
+                .findMilestonesByProject(project)
+                .orElseThrow(() -> MilestoneCustomException.NOT_FOUND_MILESTONE);
     }
 
     @Transactional(readOnly = true)
@@ -39,8 +41,8 @@ public class MilestoneServiceImpl implements MilestoneService {
     }
 
     /**
-     * 프로젝트 내 마일스톤 수정(*매니저만 가능) 
-     * TODO : 매니저만 수정 가능하도록 변경
+     * 프로젝트 내 마일스톤 수정(*매니저만 가능) TODO : 매니저만 수정 가능하도록 변경
+     *
      * @param milestoneId
      * @param mileStoneUpdateRequestDto
      */
@@ -54,12 +56,14 @@ public class MilestoneServiceImpl implements MilestoneService {
         mileStoneRepository.delete(milestone);
     }
 
-    public void updateContent(Long milestoneId, MilestoneUpdateContentRequestDto milestoneUpdateContentRequestDto) {
+    public void updateContent(
+            Long milestoneId, MilestoneUpdateContentRequestDto milestoneUpdateContentRequestDto) {
         Milestone milestone = findById(milestoneId);
         milestone.updateContent(milestoneUpdateContentRequestDto);
     }
 
-    public void updateDate(Long milestoneId, MilestoneUpdateDateRequestDto milestoneUpdateDateRequestDto) {
+    public void updateDate(
+            Long milestoneId, MilestoneUpdateDateRequestDto milestoneUpdateDateRequestDto) {
         Milestone milestone = findById(milestoneId);
         milestone.updateDate(milestoneUpdateDateRequestDto);
     }

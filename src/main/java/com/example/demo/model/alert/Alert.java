@@ -6,9 +6,8 @@ import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.position.Position;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.user.User;
-import javax.persistence.*;
-
 import com.example.demo.model.work.Work;
+import javax.persistence.*;
 import lombok.*;
 import org.springframework.lang.Nullable;
 

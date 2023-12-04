@@ -4,10 +4,9 @@ import com.example.demo.dto.project.response.ProjectSearchResponseDto;
 import com.example.demo.dto.user.response.UserSearchResponseDto;
 import com.example.demo.model.board.Board;
 import com.querydsl.core.annotations.QueryProjection;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Builder
@@ -26,7 +25,19 @@ public class BoardSearchResponseDto {
     private LocalDateTime updateDate;
 
     @QueryProjection
-    public BoardSearchResponseDto(Long boardId, String boardTitle, String boardContent, ProjectSearchResponseDto project, LocalDateTime startDate, LocalDateTime endDate, int boardPageView, boolean boardCompleteStatus, UserSearchResponseDto user, String boardContact, LocalDateTime createDate, LocalDateTime updateDate) {
+    public BoardSearchResponseDto(
+            Long boardId,
+            String boardTitle,
+            String boardContent,
+            ProjectSearchResponseDto project,
+            LocalDateTime startDate,
+            LocalDateTime endDate,
+            int boardPageView,
+            boolean boardCompleteStatus,
+            UserSearchResponseDto user,
+            String boardContact,
+            LocalDateTime createDate,
+            LocalDateTime updateDate) {
         this.boardId = boardId;
         this.boardTitle = boardTitle;
         this.boardContent = boardContent;
@@ -41,7 +52,10 @@ public class BoardSearchResponseDto {
         this.updateDate = updateDate;
     }
 
-    public static BoardSearchResponseDto of(Board board, ProjectSearchResponseDto boardProjectSearchResponseDto, UserSearchResponseDto userSearchResponseDto) {
+    public static BoardSearchResponseDto of(
+            Board board,
+            ProjectSearchResponseDto boardProjectSearchResponseDto,
+            UserSearchResponseDto userSearchResponseDto) {
         return BoardSearchResponseDto.builder()
                 .boardId(board.getId())
                 .boardTitle(board.getTitle())

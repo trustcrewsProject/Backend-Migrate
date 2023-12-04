@@ -1,11 +1,9 @@
 package com.example.demo.model.trust_score;
 
+import java.util.Date;
+import javax.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import javax.persistence.*;
-import java.math.BigDecimal;
-import java.util.Date;
 
 @Entity
 @Table(name = "trust_score")
@@ -20,23 +18,16 @@ public class TrustScore {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "trust_score_id")
     private Long id;
-    /**
-     * 유저자동생성식별자
-     */
+    /** 유저자동생성식별자 */
     @Column // PK
     private Long userId;
 
-    /**
-     * 유저신뢰점수값
-     */
-    @Column
-    private int score;
+    /** 유저신뢰점수값 */
+    @Column private int score;
 
-    /**
-     * 변경날짜
-     */
-    @Column
-    private Date updateDate;
+    /** 변경날짜 */
+    @Column private Date updateDate;
+
     @Builder
     public TrustScore(Long userId, int score) {
         this.userId = userId;

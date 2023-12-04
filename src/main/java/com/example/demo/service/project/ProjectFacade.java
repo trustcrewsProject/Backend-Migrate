@@ -15,10 +15,6 @@ import com.example.demo.dto.user.response.UserMyProjectResponseDto;
 import com.example.demo.dto.user.response.UserProjectDetailResponseDto;
 import com.example.demo.dto.user.response.UserProjectResponseDto;
 import com.example.demo.dto.work.response.WorkProjectDetailResponseDto;
-import com.example.demo.global.exception.customexception.PositionCustomException;
-import com.example.demo.global.exception.customexception.ProjectCustomException;
-import com.example.demo.global.exception.customexception.ProjectMemberAuthCustomException;
-import com.example.demo.global.exception.customexception.UserCustomException;
 import com.example.demo.model.alert.Alert;
 import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.position.Position;
@@ -32,12 +28,11 @@ import com.example.demo.service.milestone.MilestoneService;
 import com.example.demo.service.position.PositionService;
 import com.example.demo.service.user.UserService;
 import com.example.demo.service.work.WorkService;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -54,13 +49,12 @@ public class ProjectFacade {
     private final MilestoneService milestoneService;
 
     /**
-     * 내 프로젝트 목록 조회
-     * TODO : 현재 유저 가져오기.
+     * 내 프로젝트 목록 조회 TODO : 현재 유저 가져오기.
+     *
      * @return
      */
-
     @Transactional(readOnly = true)
-    public List<ProjectMeResponseDto> getMyProjects(){
+    public List<ProjectMeResponseDto> getMyProjects() {
         User user = userService.findById(1L);
 
         List<Project> projects = projectService.findProjectsByUser(user);
@@ -71,12 +65,15 @@ public class ProjectFacade {
 
             List<MyProjectMemberResponseDto> myProjectMemberResponseDtos = new ArrayList<>();
             for (ProjectMember projectMember : project.getProjectMembers()) {
-                UserMyProjectResponseDto userMyProjectResponseDto = UserMyProjectResponseDto.of(projectMember.getUser());
-                MyProjectMemberResponseDto myProjectMemberResponseDto = MyProjectMemberResponseDto.of(projectMember, userMyProjectResponseDto);
+                UserMyProjectResponseDto userMyProjectResponseDto =
+                        UserMyProjectResponseDto.of(projectMember.getUser());
+                MyProjectMemberResponseDto myProjectMemberResponseDto =
+                        MyProjectMemberResponseDto.of(projectMember, userMyProjectResponseDto);
                 myProjectMemberResponseDtos.add(myProjectMemberResponseDto);
             }
 
-            ProjectMeResponseDto projectMeResponseDto = ProjectMeResponseDto.of(project, trustGradeDto, myProjectMemberResponseDtos);
+            ProjectMeResponseDto projectMeResponseDto =
+                    ProjectMeResponseDto.of(project, trustGradeDto, myProjectMemberResponseDtos);
             result.add(projectMeResponseDto);
         }
 
@@ -85,63 +82,29 @@ public class ProjectFacade {
 
     /**
      * 프로젝트 상세 목록
+     *
      * @param projectId
      * @return
      */
-
     @Transactional(readOnly = true)
     public ProjectSpecificDetailResponseDto getDetail(Long projectId) {
         Project project = projectService.findById(projectId);
         TrustGradeResponseDto trustGradeDto = TrustGradeResponseDto.of(project.getTrustGrade());
-        UserProjectResponseDto userProjectResponseDto = UserProjectResponseDto.of(project);
-
-        // ProjectMember 부분
-        List<ProjectMember> projectMembers = projectMemberService.findProjectsMemberByProject(project);
-        List<ProjectMemberDetailResponseDto> projectMemberDetailResponseDtos = new ArrayList<>();
-
-        for (ProjectMember projectMember : projectMembers) {
-            UserProjectDetailResponseDto userProjectDetailResponseDto =
-                    UserProjectDetailResponseDto.of(projectMember.getUser());
-            ProjectMemberAuthResponseDto projectMemberAuthResponseDto =
-                    ProjectMemberAuthResponseDto.of(projectMember.getProjectMemberAuth());
-            PositionResponseDto positionResponseDto =
-                    PositionResponseDto.of(projectMember.getPosition());
-
-            ProjectMemberDetailResponseDto projectMemberDetailResponseDto =
-                    ProjectMemberDetailResponseDto.of(
-                            projectMember,
-                            userProjectDetailResponseDto,
-                            projectMemberAuthResponseDto,
-                            positionResponseDto);
-            projectMemberDetailResponseDtos.add(projectMemberDetailResponseDto);
-        }
-
-        // work 부분
-        List<Work> works = workService.findWorksByProject(project);
-        List<WorkProjectDetailResponseDto> workProjectDetailResponseDtos = new ArrayList<>();
-        for (Work work : works) {
-            UserProjectDetailResponseDto userProjectDetailResponseDto =
-                    UserProjectDetailResponseDto.of(work.getAssignedUserId());
-            WorkProjectDetailResponseDto workProjectDetailResponseDto =
-                    WorkProjectDetailResponseDto.of(work, userProjectDetailResponseDto);
-            workProjectDetailResponseDtos.add(workProjectDetailResponseDto);
-        }
 
         return ProjectSpecificDetailResponseDto.of(
                 project,
-                trustGradeDto,
-                userProjectResponseDto,
-                projectMemberDetailResponseDtos,
-                workProjectDetailResponseDtos);
+                trustGradeDto
+                );
     }
 
     /**
-     * 참여하기 참여하는 경우 알림보내기
-     * TODO : 지원자 아이디 jwt token으로 받기.
+     * 참여하기 참여하는 경우 알림보내기 TODO : 지원자 아이디 jwt token으로 받기.
+     *
      * @param projectId
      * @param projectParticipateRequestDto
      */
-    public void sendParticipateAlert(Long projectId, ProjectParticipateRequestDto projectParticipateRequestDto) {
+    public void sendParticipateAlert(
+            Long projectId, ProjectParticipateRequestDto projectParticipateRequestDto) {
         Project project = projectService.findById(projectId);
         User user = userService.findById(1L);
         Position position = positionService.findById(projectParticipateRequestDto.getPositionId());
@@ -156,12 +119,13 @@ public class ProjectFacade {
                 .type(AlertType.RECRUIT)
                 .checked_YN(false)
                 .build();
+
         alertService.save(alert);
     }
 
     /**
-     * 참여 수락하기
-     * TODO : 사용자 jwt token으로 사용하기
+     * 참여 수락하기 TODO : 사용자 jwt token으로 사용하기
+     *
      * @param projectId
      * @param projectConfirmRequestDto
      */
@@ -171,7 +135,13 @@ public class ProjectFacade {
         ProjectMemberAuth projectMemberAuth = projectMemberAuthService.findTopByOrderByIdDesc();
         Position position = positionService.findById(projectConfirmRequestDto.getPositionId());
 
-        ProjectMember projectMember = projectMemberService.toProjectMemberEntity(project, user, projectMemberAuth,ProjectMemberStatus.PARTICIPATING, position);
+        ProjectMember projectMember =
+                projectMemberService.toProjectMemberEntity(
+                        project,
+                        user,
+                        projectMemberAuth,
+                        ProjectMemberStatus.PARTICIPATING,
+                        position);
         projectMemberService.save(projectMember);
     }
 }

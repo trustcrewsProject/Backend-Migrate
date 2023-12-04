@@ -20,4 +20,3 @@ public enum AlertErrorCode implements ErrorCode {
         return this.message;
     }
 }
-

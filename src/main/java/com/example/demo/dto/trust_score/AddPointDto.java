@@ -15,6 +15,7 @@ public class AddPointDto {
     private Long milestoneId;
     private Long workId;
     private Long scoreTypeId;
+
     @Builder
     public AddPointDto(TrustScoreUpdateRequestDto requestDto) {
         this.userId = requestDto.getUserId();

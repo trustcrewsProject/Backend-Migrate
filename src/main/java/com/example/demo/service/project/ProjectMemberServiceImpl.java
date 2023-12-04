@@ -8,17 +8,21 @@ import com.example.demo.model.project.ProjectMember;
 import com.example.demo.model.project.ProjectMemberAuth;
 import com.example.demo.model.user.User;
 import com.example.demo.repository.project.ProjectMemberRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
-public class ProjectMemberServiceImpl implements ProjectMemberService{
+public class ProjectMemberServiceImpl implements ProjectMemberService {
     private final ProjectMemberRepository projectMemberRepository;
 
-    public ProjectMember toProjectMemberEntity(Project project, User user, ProjectMemberAuth projectMemberAuth, ProjectMemberStatus projectMemberStatus, Position position){
+    public ProjectMember toProjectMemberEntity(
+            Project project,
+            User user,
+            ProjectMemberAuth projectMemberAuth,
+            ProjectMemberStatus projectMemberStatus,
+            Position position) {
         return ProjectMember.builder()
                 .project(project)
                 .user(user)
@@ -30,15 +34,21 @@ public class ProjectMemberServiceImpl implements ProjectMemberService{
 
     @Override
     public ProjectMember findById(Long id) {
-        return projectMemberRepository.findById(id).orElseThrow(() -> ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER);
+        return projectMemberRepository
+                .findById(id)
+                .orElseThrow(() -> ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER);
     }
 
-    public List<ProjectMember> findProjectsMemberByProject(Project project){
-        return projectMemberRepository.findProjectsMemberByProject(project).orElseThrow(() -> ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER);
+    public List<ProjectMember> findProjectsMemberByProject(Project project) {
+        return projectMemberRepository
+                .findProjectsMemberByProject(project)
+                .orElseThrow(() -> ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER);
     }
 
-    public ProjectMember findProjectMemberByProjectAndUser(Project project, User user){
-        return  projectMemberRepository.findProjectMemberByProjectAndUser(project, user).orElseThrow(() -> ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER);
+    public ProjectMember findProjectMemberByProjectAndUser(Project project, User user) {
+        return projectMemberRepository
+                .findProjectMemberByProjectAndUser(project, user)
+                .orElseThrow(() -> ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER);
     }
 
     @Override

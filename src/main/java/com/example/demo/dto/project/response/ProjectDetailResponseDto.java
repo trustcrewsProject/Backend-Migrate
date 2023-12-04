@@ -1,14 +1,12 @@
 package com.example.demo.dto.project.response;
 
 import com.example.demo.constant.ProjectStatus;
-import java.time.LocalDateTime;
-import java.util.List;
-
 import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
 import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
 import com.example.demo.dto.user.response.UserProjectResponseDto;
 import com.example.demo.model.project.Project;
-import com.example.demo.model.project.ProjectTechnology;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -32,8 +30,7 @@ public class ProjectDetailResponseDto {
             Project project,
             TrustGradeResponseDto trustGradeDto,
             UserProjectResponseDto userProjectResponseDto,
-            List<TechnologyStackInfoResponseDto> technologyStacks
-    ) {
+            List<TechnologyStackInfoResponseDto> technologyStacks) {
         return ProjectDetailResponseDto.builder()
                 .projectId(project.getId())
                 .name(project.getName())

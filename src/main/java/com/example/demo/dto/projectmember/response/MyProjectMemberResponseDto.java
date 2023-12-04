@@ -12,9 +12,7 @@ public class MyProjectMemberResponseDto {
     private UserMyProjectResponseDto user;
 
     public static MyProjectMemberResponseDto of(
-            ProjectMember projectMember,
-            UserMyProjectResponseDto userMyProjectResponseDto
-    ) {
+            ProjectMember projectMember, UserMyProjectResponseDto userMyProjectResponseDto) {
         return MyProjectMemberResponseDto.builder()
                 .projectMemberId(projectMember.getId())
                 .user(userMyProjectResponseDto)

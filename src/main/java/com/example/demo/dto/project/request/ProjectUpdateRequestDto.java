@@ -2,12 +2,10 @@ package com.example.demo.dto.project.request;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
+import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter

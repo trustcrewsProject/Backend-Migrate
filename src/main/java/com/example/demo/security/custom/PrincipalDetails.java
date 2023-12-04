@@ -1,14 +1,12 @@
 package com.example.demo.security.custom;
 
-import com.example.demo.constant.Role;
 import com.example.demo.model.user.User;
+import java.util.Collection;
+import java.util.Collections;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Collection;
-import java.util.Collections;
 
 @Getter
 public class PrincipalDetails implements UserDetails {
@@ -36,7 +34,7 @@ public class PrincipalDetails implements UserDetails {
         this.role = role;
     }
 
-    public static PrincipalDetails of (String id, String email, String nickname, String role) {
+    public static PrincipalDetails of(String id, String email, String nickname, String role) {
         return new PrincipalDetails(id, email, nickname, role);
     }
 

@@ -1,6 +1,5 @@
 package com.example.demo.global.exception.customexception;
 
-import com.example.demo.global.exception.errorcode.PositionErrorCode;
 import com.example.demo.global.exception.errorcode.ProjectErrorCode;
 
 public class ProjectCustomException extends CustomException {
@@ -12,4 +11,3 @@ public class ProjectCustomException extends CustomException {
         super(projectErrorCode);
     }
 }
-

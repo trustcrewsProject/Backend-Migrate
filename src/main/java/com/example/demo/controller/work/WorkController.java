@@ -17,7 +17,7 @@ public class WorkController {
     private final WorkService workService;
     private final WorkFacade workFacade;
 
-    @PostMapping("/api/project/{projectId}/milestone/{milestoneId}/work")
+    @PostMapping("/api/work/project/{projectId}/milestone/{milestoneId}")
     public ResponseEntity<ResponseDto<?>> create(
             @PathVariable("projectId") Long projectId,
             @PathVariable("milestoneId") Long milestoneId,
@@ -26,7 +26,15 @@ public class WorkController {
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 
-    @GetMapping("/api/project/{projectId}/milestone/{milestoneId}/work")
+    @GetMapping("/api/work/project/{projectId}")
+    public ResponseEntity<ResponseDto<?>> getAllByProject(
+            @PathVariable("projectId") Long projectId) {
+        List<WorkReadResponseDto> result = workFacade.getAllByProject(projectId);
+        return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
+    }
+
+
+    @GetMapping("/api/work/project/{projectId}/milestone/{milestoneId}")
     public ResponseEntity<ResponseDto<?>> getAllByMilestone(
             @PathVariable("projectId") Long projectId,
             @PathVariable("milestoneId") Long milestoneId) {

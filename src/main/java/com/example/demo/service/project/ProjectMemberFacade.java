@@ -1,5 +1,6 @@
 package com.example.demo.service.project;
 
+import com.example.demo.constant.AlertType;
 import com.example.demo.dto.position.response.PositionResponseDto;
 import com.example.demo.dto.projectmember.response.*;
 import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
@@ -39,7 +40,19 @@ public class ProjectMemberFacade {
      */
     public void sendWithdrawlAlert(Long projectMemberId) {
         ProjectMember projectMember = projectMemberService.findById(projectMemberId);
-        Alert alert = alertService.toAlertEntity(projectMember, projectMember.getPosition());
+
+        Alert alert = Alert.builder()
+                .project(projectMember.getProject())
+                .checkUser(projectMember.getProject().getUser())
+                .sendUser(projectMember.getUser())
+                .work(null)
+                .milestone(null)
+                .content("프로젝트 지원했습니다.")
+                .position(projectMember.getPosition())
+                .type(AlertType.RECRUIT)
+                .checked_YN(false)
+                .build();
+
         alertService.save(alert);
     }
 

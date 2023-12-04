@@ -2,6 +2,7 @@ package com.example.demo.model.alert;
 
 import com.example.demo.constant.AlertType;
 import com.example.demo.global.common.BaseTimeEntity;
+import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.position.Position;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.user.User;
@@ -37,6 +38,10 @@ public class Alert extends BaseTimeEntity {
     private Work work;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "milestone_id")
+    private Milestone milestone;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "position_id")
     @Nullable
     private Position position;
@@ -54,6 +59,7 @@ public class Alert extends BaseTimeEntity {
             User checkUser,
             User sendUser,
             Work work,
+            Milestone milestone,
             Position position,
             String content,
             AlertType type,
@@ -62,6 +68,7 @@ public class Alert extends BaseTimeEntity {
         this.checkUser = checkUser;
         this.sendUser = sendUser;
         this.work = work;
+        this.milestone = milestone;
         this.position = position;
         this.content = content;
         this.type = type;

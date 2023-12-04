@@ -11,7 +11,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-// JWT 검증하고 인가를 처리하는 필터
+/**
+ *  JWT 인증하는 커스텀 필터
+ *  JWT 검증과정 중 발생하는 예외는 JsonWebTokenExceptionFilter 에서 처리
+ */
 @Slf4j
 public class JsonWebTokenAuthenticationFilter extends OncePerRequestFilter {
 

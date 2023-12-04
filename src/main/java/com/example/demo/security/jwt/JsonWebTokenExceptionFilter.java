@@ -15,7 +15,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-// Security Authentication Exception 처리 커스텀 필터 (회원 인증, JsonWebToken 인증)
+/**
+ *  JWT 관련 예외 발생 시, 예외를 처리하는 커스텀 필터
+ *  JsonWebTokenAuthenticationFilter 보다 먼저 수행되어 JWT 검증 및 인증 과정 중 발생하는 예외를 처리
+ */
 @Slf4j
 @RequiredArgsConstructor
 public class JsonWebTokenExceptionFilter extends OncePerRequestFilter {

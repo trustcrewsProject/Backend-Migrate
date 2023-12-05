@@ -5,6 +5,8 @@ import com.example.demo.dto.trust_score.request.TrustScoreUpdateRequestDto;
 import com.example.demo.dto.trust_score.response.TrustScoreUpdateResponseDto;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
+
 public interface TrustScoreService {
-    TrustScoreUpdateResponseDto addPoint(AddPointDto requestDto);
+    TrustScoreUpdateResponseDto addPoint(@Valid AddPointDto addPointDto);
 }

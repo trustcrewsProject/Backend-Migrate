@@ -1,6 +1,5 @@
 package com.example.demo.controller.trust_score;
 
-import com.example.demo.constant.TrustScoreTypeIdentifier;
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.dto.trust_score.AddPointDto;
 import com.example.demo.dto.trust_score.request.TrustScoreUpdateRequestDto;
@@ -14,15 +13,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-
 @RestController
 @RequiredArgsConstructor
 public class TrustScoreController {
     private final TrustScoreService trustScoreService;
     @PostMapping("/api/trust-score")
     public ResponseEntity<ResponseDto<?>> updateScoreByApi(
-            @RequestBody @Valid TrustScoreUpdateRequestDto requestDto) {
-        AddPointDto addPointDto = AddPointDto.builder().requestDto(requestDto).build();
+             @RequestBody @Valid TrustScoreUpdateRequestDto requestDto) {
+        AddPointDto addPointDto = new AddPointDto(requestDto);
         TrustScoreUpdateResponseDto responseDto = trustScoreService.addPoint(addPointDto);
         return new ResponseEntity<>(new ResponseDto<>("HttpStatusOK", "success", responseDto), HttpStatus.OK);
     }

@@ -8,7 +8,9 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @ValidTrustScoreUpdateRequest
+@Builder
 public class TrustScoreUpdateRequestDto {
     @NotNull(message = "사용자값은 필수입니다.")
     private Long userId;

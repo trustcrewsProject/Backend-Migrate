@@ -31,6 +31,13 @@ public class TrustScoreTypeRepositoryImpl implements TrustScoreTypeRepositoryCus
                 .fetchFirst();
     }
 
+    /**
+     * project와 trustScoreType을 통해 요청에 맞는 신뢰점수 조회
+     * @param projectId
+     * @param trustScoreTypeId
+     * @return
+     */
+
     @Override
     public int getScoreByProject(Long projectId, Long trustScoreTypeId) {
         QTrustScoreType trustScoreType = QTrustScoreType.trustScoreType;

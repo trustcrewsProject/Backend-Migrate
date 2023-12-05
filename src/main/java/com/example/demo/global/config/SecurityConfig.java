@@ -1,5 +1,6 @@
 package com.example.demo.global.config;
 
+import com.example.demo.security.SecurityResponseHandler;
 import com.example.demo.security.jwt.JsonWebTokenLogoutFilter;
 import com.example.demo.security.jwt.JsonWebTokenExceptionFilter;
 import com.example.demo.security.custom.UserAuthenticationFailureHandler;
@@ -36,6 +37,7 @@ public class SecurityConfig {
     private final AuthenticationConfiguration authenticationConfiguration;
     private final ObjectMapper objectMapper;
     private final CorsConfig corsConfig;
+    private final SecurityResponseHandler securityResponseHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -53,8 +55,8 @@ public class SecurityConfig {
         UserAuthenticationFilter userAuthenticationFilter = new UserAuthenticationFilter(objectMapper);
 
         userAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
-        userAuthenticationFilter.setAuthenticationSuccessHandler(new UserAuthenticationSuccessHandler(jsonWebTokenProvider, refreshTokenRedisService, objectMapper));
-        userAuthenticationFilter.setAuthenticationFailureHandler(new UserAuthenticationFailureHandler(objectMapper));
+        userAuthenticationFilter.setAuthenticationSuccessHandler(new UserAuthenticationSuccessHandler(jsonWebTokenProvider, refreshTokenRedisService, securityResponseHandler));
+        userAuthenticationFilter.setAuthenticationFailureHandler(new UserAuthenticationFailureHandler(securityResponseHandler));
 
         return userAuthenticationFilter;
     }
@@ -79,9 +81,9 @@ public class SecurityConfig {
                 .disable();
 
         http.addFilterAfter(userAuthenticationFilter(), LogoutFilter.class);
-        http.addFilterBefore(new JsonWebTokenLogoutFilter(refreshTokenRedisService, objectMapper), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JsonWebTokenLogoutFilter(refreshTokenRedisService, securityResponseHandler), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(new JsonWebTokenAuthenticationFilter(jsonWebTokenProvider), JsonWebTokenLogoutFilter.class);
-        http.addFilterBefore(new JsonWebTokenExceptionFilter(objectMapper), JsonWebTokenAuthenticationFilter.class);
+        http.addFilterBefore(new JsonWebTokenExceptionFilter(securityResponseHandler), JsonWebTokenAuthenticationFilter.class);
 
         return http.build();
     }

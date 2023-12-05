@@ -3,10 +3,9 @@ package com.example.demo.dto.work.response;
 import com.example.demo.dto.user.response.UserProjectDetailResponseDto;
 import com.example.demo.model.project.ProjectMember;
 import com.example.demo.model.work.Work;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Builder
@@ -23,9 +22,7 @@ public class WorkProjectDetailResponseDto {
     private LocalDateTime updateDate;
 
     public static WorkProjectDetailResponseDto of(
-            Work work,
-            UserProjectDetailResponseDto userProjectDetailResponseDto
-    ) {
+            Work work, UserProjectDetailResponseDto userProjectDetailResponseDto) {
         return WorkProjectDetailResponseDto.builder()
                 .workId(work.getId())
                 .assginedUser(userProjectDetailResponseDto)

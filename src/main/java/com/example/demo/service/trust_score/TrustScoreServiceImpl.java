@@ -7,13 +7,13 @@ import com.example.demo.model.trust_score.TrustScoreHistory;
 import com.example.demo.repository.trust_score.TrustScoreHistoryRepository;
 import com.example.demo.repository.trust_score.TrustScoreRepository;
 import com.example.demo.repository.trust_score.TrustScoreTypeRepository;
+import java.util.Date;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.Valid;
-import java.util.Date;
 @Service
 @RequiredArgsConstructor
 @Validated
@@ -21,8 +21,9 @@ public class TrustScoreServiceImpl implements TrustScoreService {
     private final TrustScoreRepository trustScoreRepository;
     private final TrustScoreHistoryRepository trustScoreHistoryRepository;
     private final TrustScoreTypeRepository trustScoreTypeRepository;
+    
     /**
-     * DTO를 통한 신뢰점수 조회 및 포
+     * DTO를 통한 신뢰점수 조회 및 포인트 부여
      * @param addPointDto
      * @return TrustScoreUpdateResponseDto
      */
@@ -42,11 +43,12 @@ public class TrustScoreServiceImpl implements TrustScoreService {
 
         // 기존의 신뢰점수 테이블에 해당 유저에 대한 레코드가 없으면 생성, 있으면 업데이트
         if (!trustScoreRepository.existsByUserId(userId)) {
-            trustScoreRepository.save(TrustScore.builder()
-                    .userId(userId)
-                    .score(calculatedScore)
-                    .updateDate(new Date())
-                    .build());
+            trustScoreRepository.save(
+                    TrustScore.builder()
+                            .userId(userId)
+                            .score(calculatedScore)
+                            .updateDate(new Date())
+                            .build());
         } else {
             trustScoreRepository.updateUserTrustScore(userId, calculatedScore);
         }
@@ -60,23 +62,26 @@ public class TrustScoreServiceImpl implements TrustScoreService {
     }
     /**
      * 신뢰점수이력 생성 및 조회
+     *
      * @param addPointDto, score
      * @return TrustScoreHistory
      */
     private TrustScoreHistory createAndSaveHistory(AddPointDto addPointDto, int score) {
-        TrustScoreHistory history = TrustScoreHistory.builder()
-                .userId(addPointDto.getUserId())
-                .trustScoreTypeId(addPointDto.getScoreTypeId())
-                .projectId(addPointDto.getProjectId())
-                .milestoneId(addPointDto.getMilestoneId())
-                .workId(addPointDto.getWorkId())
-                .score(score)
-                .createDate(new Date())
-                .build();
+        TrustScoreHistory history =
+                TrustScoreHistory.builder()
+                        .userId(addPointDto.getUserId())
+                        .trustScoreTypeId(addPointDto.getScoreTypeId())
+                        .projectId(addPointDto.getProjectId())
+                        .milestoneId(addPointDto.getMilestoneId())
+                        .workId(addPointDto.getWorkId())
+                        .score(score)
+                        .createDate(new Date())
+                        .build();
         return trustScoreHistoryRepository.save(history);
     }
     /**
      * 신뢰점수 조회
+     *
      * @param addPointDto
      * @return int
      */
@@ -85,7 +90,9 @@ public class TrustScoreServiceImpl implements TrustScoreService {
         if (addPointDto.getProjectId() == null) {
             score = trustScoreTypeRepository.getScore(addPointDto.getScoreTypeId());
         } else {
-            score = trustScoreTypeRepository.getScoreByProject(addPointDto.getProjectId(), addPointDto.getScoreTypeId());
+            score =
+                    trustScoreTypeRepository.getScoreByProject(
+                            addPointDto.getProjectId(), addPointDto.getScoreTypeId());
         }
         return score;
     }

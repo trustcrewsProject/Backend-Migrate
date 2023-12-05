@@ -5,11 +5,10 @@ import com.example.demo.dto.position.response.PositionResponseDto;
 import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
 import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
 import com.example.demo.model.user.User;
-import lombok.Builder;
-import lombok.Getter;
-
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.Builder;
+import lombok.Getter;
 
 @Getter
 @Builder
@@ -27,7 +26,12 @@ public class UserCrewDetailResponseDto {
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 
-    public static UserCrewDetailResponseDto of(User user, int trustScore, PositionResponseDto position, TrustGradeResponseDto trustGrade, List<TechnologyStackInfoResponseDto> technologyStacks) {
+    public static UserCrewDetailResponseDto of(
+            User user,
+            int trustScore,
+            PositionResponseDto position,
+            TrustGradeResponseDto trustGrade,
+            List<TechnologyStackInfoResponseDto> technologyStacks) {
         return UserCrewDetailResponseDto.builder()
                 .userId(user.getId())
                 .email(user.getEmail())

@@ -9,12 +9,11 @@ import com.example.demo.dto.milestone.request.MilestoneUpdateDateRequestDto;
 import com.example.demo.dto.milestone.response.MilestoneReadResponseDto;
 import com.example.demo.service.milestone.MileStoneFacade;
 import com.example.demo.service.milestone.MilestoneService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,17 +22,18 @@ public class MileStoneController {
     private final MilestoneService milestoneService;
     private final MileStoneFacade mileStoneFacade;
 
-    @PostMapping("/api/project/{projectId}/milestone")
+    @PostMapping("/api/milestone/project/{projectId}")
     public ResponseEntity<ResponseDto<?>> create(
             @PathVariable("projectId") Long projectId,
             @RequestBody MilestoneCreateRequestDto milestoneCreateRequestDto) {
-        MilestoneCreateResponseDto result = mileStoneFacade.create(projectId, milestoneCreateRequestDto);
+        MilestoneCreateResponseDto result =
+                mileStoneFacade.create(projectId, milestoneCreateRequestDto);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 
-    @GetMapping("/api/project/{projectId}/milestone")
-    public ResponseEntity<ResponseDto<?>> getAll(@PathVariable("projectId") Long projectId) {
-        List<MilestoneReadResponseDto> result = mileStoneFacade.getAll(projectId);
+    @GetMapping("/api/milestone/project/{projectId}")
+    public ResponseEntity<ResponseDto<?>> getAllByProject(@PathVariable("projectId") Long projectId) {
+        List<MilestoneReadResponseDto> result = mileStoneFacade.getAllByProject(projectId);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 

@@ -25,7 +25,6 @@ public class ProjectTechnology {
     @JoinColumn(name = "technology_stack_id")
     private TechnologyStack technologyStack;
 
-
     @Builder
     public ProjectTechnology(Project project, TechnologyStack technologyStack) {
         this.project = project;

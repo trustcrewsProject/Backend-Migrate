@@ -2,7 +2,7 @@ package com.example.demo.global.exception.customexception;
 
 import com.example.demo.global.exception.errorcode.TokenErrorCode;
 
-public class TokenCustomException extends CustomException{
+public class TokenCustomException extends CustomException {
 
     public static final TokenCustomException NON_ACCESS_TOKEN =
             new TokenCustomException(TokenErrorCode.NON_ACCESS_TOKEN);

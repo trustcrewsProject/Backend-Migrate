@@ -1,9 +1,13 @@
 package com.example.demo.global.config;
 
+import com.example.demo.security.jwt.JsonWebTokenExceptionFilter;
+import com.example.demo.security.custom.UserAuthenticationFailureHandler;
 import com.example.demo.security.custom.UserAuthenticationFilter;
-import com.example.demo.security.jwt.JsonWebTokenAuthorizationFilter;
+import com.example.demo.security.custom.UserAuthenticationSuccessHandler;
+import com.example.demo.security.jwt.JsonWebTokenAuthenticationFilter;
 import com.example.demo.security.jwt.JsonWebTokenProvider;
 import com.example.demo.service.token.RefreshTokenRedisService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -13,12 +17,12 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 @Slf4j
 @Configuration
@@ -29,6 +33,8 @@ public class SecurityConfig {
     private final JsonWebTokenProvider jsonWebTokenProvider;
     private final RefreshTokenRedisService refreshTokenRedisService;
     private final AuthenticationConfiguration authenticationConfiguration;
+    private final ObjectMapper objectMapper;
+    private final CorsConfig corsConfig;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -40,6 +46,18 @@ public class SecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
+    // 회원 인증 필터 빈 등록
+    @Bean
+    public UserAuthenticationFilter userAuthenticationFilter() throws Exception {
+        UserAuthenticationFilter userAuthenticationFilter = new UserAuthenticationFilter(objectMapper);
+
+        userAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
+        userAuthenticationFilter.setAuthenticationSuccessHandler(new UserAuthenticationSuccessHandler(jsonWebTokenProvider, refreshTokenRedisService, objectMapper));
+        userAuthenticationFilter.setAuthenticationFailureHandler(new UserAuthenticationFailureHandler(objectMapper));
+
+        return userAuthenticationFilter;
+    }
+
     @Bean
     public WebSecurityCustomizer configure() throws Exception {
         return (web) -> web.ignoring().antMatchers();
@@ -47,31 +65,22 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.csrf().disable()
-                .cors()
+        http.csrf()
+                .disable()
+                .cors().configurationSource(corsConfig.corsConfigurationSource())
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .formLogin().disable()
-                .httpBasic().disable()
-                .apply(new UserAuthenticationFilterConfigurer())
-                .and()
-                .addFilterBefore(new JsonWebTokenAuthorizationFilter(jsonWebTokenProvider), UsernamePasswordAuthenticationFilter.class)
-                .build();
-    }
+                .formLogin()
+                .disable()
+                .httpBasic()
+                .disable();
 
-    // 로그인 요청을 담당하는 필터를 관리하는 클래스
-    public class UserAuthenticationFilterConfigurer extends AbstractHttpConfigurer<UserAuthenticationFilterConfigurer, HttpSecurity> {
-        @Override
-        public void configure(HttpSecurity http) throws Exception {
-            AuthenticationManager authenticationManager = authenticationManagerBean();
-            UserAuthenticationFilter userAuthenticationFilter = new UserAuthenticationFilter(authenticationManager, jsonWebTokenProvider, refreshTokenRedisService);
+        http.addFilterAfter(userAuthenticationFilter(), LogoutFilter.class);
+        http.addFilterBefore(new JsonWebTokenAuthenticationFilter(jsonWebTokenProvider), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JsonWebTokenExceptionFilter(objectMapper), JsonWebTokenAuthenticationFilter.class);
 
-            // 해당 필터가 동작할 URL 설정
-            userAuthenticationFilter.setFilterProcessesUrl("/api/user/login");
-
-            http.addFilter(userAuthenticationFilter);
-        }
+        return http.build();
     }
 }

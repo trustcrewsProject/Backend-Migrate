@@ -17,7 +17,6 @@ public class PositionController {
     // 포지션 목록 조회 요청
     @GetMapping("/api/position-list")
     public ResponseEntity<ResponseDto<?>> getPositionList() {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(positionService.getPositionList());
+        return ResponseEntity.status(HttpStatus.OK).body(positionService.getPositionList());
     }
 }

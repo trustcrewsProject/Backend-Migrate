@@ -1,6 +1,5 @@
 package com.example.demo.dto.user.response;
 
-import com.example.demo.model.position.Position;
 import com.example.demo.model.user.User;
 import lombok.Builder;
 import lombok.Getter;

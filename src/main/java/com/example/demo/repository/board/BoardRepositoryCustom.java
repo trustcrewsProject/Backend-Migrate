@@ -7,5 +7,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface BoardRepositoryCustom {
 
-    Page<BoardSearchResponseDto> getBoardSearchPage(BoardSearchRequestDto boardSearchRequestDto, Pageable pageable);
+    Page<BoardSearchResponseDto> getBoardSearchPage(
+            BoardSearchRequestDto boardSearchRequestDto, Pageable pageable);
 }

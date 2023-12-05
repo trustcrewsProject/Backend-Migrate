@@ -10,6 +10,7 @@ import com.example.demo.dto.board_project.response.BoardProjectUpdateResponseDto
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.service.board.BoardFacade;
 import com.example.demo.service.board.BoardService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,8 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,8 +28,9 @@ public class BoardController {
     private final BoardFacade boardFacade;
 
     @PostMapping(value = {"/search", "/search/{page}"})
-    public ResponseEntity<ResponseDto<?>> search(@RequestBody BoardSearchRequestDto dto, @PathVariable("page")Optional<Integer> page) {
-        Pageable pageable = PageRequest.of(page.isPresent()? page.get() : 0 , 5);
+    public ResponseEntity<ResponseDto<?>> search(
+            @RequestBody BoardSearchRequestDto dto, @PathVariable("page") Optional<Integer> page) {
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 5);
         Page<BoardSearchResponseDto> result = boardService.search(dto, pageable);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
@@ -42,17 +42,20 @@ public class BoardController {
     }
 
     @PostMapping("")
-    public ResponseEntity<ResponseDto<?>> create(@RequestBody BoardProjectCreateRequestDto requestDto) {
+    public ResponseEntity<ResponseDto<?>> create(
+            @RequestBody BoardProjectCreateRequestDto requestDto) {
         BoardProjectCreateResponseDto result = boardFacade.create(requestDto);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 
     @PatchMapping("/{boardId}")
-    public ResponseEntity<ResponseDto<?>> update(@PathVariable("boardId") Long boardId, @RequestBody BoardProjectUpdateRequestDto requestDto) {
-        try{
+    public ResponseEntity<ResponseDto<?>> update(
+            @PathVariable("boardId") Long boardId,
+            @RequestBody BoardProjectUpdateRequestDto requestDto) {
+        try {
             BoardProjectUpdateResponseDto result = boardFacade.update(boardId, requestDto);
             return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             return new ResponseEntity<>(ResponseDto.fail(ex.getMessage()), HttpStatus.BAD_REQUEST);
         }

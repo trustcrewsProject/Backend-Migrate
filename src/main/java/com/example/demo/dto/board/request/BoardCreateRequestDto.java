@@ -1,11 +1,10 @@
 package com.example.demo.dto.board.request;
 
-import java.util.List;
-import javax.validation.constraints.NotBlank;
-
 import com.example.demo.model.board.Board;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.user.User;
+import java.util.List;
+import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -25,7 +24,7 @@ public class BoardCreateRequestDto {
     @NotBlank(message = "게시물 모집 분야는 필수 입력 값입니다.")
     private List<Long> positionIds;
 
-    public Board toBoardEntity(Project project, User user){
+    public Board toBoardEntity(Project project, User user) {
         return Board.builder()
                 .title(this.getTitle())
                 .content(this.getContent())

@@ -5,16 +5,17 @@ import com.example.demo.model.trust_score.QTrustScoreHistory;
 import com.example.demo.model.work.QWork;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 @Repository
 @RequiredArgsConstructor
 public class TrustScoreHistoryRepositoryImpl implements TrustScoreHistoryRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
     /**
      * 특정 프로젝트에 참여하는 사용자의, 해당 프로젝트 관련 발생한 신뢰점수이력을 DTO 형태로 반환
+     *
      * @param projectId
      * @param userId
      * @return List<ProjectUserHistoryDto>
@@ -24,15 +25,20 @@ public class TrustScoreHistoryRepositoryImpl implements TrustScoreHistoryReposit
         QTrustScoreHistory trustScoreHistory = QTrustScoreHistory.trustScoreHistory;
         QWork work = QWork.work;
         return jpaQueryFactory
-                .select(Projections.constructor(ProjectUserHistoryDto.class,
+                .select(
+                        Projections.constructor(
+                                ProjectUserHistoryDto.class,
                                 trustScoreHistory.workId,
                                 trustScoreHistory.score,
                                 work.completeStatus,
                                 work.content,
                                 trustScoreHistory.createDate))
                 .from(trustScoreHistory)
-                .where(trustScoreHistory.projectId.eq(projectId)
-                        .and(trustScoreHistory.userId.eq(userId)))
+                .where(
+                        trustScoreHistory
+                                .projectId
+                                .eq(projectId)
+                                .and(trustScoreHistory.userId.eq(userId)))
                 .join(work)
                 .on(trustScoreHistory.workId.eq(work.id))
                 .fetch();

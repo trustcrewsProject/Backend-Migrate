@@ -10,11 +10,14 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class TrustScoreRepositoryImpl implements TrustScoreRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
+
     @Override
     public void updateScore(Long userId, int score) {
         QTrustScore trustScore = QTrustScore.trustScore;
-        jpaQueryFactory.update(trustScore)
-                .set(trustScore.score,
+        jpaQueryFactory
+                .update(trustScore)
+                .set(
+                        trustScore.score,
                         new CaseBuilder()
                                 .when(trustScore.score.add(score).lt(0))
                                 .then(0)
@@ -22,6 +25,7 @@ public class TrustScoreRepositoryImpl implements TrustScoreRepositoryCustom {
                 .where(trustScore.userId.eq(userId))
                 .execute();
     }
+
     @Override
     public int getUserScore(Long userId) {
         QTrustScore trustScore = QTrustScore.trustScore;

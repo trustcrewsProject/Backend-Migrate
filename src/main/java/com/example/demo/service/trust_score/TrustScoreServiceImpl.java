@@ -12,16 +12,18 @@ import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 @Service
 @RequiredArgsConstructor
+@Validated
 public class TrustScoreServiceImpl implements TrustScoreService {
     private final TrustScoreRepository trustScoreRepository;
     private final TrustScoreHistoryRepository trustScoreHistoryRepository;
     private final TrustScoreTypeRepository trustScoreTypeRepository;
+    
     /**
-     * DTO를 통한
-     *
+     * DTO를 통한 신뢰점수 조회 및 포인트 부여
      * @param addPointDto
      * @return TrustScoreUpdateResponseDto
      */

@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
                         .map(CustomFieldError::new)
                         .collect(Collectors.toList());
 
-        final ResponseDto<List<CustomFieldError>> response = ResponseDto.fail("", errors);
+        final ResponseDto<List<CustomFieldError>> response = ResponseDto.fail("데이터 유효성 검사에 실패했습니다.", errors);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 

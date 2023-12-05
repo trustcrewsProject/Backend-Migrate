@@ -10,10 +10,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,7 +20,7 @@ public class AlertController {
     private final AlertService alertService;
 
     @PostMapping("/api/alert")
-    public ResponseEntity<ResponseDto<?>> send(AlertCreateRequestDto alertCreateRequestDto) {
+    public ResponseEntity<ResponseDto<?>> send(@RequestBody AlertCreateRequestDto alertCreateRequestDto) {
         alertFacade.send(alertCreateRequestDto);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }

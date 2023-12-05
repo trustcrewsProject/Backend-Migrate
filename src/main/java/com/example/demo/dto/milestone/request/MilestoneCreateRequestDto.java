@@ -9,14 +9,14 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class MilestoneCreateRequestDto {
-    private String name;
+    private String content;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
     public Milestone toMileStoneEntity(Project project) {
         return Milestone.builder()
                 .project(project)
-                .content(this.getName())
+                .content(this.getContent())
                 .startDate(this.getStartDate())
                 .endDate(this.getEndDate())
                 .expireStatus(false)

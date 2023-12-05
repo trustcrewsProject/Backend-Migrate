@@ -28,7 +28,6 @@ public class UserAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
 
     private final JsonWebTokenProvider jsonWebTokenProvider;
     private final RefreshTokenRedisService refreshTokenRedisService;
-    private final ObjectMapper objectMapper;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -47,7 +46,7 @@ public class UserAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
         refreshTokenRedisService.save(principalDetails.getId(), tokens.getRefreshToken());
 
         // 로그인 성공 응답
-        setSuccessLoginResponse(response, principalDetails);
+
     }
 
     // RefreshToken 쿠키 생성
@@ -57,26 +56,5 @@ public class UserAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
         cookie.setPath("/");
 
         return cookie;
-    }
-
-    // 로그인 성공 응답
-    private void setSuccessLoginResponse(HttpServletResponse response, PrincipalDetails principalDetails) throws IOException {
-        // UserLoginSuccessResponseDto 셋팅
-        UserLoginSuccessResponseDto loginSuccessResponseDto =
-                UserLoginSuccessResponseDto.builder()
-                        .userId(principalDetails.getId())
-                        .email(principalDetails.getEmail())
-                        .nickname(principalDetails.getNickname())
-                        .profileImgSrc(principalDetails.getProfileImgSrc())
-                        .build();
-
-        // ResponseDto<> 타입 응답 셋팅
-        ResponseDto<UserLoginSuccessResponseDto> successResponse =
-                ResponseDto.success("로그인에 성공하였습니다.", loginSuccessResponseDto);
-
-        // 로그인 성공 ResponseEntity 응답 생성 및 반환
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.getWriter().write(objectMapper.writeValueAsString(successResponse));
     }
 }

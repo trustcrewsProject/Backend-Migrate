@@ -32,8 +32,6 @@ public class JsonWebTokenLogoutFilter extends OncePerRequestFilter {
 
     private final RefreshTokenRedisService refreshTokenRedisService;
 
-    private final ObjectMapper objectMapper;
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // 로그아웃 요청이 아닐 경우, 다음 필터체인 수행
@@ -67,7 +65,7 @@ public class JsonWebTokenLogoutFilter extends OncePerRequestFilter {
         expirationRefreshCookie(response);
 
         // 로그아웃 성공 응답
-        sendLogoutResponse(response);
+
     }
 
     // Redis 에서 회원의 RefreshToken 삭제
@@ -83,13 +81,5 @@ public class JsonWebTokenLogoutFilter extends OncePerRequestFilter {
         cookie.setMaxAge(0);
         cookie.setPath("/");
         response.addCookie(cookie);
-    }
-
-    // 로그아웃 응답 설정
-    private void sendLogoutResponse(HttpServletResponse response) throws IOException{
-        response.setStatus(HttpStatus.OK.value());
-        response.setCharacterEncoding("utf-8");
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.getWriter().write(objectMapper.writeValueAsString(ResponseDto.success("로그아웃이 완료되었습니다.")));
     }
 }

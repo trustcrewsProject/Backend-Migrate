@@ -22,23 +22,13 @@ public class UserAuthenticationFailureHandler extends SimpleUrlAuthenticationFai
     // 회원 인증 실패 시 응답 할 커스텀 ErrorCode
     private static final UserErrorCode INVALID_AUTHENTICATION = UserErrorCode.INVALID_AUTHENTICATION;
 
-    private final ObjectMapper objectMapper;
-
-    public UserAuthenticationFailureHandler(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-    }
-
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException {
         // ResponseDto<> 타입 응답 셋팅
         ResponseDto<Void> failureResponse = ResponseDto.fail(INVALID_AUTHENTICATION.getMessage());
 
-        // 로그인 실패 ResponseEntity 응답 생성 및 반환
-        response.setStatus(INVALID_AUTHENTICATION.getStatus().value());
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.getWriter().write(objectMapper.writeValueAsString(failureResponse));
+
     }
 
 }

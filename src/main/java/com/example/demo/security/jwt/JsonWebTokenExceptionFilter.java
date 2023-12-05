@@ -24,23 +24,12 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JsonWebTokenExceptionFilter extends OncePerRequestFilter {
 
-    private final ObjectMapper objectMapper;
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             filterChain.doFilter(request, response);
         } catch (TokenCustomException TokenCustomException) {
-            setExceptionResponse(response, TokenCustomException.getErrorCode());
-        }
-    }
 
-    // JWT 예외 응답 셋팅 및 반환
-    private void setExceptionResponse(HttpServletResponse response, ErrorCode errorCode) throws IOException {
-        String exceptionResponse = objectMapper.writeValueAsString(ResponseDto.fail(errorCode.getMessage()));
-        response.setStatus(errorCode.getStatus().value());
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.getWriter().write(exceptionResponse);
+        }
     }
 }

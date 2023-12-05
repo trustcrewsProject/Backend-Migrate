@@ -35,13 +35,13 @@ public class JsonWebTokenLogoutFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        // 로그아웃 요청이 아닐 경우, 다음 필터체인 수행
-        if(!isLogoutRequest(request)) {
-            filterChain.doFilter(request, response);
+        // 로그아웃 요청일 경우
+        if(isLogoutRequest(request)) {
+            handleLogout(response);
+            return;
         }
 
-        // 로그아웃 로직 수행
-        handleLogout(response);
+        filterChain.doFilter(request, response);
     }
 
     // 로그아웃 요청 확인

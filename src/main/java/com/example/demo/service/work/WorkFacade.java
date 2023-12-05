@@ -114,7 +114,7 @@ public class WorkFacade {
     public void updateAssignUser(
             Long workId, WorkUpdateAssignUserRequestDto workUpdateAssignUserRequestDto) {
         Work work = workService.findById(workId);
-        User user = userService.findById(workUpdateAssignUserRequestDto.getAssignedUserId());
+        User user = userService.findById(workUpdateAssignUserRequestDto.getAssignUserId());
         ProjectMember projectMember =
                 projectMemberService.findProjectMemberByProjectAndUser(work.getProject(), user);
 

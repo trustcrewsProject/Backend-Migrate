@@ -1,5 +1,6 @@
 package com.example.demo.global.config;
 
+import com.example.demo.security.jwt.JsonWebTokenLogoutFilter;
 import com.example.demo.security.jwt.JsonWebTokenExceptionFilter;
 import com.example.demo.security.custom.UserAuthenticationFailureHandler;
 import com.example.demo.security.custom.UserAuthenticationFilter;
@@ -26,7 +27,7 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 @Slf4j
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -78,7 +79,8 @@ public class SecurityConfig {
                 .disable();
 
         http.addFilterAfter(userAuthenticationFilter(), LogoutFilter.class);
-        http.addFilterBefore(new JsonWebTokenAuthenticationFilter(jsonWebTokenProvider), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JsonWebTokenLogoutFilter(refreshTokenRedisService, objectMapper), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JsonWebTokenAuthenticationFilter(jsonWebTokenProvider), JsonWebTokenLogoutFilter.class);
         http.addFilterBefore(new JsonWebTokenExceptionFilter(objectMapper), JsonWebTokenAuthenticationFilter.class);
 
         return http.build();

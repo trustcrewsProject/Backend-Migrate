@@ -1,6 +1,7 @@
 package com.example.demo.security.jwt;
 
 import com.example.demo.dto.common.ResponseDto;
+import com.example.demo.security.SecurityResponseHandler;
 import com.example.demo.security.custom.PrincipalDetails;
 import com.example.demo.service.token.RefreshTokenRedisService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,8 +30,8 @@ import java.io.IOException;
 public class JsonWebTokenLogoutFilter extends OncePerRequestFilter {
 
     private static final String DEFAULT_LOGOUT_REQUEST_URI = "/api/user/logout";
-
     private final RefreshTokenRedisService refreshTokenRedisService;
+    private final SecurityResponseHandler securityResponseHandler;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -64,8 +65,8 @@ public class JsonWebTokenLogoutFilter extends OncePerRequestFilter {
         // 쿠키에서 RefreshToken 삭제
         expirationRefreshCookie(response);
 
-        // 로그아웃 성공 응답
-
+        // 클라이언트로 응답 전송
+        securityResponseHandler.sendResponse(response, HttpStatus.OK, ResponseDto.success("로그아웃이 완료되었습니다."));
     }
 
     // Redis 에서 회원의 RefreshToken 삭제

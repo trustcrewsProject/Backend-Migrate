@@ -4,6 +4,7 @@ import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.global.exception.customexception.CustomException;
 import com.example.demo.global.exception.customexception.TokenCustomException;
 import com.example.demo.global.exception.errorcode.ErrorCode;
+import com.example.demo.security.SecurityResponseHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,12 +25,18 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JsonWebTokenExceptionFilter extends OncePerRequestFilter {
 
+    private final SecurityResponseHandler securityResponseHandler;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             filterChain.doFilter(request, response);
-        } catch (TokenCustomException TokenCustomException) {
+        } catch (TokenCustomException tokenCustomException) {
+            // CustomException ErrorCode
+            ErrorCode errorCode = tokenCustomException.getErrorCode();
 
+            // 클라이언트로 응답 전송
+            securityResponseHandler.sendResponse(response, errorCode.getStatus(), ResponseDto.fail(errorCode.getMessage()));
         }
     }
 }

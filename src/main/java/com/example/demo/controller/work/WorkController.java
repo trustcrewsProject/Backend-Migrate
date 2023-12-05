@@ -21,7 +21,7 @@ public class WorkController {
     public ResponseEntity<ResponseDto<?>> create(
             @PathVariable("projectId") Long projectId,
             @PathVariable("milestoneId") Long milestoneId,
-            WorkCreateRequestDto workCreateRequestDto) {
+            @RequestBody WorkCreateRequestDto workCreateRequestDto) {
         workFacade.create(projectId, milestoneId, workCreateRequestDto);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
@@ -50,7 +50,7 @@ public class WorkController {
 
     @PatchMapping("/api/work/{workId}")
     public ResponseEntity<ResponseDto<?>> update(
-            @PathVariable("workId") Long workId, WorkUpdateRequestDto workUpdateRequestDto) {
+            @PathVariable("workId") Long workId, @RequestBody WorkUpdateRequestDto workUpdateRequestDto) {
         workFacade.update(workId, workUpdateRequestDto);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
@@ -64,7 +64,7 @@ public class WorkController {
     @PatchMapping("/api/work/{workId}/content")
     public ResponseEntity<ResponseDto<?>> updateContent(
             @PathVariable("workId") Long workId,
-            WorkUpdateContentRequestDto workUpdateContentRequestDto) {
+            @RequestBody WorkUpdateContentRequestDto workUpdateContentRequestDto) {
         workFacade.updateContent(workId, workUpdateContentRequestDto);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
@@ -72,15 +72,15 @@ public class WorkController {
     @PatchMapping("/api/work/{workId}/complete")
     public ResponseEntity<ResponseDto<?>> updateCompleteStatus(
             @PathVariable("workId") Long workId,
-            WorkUpdateCompleteStatusRequestDto workUpdateCompleteStatusRequestDto) {
+            @RequestBody WorkUpdateCompleteStatusRequestDto workUpdateCompleteStatusRequestDto) {
         workFacade.updateCompleteStatus(workId, workUpdateCompleteStatusRequestDto);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 
-    @PatchMapping("/api/work/{workId}/assgin")
+    @PatchMapping("/api/work/{workId}/assign")
     public ResponseEntity<ResponseDto<?>> updateAssign(
             @PathVariable("workId") Long workId,
-            WorkUpdateAssignUserRequestDto workUpdateAssignUserRequestDto) {
+            @RequestBody WorkUpdateAssignUserRequestDto workUpdateAssignUserRequestDto) {
         workFacade.updateAssignUser(workId, workUpdateAssignUserRequestDto);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }

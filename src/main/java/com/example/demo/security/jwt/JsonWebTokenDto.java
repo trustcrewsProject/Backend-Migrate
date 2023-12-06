@@ -10,7 +10,7 @@ public class JsonWebTokenDto {
     private String accessToken;
     private String refreshToken;
 
-    public static JsonWebTokenDto of (String accessToken, String refreshToken) {
+    public static JsonWebTokenDto of(String accessToken, String refreshToken) {
         return JsonWebTokenDto.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)

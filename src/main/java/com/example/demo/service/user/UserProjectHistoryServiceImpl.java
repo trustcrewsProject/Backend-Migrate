@@ -5,19 +5,18 @@ import com.example.demo.model.project.Project;
 import com.example.demo.model.user.User;
 import com.example.demo.model.user.UserProjectHistory;
 import com.example.demo.repository.user.UserProjectHistoryRepository;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
 @Service
 @RequiredArgsConstructor
-public class UserProjectHistoryServiceImpl implements  UserProjectHistoryService {
+public class UserProjectHistoryServiceImpl implements UserProjectHistoryService {
     private final UserProjectHistoryRepository userProjectHistoryRepository;
 
     @Override
     public UserProjectHistory toUserProjectHistoryEntity(User user, Project project) {
-        //사용자 프로젝트 이력 생성
+        // 사용자 프로젝트 이력 생성
         return UserProjectHistory.builder()
                 .user(user)
                 .project(project)

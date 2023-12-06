@@ -3,18 +3,14 @@ package com.example.demo.service.milestone;
 import com.example.demo.dto.milestone.MilestoneCreateResponseDto;
 import com.example.demo.dto.milestone.request.MilestoneCreateRequestDto;
 import com.example.demo.dto.milestone.response.MilestoneReadResponseDto;
-import com.example.demo.global.exception.customexception.ProjectCustomException;
 import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.project.Project;
-import com.example.demo.repository.milestone.MileStoneRepository;
-import com.example.demo.repository.project.ProjectRepository;
 import com.example.demo.service.project.ProjectService;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -30,7 +26,8 @@ public class MileStoneFacade {
      * @param milestoneCreateRequestDto
      * @return
      */
-    public MilestoneCreateResponseDto create(Long projectId, MilestoneCreateRequestDto milestoneCreateRequestDto) {
+    public MilestoneCreateResponseDto create(
+            Long projectId, MilestoneCreateRequestDto milestoneCreateRequestDto) {
         Project project = projectService.findById(projectId);
         Milestone milestone = milestoneCreateRequestDto.toMileStoneEntity(project);
         Milestone savedMilestone = mileStoneService.save(milestone);
@@ -39,7 +36,7 @@ public class MileStoneFacade {
     }
 
     @Transactional(readOnly = true)
-    public List<MilestoneReadResponseDto> getAll(Long projectId) {
+    public List<MilestoneReadResponseDto> getAllByProject(Long projectId) {
         Project project = projectService.findById(projectId);
         List<Milestone> milestonesByProject = mileStoneService.findMilestonesByProject(project);
 

@@ -4,8 +4,6 @@ import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.model.user.User;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 public interface UserService {
 
     // 이메일 중복확인 로직
@@ -17,4 +15,6 @@ public interface UserService {
     ResponseDto<?> checkNickname(String nickname);
 
     User findById(Long userId);
+
+    User save(User user);
 }

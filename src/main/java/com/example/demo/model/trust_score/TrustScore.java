@@ -1,11 +1,13 @@
 package com.example.demo.model.trust_score;
 
+
 import com.example.demo.model.trust_grade.TrustGrade;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
+
 
 @Entity
 @Table(name = "trust_score")
@@ -20,27 +22,22 @@ public class TrustScore {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "trust_score_id")
     private Long id;
-    /**
-     * 유저자동생성식별자
-     */
+    /** 유저자동생성식별자 */
     @Column // PK
     private Long userId;
 
-    /**
-     * 유저신뢰점수값
-     */
-    @Column
+    /** 유저신뢰점수값 */
+    @Column 
     private int score;
 
-    /**
-     * 변경날짜
-     */
-    @Column
+    /** 변경날짜 */
+    @Column 
     private Date updateDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trust_grade_id")
     private TrustGrade trustGrade;
+
 
     @Builder
     public TrustScore(Long userId, int score) {

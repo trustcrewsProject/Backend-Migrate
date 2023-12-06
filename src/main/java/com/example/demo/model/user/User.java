@@ -3,8 +3,6 @@ package com.example.demo.model.user;
 import com.example.demo.constant.Role;
 import com.example.demo.global.common.BaseTimeEntity;
 import com.example.demo.model.position.Position;
-import com.example.demo.model.trust_grade.TrustGrade;
-
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
@@ -35,7 +33,11 @@ public class User extends BaseTimeEntity {
     @JoinColumn(name = "position_id")
     private Position position;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(
+            mappedBy = "user",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.PERSIST,
+            orphanRemoval = true)
     private List<UserTechnologyStack> techStacks = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)

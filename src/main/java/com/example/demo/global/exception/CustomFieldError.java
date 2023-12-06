@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.validation.FieldError;
 
+import java.util.Objects;
+
 @Getter
 @AllArgsConstructor
 public class CustomFieldError {
@@ -14,7 +16,7 @@ public class CustomFieldError {
 
     public CustomFieldError(FieldError fieldError) {
         this.field = fieldError.getField();
-        this.invalidValue = fieldError.getRejectedValue().toString();
+        this.invalidValue = fieldError.getRejectedValue() != null ? fieldError.getRejectedValue().toString() : null;
         this.reason = fieldError.getDefaultMessage();
     }
 }

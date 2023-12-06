@@ -19,8 +19,10 @@ public class PrincipalDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         // email, password 로그인이므로 email 값으로 회원 조회
-        User user = userRepository.findByEmail(username)
-                .orElseThrow(() -> UserCustomException.INVALID_AUTHENTICATION);
+        User user =
+                userRepository
+                        .findByEmail(username)
+                        .orElseThrow(() -> UserCustomException.INVALID_AUTHENTICATION);
 
         return new PrincipalDetails(user);
     }

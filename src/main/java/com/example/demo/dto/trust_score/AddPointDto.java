@@ -21,6 +21,7 @@ public class AddPointDto {
         this.workId = requestDto.getWorkId();
         this.scoreTypeId = requestDto.getScoreTypeId();
     }
+
     @Builder
     public AddPointDto(Long userId, Long projectId, Long milestoneId, Long workId, Long scoreTypeId) {
         this.userId = userId;

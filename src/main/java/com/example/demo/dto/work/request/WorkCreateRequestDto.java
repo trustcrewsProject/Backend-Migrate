@@ -1,12 +1,11 @@
 package com.example.demo.dto.work.request;
 
-import java.time.LocalDateTime;
-
 import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
 import com.example.demo.model.user.User;
 import com.example.demo.model.work.Work;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -19,11 +18,7 @@ public class WorkCreateRequestDto {
     private Long assignedUserId;
 
     public Work toWorkEntity(
-            Project project,
-            Milestone milestone,
-            User user,
-            ProjectMember projectMember
-    ) {
+            Project project, Milestone milestone, User user, ProjectMember projectMember) {
         return Work.builder()
                 .project(project)
                 .milestone(milestone)

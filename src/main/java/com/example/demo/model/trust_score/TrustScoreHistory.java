@@ -2,10 +2,13 @@ package com.example.demo.model.trust_score;
 
 import java.util.Date;
 import javax.persistence.*;
+
+import com.example.demo.global.common.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
@@ -29,7 +32,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 @Getter
-public class TrustScoreHistory {
+public class TrustScoreHistory extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -47,9 +50,6 @@ public class TrustScoreHistory {
     @Column private Long workId;
     /** 신뢰점수 증감 */
     @Column private int score;
-    /** 생성날짜 */
-    @Column private Date createDate;
-
     @Builder
     public TrustScoreHistory(
             Long userId,
@@ -57,14 +57,12 @@ public class TrustScoreHistory {
             Long projectId,
             Long milestoneId,
             int score,
-            Long workId,
-            Date createDate) {
+            Long workId) {
         this.userId = userId;
         this.trustScoreTypeId = trustScoreTypeId;
         this.projectId = projectId;
         this.milestoneId = milestoneId;
         this.workId = workId;
         this.score = score;
-        this.createDate = createDate;
     }
 }

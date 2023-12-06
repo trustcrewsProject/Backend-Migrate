@@ -7,13 +7,11 @@ import com.example.demo.model.trust_score.TrustScoreHistory;
 import com.example.demo.repository.trust_score.TrustScoreHistoryRepository;
 import com.example.demo.repository.trust_score.TrustScoreRepository;
 import com.example.demo.repository.trust_score.TrustScoreTypeRepository;
-import java.util.Date;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
-
 @Service
 @RequiredArgsConstructor
 @Validated
@@ -47,7 +45,6 @@ public class TrustScoreServiceImpl implements TrustScoreService {
                     TrustScore.builder()
                             .userId(userId)
                             .score(calculatedScore)
-                            .updateDate(new Date())
                             .build());
         } else {
             trustScoreRepository.updateUserTrustScore(userId, calculatedScore);
@@ -78,7 +75,6 @@ public class TrustScoreServiceImpl implements TrustScoreService {
                         .milestoneId(addPointDto.getMilestoneId())
                         .workId(addPointDto.getWorkId())
                         .score(score)
-                        .createDate(new Date())
                         .build();
         return trustScoreHistoryRepository.save(history);
     }

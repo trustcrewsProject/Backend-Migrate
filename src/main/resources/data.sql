@@ -47,10 +47,10 @@ INSERT INTO technology_stack (technology_stack_id, name, technology_stack_catego
 INSERT INTO technology_stack (technology_stack_id, name, technology_stack_category_id) VALUES (15,'FIGMA', 6);
 
 -- trust_grade 값 넣기.
-INSERT INTO trust_grade (trust_grade_id, name, score, create_date, update_date) VALUES (1,'1등급', 7000, CURRENT_DATE, CURRENT_DATE);
-INSERT INTO trust_grade (trust_grade_id, name, score, create_date, update_date) VALUES (2,'2등급', 5000, CURRENT_DATE, CURRENT_DATE);
-INSERT INTO trust_grade (trust_grade_id, name, score, create_date, update_date) VALUES (3,'3등급', 3000, CURRENT_DATE, CURRENT_DATE);
-INSERT INTO trust_grade (trust_grade_id, name, score, create_date, update_date) VALUES (4,'4등급', 2000, CURRENT_DATE, CURRENT_DATE);
+INSERT INTO trust_grade (trust_grade_id, name, minimum_score, maximum_score, create_date, update_date) VALUES (1,'1등급', 5000, 1000000, CURRENT_DATE, CURRENT_DATE);
+INSERT INTO trust_grade (trust_grade_id, name, minimum_score, maximum_score, create_date, update_date) VALUES (2,'2등급', 3000, 4999, CURRENT_DATE, CURRENT_DATE);
+INSERT INTO trust_grade (trust_grade_id, name, minimum_score, maximum_score, create_date, update_date) VALUES (3,'3등급', 2000, 2999, CURRENT_DATE, CURRENT_DATE);
+INSERT INTO trust_grade (trust_grade_id, name, minimum_score, maximum_score, create_date, update_date) VALUES (4,'4등급', 0, 1999, CURRENT_DATE, CURRENT_DATE);
 
 -- project_member_auth 추가
 INSERT INTO project_member_auth (project_member_auth_id, project_member_auth_name, milestone_change_yn, work_change_yn) VALUES (1,'매니저', true, false);
@@ -124,3 +124,21 @@ VALUES(20, 5, '3등급 프로젝트 강제탈퇴', '3등급', 600, 'M', 'N', '20
 INSERT INTO trust_score_type
 (trust_score_type_id, up_trust_score_type_id, trust_score_type_name, trust_grade_name, score, gubun_code, delete_status, create_date, update_date)
 VALUES(21, 5, '4등급 프로젝트 강제탈퇴', '4등급', 800, 'M', 'N', '2023-11-20', '2023-11-20');
+INSERT INTO projectMatch.trust_score_type
+(trust_score_type_id, up_trust_score_type_id, trust_score_type_name, trust_grade_name, score, gubun_code, delete_status, create_date, update_date)
+VALUES(21, 5, '4등급 프로젝트 강제탈퇴', '4등급', 800, 'M', 'N', '2023-11-20', '2023-11-20');
+INSERT INTO projectMatch.trust_score_type
+(trust_score_type_id, up_trust_score_type_id, trust_score_type_name, trust_grade_name, score, gubun_code, delete_status, create_date, update_date)
+VALUES(22, NULL, '업무 지연', NULL, NULL, 'M', 'N', '2023-12-05', '2023-12-05');
+INSERT INTO projectMatch.trust_score_type
+(trust_score_type_id, up_trust_score_type_id, trust_score_type_name, trust_grade_name, score, gubun_code, delete_status, create_date, update_date)
+VALUES(23, 22, '1등급 업무 지연', '1등급', 50, 'M', 'N', '2023-12-05', '2023-12-05');
+INSERT INTO projectMatch.trust_score_type
+(trust_score_type_id, up_trust_score_type_id, trust_score_type_name, trust_grade_name, score, gubun_code, delete_status, create_date, update_date)
+VALUES(24, 22, '2등급 업무 지연', '2등급', 40, 'M', 'N', '2023-12-05', '2023-12-05');
+INSERT INTO projectMatch.trust_score_type
+(trust_score_type_id, up_trust_score_type_id, trust_score_type_name, trust_grade_name, score, gubun_code, delete_status, create_date, update_date)
+VALUES(25, 22, '3등급 업무 지연', '3등급', 30, 'M', 'N', '2023-12-05', '2023-12-05');
+INSERT INTO projectMatch.trust_score_type
+(trust_score_type_id, up_trust_score_type_id, trust_score_type_name, trust_grade_name, score, gubun_code, delete_status, create_date, update_date)
+VALUES(26, 22, '4등급 업무 지연', '4등급', 20, 'M', 'N', '2023-12-05', '2023-12-05');

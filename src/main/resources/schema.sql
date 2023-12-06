@@ -50,7 +50,8 @@ CREATE TABLE `trust_grade` (
    `create_date` datetime(6) DEFAULT NULL,
    `update_date` datetime(6) DEFAULT NULL,
    `name` varchar(255) DEFAULT NULL,
-   `score` int NOT NULL,
+   `minimum_score` int NOT NULL,
+   `maximum_score` int NOT NULL,
    PRIMARY KEY (`trust_grade_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 

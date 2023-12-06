@@ -8,12 +8,14 @@ import lombok.Getter;
 @Builder
 public class TrustGradeResponseDto {
     private String name;
-    private int score;
+    private int minimumScore;
+    private int maximumScore;
 
     public static TrustGradeResponseDto of(TrustGrade trustGrade) {
         return TrustGradeResponseDto.builder()
                 .name(trustGrade.getName())
-                .score(trustGrade.getScore())
+                .minimumScore(trustGrade.getMinimumScore())
+                .maximumScore(trustGrade.getMaximumScore())
                 .build();
     }
 }

@@ -1,10 +1,10 @@
 package com.example.demo.model.trust_score;
 
+import com.example.demo.model.trust_grade.TrustGrade;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
@@ -37,6 +37,11 @@ public class TrustScore {
      */
     @Column
     private Date updateDate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "trust_grade_id")
+    private TrustGrade trustGrade;
+
     @Builder
     public TrustScore(Long userId, int score) {
         this.userId = userId;

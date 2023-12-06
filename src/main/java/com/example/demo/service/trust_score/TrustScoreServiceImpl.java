@@ -51,7 +51,10 @@ public class TrustScoreServiceImpl implements TrustScoreService {
             trustScoreRepository.updateUserTrustScore(userId, calculatedScore);
         }
 
-        //
+        // 신뢰등급 변경
+        trustScoreRepository.updateUserTrustGrade(userId);
+
+        // 응답 DTO 생성 및 반환
         return TrustScoreUpdateResponseDto.builder()
                 .userId(userId)
                 .totalScore(calculatedScore)
@@ -59,7 +62,7 @@ public class TrustScoreServiceImpl implements TrustScoreService {
                 .build();
     }
     /**
-     * 신뢰점수이력 생성 및 조회
+     * 신뢰점수이력 생성
      * @param addPointDto, score
      * @return TrustScoreHistory
      */

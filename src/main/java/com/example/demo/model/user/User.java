@@ -6,6 +6,8 @@ import com.example.demo.model.position.Position;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
+
+import com.example.demo.model.trust_score.TrustScore;
 import lombok.*;
 
 @Entity
@@ -43,6 +45,10 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @OneToOne
+    @JoinColumn(name = "trust_score_id")
+    TrustScore trustScore;
+
     @Builder
     private User(
             String email,
@@ -65,4 +71,7 @@ public class User extends BaseTimeEntity {
     public void setTechStacks(List<UserTechnologyStack> techStacks) {
         this.techStacks = techStacks;
     }
+
+    // 신뢰점수 등록
+    public void setTrustScore(TrustScore trustScore) {this.trustScore = trustScore;}
 }

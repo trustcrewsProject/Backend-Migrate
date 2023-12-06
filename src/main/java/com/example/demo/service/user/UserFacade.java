@@ -6,10 +6,12 @@ import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.dto.trust_score.AddPointDto;
 import com.example.demo.dto.trust_score.request.TrustScoreUpdateRequestDto;
 import com.example.demo.dto.user.request.UserCreateRequestDto;
+import com.example.demo.global.exception.customexception.TrustScoreCustomException;
 import com.example.demo.model.position.Position;
 import com.example.demo.model.technology_stack.TechnologyStack;
 import com.example.demo.model.user.User;
 import com.example.demo.model.user.UserTechnologyStack;
+import com.example.demo.repository.trust_score.TrustScoreRepository;
 import com.example.demo.service.position.PositionService;
 import com.example.demo.service.technology_stack.TechnologyStackService;
 import com.example.demo.service.trust_score.TrustScoreService;
@@ -29,6 +31,7 @@ public class UserFacade {
     private final PositionService positionService;
     private final TechnologyStackService technologyStackService;
     private final TrustScoreService trustScoreService;
+    private final TrustScoreRepository trustScoreRepository;
 
     // 회원가입
     @Transactional
@@ -75,6 +78,10 @@ public class UserFacade {
 
         AddPointDto addPoint = new AddPointDto(trustScoreUpdateRequest);
         trustScoreService.addPoint(addPoint);
+
+        // 회원에 신뢰점수 세팅
+        saveUser.setTrustScore(trustScoreRepository.findTrustScoreByUserId(user.getId())
+                .orElseThrow(() -> TrustScoreCustomException.NOT_FOUND_TRUST_SCORE));
 
         return ResponseDto.success("회원등록이 완료되었습니다.", saveUser.getId());
     }

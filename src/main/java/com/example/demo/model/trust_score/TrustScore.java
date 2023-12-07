@@ -24,13 +24,12 @@ public class TrustScore extends BaseTimeEntity {
     private Long id;
 
     /** 유저자동생성식별자 */
-    @Column // PK
+    @Column
     private Long userId;
 
     /** 유저신뢰점수값 */
     @Column 
     private int score;
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trust_grade_id")

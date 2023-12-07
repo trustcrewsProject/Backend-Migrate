@@ -31,7 +31,6 @@ public class UserFacade {
     private final PositionService positionService;
     private final TechnologyStackService technologyStackService;
     private final TrustScoreService trustScoreService;
-    private final TrustScoreRepository trustScoreRepository;
 
     // 회원가입
     @Transactional
@@ -80,8 +79,7 @@ public class UserFacade {
         trustScoreService.addPoint(addPoint);
 
         // 회원에 신뢰점수 세팅
-        saveUser.setTrustScore(trustScoreRepository.findTrustScoreByUserId(user.getId())
-                .orElseThrow(() -> TrustScoreCustomException.NOT_FOUND_TRUST_SCORE));
+        saveUser.setTrustScore(trustScoreService.findTrustScoreByUserId(user.getId()));
 
         return ResponseDto.success("회원등록이 완료되었습니다.", saveUser.getId());
     }

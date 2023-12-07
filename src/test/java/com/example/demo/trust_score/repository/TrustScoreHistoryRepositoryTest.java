@@ -1,9 +1,11 @@
 package com.example.demo.trust_score.repository;
 
 import com.example.demo.dto.trust_score.ProjectUserHistoryDto;
+import com.example.demo.model.project.Project;
 import com.example.demo.model.trust_score.TrustScoreHistory;
 import com.example.demo.model.user.User;
 import com.example.demo.model.work.Work;
+import com.example.demo.repository.project.ProjectRepository;
 import com.example.demo.repository.trust_score.TrustScoreHistoryRepository;
 import com.example.demo.repository.user.UserRepository;
 import com.example.demo.repository.work.WorkRepository;
@@ -16,8 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-// TODO : getProjectUserHistory(Long projectId, Long userId) 성공, 실패 null
-// TODO : calculateCurrentScore(Long userId)
 @SpringBootTest
 @Transactional
 public class TrustScoreHistoryRepositoryTest {
@@ -30,6 +30,9 @@ public class TrustScoreHistoryRepositoryTest {
 
     @Autowired
     private WorkRepository workRepository;
+
+    @Autowired
+    private ProjectRepository projectRepository;
 
     @Test
     @DisplayName("신뢰점수 계산 - 성공")
@@ -83,6 +86,13 @@ public class TrustScoreHistoryRepositoryTest {
     @DisplayName("프로젝트 사용자 이력 조회 ")
     public void getProjectUserHistory_Method_Test_Pass() {
         // given
+        // 테스트 프로젝트 생성
+        Project project = Project.builder()
+                .name("테스트 프로젝트입니다.")
+                .build();
+        Project saveProject = projectRepository.save(project);
+        Long projectId = saveProject.getId();
+
         // 테스트 업무 생성 및 저장
         Work testWork1 = Work.builder()
                 .content("테스트 업무입니다")
@@ -103,9 +113,8 @@ public class TrustScoreHistoryRepositoryTest {
                 .build();
         User saveUser = userRepository.save(user);
 
-        // 테스트 프로젝트 사용자 이력 생성 및 저장
+        // 테스트 프로젝트 사용자 신뢰점수이력 생성 및 저장
         Long userId = saveUser.getId();
-        Long projectId = 100L;
         TrustScoreHistory trustScoreHistory1 = TrustScoreHistory.builder()
                 .userId(userId)
                 .score(1000)
@@ -125,7 +134,7 @@ public class TrustScoreHistoryRepositoryTest {
 
         // when
         List<ProjectUserHistoryDto> projectUserHistory =
-                trustScoreHistoryRepository.getProjectUserHistory(100L, userId);
+                trustScoreHistoryRepository.getProjectUserHistory(projectId, userId);
 
         // then
         Assertions.assertThat(projectUserHistory.size()).isEqualTo(2);

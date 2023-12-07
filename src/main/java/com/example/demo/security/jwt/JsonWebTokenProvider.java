@@ -67,7 +67,6 @@ public class JsonWebTokenProvider {
 
         Claims claims = Jwts.claims().setSubject(principalDetails.getUsername());
         claims.put("email", principalDetails.getEmail());
-        claims.put("nickname", principalDetails.getNickname());
         claims.put("role", principalDetails.getAuthorities());
 
         String accessToken =
@@ -123,11 +122,10 @@ public class JsonWebTokenProvider {
         Claims claims = parseClaims(token);
 
         String email = String.valueOf(claims.get("email"));
-        String nickname = String.valueOf(claims.get("nickname"));
         String authority = String.valueOf(claims.get("role"));
 
         PrincipalDetails principalDetails =
-                PrincipalDetails.of(claims.getSubject(), email, nickname, authority);
+                PrincipalDetails.of(claims.getSubject(), email, authority);
 
         return new UsernamePasswordAuthenticationToken(
                 principalDetails, "", principalDetails.getAuthorities());

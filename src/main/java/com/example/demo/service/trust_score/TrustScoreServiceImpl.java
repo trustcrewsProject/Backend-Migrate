@@ -2,6 +2,7 @@ package com.example.demo.service.trust_score;
 
 import com.example.demo.dto.trust_score.AddPointDto;
 import com.example.demo.dto.trust_score.response.TrustScoreUpdateResponseDto;
+import com.example.demo.global.exception.customexception.TrustScoreCustomException;
 import com.example.demo.model.trust_score.TrustScore;
 import com.example.demo.model.trust_score.TrustScoreHistory;
 import com.example.demo.repository.trust_score.TrustScoreHistoryRepository;
@@ -60,7 +61,13 @@ public class TrustScoreServiceImpl implements TrustScoreService {
                 .scoreChange(scoreChange)
                 .build();
     }
-    
+
+    @Override
+    public TrustScore findTrustScoreByUserId(Long userId) {
+        return trustScoreRepository.findTrustScoreByUserId(userId)
+                .orElseThrow(() -> TrustScoreCustomException.NOT_FOUND_TRUST_SCORE);
+    }
+
     /**
      * 신뢰점수이력 생성
      * @param addPointDto, score
@@ -80,7 +87,6 @@ public class TrustScoreServiceImpl implements TrustScoreService {
     }
     /**
      * 신뢰점수 조회
-     *
      * @param addPointDto
      * @return int
      */

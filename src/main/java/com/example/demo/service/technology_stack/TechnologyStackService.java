@@ -11,7 +11,6 @@ public interface TechnologyStackService {
     @Transactional(readOnly = true)
     ResponseDto<?> getTechnologyStackList();
 
-    @Transactional(readOnly = true)
     TechnologyStack findById(Long id);
 
     // 기술스택 PK 리스트로 기술스택 목록 조회

@@ -91,14 +91,10 @@ public class TrustScoreServiceImpl implements TrustScoreService {
      * @return int
      */
     private int getScore(AddPointDto addPointDto) {
-        int score = 0;
         if (addPointDto.getProjectId() == null) {
-            score = trustScoreTypeRepository.getScore(addPointDto.getScoreTypeId());
-        } else {
-            score =
-                    trustScoreTypeRepository.getScoreByProject(
-                            addPointDto.getProjectId(), addPointDto.getScoreTypeId());
+            return trustScoreTypeRepository.getScore(addPointDto.getScoreTypeId());
         }
-        return score;
+        return trustScoreTypeRepository
+                    .getScoreByProject(addPointDto.getProjectId(), addPointDto.getScoreTypeId());
     }
 }

@@ -6,11 +6,9 @@ import com.example.demo.security.SecurityResponseHandler;
 import com.example.demo.security.jwt.JsonWebTokenDto;
 import com.example.demo.security.jwt.JsonWebTokenProvider;
 import com.example.demo.service.token.RefreshTokenRedisService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
@@ -49,7 +47,7 @@ public class UserAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
         refreshTokenRedisService.save(principalDetails.getId(), tokens.getRefreshToken());
 
         // 로그인 성공 반환 데이터 셋팅
-        UserLoginSuccessResponseDto loginSuccessResponse = UserLoginSuccessResponseDto.of(principalDetails.getId(), principalDetails.getEmail(), principalDetails.getNickname(), principalDetails.getProfileImgSrc());
+        UserLoginSuccessResponseDto loginSuccessResponse = UserLoginSuccessResponseDto.of(principalDetails.getId(), principalDetails.getEmail());
 
         // 클라이언트로 응답 전송
         securityResponseHandler.sendResponse(response, HttpStatus.OK, ResponseDto.success("로그인이 완료되었습니다.", loginSuccessResponse));

@@ -35,4 +35,9 @@ public class TechnologyStackServiceImpl implements TechnologyStackService {
                 .findById(id)
                 .orElseThrow(() -> TechnologyStackCustomException.NOT_FOUND_TECHNOLOGY_STACK);
     }
+
+    @Override
+    public List<TechnologyStack> findTechnologyStackListByIds(List<Long> techStackIds) {
+        return technologyStackRepository.findTechnologyStackListByIds(techStackIds);
+    }
 }

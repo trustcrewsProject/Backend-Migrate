@@ -126,9 +126,6 @@ INSERT INTO trust_score_type
 VALUES(21, 5, '4등급 프로젝트 강제탈퇴', '4등급', 800, 'M', 'N', '2023-11-20', '2023-11-20');
 INSERT INTO projectMatch.trust_score_type
 (trust_score_type_id, up_trust_score_type_id, trust_score_type_name, trust_grade_name, score, gubun_code, delete_status, create_date, update_date)
-VALUES(21, 5, '4등급 프로젝트 강제탈퇴', '4등급', 800, 'M', 'N', '2023-11-20', '2023-11-20');
-INSERT INTO projectMatch.trust_score_type
-(trust_score_type_id, up_trust_score_type_id, trust_score_type_name, trust_grade_name, score, gubun_code, delete_status, create_date, update_date)
 VALUES(22, NULL, '업무 지연', NULL, NULL, 'M', 'N', '2023-12-05', '2023-12-05');
 INSERT INTO projectMatch.trust_score_type
 (trust_score_type_id, up_trust_score_type_id, trust_score_type_name, trust_grade_name, score, gubun_code, delete_status, create_date, update_date)

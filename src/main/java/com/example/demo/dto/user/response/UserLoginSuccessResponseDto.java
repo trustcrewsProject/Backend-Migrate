@@ -9,16 +9,12 @@ public class UserLoginSuccessResponseDto {
 
     private Long userId;
     private String email;
-    private String nickname;
-    private String profileImgSrc;
 
     public static UserLoginSuccessResponseDto of(
-            Long userId, String email, String nickname, String profileImgSrc) {
+            Long userId, String email) {
         return UserLoginSuccessResponseDto.builder()
                 .userId(userId)
                 .email(email)
-                .nickname(nickname)
-                .profileImgSrc(profileImgSrc)
                 .build();
     }
 }

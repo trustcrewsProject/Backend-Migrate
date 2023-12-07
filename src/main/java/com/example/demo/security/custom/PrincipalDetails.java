@@ -14,28 +14,23 @@ public class PrincipalDetails implements UserDetails {
     private Long id;
     private String email;
     private String password;
-    private String nickname;
-    private String profileImgSrc;
     private String role;
 
     public PrincipalDetails(User user) {
         this.id = user.getId();
         this.email = user.getEmail();
         this.password = user.getPassword();
-        this.nickname = user.getNickname();
-        this.profileImgSrc = user.getProfileImgSrc();
         this.role = user.getRole().name();
     }
 
-    public PrincipalDetails(String id, String email, String nickname, String role) {
+    public PrincipalDetails(String id, String email, String role) {
         this.id = Long.valueOf(id);
         this.email = email;
-        this.nickname = nickname;
         this.role = role;
     }
 
-    public static PrincipalDetails of(String id, String email, String nickname, String role) {
-        return new PrincipalDetails(id, email, nickname, role);
+    public static PrincipalDetails of(String id, String email, String role) {
+        return new PrincipalDetails(id, email, role);
     }
 
     // 회원 권한 정보 반환

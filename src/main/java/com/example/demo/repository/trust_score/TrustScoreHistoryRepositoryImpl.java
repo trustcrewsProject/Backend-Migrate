@@ -7,8 +7,9 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
-
+@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class TrustScoreHistoryRepositoryImpl implements TrustScoreHistoryRepositoryCustom {
@@ -43,14 +44,19 @@ public class TrustScoreHistoryRepositoryImpl implements TrustScoreHistoryReposit
                 .on(trustScoreHistory.workId.eq(work.id))
                 .fetch();
     }
-
     @Override
     public int calculateCurrentScore(Long userId) {
         QTrustScoreHistory trustScoreHistory = QTrustScoreHistory.trustScoreHistory;
-        return jpaQueryFactory
-                .select(trustScoreHistory.score.sum())
-                .from(trustScoreHistory)
-                .where(trustScoreHistory.userId.eq(userId))
-                .fetchFirst();
+        try {
+            return jpaQueryFactory
+                    .select(trustScoreHistory.score.sum())
+                    .from(trustScoreHistory)
+                    .where(trustScoreHistory.userId.eq(userId))
+                    .fetchFirst();
+        } catch (NullPointerException ne) {
+            log.error("데이터가 존재하지 않음. userId : {}", userId);
+            log.error("error :", ne);
+            return 0;
+        }
     }
 }

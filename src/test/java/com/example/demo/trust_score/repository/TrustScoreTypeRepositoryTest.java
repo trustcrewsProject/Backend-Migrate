@@ -1,21 +1,35 @@
 package com.example.demo.trust_score.repository;
 
+import com.example.demo.global.exception.customexception.TrustGradeCustomException;
+import com.example.demo.model.project.Project;
+import com.example.demo.model.trust_grade.TrustGrade;
+import com.example.demo.repository.project.ProjectRepository;
+import com.example.demo.repository.trust_grade.TrustGradeRepository;
 import com.example.demo.repository.trust_score.TrustScoreTypeRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import static com.example.demo.constant.TrustScoreTypeIdentifier.*;
 
 @SpringBootTest
+@Transactional
 public class TrustScoreTypeRepositoryTest {
 
     @Autowired
     private TrustScoreTypeRepository trustScoreTypeRepository;
+
+    @Autowired
+    private TrustGradeRepository trustGradeRepository;
+
+    @Autowired
+    private ProjectRepository projectRepository;
 
     @Test
     @DisplayName("getScore 메서드 테스트 - 성공")
@@ -47,15 +61,22 @@ public class TrustScoreTypeRepositoryTest {
     @DisplayName("getScoreByProject 메서드 테스트 - 성공")
     public void getScoreByProject_MethodTest_Pass() {
         // given
-        Long projectId = 1L;
-        Long trustScoreTypeId = WORK_COMPLETE;
+        // 4등급 프로젝트 생성
+        TrustGrade trustGrade = trustGradeRepository.findById(4L)
+                .orElseThrow(() -> TrustGradeCustomException.NOT_FOUND_TRUST_GRADE);
+        Project project = Project.builder()
+                .name("테스트 프로젝트")
+                .trustGrade(trustGrade)
+                .build();
+        Project saveProject = projectRepository.save(project);
 
         // when
+        Long trustScoreTypeId = WORK_COMPLETE;
         int scoreByProject = trustScoreTypeRepository
-                .getScoreByProject(projectId, trustScoreTypeId);
+                .getScoreByProject(saveProject.getId(), trustScoreTypeId);
 
         // then
-        Assertions.assertThat(scoreByProject).isEqualTo(50);
+        Assertions.assertThat(scoreByProject).isEqualTo(20);
     }
 
     // TODO : 테스트 필요 여부 재검증

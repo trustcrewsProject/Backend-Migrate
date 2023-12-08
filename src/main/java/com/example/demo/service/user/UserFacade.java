@@ -17,6 +17,8 @@ import com.example.demo.service.technology_stack.TechnologyStackService;
 import com.example.demo.service.trust_score.TrustScoreService;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,7 @@ public class UserFacade {
     private final PositionService positionService;
     private final TechnologyStackService technologyStackService;
     private final TrustScoreService trustScoreService;
+    private final UserTechnologyStackService userTechnologyStackService;
 
     // 회원가입
     @Transactional
@@ -53,20 +56,6 @@ public class UserFacade {
                         .role(Role.USER)
                         .build();
 
-        // 회원 기술스택 목록
-        List<UserTechnologyStack> techStacks = new ArrayList<>();
-        for (Long techStackId : createRequest.getTechStackIds()) {
-            TechnologyStack technologyStack = technologyStackService.findById(techStackId);
-            UserTechnologyStack userTechnologyStack =
-                    UserTechnologyStack.builder()
-                            .user(user)
-                            .technologyStack(technologyStack)
-                            .build();
-
-            techStacks.add(userTechnologyStack);
-        }
-        user.setTechStacks(techStacks);
-
         // 회원 저장
         User saveUser = userService.save(user);
 
@@ -81,6 +70,33 @@ public class UserFacade {
         // 회원에 신뢰점수 세팅
         saveUser.setTrustScore(trustScoreService.findTrustScoreByUserId(user.getId()));
 
+        // 요청한 기술스택 목록 조회
+        List<TechnologyStack> techStackList = technologyStackService.findTechnologyStackListByIds(createRequest.getTechStackIds());
+
+        // 회원 기술스택 목록 저장
+        List<UserTechnologyStack> userTechStackList = createAndSaveUserTechnologyStacks(saveUser, techStackList);
+
+        // 회원 기술스택 목록 세팅
+        saveUser.setTechStacks(userTechStackList);
+
         return ResponseDto.success("회원등록이 완료되었습니다.", saveUser.getId());
+    }
+
+    // UserTechnologyStack 생성 및 저장
+    private List<UserTechnologyStack> createAndSaveUserTechnologyStacks(User user, List<TechnologyStack> techStackList) {
+        List<UserTechnologyStack> userTechnologyStackList = new ArrayList<>();
+
+        // 회원 엔티티와 기술스택 목록으로 UserTechnologyStack 엔티티 생성
+        for(TechnologyStack technologyStack : techStackList) {
+            UserTechnologyStack userTechnologyStack = UserTechnologyStack.builder()
+                    .user(user)
+                    .technologyStack(technologyStack)
+                    .build();
+
+            userTechnologyStackList.add(userTechnologyStack);
+        }
+
+        // UserTechnologyStack 저장하고 리스트로 반환
+        return userTechnologyStackService.saveAll(userTechnologyStackList);
     }
 }

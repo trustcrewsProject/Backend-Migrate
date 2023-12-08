@@ -1,5 +1,6 @@
 package com.example.demo.service.trust_score;
 
+import com.example.demo.dto.trust_score_type.TrustScoreTypeSearchCriteria;
 import com.example.demo.dto.trust_score_type.response.TrustScoreTypeReadResponseDto;
 import com.example.demo.model.trust_score.TrustScoreType;
 import com.example.demo.repository.trust_score.TrustScoreHistoryRepository;
@@ -18,5 +19,11 @@ public class TrustScoreTypeServiceImpl implements TrustScoreTypeService {
         List<TrustScoreType> findAllTrustScoreType = trustScoreTypeRepository.findAll();
         return findAllTrustScoreType.stream().map(TrustScoreTypeReadResponseDto::of)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TrustScoreTypeReadResponseDto> getSearchResults(
+            TrustScoreTypeSearchCriteria criteria) {
+        return trustScoreTypeRepository.findSearchResults(criteria);
     }
 }

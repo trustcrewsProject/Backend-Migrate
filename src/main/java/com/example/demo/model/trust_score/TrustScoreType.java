@@ -6,6 +6,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "trust_score_type")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -15,16 +18,33 @@ public class TrustScoreType extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "trust_score_type_id")
     private Long id;
-    /** 신뢰점수타입부 자동생성 식별자 */
-    @Column private Long upTrustScoreTypeId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "up_trust_score_type_id")
+    private TrustScoreType upTrustScoreType; // Reference to the same entity
+
+    @OneToMany(mappedBy = "upTrustScoreType")
+    private List<TrustScoreType> subTrustScoreTypes = new ArrayList<>();
+
     /** 신뢰점수타입명 */
-    @Column private String trustScoreTypeName;
+    @Column
+    private String trustScoreTypeName;
+
     /** 신뢰등급명 */
-    @Column private String trustGradeName;
+    @Column
+    private String trustGradeName;
+
     /** 유저자동생성식별자 */
-    @Column private int score;
+    @Column
+    private Integer score;
+
     /** 유저자동생성식별자 */
-    @Column private String gubunCode;
+    @Column
+    private String gubunCode;
+
     /** 삭제여부 */
-    @Column private String deleteStatus;
+    @Column
+    private String deleteStatus;
+
+
 }

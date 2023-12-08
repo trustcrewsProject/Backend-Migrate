@@ -55,7 +55,7 @@ public class TrustScoreTypeRepositoryImpl implements TrustScoreTypeRepositoryCus
                 .join(trustScoreType)
                 .on(
                         trustScoreType
-                                .upTrustScoreTypeId
+                                .upTrustScoreType.id
                                 .eq(trustScoreTypeId)
                                 .and(trustScoreType.trustGradeName.eq(trustGrade.name)))
                 .where(project.id.eq(projectId))
@@ -68,7 +68,7 @@ public class TrustScoreTypeRepositoryImpl implements TrustScoreTypeRepositoryCus
         return jpaQueryFactory
                 .select(trustScoreType.id)
                 .from(trustScoreType)
-                .where(trustScoreType.upTrustScoreTypeId.isNull())
+                .where(trustScoreType.upTrustScoreType.isNull())
                 .fetch();
     }
 }

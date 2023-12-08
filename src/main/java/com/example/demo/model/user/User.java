@@ -43,9 +43,9 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trust_score_id")
-    TrustScore trustScore;
+    private TrustScore trustScore;
 
     @Builder
     private User(

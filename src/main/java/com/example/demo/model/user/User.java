@@ -37,9 +37,7 @@ public class User extends BaseTimeEntity {
 
     @OneToMany(
             mappedBy = "user",
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.PERSIST,
-            orphanRemoval = true)
+            fetch = FetchType.LAZY)
     private List<UserTechnologyStack> techStacks = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)

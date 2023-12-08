@@ -4,7 +4,7 @@ import com.example.demo.model.user.User;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long>, UserRepositoryCustom {
 
     // 이메일 확인
     boolean existsByEmail(String email);

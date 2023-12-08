@@ -18,4 +18,9 @@ public class UserTechnologyStackServiceImpl implements UserTechnologyStackServic
     public List<UserTechnologyStack> saveAll(List<UserTechnologyStack> technologyStackList) {
         return userTechnologyStackRepository.saveAll(technologyStackList);
     }
+
+    @Override
+    public void deleteUserTechnologyStackList(List<UserTechnologyStack> technologyStackList) {
+        userTechnologyStackRepository.deleteAll(technologyStackList);
+    }
 }

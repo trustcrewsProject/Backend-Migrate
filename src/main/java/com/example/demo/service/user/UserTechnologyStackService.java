@@ -8,4 +8,7 @@ public interface UserTechnologyStackService {
 
     // 회원 기술스택 리스트 저장
     List<UserTechnologyStack> saveAll(List<UserTechnologyStack> technologyStackList);
+
+    // 회원 기술스택 목록 삭제
+    void deleteUserTechnologyStackList(List<UserTechnologyStack> technologyStackList);
 }

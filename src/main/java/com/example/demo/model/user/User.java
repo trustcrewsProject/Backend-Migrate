@@ -70,6 +70,23 @@ public class User extends BaseTimeEntity {
         this.techStacks = techStacks;
     }
 
+    // 기술스택 삭제
+    public void removeTechStack(UserTechnologyStack userTechnologyStack) {
+        this.techStacks.remove(userTechnologyStack);
+    }
+
+    // 기술스택 추가
+    public void addTechStack(UserTechnologyStack userTechnologyStack) {
+        this.techStacks.add(userTechnologyStack);
+    }
+
     // 신뢰점수 등록
     public void setTrustScore(TrustScore trustScore) {this.trustScore = trustScore;}
+
+    // 회원 수정
+    public void update(String nickname, Position position, String intro) {
+        this.nickname = nickname;
+        this.position = position;
+        this.intro = intro;
+    }
 }

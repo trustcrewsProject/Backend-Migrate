@@ -1,6 +1,6 @@
 package com.example.demo.trust_score.repository;
 
-import com.example.demo.constant.TrustScoreTypeIdentifier;
+
 import com.example.demo.dto.trust_score_type.TrustScoreTypeSearchCriteria;
 import com.example.demo.dto.trust_score_type.response.TrustScoreTypeReadResponseDto;
 import com.example.demo.global.exception.customexception.TrustGradeCustomException;
@@ -11,7 +11,6 @@ import com.example.demo.model.trust_score.TrustScoreType;
 import com.example.demo.repository.project.ProjectRepository;
 import com.example.demo.repository.trust_grade.TrustGradeRepository;
 import com.example.demo.repository.trust_score.TrustScoreTypeRepository;
-import com.example.demo.service.trust_score.TrustScoreTypeServiceImpl;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -56,7 +55,7 @@ public class TrustScoreTypeRepositoryTest {
             "원인 : 존재하지 않는 신뢰점수타입 식별자")
     public void getScore_MethodTest_Fail() {
         // given
-        Long scoreTypeId = 30L;
+        Long scoreTypeId = 1000000L;
 
         // when - then
         Assertions.assertThatThrownBy(
@@ -86,7 +85,6 @@ public class TrustScoreTypeRepositoryTest {
         Assertions.assertThat(scoreByProject).isEqualTo(20);
     }
 
-    // TODO : 테스트 필요 여부 재검증
     @Test
     @DisplayName("getScoreByProject 메서드 테스트 - 실패 " +
             "원인 : 해당 프로젝트 존재하지 않음")
@@ -131,12 +129,10 @@ public class TrustScoreTypeRepositoryTest {
     @DisplayName("신뢰점수타입 참조 작동 여부 확인")
     public void UpTrustScoreType_Contains_Children_MappedBy_Test() {
         // given
-        // 업무완수 신뢰점수타입 조회
         TrustScoreType parent = trustScoreTypeRepository.findById(WORK_COMPLETE)
                 .orElseThrow(() -> TrustScoreTypeCustomException.NOT_FOUND_TRUST_SCORE_TYPE);
 
         // when
-        //
         List<TrustScoreType> children = parent.getSubTrustScoreTypes();
 
 
@@ -154,11 +150,6 @@ public class TrustScoreTypeRepositoryTest {
         // when
         List<TrustScoreTypeReadResponseDto> searchResults =
                 trustScoreTypeRepository.findSearchResults(criteria);
-
-        for (TrustScoreTypeReadResponseDto searchResult : searchResults) {
-            System.out.println(searchResult.getTrustScoreTypeName());
-
-        }
 
         // then
         Assertions.assertThat(searchResults.size()).isEqualTo(26);
@@ -232,7 +223,6 @@ public class TrustScoreTypeRepositoryTest {
         Assertions.assertThat(searchResults.size()).isEqualTo(10);
 
     }
-    // TODO : 실패 expected 2, returned 0
     @Test
     @DisplayName("1등급, 2등급 및 신규회원, 강제탈퇴 신뢰점수타입 조회")
     public void getSearchResults_FirstAndSecondGrade_NewMemberAndForceWithdrawal_Test_Pass() {

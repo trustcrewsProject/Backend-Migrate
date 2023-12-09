@@ -17,4 +17,7 @@ public interface UserService {
     User findById(Long userId);
 
     User save(User user);
+
+    // 회원 수정 시 회원 정보 조회
+    User getUserForUpdate(Long userId);
 }

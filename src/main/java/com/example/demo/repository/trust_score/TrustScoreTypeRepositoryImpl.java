@@ -5,17 +5,14 @@ import com.example.demo.dto.trust_score_type.response.TrustScoreTypeReadResponse
 import com.example.demo.model.project.QProject;
 import com.example.demo.model.trust_grade.QTrustGrade;
 import com.example.demo.model.trust_score.QTrustScoreType;
-import com.example.demo.model.trust_score.TrustScoreType;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.NullExpression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -82,42 +79,33 @@ public class TrustScoreTypeRepositoryImpl implements TrustScoreTypeRepositoryCus
                 .where(trustScoreType.upTrustScoreType.isNull())
                 .fetch();
     }
-    // TODO : Projections를 활용하면 left join 돼서 upTrustScoreTypeId가 null인 행들을 생략한다. 이에 대한 해법
     @Override
     public List<TrustScoreTypeReadResponseDto> findSearchResults(
             TrustScoreTypeSearchCriteria criteria) {
         QTrustScoreType trustScoreType = QTrustScoreType.trustScoreType;
-        return jpaQueryFactory.selectFrom(trustScoreType)
+        QTrustScoreType subTrustScoreType = new QTrustScoreType("subTrustScoreType");
+        return jpaQueryFactory.select(Projections.constructor(TrustScoreTypeReadResponseDto.class,
+                                trustScoreType.id,
+                                getUpTrustScoreTypeName(trustScoreType),
+                                trustScoreType.trustScoreTypeName,
+                                getTrustGradeName(trustScoreType),
+                                getScore(trustScoreType),
+                                trustScoreType.gubunCode,
+                                trustScoreType.deleteStatus,
+                                trustScoreType.createDate,
+                                trustScoreType.updateDate))
+                       .from(trustScoreType)
+                       .leftJoin(trustScoreType.upTrustScoreType, subTrustScoreType)
+                       .on(trustScoreType.upTrustScoreType.id.eq(subTrustScoreType.id))
                        .where(isDeleted(criteria.getIsDeleted())
                                , isParentType(criteria.getIsParentType())
                                , gubunCodeEq(criteria.getGubunCode())
                                , trustGradeContain(criteria.getTrustGrade())
                                , parentTypeIdContain(criteria.getParentTypeId()))
-                       .fetch()
-                       .stream()
-                       .map(TrustScoreTypeReadResponseDto::of)
-                       .collect(Collectors.toList());
-        /*
-        isDeleted(criteria.getIsDeleted())
-                       , isParentType(criteria.getIsParentType())
-                       , gubunCodeEq(criteria.getGubunCode())
-                       , trustGradeContain(criteria.getTrustGrade())
-                       , parentTypeIdContain(criteria.getParentTypeId())
-         */
-        /*
-        Projections.constructor(TrustScoreTypeReadResponseDto.class,
-                        trustScoreType.id,
-                        getUpTrustScoreTypeName(trustScoreType),
-                        trustScoreType.trustScoreTypeName,
-                        getTrustGradeName(trustScoreType),
-                        getScore(trustScoreType),
-                        trustScoreType.gubunCode,
-                        trustScoreType.deleteStatus,
-                        trustScoreType.createDate,
-                        trustScoreType.updateDate)
-         */
+                       .fetch();
+
     }
-    /*
+    // TODO : 삼항연산자로 refactor
     private static Expression<String> getUpTrustScoreTypeName(QTrustScoreType trustScoreType) {
         if (trustScoreType.upTrustScoreType == null) {
             return new NullExpression<>(String.class);
@@ -139,7 +127,6 @@ public class TrustScoreTypeRepositoryImpl implements TrustScoreTypeRepositoryCus
         return trustScoreType.score;
     }
 
-     */
 
     private BooleanExpression isDeleted(Boolean isDeleted) {
         if (isDeleted == null) {

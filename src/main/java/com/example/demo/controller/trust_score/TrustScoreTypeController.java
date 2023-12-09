@@ -40,7 +40,6 @@ public class TrustScoreTypeController {
                         .parentTypeId(parentTypeId)
                         .gubunCode(gubunCode)
                         .build();
-
         List<TrustScoreTypeReadResponseDto> searchResults = trustScoreTypeService.getSearchResults(criteria);
         return new ResponseEntity<>(ResponseDto.success("success", searchResults), HttpStatus.OK);
     }

@@ -19,7 +19,9 @@ public class UserTechnologyStackServiceImpl implements UserTechnologyStackServic
 
     @Override
     public List<UserTechnologyStack> saveUserTechStacksAndReturnResponse(User user, List<TechnologyStack> technologyStackList) {
-        return userTechnologyStackRepository.saveAll(technologyStackList);
+        List<UserTechnologyStack> userTechnologyStackList = createUserTechnologyStackList(user, technologyStackList);
+
+        return userTechnologyStackRepository.saveAll(userTechnologyStackList);
     }
 
     // 회원 기술스택 목록 생성

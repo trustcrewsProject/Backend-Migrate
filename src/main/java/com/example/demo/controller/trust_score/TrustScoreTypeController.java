@@ -2,15 +2,16 @@ package com.example.demo.controller.trust_score;
 
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.dto.trust_score_type.TrustScoreTypeSearchCriteria;
+import com.example.demo.dto.trust_score_type.request.TrustScoreTypeCreateRequestDto;
+import com.example.demo.dto.trust_score_type.response.TrustScoreTypeCreateResponseDto;
 import com.example.demo.dto.trust_score_type.response.TrustScoreTypeReadResponseDto;
 import com.example.demo.service.trust_score.TrustScoreTypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -42,5 +43,12 @@ public class TrustScoreTypeController {
 
         List<TrustScoreTypeReadResponseDto> searchResults = trustScoreTypeService.getSearchResults(criteria);
         return new ResponseEntity<>(ResponseDto.success("success", searchResults), HttpStatus.OK);
+    }
+
+    @PostMapping("/api/trust-score-type")
+    public ResponseEntity<ResponseDto<?>> createTrustScoreType(
+            @RequestBody @Valid TrustScoreTypeCreateRequestDto requestDto) {
+        TrustScoreTypeCreateResponseDto responseDto = trustScoreTypeService.createTrustScoreType(requestDto);
+        return new ResponseEntity<>(ResponseDto.success("success", responseDto), HttpStatus.OK);
     }
 }

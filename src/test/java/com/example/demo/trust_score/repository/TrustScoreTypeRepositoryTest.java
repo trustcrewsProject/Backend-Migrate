@@ -1,6 +1,5 @@
 package com.example.demo.trust_score.repository;
 
-import com.example.demo.constant.TrustScoreTypeIdentifier;
 import com.example.demo.dto.trust_score_type.TrustScoreTypeSearchCriteria;
 import com.example.demo.dto.trust_score_type.response.TrustScoreTypeReadResponseDto;
 import com.example.demo.global.exception.customexception.TrustGradeCustomException;
@@ -11,7 +10,6 @@ import com.example.demo.model.trust_score.TrustScoreType;
 import com.example.demo.repository.project.ProjectRepository;
 import com.example.demo.repository.trust_grade.TrustGradeRepository;
 import com.example.demo.repository.trust_score.TrustScoreTypeRepository;
-import com.example.demo.service.trust_score.TrustScoreTypeServiceImpl;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

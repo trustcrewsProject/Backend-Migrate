@@ -14,12 +14,14 @@ public class PrincipalDetails implements UserDetails {
     private Long id;
     private String email;
     private String password;
+    private String nickname;
     private String role;
 
     public PrincipalDetails(User user) {
         this.id = user.getId();
         this.email = user.getEmail();
         this.password = user.getPassword();
+        this.nickname = user.getNickname();
         this.role = user.getRole().name();
     }
 

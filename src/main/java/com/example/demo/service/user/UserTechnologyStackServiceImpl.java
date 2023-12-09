@@ -17,9 +17,8 @@ public class UserTechnologyStackServiceImpl implements UserTechnologyStackServic
 
     private final UserTechnologyStackRepository userTechnologyStackRepository;
 
-
     @Override
-    public List<UserTechnologyStack> saveAll(List<UserTechnologyStack> technologyStackList) {
+    public List<UserTechnologyStack> saveUserTechStacksAndReturnResponse(User user, List<TechnologyStack> technologyStackList) {
         return userTechnologyStackRepository.saveAll(technologyStackList);
     }
 
@@ -39,7 +38,7 @@ public class UserTechnologyStackServiceImpl implements UserTechnologyStackServic
     }
 
     @Override
-    public void deleteUserTechnologyStackList(List<UserTechnologyStack> technologyStackList) {
+    public void deleteUserTechStacks(List<UserTechnologyStack> technologyStackList) {
         userTechnologyStackRepository.deleteAll(technologyStackList);
     }
 }

@@ -23,7 +23,6 @@ public class TrustScoreController {
              @RequestBody @Valid TrustScoreUpdateRequestDto requestDto) {
         AddPointDto addPointDto = new AddPointDto(requestDto);
         TrustScoreUpdateResponseDto responseDto = trustScoreService.addPoint(addPointDto);
-
         return new ResponseEntity<>(ResponseDto.success("success", responseDto), HttpStatus.OK);
     }
 }

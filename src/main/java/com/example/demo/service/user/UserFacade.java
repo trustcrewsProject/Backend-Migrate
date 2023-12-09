@@ -149,31 +149,6 @@ public class UserFacade {
         return ResponseDto.success("회원수정이 완료되었습니다.", updateResponse);
     }
 
-    // 회원 기술스택 목록 저장 및 반환
-    private List<UserTechnologyStack> saveTechStacksAndReturnResponse(User user, List<Long> techStackIds) {
-        // 요청한 기술스택 목록 조회
-        List<TechnologyStack> techStackList = technologyStackService.findTechnologyStackListByIds(techStackIds);
-        List<UserTechnologyStack> userTechStackList = createUserTechnologyStackList(user, techStackList);
-
-        // 회원 기술스택 목록 저장
-        return userTechnologyStackService.saveAll(userTechStackList);
-    }
-
-    // 회원 기술스택 목록 생성
-    private List<UserTechnologyStack> createUserTechnologyStackList(User user, List<TechnologyStack> techStackList) {
-        return techStackList.stream()
-                .map(tech -> createUserTechnologyStack(user, tech))
-                .collect(Collectors.toList());
-    }
-
-    // 회원 기술스택 엔티티 생성
-    private UserTechnologyStack createUserTechnologyStack(User user, TechnologyStack technologyStack) {
-        return UserTechnologyStack.builder()
-                .user(user)
-                .technologyStack(technologyStack)
-                .build();
-    }
-
     // 기존 포지션과 요청한 포지션 비교
     private boolean isPositionDiff(Long currentPositionId, Long requestUpdatePositionId) {
         return currentPositionId.equals(requestUpdatePositionId);

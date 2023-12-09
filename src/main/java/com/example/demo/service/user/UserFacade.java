@@ -23,6 +23,7 @@ import com.example.demo.service.technology_stack.TechnologyStackService;
 import com.example.demo.service.trust_score.TrustScoreService;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
@@ -76,7 +77,7 @@ public class UserFacade {
         saveUser.setTrustScore(trustScore);
 
         // 회원 기술스택 목록 저장
-        List<UserTechnologyStack> userTechnologyStackList = saveTechStacksAndReturnResponse(saveUser, createRequest.getTechStackIds());
+        List<UserTechnologyStack> userTechnologyStackList = userTechnologyStackService.saveUserTechStacksAndReturnResponse(saveUser, technologyStackService.findTechnologyStackListByIds(createRequest.getTechStackIds()));
 
         // 회원 기술스택 목록 세팅
         saveUser.setTechStacks(userTechnologyStackList);
@@ -119,16 +120,16 @@ public class UserFacade {
         List<UserTechnologyStack> deleteList = hasTechStackToRemove(currentUser.getTechStacks(), updateRequest.getTechStackIds());
         if(!deleteList.isEmpty()) {
             // 저장된 UserTechnologyStack 삭제
-            userTechnologyStackService.deleteUserTechnologyStackList(deleteList);
+            userTechnologyStackService.deleteUserTechStacks(deleteList);
             // 회원 기술스택 목록에서 삭제
             deleteList.forEach(currentUser::removeTechStack);
         }
 
         // 추가할 기술스택 확인
-        List<Long> addTechStackIds = hasTechStackToAdd(currentUser.getTechStacks(), updateRequest.getTechStackIds());
-        if(!addTechStackIds.isEmpty()) {
+        List<TechnologyStack> addTechStacks = hasTechStackToAdd(currentUser.getTechStacks(), updateRequest.getTechStackIds());
+        if(Objects.nonNull(addTechStacks)) {
             // 새로운 UserTechnologyStack 저장
-            List<UserTechnologyStack> addList = saveTechStacksAndReturnResponse(currentUser, addTechStackIds);
+            List<UserTechnologyStack> addList = userTechnologyStackService.saveUserTechStacksAndReturnResponse(currentUser, addTechStacks);
             // 회원 기술스택 목록에 추가
             addList.forEach(currentUser::addTechStack);
         }
@@ -154,7 +155,7 @@ public class UserFacade {
         return currentPositionId.equals(requestUpdatePositionId);
     }
 
-    // 기존 기술스택 목록 중 삭제해야 될 기술스택이 있는지 조회
+    // 기존 기술스택 목록 중 삭제해야 될 기술스택 조회
     private List<UserTechnologyStack> hasTechStackToRemove(List<UserTechnologyStack> currentTechStackList, List<Long> requestUpdateTechStackList) {
         List<UserTechnologyStack> deleteList = new ArrayList<>();
         for(UserTechnologyStack userTechnologyStack : currentTechStackList) {
@@ -168,14 +169,18 @@ public class UserFacade {
         return deleteList;
     }
 
-    // 요청한 기술스택 목록 중 추가해야 될 기술스택이 있는지 조회
-    private List<Long> hasTechStackToAdd(List<UserTechnologyStack> currentTechStackList, List<Long> requestUpdateTechStackList) {
+    // 요청한 기술스택 목록 중 추가해야 될 기술스택 조회
+    private List<TechnologyStack> hasTechStackToAdd(List<UserTechnologyStack> currentTechStackList, List<Long> requestUpdateTechStackList) {
         List<Long> currentList = currentTechStackList.stream()
                 .map(userTechnologyStack -> userTechnologyStack.getTechnologyStack().getId())
                 .collect(Collectors.toList());
 
         requestUpdateTechStackList.removeAll(currentList);
 
-        return requestUpdateTechStackList;
+        if(!requestUpdateTechStackList.isEmpty()) {
+            return technologyStackService.findTechnologyStackListByIds(requestUpdateTechStackList);
+        }
+
+        return null;
     }
 }

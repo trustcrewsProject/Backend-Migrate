@@ -8,7 +8,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @RequiredArgsConstructor
@@ -43,8 +42,7 @@ public class TrustScoreRepositoryImpl implements TrustScoreRepositoryCustom {
     /**
      * 0100AM 전체 유저 신뢰등급 업데이트 스케줄
      */
-    @Transactional
-    // TODO : @Transactional 처리하기
+
     @Scheduled(cron = "0 1 * * *", zone = "Asia/Seoul")
     @Override
     public void updateTrustGradeBatch() {
@@ -63,8 +61,7 @@ public class TrustScoreRepositoryImpl implements TrustScoreRepositoryCustom {
      * @param userId
      */
 
-    @Transactional
-    // TODO : Refactoring
+    // TODO : 중복 코드 리팩토링
     public void updateUserTrustGrade(Long userId) {
         QTrustScore trustScore = QTrustScore.trustScore;
         QTrustGrade trustGrade = QTrustGrade.trustGrade;

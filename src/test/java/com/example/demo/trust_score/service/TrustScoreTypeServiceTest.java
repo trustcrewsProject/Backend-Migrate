@@ -50,9 +50,7 @@ public class TrustScoreTypeServiceTest {
                             .deleteStatus("N")
                             .build();
 
-
         // when
-
         TrustScoreType saveTrustScoreType = trustScoreTypeRepository.save(trustScoreType);
         TrustScoreTypeReadResponseDto responseDto = trustScoreTypeService.findByIdAndReturnDto(saveTrustScoreType.getId());
 
@@ -61,7 +59,7 @@ public class TrustScoreTypeServiceTest {
         Assertions.assertThat(responseDto.getTrustScoreTypeName()).isEqualTo("테스트 신뢰정보타입");
     }
     
-  @Test
+    @Test
     @DisplayName("상위신뢰점수타입 생성")
     public void createTrustScoreType_UpScoreType_Method_Test_Pass() {
         // given

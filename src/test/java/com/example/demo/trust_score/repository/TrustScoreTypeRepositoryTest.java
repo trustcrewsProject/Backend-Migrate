@@ -265,4 +265,59 @@ public class TrustScoreTypeRepositoryTest {
         // then
         Assertions.assertThat(searchResults.size()).isEqualTo(6);
     }
+
+    @Test
+    @DisplayName("신뢰등급명 검색 키워드를 통한 조회")
+    public void getSearchResults_Keyword_WorkComplete() {
+        // given
+        TrustScoreTypeSearchCriteria criteria = new TrustScoreTypeSearchCriteria();
+        String keyword = "업무 완수";
+        criteria.setKeyword(keyword);
+
+        // when
+        List<TrustScoreTypeReadResponseDto> searchResults = trustScoreTypeRepository.findSearchResults(criteria);
+
+        // then
+        Assertions.assertThat(searchResults.size()).isEqualTo(5);
+    }
+
+    @Test
+    @DisplayName("신뢰등급명과 신뢰등급을 통한 조회")
+    public void getSearchResults_KeywordAndTrustGrade_WorkComplete() {
+        // given
+        TrustScoreTypeSearchCriteria criteria = new TrustScoreTypeSearchCriteria();
+
+        String keyword = "업무 완수";
+        String trustGrade1 = "1등급";
+        String trustGrade2 = "2등급";
+
+        List<String> trustGradeList = new ArrayList<>();
+        trustGradeList.add(trustGrade1);
+        trustGradeList.add(trustGrade2);
+
+        criteria.setKeyword(keyword);
+        criteria.setTrustGrade(trustGradeList);
+
+        // when
+        List<TrustScoreTypeReadResponseDto> searchResults = trustScoreTypeRepository.findSearchResults(criteria);
+
+        // then
+        Assertions.assertThat(searchResults.size()).isEqualTo(2);
+    }
+
+    @Test
+    @DisplayName("검색 키워드 공백 조회")
+    public void getSearchResults_KeywordWhiteSpace() {
+        // given
+        TrustScoreTypeSearchCriteria criteria = new TrustScoreTypeSearchCriteria();
+
+        String emptyKeyword = "  ";
+        criteria.setKeyword(emptyKeyword);
+
+        // when
+        List<TrustScoreTypeReadResponseDto> searchResults = trustScoreTypeRepository.findSearchResults(criteria);
+
+        // then
+        Assertions.assertThat(searchResults.size()).isEqualTo(26);
+    }
 }

@@ -16,6 +16,8 @@ import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
+
 import static com.example.demo.model.trust_score.QTrustScoreType.*;
 
 @Repository
@@ -101,7 +103,8 @@ public class TrustScoreTypeRepositoryImpl implements TrustScoreTypeRepositoryCus
                                , isParentType(criteria.getIsParentType())
                                , gubunCodeEq(criteria.getGubunCode())
                                , trustGradeContain(criteria.getTrustGrade())
-                               , parentTypeIdContain(criteria.getParentTypeId()))
+                               , parentTypeIdContain(criteria.getParentTypeId())
+                               , keywordLike(criteria.getKeyword()))
                        .fetch();
 
     }
@@ -171,5 +174,12 @@ public class TrustScoreTypeRepositoryImpl implements TrustScoreTypeRepositoryCus
         BooleanExpression whenUpScoreTypeIsNotNull = trustScoreType.upTrustScoreType.isNotNull()
                 .and(trustScoreType.upTrustScoreType.id.in(parentTypeId));
         return whenUpScoreTypeIsNull.or(whenUpScoreTypeIsNotNull);
+    }
+
+    private BooleanExpression keywordLike(String keyword) {
+        if (!StringUtils.hasText(keyword)) {
+            return null;
+        }
+        return trustScoreType.trustScoreTypeName.contains(keyword);
     }
 }

@@ -33,7 +33,8 @@ public class TrustScoreTypeController {
             @RequestParam(name = "isParentType", required = false) Boolean isParentType,
             @RequestParam(name = "trustGrade", required = false) List<String> trustGrade,
             @RequestParam(name = "parentTypeId", required = false) List<Long> parentTypeId,
-            @RequestParam(name = "gubunCode", required = false) String gubunCode
+            @RequestParam(name = "gubunCode", required = false) String gubunCode,
+            @RequestParam(name = "keyword", required = false) String keyword
     ) {
         TrustScoreTypeSearchCriteria criteria =
                 TrustScoreTypeSearchCriteria.builder()
@@ -42,12 +43,13 @@ public class TrustScoreTypeController {
                         .trustGrade(trustGrade)
                         .parentTypeId(parentTypeId)
                         .gubunCode(gubunCode)
+                        .keyword(keyword)
                         .build();
         List<TrustScoreTypeReadResponseDto> searchResults = trustScoreTypeService.getSearchResults(criteria);
         return new ResponseEntity<>(ResponseDto.success("success", searchResults), HttpStatus.OK);
     }
 
-    /** 클릭했을 때 팝업으로 정보가 나옴 */
+    /** 더블 클릭했을 때 팝업으로 정보가 나옴 */
     @GetMapping("/api/trust-score-type/{trustScoreTypeId}")
     public ResponseEntity<ResponseDto<?>> getSearchResults(
             @PathVariable(name = "trustScoreTypeId") Long trustScoreTypeId) {

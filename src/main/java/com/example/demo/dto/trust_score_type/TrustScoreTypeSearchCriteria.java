@@ -17,4 +17,5 @@ public class TrustScoreTypeSearchCriteria {
     private List<String> trustGrade;
     private List<Long> parentTypeId;
     private String gubunCode;
+    private String keyword;
 }

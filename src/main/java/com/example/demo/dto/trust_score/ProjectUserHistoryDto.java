@@ -1,9 +1,7 @@
 package com.example.demo.dto.trust_score;
 
-import com.querydsl.core.annotations.QueryProjection;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,7 +14,6 @@ public class ProjectUserHistoryDto {
     Integer trustScore;
     LocalDateTime createDate;
 
-    @QueryProjection
     public ProjectUserHistoryDto(
             Long workId, Integer score, Boolean completeStatus, String content, LocalDateTime createDate) {
         this.id = workId;

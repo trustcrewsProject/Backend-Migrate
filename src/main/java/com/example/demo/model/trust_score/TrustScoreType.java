@@ -2,9 +2,7 @@ package com.example.demo.model.trust_score;
 
 import com.example.demo.global.common.BaseTimeEntity;
 import javax.persistence.*;
-
 import lombok.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,8 +10,9 @@ import java.util.List;
 @Table(name = "trust_score_type")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@AllArgsConstructor
 @Builder
+@AllArgsConstructor
+
 public class TrustScoreType extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

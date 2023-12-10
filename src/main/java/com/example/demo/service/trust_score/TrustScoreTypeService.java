@@ -11,5 +11,6 @@ public interface TrustScoreTypeService {
     List<TrustScoreTypeReadResponseDto> getAllAndReturnDto();
     List<TrustScoreTypeReadResponseDto> getSearchResults(
             TrustScoreTypeSearchCriteria criteria);
+    TrustScoreTypeReadResponseDto findByIdAndReturnDto(Long trustScoreTypeId);
     TrustScoreTypeCreateResponseDto createTrustScoreType(TrustScoreTypeCreateRequestDto requestDto);
 }

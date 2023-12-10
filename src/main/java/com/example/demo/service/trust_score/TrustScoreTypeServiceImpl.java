@@ -16,7 +16,10 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class TrustScoreTypeServiceImpl implements TrustScoreTypeService {
+    
     private final TrustScoreTypeRepository trustScoreTypeRepository;
+    
+    @Override
     public List<TrustScoreTypeReadResponseDto> getAllAndReturnDto() {
         List<TrustScoreType> findAllTrustScoreType = trustScoreTypeRepository.findAll();
         return findAllTrustScoreType.stream().map(TrustScoreTypeReadResponseDto::of)
@@ -27,6 +30,13 @@ public class TrustScoreTypeServiceImpl implements TrustScoreTypeService {
     public List<TrustScoreTypeReadResponseDto> getSearchResults(
             TrustScoreTypeSearchCriteria criteria) {
         return trustScoreTypeRepository.findSearchResults(criteria);
+    }
+
+    @Override
+    public TrustScoreTypeReadResponseDto findByIdAndReturnDto(Long trustScoreTypeId) {
+        TrustScoreType findTrustScoreType = trustScoreTypeRepository.findById(trustScoreTypeId)
+                .orElseThrow(() -> TrustScoreTypeCustomException.NOT_FOUND_TRUST_SCORE_TYPE);
+        return TrustScoreTypeReadResponseDto.of(findTrustScoreType);
     }
 
     @Override
@@ -62,4 +72,5 @@ public class TrustScoreTypeServiceImpl implements TrustScoreTypeService {
         return trustScoreTypeRepository.findById(requestDto.getUpTrustScoreTypeId())
                 .orElseThrow(() -> TrustScoreTypeCustomException.NOT_FOUND_TRUST_SCORE_TYPE);
     }
+
 }

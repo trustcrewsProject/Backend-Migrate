@@ -2,12 +2,16 @@ package com.example.demo.controller.user;
 
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.dto.user.request.UserCreateRequestDto;
+import com.example.demo.dto.user.request.UserUpdateRequestDto;
+import com.example.demo.dto.user.response.UserUpdateResponseDto;
+import com.example.demo.security.custom.PrincipalDetails;
 import com.example.demo.service.user.UserFacade;
 import com.example.demo.service.user.UserService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -34,5 +38,11 @@ public class UserController {
     public ResponseEntity<ResponseDto<?>> signup(
             @Valid @RequestBody UserCreateRequestDto createRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userFacade.createUser(createRequest));
+    }
+
+    // 회원수정
+    @PutMapping("/api/user")
+    public ResponseEntity<ResponseDto<?>> update(@AuthenticationPrincipal PrincipalDetails user, @Valid @RequestBody UserUpdateRequestDto updateRequest) {
+        return ResponseEntity.status(HttpStatus.OK).body(userFacade.updateUser(user, updateRequest));
     }
 }

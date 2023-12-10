@@ -1,5 +1,8 @@
 package com.example.demo.trust_score.service;
 
+import com.example.demo.constant.TrustScoreTypeIdentifier;
+import com.example.demo.dto.trust_score_type.request.TrustScoreTypeCreateRequestDto;
+import com.example.demo.dto.trust_score_type.response.TrustScoreTypeCreateResponseDto;
 import com.example.demo.dto.trust_score_type.response.TrustScoreTypeReadResponseDto;
 import com.example.demo.model.trust_score.TrustScoreType;
 import com.example.demo.repository.trust_score.TrustScoreTypeRepository;
@@ -9,7 +12,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -57,5 +59,53 @@ public class TrustScoreTypeServiceTest {
         // then
         Assertions.assertThat(responseDto.getTrustScoreTypeId()).isGreaterThan(26);
         Assertions.assertThat(responseDto.getTrustScoreTypeName()).isEqualTo("테스트 신뢰정보타입");
+    }
+    
+  @Test
+    @DisplayName("상위신뢰점수타입 생성")
+    public void createTrustScoreType_UpScoreType_Method_Test_Pass() {
+        // given
+        TrustScoreTypeCreateRequestDto requestDto = new TrustScoreTypeCreateRequestDto();
+        requestDto.setUpTrustScoreTypeId(null);
+        requestDto.setScore(null);
+        requestDto.setDeleteStatus("n");
+        requestDto.setGubunCode("p");
+        requestDto.setTrustGradeName(null);
+        requestDto.setTrustScoreTypeName("테스트 신뢰점수타입");
+
+        // when
+        TrustScoreTypeCreateResponseDto responseDto = trustScoreTypeService.createTrustScoreType(requestDto);
+
+        // then
+        Assertions.assertThat(responseDto.getScore()).isNull();
+        Assertions.assertThat(responseDto.getUpTrustScoreTypeName()).isNull();
+        Assertions.assertThat(responseDto.getCreateDate()).isNotNull();
+        Assertions.assertThat(responseDto.getId()).isGreaterThan(26);
+        Assertions.assertThat(responseDto.getGubunCode()).isEqualTo("P");
+        Assertions.assertThat(responseDto.getDeleteStatus()).isEqualTo("N");
+    }
+
+    @Test
+    @DisplayName("하위신뢰점수타입 생성")
+    public void createTrustScoreType_LowScoreType_Method_Test_Pass() {
+        // given
+        TrustScoreTypeCreateRequestDto requestDto = new TrustScoreTypeCreateRequestDto();
+        requestDto.setUpTrustScoreTypeId(TrustScoreTypeIdentifier.WORK_INCOMPLETE);
+        requestDto.setScore(700);
+        requestDto.setDeleteStatus("n");
+        requestDto.setGubunCode("m");
+        requestDto.setTrustGradeName("테스트 신뢰등급");
+        requestDto.setTrustScoreTypeName("테스트 신뢰등급 업무 미흡");
+
+        // when
+        TrustScoreTypeCreateResponseDto responseDto = trustScoreTypeService.createTrustScoreType(requestDto);
+
+        // then
+        Assertions.assertThat(responseDto.getScore()).isEqualTo(700);
+        Assertions.assertThat(responseDto.getUpTrustScoreTypeName()).isEqualTo("업무 미흡");
+        Assertions.assertThat(responseDto.getCreateDate()).isNotNull();
+        Assertions.assertThat(responseDto.getId()).isGreaterThan(26);
+        Assertions.assertThat(responseDto.getGubunCode()).isEqualTo("M");
+        Assertions.assertThat(responseDto.getDeleteStatus()).isEqualTo("N");
     }
 }

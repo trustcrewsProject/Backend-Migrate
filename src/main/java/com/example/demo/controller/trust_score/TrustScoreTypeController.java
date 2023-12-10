@@ -52,6 +52,8 @@ public class TrustScoreTypeController {
     public ResponseEntity<ResponseDto<?>> getSearchResults(
             @PathVariable(name = "trustScoreTypeId") Long trustScoreTypeId) {
         TrustScoreTypeReadResponseDto responseDto = trustScoreTypeService.findByIdAndReturnDto(trustScoreTypeId);
+        return new ResponseEntity<>(ResponseDto.success("success", responseDto), HttpStatus.OK);
+    }
 
 
     @PostMapping("/api/trust-score-type")

@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,5 +42,12 @@ public class TrustScoreTypeController {
                         .build();
         List<TrustScoreTypeReadResponseDto> searchResults = trustScoreTypeService.getSearchResults(criteria);
         return new ResponseEntity<>(ResponseDto.success("success", searchResults), HttpStatus.OK);
+    }
+    /** 클릭했을 때 팝업으로 정보가 나옴 */
+    @GetMapping("/api/trust-score-type/{trustScoreTypeId}")
+    public ResponseEntity<ResponseDto<?>> getSearchResults(
+            @PathVariable(name = "trustScoreTypeId") Long trustScoreTypeId) {
+        TrustScoreTypeReadResponseDto responseDto = trustScoreTypeService.findByIdAndReturnDto(trustScoreTypeId);
+        return new ResponseEntity<>(ResponseDto.success("success", responseDto), HttpStatus.OK);
     }
 }

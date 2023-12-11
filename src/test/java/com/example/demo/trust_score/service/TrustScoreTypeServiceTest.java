@@ -2,8 +2,10 @@ package com.example.demo.trust_score.service;
 
 import com.example.demo.constant.TrustScoreTypeIdentifier;
 import com.example.demo.dto.trust_score_type.request.TrustScoreTypeCreateRequestDto;
+import com.example.demo.dto.trust_score_type.request.TrustScoreTypeUpdateRequestDto;
 import com.example.demo.dto.trust_score_type.response.TrustScoreTypeCreateResponseDto;
 import com.example.demo.dto.trust_score_type.response.TrustScoreTypeReadResponseDto;
+import com.example.demo.global.exception.customexception.TrustScoreTypeCustomException;
 import com.example.demo.model.trust_score.TrustScoreType;
 import com.example.demo.repository.trust_score.TrustScoreTypeRepository;
 import com.example.demo.service.trust_score.TrustScoreTypeService;
@@ -14,6 +16,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import static com.example.demo.constant.TrustScoreTypeIdentifier.WORK_INCOMPLETE;
+
 
 @Transactional
 @SpringBootTest
@@ -89,7 +93,7 @@ public class TrustScoreTypeServiceTest {
     public void createTrustScoreType_LowScoreType_Method_Test_Pass() {
         // given
         TrustScoreTypeCreateRequestDto requestDto = new TrustScoreTypeCreateRequestDto();
-        requestDto.setUpTrustScoreTypeId(TrustScoreTypeIdentifier.WORK_INCOMPLETE);
+        requestDto.setUpTrustScoreTypeId(WORK_INCOMPLETE);
         requestDto.setScore(700);
         requestDto.setDeleteStatus("n");
         requestDto.setGubunCode("m");
@@ -107,5 +111,40 @@ public class TrustScoreTypeServiceTest {
         Assertions.assertThat(responseDto.getId()).isGreaterThan(26);
         Assertions.assertThat(responseDto.getGubunCode()).isEqualTo("M");
         Assertions.assertThat(responseDto.getDeleteStatus()).isEqualTo("N");
+    }
+
+    @Test
+    @DisplayName("신뢰점수타입 수정")
+    public void updateTrustScoreType_Test() {
+        // given
+        TrustScoreTypeCreateRequestDto createRequestDto = new TrustScoreTypeCreateRequestDto();
+        createRequestDto.setUpTrustScoreTypeId(WORK_INCOMPLETE);
+        createRequestDto.setScore(700);
+        createRequestDto.setDeleteStatus("n");
+        createRequestDto.setGubunCode("m");
+        createRequestDto.setTrustGradeName("테스트 신뢰등급");
+        createRequestDto.setTrustScoreTypeName("테스트 신뢰등급 업무 미흡");
+
+        TrustScoreTypeCreateResponseDto createResponseDto =
+                trustScoreTypeService.createTrustScoreType(createRequestDto);
+        Long id = createResponseDto.getId();
+
+
+        // when
+        TrustScoreTypeUpdateRequestDto updateRequestDto = new TrustScoreTypeUpdateRequestDto();
+        updateRequestDto.setDeleteStatus("Y");
+        updateRequestDto.setScore(1000);
+        updateRequestDto.setUpTrustScoreTypeId(WORK_INCOMPLETE);
+        updateRequestDto.setTrustScoreTypeName("테스트 신뢰등급 업무 미흡");
+        updateRequestDto.setTrustGradeName("테스트 신뢰등급");
+        updateRequestDto.setGubunCode("P");
+
+        trustScoreTypeService.updateTrustScoreType(id, updateRequestDto);
+        TrustScoreType trustScoreType = trustScoreTypeRepository.findById(id).
+                orElseThrow(() -> TrustScoreTypeCustomException.NOT_FOUND_TRUST_SCORE_TYPE);
+
+        // then
+        Assertions.assertThat(createResponseDto.getScore()).isNotEqualTo(trustScoreType.getScore());
+        Assertions.assertThat(createResponseDto.getDeleteStatus()).isNotEqualTo(trustScoreType.getDeleteStatus());
     }
 }

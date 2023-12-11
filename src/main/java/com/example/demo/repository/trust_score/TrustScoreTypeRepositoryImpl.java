@@ -71,7 +71,7 @@ public class TrustScoreTypeRepositoryImpl implements TrustScoreTypeRepositoryCus
                 .where(project.id.eq(projectId))
                 .fetchFirst();
     }
-
+    // TODO : 두 메서드 통합
     @Override
     public List<Long> findAllUpScoreTypeId() {
         QTrustScoreType trustScoreType = QTrustScoreType.trustScoreType;
@@ -81,6 +81,8 @@ public class TrustScoreTypeRepositoryImpl implements TrustScoreTypeRepositoryCus
                 .where(trustScoreType.upTrustScoreType.isNull())
                 .fetch();
     }
+
+    // TODO : 정렬 페이징 추가
 
     @Override
     public List<TrustScoreTypeReadResponseDto> findSearchResults(
@@ -111,6 +113,7 @@ public class TrustScoreTypeRepositoryImpl implements TrustScoreTypeRepositoryCus
                         parentTypeIdContain(criteria.getParentTypeId()),
                         keywordLike(criteria.getKeyword()))
                 .fetch();
+
     }
     // TODO : 삼항연산자로 refactor
     private static Expression<String> getUpTrustScoreTypeName(QTrustScoreType trustScoreType) {

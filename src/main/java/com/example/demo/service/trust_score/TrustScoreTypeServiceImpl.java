@@ -2,6 +2,7 @@ package com.example.demo.service.trust_score;
 
 import com.example.demo.dto.trust_score_type.TrustScoreTypeSearchCriteria;
 import com.example.demo.dto.trust_score_type.request.TrustScoreTypeCreateRequestDto;
+import com.example.demo.dto.trust_score_type.request.TrustScoreTypeUpdateRequestDto;
 import com.example.demo.dto.trust_score_type.response.TrustScoreTypeCreateResponseDto;
 import com.example.demo.dto.trust_score_type.response.TrustScoreTypeReadResponseDto;
 import com.example.demo.global.exception.customexception.TrustScoreTypeCustomException;
@@ -69,6 +70,27 @@ public class TrustScoreTypeServiceImpl implements TrustScoreTypeService {
                 .deleteStatus(saveTrustScoreType.getDeleteStatus().toUpperCase())
                 .createDate(saveTrustScoreType.getCreateDate())
                 .build();
+    }
+    @Override
+    public void updateTrustScoreType(Long trustScoreTypeId, TrustScoreTypeUpdateRequestDto requestDto) {
+        TrustScoreType trustScoreType = TrustScoreType.builder()
+                .id(trustScoreTypeId)
+                .upTrustScoreType(getUpTrustScoreType(requestDto))
+                .trustScoreTypeName(requestDto.getTrustScoreTypeName())
+                .trustGradeName(requestDto.getTrustGradeName())
+                .score(requestDto.getScore())
+                .gubunCode(requestDto.getGubunCode())
+                .deleteStatus(requestDto.getDeleteStatus())
+                .build();
+        trustScoreTypeRepository.save(trustScoreType);
+    }
+    // TODO : 코드 중복 리팩토링
+    private TrustScoreType getUpTrustScoreType(TrustScoreTypeUpdateRequestDto requestDto) {
+        if (requestDto.getUpTrustScoreTypeId() == null) {
+            return null;
+        }
+        return trustScoreTypeRepository.findById(requestDto.getUpTrustScoreTypeId())
+                .orElseThrow(() -> TrustScoreTypeCustomException.NOT_FOUND_TRUST_SCORE_TYPE);
     }
 
     private TrustScoreType getUpTrustScoreType(TrustScoreTypeCreateRequestDto requestDto) {

@@ -13,10 +13,8 @@ public class TrustGrade extends BaseTimeEntity {
     @Column(name = "trust_grade_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column
-    private String name;
-    @Column
-    private int minimumScore;
-    @Column
-    private int maximumScore;
+
+    @Column private String name;
+    @Column private int minimumScore;
+    @Column private int maximumScore;
 }

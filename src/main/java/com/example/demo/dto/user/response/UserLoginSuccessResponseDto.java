@@ -11,8 +11,7 @@ public class UserLoginSuccessResponseDto {
     private String email;
     private String nickname;
 
-    public static UserLoginSuccessResponseDto of(
-            Long userId, String email, String nickname) {
+    public static UserLoginSuccessResponseDto of(Long userId, String email, String nickname) {
         return UserLoginSuccessResponseDto.builder()
                 .userId(userId)
                 .email(email)

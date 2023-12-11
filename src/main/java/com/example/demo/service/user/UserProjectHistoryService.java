@@ -4,10 +4,8 @@ import com.example.demo.dto.user.response.UserProjectHistoryInfoResponseDto;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.user.User;
 import com.example.demo.model.user.UserProjectHistory;
-import org.springframework.data.domain.Page;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public interface UserProjectHistoryService {

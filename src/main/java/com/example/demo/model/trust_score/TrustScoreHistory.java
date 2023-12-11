@@ -1,14 +1,11 @@
 package com.example.demo.model.trust_score;
 
-import java.util.Date;
-import javax.persistence.*;
-
 import com.example.demo.global.common.BaseTimeEntity;
+import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
@@ -50,6 +47,7 @@ public class TrustScoreHistory extends BaseTimeEntity {
     @Column private Long workId;
     /** 신뢰점수 증감 */
     @Column private int score;
+
     @Builder
     public TrustScoreHistory(
             Long userId,

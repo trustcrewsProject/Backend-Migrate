@@ -3,7 +3,6 @@ package com.example.demo.controller.user;
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.dto.user.request.UserCreateRequestDto;
 import com.example.demo.dto.user.request.UserUpdateRequestDto;
-import com.example.demo.dto.user.response.UserUpdateResponseDto;
 import com.example.demo.security.custom.PrincipalDetails;
 import com.example.demo.service.user.UserFacade;
 import com.example.demo.service.user.UserService;
@@ -42,7 +41,10 @@ public class UserController {
 
     // 회원수정
     @PutMapping("/api/user")
-    public ResponseEntity<ResponseDto<?>> update(@AuthenticationPrincipal PrincipalDetails user, @Valid @RequestBody UserUpdateRequestDto updateRequest) {
-        return ResponseEntity.status(HttpStatus.OK).body(userFacade.updateUser(user, updateRequest));
+    public ResponseEntity<ResponseDto<?>> update(
+            @AuthenticationPrincipal PrincipalDetails user,
+            @Valid @RequestBody UserUpdateRequestDto updateRequest) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(userFacade.updateUser(user, updateRequest));
     }
 }

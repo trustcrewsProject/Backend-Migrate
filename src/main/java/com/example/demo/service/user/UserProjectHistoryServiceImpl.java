@@ -8,11 +8,8 @@ import com.example.demo.model.user.UserProjectHistory;
 import com.example.demo.repository.user.UserProjectHistoryRepository;
 import java.time.LocalDateTime;
 import java.util.List;
-
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -43,8 +40,10 @@ public class UserProjectHistoryServiceImpl implements UserProjectHistoryService 
     }
 
     @Override
-    public List<UserProjectHistoryInfoResponseDto> getUserProjectHistoryList(Long userId, int pageNumber) {
+    public List<UserProjectHistoryInfoResponseDto> getUserProjectHistoryList(
+            Long userId, int pageNumber) {
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, 5);
-        return userProjectHistoryRepository.findAllByUserIdOrderByUpdateDateDesc(userId, pageRequest);
+        return userProjectHistoryRepository.findAllByUserIdOrderByUpdateDateDesc(
+                userId, pageRequest);
     }
 }

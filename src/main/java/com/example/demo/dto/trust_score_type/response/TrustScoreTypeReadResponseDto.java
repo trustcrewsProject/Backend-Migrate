@@ -2,10 +2,9 @@ package com.example.demo.dto.trust_score_type.response;
 
 import com.example.demo.model.trust_score.TrustScoreType;
 import com.querydsl.core.annotations.QueryProjection;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
-import java.time.LocalDateTime;
-
 
 @Getter
 @Builder
@@ -41,11 +40,18 @@ public class TrustScoreTypeReadResponseDto {
         }
         return trustScoreType.getTrustScoreTypeName();
     }
+
     @QueryProjection
-    public TrustScoreTypeReadResponseDto(Long trustScoreTypeId, String upTrustScoreTypeName,
-                                         String trustScoreTypeName, String trustGradeName,
-                                         Integer score, String gubunCode, String deleteStatus,
-                                         LocalDateTime createDate, LocalDateTime updateDate) {
+    public TrustScoreTypeReadResponseDto(
+            Long trustScoreTypeId,
+            String upTrustScoreTypeName,
+            String trustScoreTypeName,
+            String trustGradeName,
+            Integer score,
+            String gubunCode,
+            String deleteStatus,
+            LocalDateTime createDate,
+            LocalDateTime updateDate) {
         this.trustScoreTypeId = trustScoreTypeId;
         this.upTrustScoreTypeName = upTrustScoreTypeName;
         this.trustScoreTypeName = trustScoreTypeName;

@@ -33,7 +33,6 @@ public class WorkController {
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 
-
     @GetMapping("/api/work/project/{projectId}/milestone/{milestoneId}")
     public ResponseEntity<ResponseDto<?>> getAllByMilestone(
             @PathVariable("projectId") Long projectId,
@@ -50,7 +49,8 @@ public class WorkController {
 
     @PatchMapping("/api/work/{workId}")
     public ResponseEntity<ResponseDto<?>> update(
-            @PathVariable("workId") Long workId, @RequestBody WorkUpdateRequestDto workUpdateRequestDto) {
+            @PathVariable("workId") Long workId,
+            @RequestBody WorkUpdateRequestDto workUpdateRequestDto) {
         workFacade.update(workId, workUpdateRequestDto);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }

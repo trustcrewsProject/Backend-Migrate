@@ -4,6 +4,8 @@ public interface TrustScoreRepositoryCustom {
     void updateScore(Long userId, int score);
 
     int getUserScore(Long userId);
+
     void updateTrustGradeBatch();
+
     void updateUserTrustGrade(Long userId);
 }

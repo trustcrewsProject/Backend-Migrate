@@ -4,13 +4,14 @@ import com.example.demo.dto.trust_score_type.TrustScoreTypeSearchCriteria;
 import com.example.demo.dto.trust_score_type.request.TrustScoreTypeCreateRequestDto;
 import com.example.demo.dto.trust_score_type.response.TrustScoreTypeCreateResponseDto;
 import com.example.demo.dto.trust_score_type.response.TrustScoreTypeReadResponseDto;
-
 import java.util.List;
 
 public interface TrustScoreTypeService {
     List<TrustScoreTypeReadResponseDto> getAllAndReturnDto();
-    List<TrustScoreTypeReadResponseDto> getSearchResults(
-            TrustScoreTypeSearchCriteria criteria);
+
+    List<TrustScoreTypeReadResponseDto> getSearchResults(TrustScoreTypeSearchCriteria criteria);
+
     TrustScoreTypeReadResponseDto findByIdAndReturnDto(Long trustScoreTypeId);
+
     TrustScoreTypeCreateResponseDto createTrustScoreType(TrustScoreTypeCreateRequestDto requestDto);
 }

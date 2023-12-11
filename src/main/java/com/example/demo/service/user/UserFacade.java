@@ -10,13 +10,11 @@ import com.example.demo.dto.trust_score.request.TrustScoreUpdateRequestDto;
 import com.example.demo.dto.user.request.UserCreateRequestDto;
 import com.example.demo.dto.user.request.UserUpdateRequestDto;
 import com.example.demo.dto.user.response.UserUpdateResponseDto;
-import com.example.demo.global.exception.customexception.TrustScoreCustomException;
 import com.example.demo.model.position.Position;
 import com.example.demo.model.technology_stack.TechnologyStack;
 import com.example.demo.model.trust_score.TrustScore;
 import com.example.demo.model.user.User;
 import com.example.demo.model.user.UserTechnologyStack;
-import com.example.demo.repository.trust_score.TrustScoreRepository;
 import com.example.demo.security.custom.PrincipalDetails;
 import com.example.demo.service.position.PositionService;
 import com.example.demo.service.technology_stack.TechnologyStackService;
@@ -25,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -44,6 +41,7 @@ public class UserFacade {
 
     /**
      * 회원가입 로직
+     *
      * @param createRequest
      * @return user.id
      */
@@ -77,7 +75,11 @@ public class UserFacade {
         saveUser.setTrustScore(trustScore);
 
         // 회원 기술스택 목록 저장
-        List<UserTechnologyStack> userTechnologyStackList = userTechnologyStackService.saveUserTechStacksAndReturnResponse(saveUser, technologyStackService.findTechnologyStackListByIds(createRequest.getTechStackIds()));
+        List<UserTechnologyStack> userTechnologyStackList =
+                userTechnologyStackService.saveUserTechStacksAndReturnResponse(
+                        saveUser,
+                        technologyStackService.findTechnologyStackListByIds(
+                                createRequest.getTechStackIds()));
 
         // 회원 기술스택 목록 세팅
         saveUser.setTechStacks(userTechnologyStackList);
@@ -101,6 +103,7 @@ public class UserFacade {
 
     /**
      * 회원수정 로직
+     *
      * @param user
      * @param updateRequest
      * @return updateResponse
@@ -112,13 +115,14 @@ public class UserFacade {
         // 기존 포지션과 수정 요청한 포지션 비교
         Position position = currentUser.getPosition();
         // 다르면 포지션 수정
-        if(!isPositionDiff(position.getId(), updateRequest.getPositionId())) {
+        if (!isPositionDiff(position.getId(), updateRequest.getPositionId())) {
             position = positionService.findById(updateRequest.getPositionId());
         }
 
         // 삭제할 기술스택 확인
-        List<UserTechnologyStack> deleteList = hasTechStackToRemove(currentUser.getTechStacks(), updateRequest.getTechStackIds());
-        if(!deleteList.isEmpty()) {
+        List<UserTechnologyStack> deleteList =
+                hasTechStackToRemove(currentUser.getTechStacks(), updateRequest.getTechStackIds());
+        if (!deleteList.isEmpty()) {
             // 저장된 UserTechnologyStack 삭제
             userTechnologyStackService.deleteUserTechStacks(deleteList);
             // 회원 기술스택 목록에서 삭제
@@ -126,10 +130,13 @@ public class UserFacade {
         }
 
         // 추가할 기술스택 확인
-        List<TechnologyStack> addTechStacks = hasTechStackToAdd(currentUser.getTechStacks(), updateRequest.getTechStackIds());
-        if(Objects.nonNull(addTechStacks)) {
+        List<TechnologyStack> addTechStacks =
+                hasTechStackToAdd(currentUser.getTechStacks(), updateRequest.getTechStackIds());
+        if (Objects.nonNull(addTechStacks)) {
             // 새로운 UserTechnologyStack 저장
-            List<UserTechnologyStack> addList = userTechnologyStackService.saveUserTechStacksAndReturnResponse(currentUser, addTechStacks);
+            List<UserTechnologyStack> addList =
+                    userTechnologyStackService.saveUserTechStacksAndReturnResponse(
+                            currentUser, addTechStacks);
             // 회원 기술스택 목록에 추가
             addList.forEach(currentUser::addTechStack);
         }
@@ -138,14 +145,23 @@ public class UserFacade {
         currentUser.update(updateRequest.getNickname(), position, updateRequest.getIntro());
 
         // 수정된 회원의 기술스택 목록 List<TechnologyStackInfoResponseDto> 타입으로 변환
-        List<TechnologyStackInfoResponseDto> infoTechStacks = currentUser.getTechStacks().stream()
-                .map(userTechnologyStack -> TechnologyStackInfoResponseDto.of(userTechnologyStack.getTechnologyStack().getId(), userTechnologyStack.getTechnologyStack().getName()))
-                .collect(Collectors.toList());
+        List<TechnologyStackInfoResponseDto> infoTechStacks =
+                currentUser.getTechStacks().stream()
+                        .map(
+                                userTechnologyStack ->
+                                        TechnologyStackInfoResponseDto.of(
+                                                userTechnologyStack.getTechnologyStack().getId(),
+                                                userTechnologyStack.getTechnologyStack().getName()))
+                        .collect(Collectors.toList());
 
         // 회원 수정 응답 객체 생성
-        UserUpdateResponseDto updateResponse = UserUpdateResponseDto.of(currentUser.getEmail(), currentUser.getNickname(),
-                PositionInfoResponseDto.of(position.getId(), position.getName()),
-                infoTechStacks, currentUser.getIntro());
+        UserUpdateResponseDto updateResponse =
+                UserUpdateResponseDto.of(
+                        currentUser.getEmail(),
+                        currentUser.getNickname(),
+                        PositionInfoResponseDto.of(position.getId(), position.getName()),
+                        infoTechStacks,
+                        currentUser.getIntro());
 
         return ResponseDto.success("회원수정이 완료되었습니다.", updateResponse);
     }
@@ -156,12 +172,13 @@ public class UserFacade {
     }
 
     // 기존 기술스택 목록 중 삭제해야 될 기술스택 조회
-    private List<UserTechnologyStack> hasTechStackToRemove(List<UserTechnologyStack> currentTechStackList, List<Long> requestUpdateTechStackList) {
+    private List<UserTechnologyStack> hasTechStackToRemove(
+            List<UserTechnologyStack> currentTechStackList, List<Long> requestUpdateTechStackList) {
         List<UserTechnologyStack> deleteList = new ArrayList<>();
-        for(UserTechnologyStack userTechnologyStack : currentTechStackList) {
+        for (UserTechnologyStack userTechnologyStack : currentTechStackList) {
             TechnologyStack technologyStack = userTechnologyStack.getTechnologyStack();
 
-            if(!requestUpdateTechStackList.contains(technologyStack.getId())) {
+            if (!requestUpdateTechStackList.contains(technologyStack.getId())) {
                 deleteList.add(userTechnologyStack);
             }
         }
@@ -170,14 +187,18 @@ public class UserFacade {
     }
 
     // 요청한 기술스택 목록 중 추가해야 될 기술스택 조회
-    private List<TechnologyStack> hasTechStackToAdd(List<UserTechnologyStack> currentTechStackList, List<Long> requestUpdateTechStackList) {
-        List<Long> currentList = currentTechStackList.stream()
-                .map(userTechnologyStack -> userTechnologyStack.getTechnologyStack().getId())
-                .collect(Collectors.toList());
+    private List<TechnologyStack> hasTechStackToAdd(
+            List<UserTechnologyStack> currentTechStackList, List<Long> requestUpdateTechStackList) {
+        List<Long> currentList =
+                currentTechStackList.stream()
+                        .map(
+                                userTechnologyStack ->
+                                        userTechnologyStack.getTechnologyStack().getId())
+                        .collect(Collectors.toList());
 
         requestUpdateTechStackList.removeAll(currentList);
 
-        if(!requestUpdateTechStackList.isEmpty()) {
+        if (!requestUpdateTechStackList.isEmpty()) {
             return technologyStackService.findTechnologyStackListByIds(requestUpdateTechStackList);
         }
 

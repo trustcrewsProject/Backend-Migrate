@@ -2,7 +2,6 @@ package com.example.demo.service.alert;
 
 import com.example.demo.dto.alert.AlertCreateRequestDto;
 import com.example.demo.dto.alert.response.AlertInfoResponseDto;
-import com.example.demo.dto.user.response.UserInfoResponseDto;
 import com.example.demo.model.alert.Alert;
 import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.position.Position;
@@ -14,12 +13,10 @@ import com.example.demo.service.position.PositionService;
 import com.example.demo.service.project.ProjectService;
 import com.example.demo.service.user.UserService;
 import com.example.demo.service.work.WorkService;
-
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -47,7 +44,7 @@ public class AlertFacade {
             work = workService.findById(alertCreateRequestDto.getWorkId());
         }
 
-        if(alertCreateRequestDto.getMilestoneId() != null){
+        if (alertCreateRequestDto.getMilestoneId() != null) {
             milestone = milestoneService.findById(alertCreateRequestDto.getMilestoneId());
         }
 
@@ -55,7 +52,9 @@ public class AlertFacade {
             position = positionService.findById(alertCreateRequestDto.getPositionId());
         }
 
-        Alert alert = alertCreateRequestDto.toAlertEntity(project, checkUser, sendUser, work, milestone, position);
+        Alert alert =
+                alertCreateRequestDto.toAlertEntity(
+                        project, checkUser, sendUser, work, milestone, position);
         alertService.save(alert);
     }
 

@@ -1,5 +1,6 @@
 package com.example.demo.trust_score.repository;
 
+import static com.example.demo.constant.TrustScoreTypeIdentifier.*;
 
 import com.example.demo.dto.trust_score_type.TrustScoreTypeSearchCriteria;
 import com.example.demo.dto.trust_score_type.response.TrustScoreTypeReadResponseDto;
@@ -11,6 +12,10 @@ import com.example.demo.model.trust_score.TrustScoreType;
 import com.example.demo.repository.project.ProjectRepository;
 import com.example.demo.repository.trust_grade.TrustGradeRepository;
 import com.example.demo.repository.trust_score.TrustScoreTypeRepository;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,24 +23,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import static com.example.demo.constant.TrustScoreTypeIdentifier.*;
-
 @SpringBootTest
 @Transactional
 public class TrustScoreTypeRepositoryTest {
 
-    @Autowired
-    private TrustScoreTypeRepository trustScoreTypeRepository;
+    @Autowired private TrustScoreTypeRepository trustScoreTypeRepository;
 
-    @Autowired
-    private TrustGradeRepository trustGradeRepository;
+    @Autowired private TrustGradeRepository trustGradeRepository;
 
-    @Autowired
-    private ProjectRepository projectRepository;
+    @Autowired private ProjectRepository projectRepository;
 
     @Test
     @DisplayName("getScore 메서드 테스트 - 성공")
@@ -51,15 +47,13 @@ public class TrustScoreTypeRepositoryTest {
     }
 
     @Test
-    @DisplayName("getScore 메서드 테스트 - 실패. " +
-            "원인 : 존재하지 않는 신뢰점수타입 식별자")
+    @DisplayName("getScore 메서드 테스트 - 실패. " + "원인 : 존재하지 않는 신뢰점수타입 식별자")
     public void getScore_MethodTest_Fail() {
         // given
         Long scoreTypeId = 1000000L;
 
         // when - then
-        Assertions.assertThatThrownBy(
-                () -> trustScoreTypeRepository.getScore(scoreTypeId))
+        Assertions.assertThatThrownBy(() -> trustScoreTypeRepository.getScore(scoreTypeId))
                 .isInstanceOf(NullPointerException.class);
     }
 
@@ -68,26 +62,24 @@ public class TrustScoreTypeRepositoryTest {
     public void getScoreByProject_MethodTest_Pass() {
         // given
         // 4등급 프로젝트 생성
-        TrustGrade trustGrade = trustGradeRepository.findById(4L)
-                .orElseThrow(() -> TrustGradeCustomException.NOT_FOUND_TRUST_GRADE);
-        Project project = Project.builder()
-                .name("테스트 프로젝트")
-                .trustGrade(trustGrade)
-                .build();
+        TrustGrade trustGrade =
+                trustGradeRepository
+                        .findById(4L)
+                        .orElseThrow(() -> TrustGradeCustomException.NOT_FOUND_TRUST_GRADE);
+        Project project = Project.builder().name("테스트 프로젝트").trustGrade(trustGrade).build();
         Project saveProject = projectRepository.save(project);
 
         // when
         Long trustScoreTypeId = WORK_COMPLETE;
-        int scoreByProject = trustScoreTypeRepository
-                .getScoreByProject(saveProject.getId(), trustScoreTypeId);
+        int scoreByProject =
+                trustScoreTypeRepository.getScoreByProject(saveProject.getId(), trustScoreTypeId);
 
         // then
         Assertions.assertThat(scoreByProject).isEqualTo(20);
     }
 
     @Test
-    @DisplayName("getScoreByProject 메서드 테스트 - 실패 " +
-            "원인 : 해당 프로젝트 존재하지 않음")
+    @DisplayName("getScoreByProject 메서드 테스트 - 실패 " + "원인 : 해당 프로젝트 존재하지 않음")
     public void getScoreByProject_MethodTest_Fail() {
         // given
         Long projectId = 10000000000000L;
@@ -95,7 +87,9 @@ public class TrustScoreTypeRepositoryTest {
 
         // when - then
         Assertions.assertThatThrownBy(
-                () -> trustScoreTypeRepository.getScoreByProject(projectId, trustScoreTypeId))
+                        () ->
+                                trustScoreTypeRepository.getScoreByProject(
+                                        projectId, trustScoreTypeId))
                 .isInstanceOf(NullPointerException.class);
     }
 
@@ -103,16 +97,21 @@ public class TrustScoreTypeRepositoryTest {
     @DisplayName("findAllUpScoreTypeId 메서드 테스트 - 성공")
     public void findAllUpScoreTypeId_MethodTest_Pass() {
         // given
-        List<Long> scoreTypeIdentifierList = new ArrayList<>(Arrays.asList(WORK_COMPLETE, WORK_INCOMPLETE,
-                NEW_MEMBER, SELF_WITHDRAWAL, FORCE_WITHDRAWAL, LATE_WORK));
+        List<Long> scoreTypeIdentifierList =
+                new ArrayList<>(
+                        Arrays.asList(
+                                WORK_COMPLETE,
+                                WORK_INCOMPLETE,
+                                NEW_MEMBER,
+                                SELF_WITHDRAWAL,
+                                FORCE_WITHDRAWAL,
+                                LATE_WORK));
 
         // when
-        List<Long> upScoreTypeIdList =
-                trustScoreTypeRepository.findAllUpScoreTypeId();
+        List<Long> upScoreTypeIdList = trustScoreTypeRepository.findAllUpScoreTypeId();
 
         // then
-        Assertions.assertThat(scoreTypeIdentifierList)
-                .isEqualTo(upScoreTypeIdList);
+        Assertions.assertThat(scoreTypeIdentifierList).isEqualTo(upScoreTypeIdList);
     }
     // TODO : 더 나은 테스트 방식 고민
     @Test
@@ -129,16 +128,17 @@ public class TrustScoreTypeRepositoryTest {
     @DisplayName("신뢰점수타입 참조 작동 여부 확인")
     public void UpTrustScoreType_Contains_Children_MappedBy_Test() {
         // given
-        TrustScoreType parent = trustScoreTypeRepository.findById(WORK_COMPLETE)
-                .orElseThrow(() -> TrustScoreTypeCustomException.NOT_FOUND_TRUST_SCORE_TYPE);
+        TrustScoreType parent =
+                trustScoreTypeRepository
+                        .findById(WORK_COMPLETE)
+                        .orElseThrow(
+                                () -> TrustScoreTypeCustomException.NOT_FOUND_TRUST_SCORE_TYPE);
 
         // when
         List<TrustScoreType> children = parent.getSubTrustScoreTypes();
 
-
         // then
         Assertions.assertThat(children.size()).isEqualTo(4);
-
     }
 
     @Test
@@ -153,7 +153,6 @@ public class TrustScoreTypeRepositoryTest {
 
         // then
         Assertions.assertThat(searchResults.size()).isEqualTo(26);
-
     }
 
     @Test
@@ -172,7 +171,6 @@ public class TrustScoreTypeRepositoryTest {
 
         // then
         Assertions.assertThat(searchResults).isEmpty();
-
     }
 
     @Test
@@ -188,7 +186,6 @@ public class TrustScoreTypeRepositoryTest {
 
         // then
         Assertions.assertThat(searchResults.size()).isEqualTo(6);
-
     }
 
     @Test
@@ -204,8 +201,8 @@ public class TrustScoreTypeRepositoryTest {
 
         // then
         Assertions.assertThat(searchResults.size()).isEqualTo(6);
-
     }
+
     @Test
     @DisplayName("1등급, 2등급 신뢰점수타입 조회")
     public void getSearchResults_FirstAndSecondGrade_Test_Pass() {
@@ -217,12 +214,13 @@ public class TrustScoreTypeRepositoryTest {
         criteria.setTrustGrade(grades);
 
         // when
-        List<TrustScoreTypeReadResponseDto> searchResults = trustScoreTypeRepository.findSearchResults(criteria);
+        List<TrustScoreTypeReadResponseDto> searchResults =
+                trustScoreTypeRepository.findSearchResults(criteria);
 
         // then
         Assertions.assertThat(searchResults.size()).isEqualTo(10);
-
     }
+
     @Test
     @DisplayName("1등급, 2등급 및 신규회원, 강제탈퇴 신뢰점수타입 조회")
     public void getSearchResults_FirstAndSecondGrade_NewMemberAndForceWithdrawal_Test_Pass() {
@@ -240,12 +238,11 @@ public class TrustScoreTypeRepositoryTest {
         criteria.setParentTypeId(ids);
 
         // when
-        List<TrustScoreTypeReadResponseDto> searchResults = trustScoreTypeRepository.findSearchResults(criteria);
+        List<TrustScoreTypeReadResponseDto> searchResults =
+                trustScoreTypeRepository.findSearchResults(criteria);
 
         // then
         Assertions.assertThat(searchResults.size()).isEqualTo(2);
-
-
     }
 
     @Test
@@ -260,7 +257,8 @@ public class TrustScoreTypeRepositoryTest {
         criteria.setParentTypeId(ids);
 
         // when
-        List<TrustScoreTypeReadResponseDto> searchResults = trustScoreTypeRepository.findSearchResults(criteria);
+        List<TrustScoreTypeReadResponseDto> searchResults =
+                trustScoreTypeRepository.findSearchResults(criteria);
 
         // then
         Assertions.assertThat(searchResults.size()).isEqualTo(6);
@@ -275,7 +273,8 @@ public class TrustScoreTypeRepositoryTest {
         criteria.setKeyword(keyword);
 
         // when
-        List<TrustScoreTypeReadResponseDto> searchResults = trustScoreTypeRepository.findSearchResults(criteria);
+        List<TrustScoreTypeReadResponseDto> searchResults =
+                trustScoreTypeRepository.findSearchResults(criteria);
 
         // then
         Assertions.assertThat(searchResults.size()).isEqualTo(5);
@@ -299,7 +298,8 @@ public class TrustScoreTypeRepositoryTest {
         criteria.setTrustGrade(trustGradeList);
 
         // when
-        List<TrustScoreTypeReadResponseDto> searchResults = trustScoreTypeRepository.findSearchResults(criteria);
+        List<TrustScoreTypeReadResponseDto> searchResults =
+                trustScoreTypeRepository.findSearchResults(criteria);
 
         // then
         Assertions.assertThat(searchResults.size()).isEqualTo(2);
@@ -315,7 +315,8 @@ public class TrustScoreTypeRepositoryTest {
         criteria.setKeyword(emptyKeyword);
 
         // when
-        List<TrustScoreTypeReadResponseDto> searchResults = trustScoreTypeRepository.findSearchResults(criteria);
+        List<TrustScoreTypeReadResponseDto> searchResults =
+                trustScoreTypeRepository.findSearchResults(criteria);
 
         // then
         Assertions.assertThat(searchResults.size()).isEqualTo(26);

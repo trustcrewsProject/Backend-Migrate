@@ -1,10 +1,8 @@
 package com.example.demo.repository.user;
 
 import com.example.demo.dto.user.response.UserProjectHistoryInfoResponseDto;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
 import java.util.List;
+import org.springframework.data.domain.Pageable;
 
 public interface UserProjectHistoryRepositoryCustom {
 
@@ -12,5 +10,6 @@ public interface UserProjectHistoryRepositoryCustom {
     Long countUserProjectHistoryByUserId(Long userId);
 
     // 회원 프로젝트 이력 목록 조회 (수정날짜 기준 최신순 정렬, 페이징 offset 방법 활용)
-    List<UserProjectHistoryInfoResponseDto> findAllByUserIdOrderByUpdateDateDesc(Long userId, Pageable pageable);
+    List<UserProjectHistoryInfoResponseDto> findAllByUserIdOrderByUpdateDateDesc(
+            Long userId, Pageable pageable);
 }

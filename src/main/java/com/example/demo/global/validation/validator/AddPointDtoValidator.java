@@ -79,7 +79,10 @@ public class AddPointDtoValidator implements ConstraintValidator<ValidAddPointDt
             return false;
         }
 
-        Work work = workRepository.findById(workId).orElseThrow(() -> WorkCustomException.NOT_FOUND_WORK);
+        Work work =
+                workRepository
+                        .findById(workId)
+                        .orElseThrow(() -> WorkCustomException.NOT_FOUND_WORK);
 
         if (work.isCompleteStatus()) {
             log.info("데이터 무결성 위배. 업무 완료여부 불일치. workId : {}", workId);
@@ -173,8 +176,10 @@ public class AddPointDtoValidator implements ConstraintValidator<ValidAddPointDt
         Optional<User> findUser = userRepository.findById(userId);
 
         if (findProject.isEmpty() || findUser.isEmpty()) {
-            log.info("잘못된 입력값. 프로젝트 혹은 사용자 입력값 존재하지 않음. "
-                            + "projectId : {}, userId : {}", projectId, userId);
+            log.info(
+                    "잘못된 입력값. 프로젝트 혹은 사용자 입력값 존재하지 않음. " + "projectId : {}, userId : {}",
+                    projectId,
+                    userId);
             return false;
         }
 
@@ -247,7 +252,10 @@ public class AddPointDtoValidator implements ConstraintValidator<ValidAddPointDt
             return false;
         }
 
-        Work work = workRepository.findById(workId).orElseThrow(() -> WorkCustomException.NOT_FOUND_WORK);
+        Work work =
+                workRepository
+                        .findById(workId)
+                        .orElseThrow(() -> WorkCustomException.NOT_FOUND_WORK);
 
         if (!work.isCompleteStatus()) {
             log.info("데이터 무결성 위배. 업무 미완성. workId : {}", workId);

@@ -47,4 +47,10 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(userFacade.updateUser(user, updateRequest));
     }
+
+    // 내 정보 조회
+    @GetMapping("/api/user/me")
+    public ResponseEntity<ResponseDto<?>> myInfo(@AuthenticationPrincipal PrincipalDetails user) {
+        return ResponseEntity.status(HttpStatus.OK).body(userFacade.getMyInfo(user));
+    }
 }

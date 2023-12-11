@@ -5,13 +5,18 @@ import com.example.demo.constant.TrustScoreTypeIdentifier;
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.dto.position.response.PositionInfoResponseDto;
 import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
+import com.example.demo.dto.trust_grade.response.TrustGradeInfoResponseDto;
 import com.example.demo.dto.trust_score.AddPointDto;
 import com.example.demo.dto.trust_score.request.TrustScoreUpdateRequestDto;
 import com.example.demo.dto.user.request.UserCreateRequestDto;
 import com.example.demo.dto.user.request.UserUpdateRequestDto;
+import com.example.demo.dto.user.response.UserMyInfoResponseDto;
+import com.example.demo.dto.user.response.UserProjectHistoryInfoResponseDto;
 import com.example.demo.dto.user.response.UserUpdateResponseDto;
+import com.example.demo.global.util.DateTimeConverter;
 import com.example.demo.model.position.Position;
 import com.example.demo.model.technology_stack.TechnologyStack;
+import com.example.demo.model.trust_grade.TrustGrade;
 import com.example.demo.model.trust_score.TrustScore;
 import com.example.demo.model.user.User;
 import com.example.demo.model.user.UserTechnologyStack;
@@ -38,6 +43,7 @@ public class UserFacade {
     private final TechnologyStackService technologyStackService;
     private final TrustScoreService trustScoreService;
     private final UserTechnologyStackService userTechnologyStackService;
+    private final UserProjectHistoryService userProjectHistoryService;
 
     /**
      * 회원가입 로직
@@ -203,5 +209,47 @@ public class UserFacade {
         }
 
         return null;
+    }
+
+    /**
+     * 내 정보 조회 로직
+     * @param user
+     * @return UserMyInfoResponseDto myInfoResponse
+     */
+    @Transactional(readOnly = true)
+    public ResponseDto<?> getMyInfo(PrincipalDetails user) {
+        User currentUser = userService.fetchUserDetails(user.getId());
+
+        // 신뢰점수
+        TrustScore trustScore = currentUser.getTrustScore();
+        // 신뢰등급
+        TrustGrade trustGrade = trustScore.getTrustGrade();
+        // 포지션
+        Position position = currentUser.getPosition();
+        // 기술스택목록
+        List<TechnologyStack> techStacks = currentUser.getTechStacks().stream()
+                .map(UserTechnologyStack::getTechnologyStack)
+                .collect(Collectors.toList());
+
+        // 신뢰등급 정보 응답 DTO
+        TrustGradeInfoResponseDto trustGradeInfo = TrustGradeInfoResponseDto.of(trustGrade.getId(), trustGrade.getName());
+        // 포지션 정보 응답 DTO
+        PositionInfoResponseDto positionInfo = PositionInfoResponseDto.of(position.getId(), position.getName());
+        // 기술스택목록 정보 응답 DTO
+        List<TechnologyStackInfoResponseDto> techStacksInfo = techStacks.stream()
+                .map(technologyStack -> TechnologyStackInfoResponseDto.of(technologyStack.getId(), technologyStack.getName()))
+                .collect(Collectors.toList());
+        // 회원 프로젝트 이력 개수
+        long projectHistoryTotalCount = userProjectHistoryService.getUserProjectHistoryTotalCount(currentUser.getId());
+        // 회원 프로젝트 이력 목록 정보 응답 DTO
+        List<UserProjectHistoryInfoResponseDto> projectHistoryListInfo = userProjectHistoryService.getUserProjectHistoryList(currentUser.getId(), 1);
+
+
+        // 내 정보 응답 DTO 생성
+        UserMyInfoResponseDto myInfoResponse = UserMyInfoResponseDto.of(currentUser.getId(), currentUser.getEmail(), currentUser.getNickname(),
+                currentUser.getProfileImgSrc(), trustScore.getScore(), trustGradeInfo, positionInfo, techStacksInfo, projectHistoryTotalCount,
+                projectHistoryListInfo, DateTimeConverter.toStringConvert(currentUser.getCreateDate()), DateTimeConverter.toStringConvert(currentUser.getUpdateDate()));
+
+        return ResponseDto.success("내 정보 조회가 완료되었습니다.", myInfoResponse);
     }
 }

@@ -2,10 +2,9 @@ package com.example.demo.dto.user.response;
 
 import com.example.demo.dto.position.response.PositionInfoResponseDto;
 import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
-
-import java.util.List;
 
 @Getter
 @Builder
@@ -21,7 +20,12 @@ public class UserUpdateResponseDto {
 
     private String intro;
 
-    public static UserUpdateResponseDto of(String email, String nickname, PositionInfoResponseDto positionInfoResponseDto, List<TechnologyStackInfoResponseDto> techStacks, String intro) {
+    public static UserUpdateResponseDto of(
+            String email,
+            String nickname,
+            PositionInfoResponseDto positionInfoResponseDto,
+            List<TechnologyStackInfoResponseDto> techStacks,
+            String intro) {
         return UserUpdateResponseDto.builder()
                 .email(email)
                 .nickname(nickname)

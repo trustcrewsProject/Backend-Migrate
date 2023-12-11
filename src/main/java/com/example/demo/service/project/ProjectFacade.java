@@ -2,27 +2,19 @@ package com.example.demo.service.project;
 
 import com.example.demo.constant.AlertType;
 import com.example.demo.constant.ProjectMemberStatus;
-import com.example.demo.dto.position.response.PositionResponseDto;
 import com.example.demo.dto.project.request.ProjectConfirmRequestDto;
 import com.example.demo.dto.project.request.ProjectParticipateRequestDto;
 import com.example.demo.dto.project.response.ProjectMeResponseDto;
 import com.example.demo.dto.project.response.ProjectSpecificDetailResponseDto;
 import com.example.demo.dto.projectmember.response.MyProjectMemberResponseDto;
-import com.example.demo.dto.projectmember.response.ProjectMemberAuthResponseDto;
-import com.example.demo.dto.projectmember.response.ProjectMemberDetailResponseDto;
 import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
 import com.example.demo.dto.user.response.UserMyProjectResponseDto;
-import com.example.demo.dto.user.response.UserProjectDetailResponseDto;
-import com.example.demo.dto.user.response.UserProjectResponseDto;
-import com.example.demo.dto.work.response.WorkProjectDetailResponseDto;
 import com.example.demo.model.alert.Alert;
-import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.position.Position;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
 import com.example.demo.model.project.ProjectMemberAuth;
 import com.example.demo.model.user.User;
-import com.example.demo.model.work.Work;
 import com.example.demo.service.alert.AlertService;
 import com.example.demo.service.milestone.MilestoneService;
 import com.example.demo.service.position.PositionService;
@@ -91,10 +83,7 @@ public class ProjectFacade {
         Project project = projectService.findById(projectId);
         TrustGradeResponseDto trustGradeDto = TrustGradeResponseDto.of(project.getTrustGrade());
 
-        return ProjectSpecificDetailResponseDto.of(
-                project,
-                trustGradeDto
-                );
+        return ProjectSpecificDetailResponseDto.of(project, trustGradeDto);
     }
 
     /**
@@ -108,17 +97,18 @@ public class ProjectFacade {
         Project project = projectService.findById(projectId);
         User user = userService.findById(1L);
         Position position = positionService.findById(projectParticipateRequestDto.getPositionId());
-        Alert alert = Alert.builder()
-                .project(project)
-                .checkUser(project.getUser())
-                .sendUser(user)
-                .work(null)
-                .milestone(null)
-                .content("프로젝트 지원했습니다.")
-                .position(position)
-                .type(AlertType.RECRUIT)
-                .checked_YN(false)
-                .build();
+        Alert alert =
+                Alert.builder()
+                        .project(project)
+                        .checkUser(project.getUser())
+                        .sendUser(user)
+                        .work(null)
+                        .milestone(null)
+                        .content("프로젝트 지원했습니다.")
+                        .position(position)
+                        .type(AlertType.RECRUIT)
+                        .checked_YN(false)
+                        .build();
 
         alertService.save(alert);
     }

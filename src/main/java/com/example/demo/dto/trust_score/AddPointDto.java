@@ -23,7 +23,8 @@ public class AddPointDto {
     }
 
     @Builder
-    public AddPointDto(Long userId, Long projectId, Long milestoneId, Long workId, Long scoreTypeId) {
+    public AddPointDto(
+            Long userId, Long projectId, Long milestoneId, Long workId, Long scoreTypeId) {
         this.userId = userId;
         this.projectId = projectId;
         this.milestoneId = milestoneId;

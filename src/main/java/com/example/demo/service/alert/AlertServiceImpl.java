@@ -1,12 +1,8 @@
 package com.example.demo.service.alert;
 
-import com.example.demo.constant.AlertType;
 import com.example.demo.global.exception.customexception.AlertCustomException;
 import com.example.demo.model.alert.Alert;
-import com.example.demo.model.position.Position;
 import com.example.demo.model.project.Project;
-import com.example.demo.model.project.ProjectMember;
-import com.example.demo.model.user.User;
 import com.example.demo.repository.alert.AlertRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

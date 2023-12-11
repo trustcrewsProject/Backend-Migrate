@@ -1,7 +1,6 @@
 package com.example.demo.repository.technology_stack;
 
 import com.example.demo.model.technology_stack.TechnologyStack;
-
 import java.util.List;
 
 public interface TechnologyStackRepositoryCustom {

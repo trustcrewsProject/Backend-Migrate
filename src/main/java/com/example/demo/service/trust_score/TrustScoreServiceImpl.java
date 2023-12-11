@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
+
 @Service
 @RequiredArgsConstructor
 @Validated
@@ -20,9 +21,10 @@ public class TrustScoreServiceImpl implements TrustScoreService {
     private final TrustScoreRepository trustScoreRepository;
     private final TrustScoreHistoryRepository trustScoreHistoryRepository;
     private final TrustScoreTypeRepository trustScoreTypeRepository;
-    
+
     /**
      * DTO를 통한 신뢰점수 조회 및 포인트 부여
+     *
      * @param addPointDto
      * @return TrustScoreUpdateResponseDto
      */
@@ -43,10 +45,7 @@ public class TrustScoreServiceImpl implements TrustScoreService {
         // 기존의 신뢰점수 테이블에 해당 유저에 대한 레코드가 없으면 생성, 있으면 업데이트
         if (!trustScoreRepository.existsByUserId(userId)) {
             trustScoreRepository.save(
-                    TrustScore.builder()
-                            .userId(userId)
-                            .score(calculatedScore)
-                            .build());
+                    TrustScore.builder().userId(userId).score(calculatedScore).build());
         } else {
             trustScoreRepository.updateUserTrustScore(userId, calculatedScore);
         }
@@ -64,12 +63,14 @@ public class TrustScoreServiceImpl implements TrustScoreService {
 
     @Override
     public TrustScore findTrustScoreByUserId(Long userId) {
-        return trustScoreRepository.findTrustScoreByUserId(userId)
+        return trustScoreRepository
+                .findTrustScoreByUserId(userId)
                 .orElseThrow(() -> TrustScoreCustomException.NOT_FOUND_TRUST_SCORE);
     }
 
     /**
      * 신뢰점수이력 생성
+     *
      * @param addPointDto, score
      * @return TrustScoreHistory
      */
@@ -87,6 +88,7 @@ public class TrustScoreServiceImpl implements TrustScoreService {
     }
     /**
      * 신뢰점수 조회
+     *
      * @param addPointDto
      * @return int
      */
@@ -94,7 +96,7 @@ public class TrustScoreServiceImpl implements TrustScoreService {
         if (addPointDto.getProjectId() == null) {
             return trustScoreTypeRepository.getScore(addPointDto.getScoreTypeId());
         }
-        return trustScoreTypeRepository
-                    .getScoreByProject(addPointDto.getProjectId(), addPointDto.getScoreTypeId());
+        return trustScoreTypeRepository.getScoreByProject(
+                addPointDto.getProjectId(), addPointDto.getScoreTypeId());
     }
 }

@@ -41,17 +41,18 @@ public class ProjectMemberFacade {
     public void sendWithdrawlAlert(Long projectMemberId) {
         ProjectMember projectMember = projectMemberService.findById(projectMemberId);
 
-        Alert alert = Alert.builder()
-                .project(projectMember.getProject())
-                .checkUser(projectMember.getProject().getUser())
-                .sendUser(projectMember.getUser())
-                .work(null)
-                .milestone(null)
-                .content("프로젝트 지원했습니다.")
-                .position(projectMember.getPosition())
-                .type(AlertType.RECRUIT)
-                .checked_YN(false)
-                .build();
+        Alert alert =
+                Alert.builder()
+                        .project(projectMember.getProject())
+                        .checkUser(projectMember.getProject().getUser())
+                        .sendUser(projectMember.getUser())
+                        .work(null)
+                        .milestone(null)
+                        .content("프로젝트 지원했습니다.")
+                        .position(projectMember.getPosition())
+                        .type(AlertType.RECRUIT)
+                        .checked_YN(false)
+                        .build();
 
         alertService.save(alert);
     }

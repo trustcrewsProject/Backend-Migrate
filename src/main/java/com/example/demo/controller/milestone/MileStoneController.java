@@ -32,7 +32,8 @@ public class MileStoneController {
     }
 
     @GetMapping("/api/milestone/project/{projectId}")
-    public ResponseEntity<ResponseDto<?>> getAllByProject(@PathVariable("projectId") Long projectId) {
+    public ResponseEntity<ResponseDto<?>> getAllByProject(
+            @PathVariable("projectId") Long projectId) {
         List<MilestoneReadResponseDto> result = mileStoneFacade.getAllByProject(projectId);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }

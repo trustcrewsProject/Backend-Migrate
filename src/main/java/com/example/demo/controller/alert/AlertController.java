@@ -3,7 +3,6 @@ package com.example.demo.controller.alert;
 import com.example.demo.dto.alert.AlertCreateRequestDto;
 import com.example.demo.dto.alert.response.AlertInfoResponseDto;
 import com.example.demo.dto.common.ResponseDto;
-import com.example.demo.model.alert.Alert;
 import com.example.demo.service.alert.AlertFacade;
 import com.example.demo.service.alert.AlertService;
 import java.util.List;
@@ -20,7 +19,8 @@ public class AlertController {
     private final AlertService alertService;
 
     @PostMapping("/api/alert")
-    public ResponseEntity<ResponseDto<?>> send(@RequestBody AlertCreateRequestDto alertCreateRequestDto) {
+    public ResponseEntity<ResponseDto<?>> send(
+            @RequestBody AlertCreateRequestDto alertCreateRequestDto) {
         alertFacade.send(alertCreateRequestDto);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }

@@ -1,6 +1,5 @@
 package com.example.demo.global.exception.customexception;
 
-import com.example.demo.global.exception.errorcode.TrustScoreErrorCode;
 import com.example.demo.global.exception.errorcode.TrustScoreTypeErrorCode;
 
 public class TrustScoreTypeCustomException extends CustomException {

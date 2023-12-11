@@ -45,4 +45,9 @@ public class UserServiceImpl implements UserService {
     public User getUserForUpdate(Long userId) {
         return userRepository.fetchUserDetailsForUpdate(userId);
     }
+
+    @Override
+    public User fetchUserDetails(Long userId) {
+        return userRepository.fetchUserByUserIdWithAllAttributes(userId);
+    }
 }

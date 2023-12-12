@@ -196,7 +196,7 @@ public class TrustScoreServiceTest {
     }
 
     @Test
-    @DisplayName("1등급 프로젝트 강 탈퇴")
+    @DisplayName("1등급 프로젝트 강제 탈퇴")
     public void SelfWithdrawal_FirstGrade_Test() {
         // 회원 생성 및 저장
         User user = User.builder()

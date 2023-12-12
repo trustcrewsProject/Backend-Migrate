@@ -14,7 +14,7 @@ public interface TrustScoreRepository
     Optional<TrustScore> findTrustScoreByUserId(Long userId);
 
     @Modifying
-    @Query("update TrustScore ts set ts.score = (case when :score < 0 then 0 else :score end) where ts.userId = :userId")
+    @Query(
+            "update TrustScore ts set ts.score = (case when :score < 0 then 0 else :score end) where ts.userId = :userId")
     void updateUserTrustScore(@Param("userId") Long userId, @Param("score") int score);
 }
-

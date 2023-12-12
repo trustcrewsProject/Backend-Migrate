@@ -20,4 +20,7 @@ public interface UserService {
 
     // 회원 수정 시 회원 정보 조회
     User getUserForUpdate(Long userId);
+
+    // 회원의 모든 정보 조회
+    User fetchUserDetails(Long userId);
 }

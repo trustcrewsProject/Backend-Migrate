@@ -9,13 +9,15 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class UserInfoResponseDto {
+public class UserMyInfoResponseDto {
 
     private Long userId;
 
     private String email;
 
     private String nickname;
+
+    private String profileImgSrc;
 
     private int trustScore;
 
@@ -25,28 +27,38 @@ public class UserInfoResponseDto {
 
     private List<TechnologyStackInfoResponseDto> techStacks;
 
+    private long projectHistoryTotalCount;
+
+    private List<UserProjectHistoryInfoResponseDto> projectHistoryList;
+
     private String createDate;
 
     private String updateDate;
 
-    public static UserInfoResponseDto of(
+    public static UserMyInfoResponseDto of(
             Long userId,
             String email,
             String nickname,
+            String profileImgSrc,
             int trustScore,
             TrustGradeInfoResponseDto trustGrade,
             PositionInfoResponseDto position,
             List<TechnologyStackInfoResponseDto> techStacks,
+            long projectHistoryTotalCount,
+            List<UserProjectHistoryInfoResponseDto> projectHistoryList,
             String createDate,
             String updateDate) {
-        return UserInfoResponseDto.builder()
+        return UserMyInfoResponseDto.builder()
                 .userId(userId)
                 .email(email)
                 .nickname(nickname)
+                .profileImgSrc(profileImgSrc)
                 .trustScore(trustScore)
                 .trustGrade(trustGrade)
                 .position(position)
                 .techStacks(techStacks)
+                .projectHistoryTotalCount(projectHistoryTotalCount)
+                .projectHistoryList(projectHistoryList)
                 .createDate(createDate)
                 .updateDate(updateDate)
                 .build();

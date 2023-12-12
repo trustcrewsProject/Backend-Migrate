@@ -1,5 +1,7 @@
 package com.example.demo.repository.trust_score;
 
+import static com.example.demo.model.trust_score.QTrustScoreType.*;
+
 import com.example.demo.dto.trust_score_type.TrustScoreTypeSearchCriteria;
 import com.example.demo.dto.trust_score_type.response.TrustScoreTypeReadResponseDto;
 import com.example.demo.model.project.QProject;
@@ -15,12 +17,9 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
-
-import static com.example.demo.model.trust_score.QTrustScoreType.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -45,11 +44,11 @@ public class TrustScoreTypeRepositoryImpl implements TrustScoreTypeRepositoryCus
 
     /**
      * project와 trustScoreType을 통해 요청에 맞는 신뢰점수 조회
+     *
      * @param projectId
      * @param trustScoreTypeId
      * @return
      */
-
     @Override
     public int getScoreByProject(Long projectId, Long trustScoreTypeId) {
         QTrustScoreType trustScoreType = QTrustScoreType.trustScoreType;
@@ -67,7 +66,8 @@ public class TrustScoreTypeRepositoryImpl implements TrustScoreTypeRepositoryCus
                 .join(trustScoreType)
                 .on(
                         trustScoreType
-                                .upTrustScoreType.id
+                                .upTrustScoreType
+                                .id
                                 .eq(trustScoreTypeId)
                                 .and(trustScoreType.trustGradeName.eq(trustGrade.name)))
                 .where(project.id.eq(projectId))
@@ -83,13 +83,18 @@ public class TrustScoreTypeRepositoryImpl implements TrustScoreTypeRepositoryCus
                 .where(trustScoreType.upTrustScoreType.isNull())
                 .fetch();
     }
+
     // TODO : 정렬 페이징 추가
+
     @Override
     public List<TrustScoreTypeReadResponseDto> findSearchResults(
             TrustScoreTypeSearchCriteria criteria) {
         QTrustScoreType trustScoreType = QTrustScoreType.trustScoreType;
         QTrustScoreType subTrustScoreType = new QTrustScoreType("subTrustScoreType");
-        return jpaQueryFactory.select(Projections.constructor(TrustScoreTypeReadResponseDto.class,
+        return jpaQueryFactory
+                .select(
+                        Projections.constructor(
+                                TrustScoreTypeReadResponseDto.class,
                                 trustScoreType.id,
                                 getUpTrustScoreTypeName(trustScoreType),
                                 trustScoreType.trustScoreTypeName,
@@ -99,16 +104,18 @@ public class TrustScoreTypeRepositoryImpl implements TrustScoreTypeRepositoryCus
                                 trustScoreType.deleteStatus,
                                 trustScoreType.createDate,
                                 trustScoreType.updateDate))
-                       .from(trustScoreType)
-                       .leftJoin(trustScoreType.upTrustScoreType, subTrustScoreType)
-                       .on(trustScoreType.upTrustScoreType.id.eq(subTrustScoreType.id))
-                       .where(isDeleted(criteria.getIsDeleted())
-                               , isParentType(criteria.getIsParentType())
-                               , gubunCodeEq(criteria.getGubunCode())
-                               , trustGradeContain(criteria.getTrustGrade())
-                               , parentTypeIdContain(criteria.getParentTypeId())
-                               , keywordLike(criteria.getKeyword()))
-                       .fetch();
+                .from(trustScoreType)
+                .leftJoin(trustScoreType.upTrustScoreType, subTrustScoreType)
+                .on(trustScoreType.upTrustScoreType.id.eq(subTrustScoreType.id))
+                .where(
+                        isDeleted(criteria.getIsDeleted()),
+                        isParentType(criteria.getIsParentType()),
+                        gubunCodeEq(criteria.getGubunCode()),
+                        trustGradeContain(criteria.getTrustGrade()),
+                        parentTypeIdContain(criteria.getParentTypeId()),
+                        keywordLike(criteria.getKeyword()))
+                .fetch();
+
     }
     /** */
     @Override
@@ -144,7 +151,6 @@ public class TrustScoreTypeRepositoryImpl implements TrustScoreTypeRepositoryCus
         }
         return trustScoreType.score;
     }
-
 
     private BooleanExpression isDeleted(Boolean isDeleted) {
         if (isDeleted == null) {
@@ -184,10 +190,13 @@ public class TrustScoreTypeRepositoryImpl implements TrustScoreTypeRepositoryCus
         if (parentTypeId == null || parentTypeId.isEmpty()) {
             return null;
         }
-        BooleanExpression whenUpScoreTypeIsNull = trustScoreType.upTrustScoreType.isNull()
-                .and(trustScoreType.id.in(parentTypeId));
-        BooleanExpression whenUpScoreTypeIsNotNull = trustScoreType.upTrustScoreType.isNotNull()
-                .and(trustScoreType.upTrustScoreType.id.in(parentTypeId));
+        BooleanExpression whenUpScoreTypeIsNull =
+                trustScoreType.upTrustScoreType.isNull().and(trustScoreType.id.in(parentTypeId));
+        BooleanExpression whenUpScoreTypeIsNotNull =
+                trustScoreType
+                        .upTrustScoreType
+                        .isNotNull()
+                        .and(trustScoreType.upTrustScoreType.id.in(parentTypeId));
         return whenUpScoreTypeIsNull.or(whenUpScoreTypeIsNotNull);
     }
 

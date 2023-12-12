@@ -1,13 +1,10 @@
 package com.example.demo.model.trust_score;
 
-
 import com.example.demo.global.common.BaseTimeEntity;
 import com.example.demo.model.trust_grade.TrustGrade;
+import javax.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import javax.persistence.*;
-
 
 @Entity
 @Table(name = "trust_score")
@@ -24,17 +21,14 @@ public class TrustScore extends BaseTimeEntity {
     private Long id;
 
     /** 유저자동생성식별자 */
-    @Column
-    private Long userId;
+    @Column private Long userId;
 
     /** 유저신뢰점수값 */
-    @Column 
-    private int score;
+    @Column private int score;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trust_grade_id")
     private TrustGrade trustGrade;
-
 
     @Builder
     public TrustScore(Long userId, int score) {

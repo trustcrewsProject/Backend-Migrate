@@ -1,12 +1,12 @@
 package com.example.demo.global.config;
 
 import com.example.demo.security.SecurityResponseHandler;
-import com.example.demo.security.jwt.JsonWebTokenLogoutFilter;
-import com.example.demo.security.jwt.JsonWebTokenExceptionFilter;
 import com.example.demo.security.custom.UserAuthenticationFailureHandler;
 import com.example.demo.security.custom.UserAuthenticationFilter;
 import com.example.demo.security.custom.UserAuthenticationSuccessHandler;
 import com.example.demo.security.jwt.JsonWebTokenAuthenticationFilter;
+import com.example.demo.security.jwt.JsonWebTokenExceptionFilter;
+import com.example.demo.security.jwt.JsonWebTokenLogoutFilter;
 import com.example.demo.security.jwt.JsonWebTokenProvider;
 import com.example.demo.service.token.RefreshTokenRedisService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -52,11 +52,15 @@ public class SecurityConfig {
     // 회원 인증 필터 빈 등록
     @Bean
     public UserAuthenticationFilter userAuthenticationFilter() throws Exception {
-        UserAuthenticationFilter userAuthenticationFilter = new UserAuthenticationFilter(objectMapper);
+        UserAuthenticationFilter userAuthenticationFilter =
+                new UserAuthenticationFilter(objectMapper);
 
         userAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
-        userAuthenticationFilter.setAuthenticationSuccessHandler(new UserAuthenticationSuccessHandler(jsonWebTokenProvider, refreshTokenRedisService, securityResponseHandler));
-        userAuthenticationFilter.setAuthenticationFailureHandler(new UserAuthenticationFailureHandler(securityResponseHandler));
+        userAuthenticationFilter.setAuthenticationSuccessHandler(
+                new UserAuthenticationSuccessHandler(
+                        jsonWebTokenProvider, refreshTokenRedisService, securityResponseHandler));
+        userAuthenticationFilter.setAuthenticationFailureHandler(
+                new UserAuthenticationFailureHandler(securityResponseHandler));
 
         return userAuthenticationFilter;
     }
@@ -70,7 +74,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf()
                 .disable()
-                .cors().configurationSource(corsConfig.corsConfigurationSource())
+                .cors()
+                .configurationSource(corsConfig.corsConfigurationSource())
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -81,9 +86,15 @@ public class SecurityConfig {
                 .disable();
 
         http.addFilterAfter(userAuthenticationFilter(), LogoutFilter.class);
-        http.addFilterBefore(new JsonWebTokenLogoutFilter(refreshTokenRedisService, securityResponseHandler), UsernamePasswordAuthenticationFilter.class);
-        http.addFilterBefore(new JsonWebTokenAuthenticationFilter(jsonWebTokenProvider), JsonWebTokenLogoutFilter.class);
-        http.addFilterBefore(new JsonWebTokenExceptionFilter(securityResponseHandler), JsonWebTokenAuthenticationFilter.class);
+        http.addFilterBefore(
+                new JsonWebTokenLogoutFilter(refreshTokenRedisService, securityResponseHandler),
+                UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(
+                new JsonWebTokenAuthenticationFilter(jsonWebTokenProvider),
+                JsonWebTokenLogoutFilter.class);
+        http.addFilterBefore(
+                new JsonWebTokenExceptionFilter(securityResponseHandler),
+                JsonWebTokenAuthenticationFilter.class);
 
         return http.build();
     }

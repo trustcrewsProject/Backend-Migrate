@@ -1,6 +1,5 @@
 package com.example.demo.dto.trust_score;
 
-
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +14,11 @@ public class ProjectUserHistoryDto {
     LocalDateTime createDate;
 
     public ProjectUserHistoryDto(
-            Long workId, Integer score, Boolean completeStatus, String content, LocalDateTime createDate) {
+            Long workId,
+            Integer score,
+            Boolean completeStatus,
+            String content,
+            LocalDateTime createDate) {
         this.id = workId;
         this.trustScore = score;
         this.completeStatus = completeStatus;

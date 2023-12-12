@@ -11,14 +11,11 @@ public class TrustGradeInfoResponseDto {
 
     private String trustGradeName;
 
-    private int trustGradeScore;
-
     public static TrustGradeInfoResponseDto of(
-            Long trustGradeId, String trustGradeName, int trustGradeScore) {
+            Long trustGradeId, String trustGradeName) {
         return TrustGradeInfoResponseDto.builder()
                 .trustGradeId(trustGradeId)
                 .trustGradeName(trustGradeName)
-                .trustGradeScore(trustGradeScore)
                 .build();
     }
 }

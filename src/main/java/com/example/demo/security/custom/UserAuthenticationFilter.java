@@ -13,10 +13,8 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
- *  회원을 인증하는 커스텀 필터
- *  설정한 DEFAULT_LOGIN_REQUEST_URL 에서 해당 필터가 실행
- *  인증 성공 시, UserAuthenticationSuccessHandler 실행
- *  인증 실패 시, UserAuthenticationFailureHandler 실행
+ * 회원을 인증하는 커스텀 필터 설정한 DEFAULT_LOGIN_REQUEST_URL 에서 해당 필터가 실행 인증 성공 시,
+ * UserAuthenticationSuccessHandler 실행 인증 실패 시, UserAuthenticationFailureHandler 실행
  */
 @Slf4j
 public class UserAuthenticationFilter extends AbstractAuthenticationProcessingFilter {

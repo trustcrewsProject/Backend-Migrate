@@ -7,25 +7,29 @@ import com.example.demo.model.position.Position;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.user.User;
 import com.example.demo.model.work.Work;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import javax.validation.constraints.NotNull;
 
 @Getter
 @AllArgsConstructor
 public class AlertCreateRequestDto {
     @NotNull(message = "프로젝트 아이디는 필수입니다.")
     private Long projectId;
+
     @NotNull(message = "체크해야 하는 유저 아이디는 필수입니다.")
     private Long checkUserId;
+
     @NotNull(message = "보내는 유저 아이디는 필수입니다.")
     private Long sendUserId;
+
     private Long workId;
     private Long milestoneId;
     private Long positionId;
+
     @NotNull(message = "알림 타입은 필수입니다.")
     private AlertType type;
+
     @NotNull(message = "알림 내용은 필수입니다.")
     private String content;
 
@@ -35,8 +39,7 @@ public class AlertCreateRequestDto {
             User sendUser,
             Work work,
             Milestone milestone,
-            Position position
-    ) {
+            Position position) {
         return Alert.builder()
                 .project(project)
                 .checkUser(checkUser)

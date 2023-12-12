@@ -9,6 +9,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
+
 @Slf4j
 @Repository
 @RequiredArgsConstructor
@@ -44,6 +45,7 @@ public class TrustScoreHistoryRepositoryImpl implements TrustScoreHistoryReposit
                 .on(trustScoreHistory.workId.eq(work.id))
                 .fetch();
     }
+
     @Override
     public int calculateCurrentScore(Long userId) {
         QTrustScoreHistory trustScoreHistory = QTrustScoreHistory.trustScoreHistory;

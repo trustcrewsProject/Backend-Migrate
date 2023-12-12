@@ -39,25 +39,30 @@ public class TrustScoreRepositoryImpl implements TrustScoreRepositoryCustom {
                 .fetchFirst();
     }
 
-    /**
-     * 0100AM 전체 유저 신뢰등급 업데이트 스케줄
-     */
-
+    /** 0100AM 전체 유저 신뢰등급 업데이트 스케줄 */
     @Scheduled(cron = "0 1 * * *", zone = "Asia/Seoul")
     @Override
     public void updateTrustGradeBatch() {
         QTrustScore trustScore = QTrustScore.trustScore;
         QTrustGrade trustGrade = QTrustGrade.trustGrade;
-        jpaQueryFactory.update(trustScore)
-                .set(trustScore.trustGrade,
+        jpaQueryFactory
+                .update(trustScore)
+                .set(
+                        trustScore.trustGrade,
                         JPAExpressions.selectFrom(trustGrade)
-                                .where(trustScore.score.goe(trustGrade.minimumScore)
-                                        .and(trustScore.score.loe(trustGrade.maximumScore))))
+                                .where(
+                                        trustScore
+                                                .score
+                                                .goe(trustGrade.minimumScore)
+                                                .and(
+                                                        trustScore.score.loe(
+                                                                trustGrade.maximumScore))))
                 .execute();
     }
 
     /**
      * 이력 발생시, 개별 유저 신뢰등급 업데이트
+     *
      * @param userId
      */
 
@@ -65,11 +70,18 @@ public class TrustScoreRepositoryImpl implements TrustScoreRepositoryCustom {
     public void updateUserTrustGrade(Long userId) {
         QTrustScore trustScore = QTrustScore.trustScore;
         QTrustGrade trustGrade = QTrustGrade.trustGrade;
-        jpaQueryFactory.update(trustScore)
-                .set(trustScore.trustGrade,
+        jpaQueryFactory
+                .update(trustScore)
+                .set(
+                        trustScore.trustGrade,
                         JPAExpressions.selectFrom(trustGrade)
-                                .where(trustScore.score.goe(trustGrade.minimumScore)
-                                        .and(trustScore.score.loe(trustGrade.maximumScore))))
+                                .where(
+                                        trustScore
+                                                .score
+                                                .goe(trustGrade.minimumScore)
+                                                .and(
+                                                        trustScore.score.loe(
+                                                                trustGrade.maximumScore))))
                 .where(trustScore.userId.eq(userId))
                 .execute();
     }

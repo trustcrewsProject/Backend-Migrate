@@ -14,6 +14,8 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -115,6 +117,19 @@ public class TrustScoreTypeRepositoryImpl implements TrustScoreTypeRepositoryCus
                 .fetch();
 
     }
+    /** */
+    @Override
+    public void disableTrustScoreType(Long trustScoreTypeId) {
+        jpaQueryFactory.update(trustScoreType)
+                .set(trustScoreType.deleteStatus, "Y")
+                .set(trustScoreType.updateDate, LocalDateTime.now())
+                .where(trustScoreType.id.eq(trustScoreTypeId)
+                        .or(trustScoreType.upTrustScoreType.isNotNull()
+                        .and(trustScoreType.upTrustScoreType.id.eq(trustScoreTypeId))))
+                .execute();
+    }
+
+
     // TODO : 삼항연산자로 refactor
     private static Expression<String> getUpTrustScoreTypeName(QTrustScoreType trustScoreType) {
         if (trustScoreType.upTrustScoreType == null) {

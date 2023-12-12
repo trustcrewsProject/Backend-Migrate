@@ -29,4 +29,6 @@ public interface TrustScoreTypeRepositoryCustom {
     List<Long> findAllUpScoreTypeId();
 
     List<TrustScoreTypeReadResponseDto> findSearchResults(TrustScoreTypeSearchCriteria criteria);
+    /** 신뢰점수타입 비활성화 */
+    void disableTrustScoreType(Long trustScoreTypeId);
 }

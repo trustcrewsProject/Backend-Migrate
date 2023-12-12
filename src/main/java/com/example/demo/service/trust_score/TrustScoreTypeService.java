@@ -16,4 +16,5 @@ public interface TrustScoreTypeService {
 
     TrustScoreTypeCreateResponseDto createTrustScoreType(TrustScoreTypeCreateRequestDto requestDto);
     void updateTrustScoreType(Long trustScoreTypeId, TrustScoreTypeUpdateRequestDto requestDto);
+    void disableTrustScoreType(Long trustScoreTypeId);
 }

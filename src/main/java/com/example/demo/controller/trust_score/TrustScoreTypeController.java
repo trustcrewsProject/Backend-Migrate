@@ -70,12 +70,20 @@ public class TrustScoreTypeController {
 
         return new ResponseEntity<>(ResponseDto.success("success", responseDto), HttpStatus.OK);
     }
-    /** 개별 신뢰점수타입 수정 */
+    /** 개별 신뢰점수타입 수정 TODO : 상위신뢰점수타입을 수정한다면? */
     @PutMapping("/api/trust-score-type/{trustScoreTypeId}")
     public ResponseEntity<ResponseDto<?>> updateTrustScoreType(
             @PathVariable(name = "trustScoreTypeId") Long trustScoreTypeId,
             @RequestBody @Valid TrustScoreTypeUpdateRequestDto requestDto) {
         trustScoreTypeService.updateTrustScoreType(trustScoreTypeId, requestDto);
+        return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.OK);
+    }
+    /** 신뢰점수타입 논리적 삭제 */
+    // TODO : 유효성 검사 trustScoreTypeId
+    @DeleteMapping("/api/trust-score-type/{trustScoreTypeId}/disable")
+    public ResponseEntity<ResponseDto<?>> disableTrustSCoreType(
+            @PathVariable(name = "trustScoreTypeId") Long trustScoreTypeId) {
+        trustScoreTypeService.disableTrustScoreType(trustScoreTypeId);
         return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.OK);
     }
 }

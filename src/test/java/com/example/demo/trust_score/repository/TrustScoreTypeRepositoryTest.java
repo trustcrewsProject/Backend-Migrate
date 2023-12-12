@@ -22,6 +22,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.*;
+
+import static com.example.demo.constant.TrustScoreTypeIdentifier.*;
 
 @SpringBootTest
 @Transactional
@@ -320,5 +323,45 @@ public class TrustScoreTypeRepositoryTest {
 
         // then
         Assertions.assertThat(searchResults.size()).isEqualTo(26);
+    }
+
+    @Test
+    @DisplayName("상위신뢰점수타입 비활성화")
+    public void disableTrustScoreType_UpTrustScoreType() {
+        // given
+        Long trustScoreTypeId = WORK_INCOMPLETE;
+        Long downTrustScoreTypeId = 12L; //  2등급 업무 미흡
+
+        // when
+        trustScoreTypeRepository.disableTrustScoreType(trustScoreTypeId);
+
+        // then
+        TrustScoreType findTrustScoreType =
+                trustScoreTypeRepository.findById(trustScoreTypeId)
+                        .orElseThrow(() -> TrustScoreTypeCustomException.NOT_FOUND_TRUST_SCORE_TYPE);
+        Assertions.assertThat(findTrustScoreType.getDeleteStatus()).isEqualTo("Y");
+
+        TrustScoreType findTrustScoreType2 =
+                trustScoreTypeRepository.findById(trustScoreTypeId)
+                        .orElseThrow(() -> TrustScoreTypeCustomException.NOT_FOUND_TRUST_SCORE_TYPE);
+        Assertions.assertThat(findTrustScoreType2.getDeleteStatus()).isEqualTo("Y");
+
+
+    }
+    @Test
+    @DisplayName("하위신뢰점수타입 비활성화")
+    public void disableTrustScoreType_DownTrustScoreType() {
+        // given
+        Long trustScoreTypeId = 13L; // 4등급 WORK_INCOMPLETE
+
+        // when
+        trustScoreTypeRepository.disableTrustScoreType(trustScoreTypeId);
+
+        // then
+        TrustScoreType findTrustScoreType =
+                trustScoreTypeRepository.findById(trustScoreTypeId)
+                        .orElseThrow(() -> TrustScoreTypeCustomException.NOT_FOUND_TRUST_SCORE_TYPE);
+        Assertions.assertThat(findTrustScoreType.getDeleteStatus()).isEqualTo("Y");
+
     }
 }

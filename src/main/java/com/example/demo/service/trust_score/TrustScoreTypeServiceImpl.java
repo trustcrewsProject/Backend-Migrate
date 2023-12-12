@@ -84,6 +84,14 @@ public class TrustScoreTypeServiceImpl implements TrustScoreTypeService {
                 .build();
         trustScoreTypeRepository.save(trustScoreType);
     }
+    // TODO : 유효성 검사 : 사전 비활성화 상태 여부
+    public void disableTrustScoreType(Long trustScoreTypeId) {
+        if (!trustScoreTypeRepository.existsById(trustScoreTypeId)) {
+            throw TrustScoreTypeCustomException.NOT_FOUND_TRUST_SCORE_TYPE;
+        }
+        trustScoreTypeRepository.disableTrustScoreType(trustScoreTypeId);
+    }
+
     // TODO : 코드 중복 리팩토링
     private TrustScoreType getUpTrustScoreType(TrustScoreTypeUpdateRequestDto requestDto) {
         if (requestDto.getUpTrustScoreTypeId() == null) {

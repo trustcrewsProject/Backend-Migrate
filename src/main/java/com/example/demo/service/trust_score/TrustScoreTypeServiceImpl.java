@@ -11,6 +11,7 @@ import com.example.demo.repository.trust_score.TrustScoreTypeRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,9 +29,9 @@ public class TrustScoreTypeServiceImpl implements TrustScoreTypeService {
     }
 
     @Override
-    public List<TrustScoreTypeReadResponseDto> getSearchResults(
+    public Page<TrustScoreTypeReadResponseDto> getSearchResults(
             TrustScoreTypeSearchCriteria criteria) {
-        return trustScoreTypeRepository.findSearchResults(criteria);
+        return null;
     }
 
     @Override

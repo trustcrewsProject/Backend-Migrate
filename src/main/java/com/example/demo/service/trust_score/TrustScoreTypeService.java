@@ -5,12 +5,14 @@ import com.example.demo.dto.trust_score_type.request.TrustScoreTypeCreateRequest
 import com.example.demo.dto.trust_score_type.request.TrustScoreTypeUpdateRequestDto;
 import com.example.demo.dto.trust_score_type.response.TrustScoreTypeCreateResponseDto;
 import com.example.demo.dto.trust_score_type.response.TrustScoreTypeReadResponseDto;
+import org.springframework.data.domain.Page;
+
 import java.util.List;
 
 public interface TrustScoreTypeService {
     List<TrustScoreTypeReadResponseDto> getAllAndReturnDto();
 
-    List<TrustScoreTypeReadResponseDto> getSearchResults(TrustScoreTypeSearchCriteria criteria);
+    Page<TrustScoreTypeReadResponseDto> getSearchResults(TrustScoreTypeSearchCriteria criteria);
 
     TrustScoreTypeReadResponseDto findByIdAndReturnDto(Long trustScoreTypeId);
 

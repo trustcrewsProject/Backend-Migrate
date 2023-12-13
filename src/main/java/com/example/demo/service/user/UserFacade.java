@@ -251,4 +251,17 @@ public class UserFacade {
 
         return ResponseDto.success("내 정보 조회가 완료되었습니다.", myInfoResponse);
     }
+
+    /**
+     * 내 프로젝트 이력 목록 조회 (페이징)
+     * @param user
+     * @param pageNumber
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public ResponseDto<?> getMyProjectHistoryList(PrincipalDetails user, int pageNumber) {
+        List<UserProjectHistoryInfoResponseDto> projectHistoryList = userProjectHistoryService.getUserProjectHistoryList(user.getId(), pageNumber);
+
+        return ResponseDto.success("내 프로젝트 이력 목록 조회가 완료되었습니다.", projectHistoryList);
+    }
 }

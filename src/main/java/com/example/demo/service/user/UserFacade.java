@@ -2,6 +2,7 @@ package com.example.demo.service.user;
 
 import com.example.demo.constant.Role;
 import com.example.demo.constant.TrustScoreTypeIdentifier;
+import com.example.demo.constant.UserStatus;
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.dto.position.response.PositionInfoResponseDto;
 import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
@@ -69,6 +70,7 @@ public class UserFacade {
                         .intro(createRequest.getIntro())
                         .position(position)
                         .role(Role.USER)
+                        .status(UserStatus.ACTIVE)
                         .build();
 
         // 회원 저장

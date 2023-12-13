@@ -243,14 +243,11 @@ public class UserFacade {
                 .collect(Collectors.toList());
         // 회원 프로젝트 이력 개수
         long projectHistoryTotalCount = userProjectHistoryService.getUserProjectHistoryTotalCount(currentUser.getId());
-        // 회원 프로젝트 이력 목록 정보 응답 DTO
-        List<UserProjectHistoryInfoResponseDto> projectHistoryListInfo = userProjectHistoryService.getUserProjectHistoryList(currentUser.getId(), 1);
-
 
         // 내 정보 응답 DTO 생성
         UserMyInfoResponseDto myInfoResponse = UserMyInfoResponseDto.of(currentUser.getId(), currentUser.getEmail(), currentUser.getNickname(),
                 currentUser.getProfileImgSrc(), trustScore.getScore(), trustGradeInfo, positionInfo, techStacksInfo, projectHistoryTotalCount,
-                projectHistoryListInfo, DateTimeConverter.toStringConvert(currentUser.getCreateDate()), DateTimeConverter.toStringConvert(currentUser.getUpdateDate()));
+                DateTimeConverter.toStringConvert(currentUser.getCreateDate()), DateTimeConverter.toStringConvert(currentUser.getUpdateDate()));
 
         return ResponseDto.success("내 정보 조회가 완료되었습니다.", myInfoResponse);
     }

@@ -133,7 +133,7 @@ public class TrustScoreTypeRepositoryImpl implements TrustScoreTypeRepositoryCus
         return new PageImpl<>(list, pageable, total);
 
     }
-    /** */
+
     @Override
     public void disableTrustScoreType(Long trustScoreTypeId) {
         jpaQueryFactory.update(trustScoreType)

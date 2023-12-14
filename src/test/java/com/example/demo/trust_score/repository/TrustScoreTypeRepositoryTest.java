@@ -21,6 +21,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.*;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
@@ -149,13 +150,13 @@ public class TrustScoreTypeRepositoryTest {
     public void getSearchResults_NoCriteria_Pass() {
         // given
         TrustScoreTypeSearchCriteria criteria = new TrustScoreTypeSearchCriteria();
-
+        PageRequest pageable = PageRequest.of(1, 10);
         // when
-        List<TrustScoreTypeReadResponseDto> searchResults =
-                trustScoreTypeRepository.findSearchResults(criteria);
+        Page<TrustScoreTypeReadResponseDto> searchResults =
+                trustScoreTypeRepository.findSearchResults(criteria, pageable);
 
         // then
-        Assertions.assertThat(searchResults.size()).isEqualTo(26);
+        Assertions.assertThat(searchResults.getContent().size()).isEqualTo(10);
     }
 
     @Test
@@ -167,10 +168,11 @@ public class TrustScoreTypeRepositoryTest {
         List<String> firstTrustGrade = Collections.singletonList("1등급");
         criteria.setParentTypeId(newMember);
         criteria.setTrustGrade(firstTrustGrade);
+        Pageable pageable = PageRequest.of(0, 10);
 
         // when
-        List<TrustScoreTypeReadResponseDto> searchResults =
-                trustScoreTypeRepository.findSearchResults(criteria);
+        Page<TrustScoreTypeReadResponseDto> searchResults =
+                trustScoreTypeRepository.findSearchResults(criteria, pageable);
 
         // then
         Assertions.assertThat(searchResults).isEmpty();
@@ -182,13 +184,14 @@ public class TrustScoreTypeRepositoryTest {
         // given
         TrustScoreTypeSearchCriteria criteria = new TrustScoreTypeSearchCriteria();
         criteria.setIsParentType(true);
+        Pageable pageable = PageRequest.of(0, 10);
 
         // when
-        List<TrustScoreTypeReadResponseDto> searchResults =
-                trustScoreTypeRepository.findSearchResults(criteria);
+        Page<TrustScoreTypeReadResponseDto> searchResults =
+                trustScoreTypeRepository.findSearchResults(criteria, pageable);
 
         // then
-        Assertions.assertThat(searchResults.size()).isEqualTo(6);
+        Assertions.assertThat(searchResults.getContent().size()).isEqualTo(6);
     }
 
     @Test
@@ -197,13 +200,14 @@ public class TrustScoreTypeRepositoryTest {
         // given
         TrustScoreTypeSearchCriteria criteria = new TrustScoreTypeSearchCriteria();
         criteria.setGubunCode("P");
+        Pageable pageable = PageRequest.of(0, 10);
 
         // when
-        List<TrustScoreTypeReadResponseDto> searchResults =
-                trustScoreTypeRepository.findSearchResults(criteria);
+        Page<TrustScoreTypeReadResponseDto> searchResults =
+                trustScoreTypeRepository.findSearchResults(criteria, pageable);
 
         // then
-        Assertions.assertThat(searchResults.size()).isEqualTo(6);
+        Assertions.assertThat(searchResults.getContent().size()).isEqualTo(6);
     }
 
     @Test
@@ -215,13 +219,13 @@ public class TrustScoreTypeRepositoryTest {
         grades.add("1등급");
         grades.add("2등급");
         criteria.setTrustGrade(grades);
-
+        Pageable pageable = PageRequest.of(0, 10);
         // when
-        List<TrustScoreTypeReadResponseDto> searchResults =
-                trustScoreTypeRepository.findSearchResults(criteria);
+        Page<TrustScoreTypeReadResponseDto> searchResults =
+                trustScoreTypeRepository.findSearchResults(criteria, pageable);
 
         // then
-        Assertions.assertThat(searchResults.size()).isEqualTo(10);
+        Assertions.assertThat(searchResults.getContent().size()).isEqualTo(10);
     }
 
     @Test
@@ -239,13 +243,14 @@ public class TrustScoreTypeRepositoryTest {
         ids.add(NEW_MEMBER);
         ids.add(FORCE_WITHDRAWAL);
         criteria.setParentTypeId(ids);
+        Pageable pageable = PageRequest.of(0, 10);
 
         // when
-        List<TrustScoreTypeReadResponseDto> searchResults =
-                trustScoreTypeRepository.findSearchResults(criteria);
+        Page<TrustScoreTypeReadResponseDto> searchResults =
+                trustScoreTypeRepository.findSearchResults(criteria, pageable);
 
         // then
-        Assertions.assertThat(searchResults.size()).isEqualTo(2);
+        Assertions.assertThat(searchResults.getContent().size()).isEqualTo(2);
     }
 
     @Test
@@ -259,12 +264,14 @@ public class TrustScoreTypeRepositoryTest {
         ids.add(FORCE_WITHDRAWAL);
         criteria.setParentTypeId(ids);
 
+        Pageable pageable = PageRequest.of(0, 10);
+
         // when
-        List<TrustScoreTypeReadResponseDto> searchResults =
-                trustScoreTypeRepository.findSearchResults(criteria);
+        Page<TrustScoreTypeReadResponseDto> searchResults =
+                trustScoreTypeRepository.findSearchResults(criteria, pageable);
 
         // then
-        Assertions.assertThat(searchResults.size()).isEqualTo(6);
+        Assertions.assertThat(searchResults.getContent().size()).isEqualTo(6);
     }
 
     @Test
@@ -274,13 +281,14 @@ public class TrustScoreTypeRepositoryTest {
         TrustScoreTypeSearchCriteria criteria = new TrustScoreTypeSearchCriteria();
         String keyword = "업무 완수";
         criteria.setKeyword(keyword);
+        Pageable pageable = PageRequest.of(0, 10);
 
         // when
-        List<TrustScoreTypeReadResponseDto> searchResults =
-                trustScoreTypeRepository.findSearchResults(criteria);
+        Page<TrustScoreTypeReadResponseDto> searchResults =
+                trustScoreTypeRepository.findSearchResults(criteria, pageable);
 
         // then
-        Assertions.assertThat(searchResults.size()).isEqualTo(5);
+        Assertions.assertThat(searchResults.getContent().size()).isEqualTo(5);
     }
 
     @Test
@@ -300,12 +308,14 @@ public class TrustScoreTypeRepositoryTest {
         criteria.setKeyword(keyword);
         criteria.setTrustGrade(trustGradeList);
 
+        Pageable pageable = PageRequest.of(0, 10);
+
         // when
-        List<TrustScoreTypeReadResponseDto> searchResults =
-                trustScoreTypeRepository.findSearchResults(criteria);
+        Page<TrustScoreTypeReadResponseDto> searchResults =
+                trustScoreTypeRepository.findSearchResults(criteria, pageable);
 
         // then
-        Assertions.assertThat(searchResults.size()).isEqualTo(2);
+        Assertions.assertThat(searchResults.getContent().size()).isEqualTo(2);
     }
 
     @Test
@@ -317,12 +327,14 @@ public class TrustScoreTypeRepositoryTest {
         String emptyKeyword = "  ";
         criteria.setKeyword(emptyKeyword);
 
+        Pageable pageable = PageRequest.of(0, 10);
+
         // when
-        List<TrustScoreTypeReadResponseDto> searchResults =
-                trustScoreTypeRepository.findSearchResults(criteria);
+        Page<TrustScoreTypeReadResponseDto> searchResults =
+                trustScoreTypeRepository.findSearchResults(criteria, pageable);
 
         // then
-        Assertions.assertThat(searchResults.size()).isEqualTo(26);
+        Assertions.assertThat(searchResults.getContent().size()).isEqualTo(10);
     }
 
     @Test
@@ -362,6 +374,25 @@ public class TrustScoreTypeRepositoryTest {
                 trustScoreTypeRepository.findById(trustScoreTypeId)
                         .orElseThrow(() -> TrustScoreTypeCustomException.NOT_FOUND_TRUST_SCORE_TYPE);
         Assertions.assertThat(findTrustScoreType.getDeleteStatus()).isEqualTo("Y");
+
+    }
+
+    @Test
+    @DisplayName("신뢰점수타입 기본 페이지")
+    public void getPagedResults() {
+        // given
+        TrustScoreTypeSearchCriteria criteria = new TrustScoreTypeSearchCriteria();
+        Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "id"));
+
+        // when
+        Page<TrustScoreTypeReadResponseDto> searchResults
+                = trustScoreTypeRepository.findSearchResults(criteria, pageable);
+
+        // then
+        Assertions.assertThat(searchResults).isNotNull();
+        Assertions.assertThat(searchResults.getContent().size()).isEqualTo(10);
+
+
 
     }
 }

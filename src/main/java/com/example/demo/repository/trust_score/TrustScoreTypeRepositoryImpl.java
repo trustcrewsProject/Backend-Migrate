@@ -6,18 +6,25 @@ import com.example.demo.dto.trust_score_type.TrustScoreTypeSearchCriteria;
 import com.example.demo.dto.trust_score_type.response.TrustScoreTypeReadResponseDto;
 import com.example.demo.model.project.QProject;
 import com.example.demo.model.trust_grade.QTrustGrade;
+import com.example.demo.model.trust_score.QTrustScore;
 import com.example.demo.model.trust_score.QTrustScoreType;
+import com.example.demo.model.trust_score.TrustScoreType;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.NullExpression;
-import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.core.types.*;
+import com.querydsl.core.types.dsl.*;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -87,11 +94,11 @@ public class TrustScoreTypeRepositoryImpl implements TrustScoreTypeRepositoryCus
     // TODO : 정렬 페이징 추가
 
     @Override
-    public List<TrustScoreTypeReadResponseDto> findSearchResults(
-            TrustScoreTypeSearchCriteria criteria) {
+    public Page<TrustScoreTypeReadResponseDto> findSearchResults(
+            TrustScoreTypeSearchCriteria criteria, Pageable pageable) {
         QTrustScoreType trustScoreType = QTrustScoreType.trustScoreType;
         QTrustScoreType subTrustScoreType = new QTrustScoreType("subTrustScoreType");
-        return jpaQueryFactory
+        JPAQuery<TrustScoreTypeReadResponseDto> query = jpaQueryFactory
                 .select(
                         Projections.constructor(
                                 TrustScoreTypeReadResponseDto.class,
@@ -113,11 +120,20 @@ public class TrustScoreTypeRepositoryImpl implements TrustScoreTypeRepositoryCus
                         gubunCodeEq(criteria.getGubunCode()),
                         trustGradeContain(criteria.getTrustGrade()),
                         parentTypeIdContain(criteria.getParentTypeId()),
-                        keywordLike(criteria.getKeyword()))
-                .fetch();
+                        keywordLike(criteria.getKeyword())
+                )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(getOrderSpecifiers(pageable.getSort()));
+
+        List<TrustScoreTypeReadResponseDto> list = query.fetch();
+
+        long total = query.stream().count();
+
+        return new PageImpl<>(list, pageable, total);
 
     }
-    /** */
+
     @Override
     public void disableTrustScoreType(Long trustScoreTypeId) {
         jpaQueryFactory.update(trustScoreType)
@@ -205,5 +221,16 @@ public class TrustScoreTypeRepositoryImpl implements TrustScoreTypeRepositoryCus
             return null;
         }
         return trustScoreType.trustScoreTypeName.contains(keyword);
+    }
+
+    private OrderSpecifier<?>[] getOrderSpecifiers(Sort sort) {
+        // Sort
+        return sort.stream().map(order -> {
+            Order direction = order.isAscending() ? Order.ASC : Order.DESC;
+            String property = order.getProperty();
+            PathBuilder<TrustScoreType> path = new PathBuilder<>(trustScoreType.getType(), trustScoreType.getMetadata());
+            Expression propertyExpression = path.get(property, TrustScoreType.class);
+            return new OrderSpecifier(direction, propertyExpression);
+        }).toArray(OrderSpecifier<?>[]::new);
     }
 }

@@ -52,14 +52,14 @@ public class BoardFacade {
     private final UserProjectHistoryService userProjectHistoryService;
 
     /**
-     * 게시글, 프로젝트 생성, 프로젝트 기술 생성, 프로젝트 멤버 생성, 사용자 이력 생성, 게시글-포지션 생성 TODO : 현재 유저가 개발하도록 작성
+     * 게시글, 프로젝트 생성, 프로젝트 기술 생성, 프로젝트 멤버 생성, 사용자 이력 생성, 게시글-포지션 생성
      *
      * @param dto
      * @return
      */
     @Transactional
-    public BoardProjectCreateResponseDto create(BoardProjectCreateRequestDto dto) {
-        User tempUser = userService.findById(1L);
+    public BoardProjectCreateResponseDto create(Long userId, BoardProjectCreateRequestDto dto) {
+        User tempUser = userService.findById(userId);
 
         // 신뢰등급 설정
         TrustGrade trustGrade =

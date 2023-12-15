@@ -66,8 +66,8 @@ public class BoardController {
     }
 
     @DeleteMapping("/{boardId}")
-    public ResponseEntity<ResponseDto<?>> delete(@PathVariable("boardId") Long boardId) {
-        boardService.delete(boardId);
+    public ResponseEntity<ResponseDto<?>> delete(@AuthenticationPrincipal PrincipalDetails user, @PathVariable("boardId") Long boardId) {
+        boardFacade.deleteBoard(user.getId(), boardId);
         return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.NO_CONTENT);
     }
 }

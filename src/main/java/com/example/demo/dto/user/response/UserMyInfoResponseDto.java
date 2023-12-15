@@ -19,6 +19,8 @@ public class UserMyInfoResponseDto {
 
     private String profileImgSrc;
 
+    private String intro;
+
     private int trustScore;
 
     private TrustGradeInfoResponseDto trustGrade;
@@ -38,6 +40,7 @@ public class UserMyInfoResponseDto {
             String email,
             String nickname,
             String profileImgSrc,
+            String intro,
             int trustScore,
             TrustGradeInfoResponseDto trustGrade,
             PositionInfoResponseDto position,
@@ -50,6 +53,7 @@ public class UserMyInfoResponseDto {
                 .email(email)
                 .nickname(nickname)
                 .profileImgSrc(profileImgSrc)
+                .intro(intro)
                 .trustScore(trustScore)
                 .trustGrade(trustGrade)
                 .position(position)

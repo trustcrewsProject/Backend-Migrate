@@ -124,10 +124,14 @@ public class BoardFacade {
      * @param dto
      * @return
      */
-    public BoardProjectUpdateResponseDto update(Long boardId, BoardProjectUpdateRequestDto dto) {
+    public BoardProjectUpdateResponseDto update(Long userId, Long boardId, BoardProjectUpdateRequestDto dto) {
+        User tempUser = userService.findById(userId); // 나중에 Security로 고쳐야 함.
         Board board = boardService.findById(boardId);
+
+        // 게시글 작성자 검증
+        board.validationUser(tempUser);
+
         Project project = board.getProject();
-        User tempUser = userService.findById(1L); // 나중에 Security로 고쳐야 함.
 
         TrustGrade trustGrade =
                 trustGradeService.getTrustGradeById(dto.getProject().getTrustGradeId());

@@ -168,4 +168,15 @@ public class BoardFacade {
 
         return new BoardProjectUpdateResponseDto(boardUpdateResponseDto, projectUpdateResponseDto);
     }
+
+    @Transactional
+    public void deleteBoard(Long userId, Long boardId) {
+        User tempUser = userService.findById(userId);
+        Board board = boardService.findById(boardId);
+
+        // 게시글 작성자 검증
+        board.validationUser(tempUser);
+
+        boardService.delete(board);
+    }
 }

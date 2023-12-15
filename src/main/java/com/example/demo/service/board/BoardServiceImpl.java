@@ -108,10 +108,9 @@ public class BoardServiceImpl implements BoardService {
     /**
      * 게시글 삭제
      *
-     * @param boardId
+     * @param board
      */
-    public void delete(Long boardId) {
-        Board board = findById(boardId);
+    public void delete(Board board) {
         boardRepository.delete(board);
     }
 }

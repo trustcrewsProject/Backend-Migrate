@@ -20,5 +20,5 @@ public interface BoardService {
 
     public BoardTotalDetailResponseDto getDetail(Long boardId);
 
-    public void delete(Long boardId);
+    public void delete(Board board);
 }

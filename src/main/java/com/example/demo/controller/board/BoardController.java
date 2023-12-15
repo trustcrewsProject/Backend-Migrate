@@ -53,10 +53,11 @@ public class BoardController {
 
     @PatchMapping("/{boardId}")
     public ResponseEntity<ResponseDto<?>> update(
+            @AuthenticationPrincipal PrincipalDetails user,
             @PathVariable("boardId") Long boardId,
             @RequestBody BoardProjectUpdateRequestDto requestDto) {
         try {
-            BoardProjectUpdateResponseDto result = boardFacade.update(boardId, requestDto);
+            BoardProjectUpdateResponseDto result = boardFacade.update(user.getId(), boardId, requestDto);
             return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
         } catch (Exception ex) {
             ex.printStackTrace();

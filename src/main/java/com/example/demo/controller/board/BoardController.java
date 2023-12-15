@@ -8,6 +8,7 @@ import com.example.demo.dto.board_project.request.BoardProjectUpdateRequestDto;
 import com.example.demo.dto.board_project.response.BoardProjectCreateResponseDto;
 import com.example.demo.dto.board_project.response.BoardProjectUpdateResponseDto;
 import com.example.demo.dto.common.ResponseDto;
+import com.example.demo.security.custom.PrincipalDetails;
 import com.example.demo.service.board.BoardFacade;
 import com.example.demo.service.board.BoardService;
 import java.util.Optional;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -43,8 +45,9 @@ public class BoardController {
 
     @PostMapping("")
     public ResponseEntity<ResponseDto<?>> create(
+            @AuthenticationPrincipal PrincipalDetails user,
             @RequestBody BoardProjectCreateRequestDto requestDto) {
-        BoardProjectCreateResponseDto result = boardFacade.create(requestDto);
+        BoardProjectCreateResponseDto result = boardFacade.create(user.getId(), requestDto);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 

@@ -2,6 +2,7 @@ package com.example.demo.model.board;
 
 import com.example.demo.dto.board.request.BoardUpdateRequestDto;
 import com.example.demo.global.common.BaseTimeEntity;
+import com.example.demo.global.exception.customexception.BoardCustomException;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.user.User;
 import java.util.ArrayList;
@@ -58,6 +59,13 @@ public class Board extends BaseTimeEntity {
         this.completeStatus = completeStatus;
         this.user = user;
         this.contact = contact;
+    }
+
+    // 게시글 작성자 검증
+    public void validationUser(User user) {
+        if(!this.user.equals(user)) {
+            throw BoardCustomException.NO_PERMISSION_TO_EDIT_OR_DELETE;
+        }
     }
 
     public void updateBoard(BoardUpdateRequestDto dto) {

@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,11 +29,11 @@ public class TrustScoreTypeServiceImpl implements TrustScoreTypeService {
                 .map(TrustScoreTypeReadResponseDto::of)
                 .collect(Collectors.toList());
     }
-
+    // TODO : 테스트
     @Override
     public Page<TrustScoreTypeReadResponseDto> getSearchResults(
-            TrustScoreTypeSearchCriteria criteria) {
-        return null;
+            TrustScoreTypeSearchCriteria criteria, Pageable pageable) {
+        return trustScoreTypeRepository.findSearchResults(criteria, pageable);
     }
 
     @Override

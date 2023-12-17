@@ -1,5 +1,6 @@
 package com.example.demo.service.trust_score;
 
+import com.example.demo.dto.trust_score_type.TrustScoreTypeBaseDto;
 import com.example.demo.dto.trust_score_type.TrustScoreTypeSearchCriteria;
 import com.example.demo.dto.trust_score_type.request.TrustScoreTypeCreateRequestDto;
 import com.example.demo.dto.trust_score_type.request.TrustScoreTypeUpdateRequestDto;
@@ -43,7 +44,7 @@ public class TrustScoreTypeServiceImpl implements TrustScoreTypeService {
                                 () -> TrustScoreTypeCustomException.NOT_FOUND_TRUST_SCORE_TYPE);
         return TrustScoreTypeReadResponseDto.of(findTrustScoreType);
     }
-
+    // TODO : 코드 리팩토링
     @Override
     public TrustScoreTypeCreateResponseDto createTrustScoreType(
             TrustScoreTypeCreateRequestDto requestDto) {
@@ -93,21 +94,11 @@ public class TrustScoreTypeServiceImpl implements TrustScoreTypeService {
         trustScoreTypeRepository.disableTrustScoreType(trustScoreTypeId);
     }
 
-    // TODO : 코드 중복 리팩토링
-    private TrustScoreType getUpTrustScoreType(TrustScoreTypeUpdateRequestDto requestDto) {
+    private TrustScoreType getUpTrustScoreType(TrustScoreTypeBaseDto requestDto) {
         if (requestDto.getUpTrustScoreTypeId() == null) {
             return null;
         }
         return trustScoreTypeRepository.findById(requestDto.getUpTrustScoreTypeId())
-                .orElseThrow(() -> TrustScoreTypeCustomException.NOT_FOUND_TRUST_SCORE_TYPE);
-    }
-
-    private TrustScoreType getUpTrustScoreType(TrustScoreTypeCreateRequestDto requestDto) {
-        if (requestDto.getUpTrustScoreTypeId() == null) {
-            return null;
-        }
-        return trustScoreTypeRepository
-                .findById(requestDto.getUpTrustScoreTypeId())
                 .orElseThrow(() -> TrustScoreTypeCustomException.NOT_FOUND_TRUST_SCORE_TYPE);
     }
 }

@@ -5,6 +5,7 @@ import com.example.demo.dto.project.request.ProjectConfirmRequestDto;
 import com.example.demo.dto.project.request.ProjectParticipateRequestDto;
 import com.example.demo.dto.project.response.ProjectMeResponseDto;
 import com.example.demo.dto.project.response.ProjectSpecificDetailResponseDto;
+import com.example.demo.security.custom.PrincipalDetails;
 import com.example.demo.service.project.ProjectFacade;
 import com.example.demo.service.project.ProjectService;
 import java.util.List;
@@ -12,6 +13,7 @@ import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,8 +25,8 @@ public class ProjectController {
     public final ProjectFacade projectFacade;
 
     @GetMapping("/me")
-    public ResponseEntity<ResponseDto<?>> getMyProjects() {
-        List<ProjectMeResponseDto> result = projectFacade.getMyProjects();
+    public ResponseEntity<ResponseDto<?>> getMyProjects(@AuthenticationPrincipal PrincipalDetails user) {
+        List<ProjectMeResponseDto> result = projectFacade.getMyProjects(user.getId());
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 

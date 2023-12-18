@@ -114,14 +114,14 @@ public class ProjectFacade {
     }
 
     /**
-     * 참여 수락하기 TODO : 사용자 jwt token으로 사용하기
+     * 참여 수락하기
      *
      * @param projectId
      * @param projectConfirmRequestDto
      */
-    public void confirm(Long projectId, ProjectConfirmRequestDto projectConfirmRequestDto) {
+    public void confirm(Long userId, Long projectId, ProjectConfirmRequestDto projectConfirmRequestDto) {
         Project project = projectService.findById(projectId);
-        User user = userService.findById(1L);
+        User user = userService.findById(userId);
         ProjectMemberAuth projectMemberAuth = projectMemberAuthService.findTopByOrderByIdDesc();
         Position position = positionService.findById(projectConfirmRequestDto.getPositionId());
 

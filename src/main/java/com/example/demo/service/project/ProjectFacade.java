@@ -46,8 +46,8 @@ public class ProjectFacade {
      * @return
      */
     @Transactional(readOnly = true)
-    public List<ProjectMeResponseDto> getMyProjects() {
-        User user = userService.findById(1L);
+    public List<ProjectMeResponseDto> getMyProjects(Long userId) {
+        User user = userService.findById(userId);
 
         List<Project> projects = projectService.findProjectsByUser(user);
         List<ProjectMeResponseDto> result = new ArrayList<>();

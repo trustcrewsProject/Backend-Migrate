@@ -7,6 +7,7 @@ import com.example.demo.dto.trust_score_type.request.TrustScoreTypeUpdateRequest
 import com.example.demo.dto.trust_score_type.response.TrustScoreTypeCreateResponseDto;
 import com.example.demo.dto.trust_score_type.response.TrustScoreTypeReadResponseDto;
 import com.example.demo.global.exception.customexception.TrustScoreTypeCustomException;
+import com.example.demo.model.trust_score.TrustScore;
 import com.example.demo.model.trust_score.TrustScoreType;
 import com.example.demo.repository.trust_score.TrustScoreTypeRepository;
 import java.util.List;
@@ -87,11 +88,17 @@ public class TrustScoreTypeServiceImpl implements TrustScoreTypeService {
                 .build();
         trustScoreTypeRepository.save(trustScoreType);
     }
-    // TODO : 유효성 검사 : 사전 비활성화 상태 여부
+
     public void disableTrustScoreType(Long trustScoreTypeId) {
-        if (!trustScoreTypeRepository.existsById(trustScoreTypeId)) {
-            throw TrustScoreTypeCustomException.NOT_FOUND_TRUST_SCORE_TYPE;
+
+        TrustScoreType trustScoreType = trustScoreTypeRepository.findById(trustScoreTypeId)
+                        .orElseThrow(() -> TrustScoreTypeCustomException.NOT_FOUND_TRUST_SCORE_TYPE);
+
+        // 비활성화 여부 유효성 검사
+        if (!trustScoreType.getDeleteStatus().equals("N")) {
+            throw TrustScoreTypeCustomException.ALREADY_DISABLED_TRUST_SCORE_TYPE;
         }
+
         trustScoreTypeRepository.disableTrustScoreType(trustScoreTypeId);
     }
 

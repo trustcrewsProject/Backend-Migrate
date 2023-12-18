@@ -23,9 +23,11 @@ import static com.example.demo.constant.TrustScoreTypeIdentifier.WORK_INCOMPLETE
 @SpringBootTest
 public class TrustScoreTypeServiceTest {
 
-    @Autowired private TrustScoreTypeService trustScoreTypeService;
+    @Autowired
+    private TrustScoreTypeService trustScoreTypeService;
 
-    @Autowired private TrustScoreTypeRepository trustScoreTypeRepository;
+    @Autowired
+    private TrustScoreTypeRepository trustScoreTypeRepository;
 
     @Test
     @DisplayName("신뢰점수타입 전체 DTO 반환")
@@ -159,4 +161,25 @@ public class TrustScoreTypeServiceTest {
         Assertions.assertThat(createResponseDto.getScore()).isNotEqualTo(trustScoreType.getScore());
         Assertions.assertThat(createResponseDto.getDeleteStatus()).isNotEqualTo(trustScoreType.getDeleteStatus());
     }
+
+    @Test
+    @DisplayName("신뢰점수타입 비활성화 유효성 검사 실패")
+    public void disableTrustScoreType_Validation_Fail() {
+        // given
+        TrustScoreType trustScoreType =
+                TrustScoreType.builder()
+                        .upTrustScoreType(null)
+                        .trustScoreTypeName("테스트 신뢰정보타입")
+                        .trustGradeName("테스트 신뢰등급")
+                        .gubunCode("P")
+                        .score(77777)
+                        .deleteStatus("Y")
+                        .build();
+        TrustScoreType saveType = trustScoreTypeRepository.save(trustScoreType);
+
+        // when - then
+        Assertions.assertThatThrownBy(() -> trustScoreTypeService.disableTrustScoreType(saveType.getId()))
+                .isInstanceOf(TrustScoreTypeCustomException.class);
+    }
 }
+

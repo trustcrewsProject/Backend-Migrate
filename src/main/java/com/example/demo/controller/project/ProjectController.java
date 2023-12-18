@@ -38,9 +38,10 @@ public class ProjectController {
 
     @PostMapping("/{projectId}/participate")
     public ResponseEntity<ResponseDto<?>> participate(
+            @AuthenticationPrincipal PrincipalDetails user,
             @PathVariable("projectId") Long projectId,
             @RequestBody @Valid ProjectParticipateRequestDto projectParticipateRequestDto) {
-        projectFacade.sendParticipateAlert(projectId, projectParticipateRequestDto);
+        projectFacade.sendParticipateAlert(user.getId(), projectId, projectParticipateRequestDto);
         return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.OK);
     }
 

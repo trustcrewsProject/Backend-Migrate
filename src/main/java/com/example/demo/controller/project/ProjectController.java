@@ -47,9 +47,10 @@ public class ProjectController {
 
     @PostMapping("/{projectId}/participate/confirm")
     public ResponseEntity<ResponseDto<?>> confirm(
+            @AuthenticationPrincipal PrincipalDetails user,
             @PathVariable("projectId") Long projectId,
             @RequestBody @Valid ProjectConfirmRequestDto projectConfirmRequestDto) {
-        projectFacade.confirm(projectId, projectConfirmRequestDto);
+        projectFacade.confirm(user.getId(), projectId, projectConfirmRequestDto);
         return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.OK);
     }
 

@@ -41,7 +41,7 @@ public class ProjectFacade {
     private final MilestoneService milestoneService;
 
     /**
-     * 내 프로젝트 목록 조회 TODO : 현재 유저 가져오기.
+     * 내 프로젝트 목록 조회
      *
      * @return
      */
@@ -87,15 +87,15 @@ public class ProjectFacade {
     }
 
     /**
-     * 참여하기 참여하는 경우 알림보내기 TODO : 지원자 아이디 jwt token으로 받기.
+     * 참여하기 참여하는 경우 알림보내기
      *
      * @param projectId
      * @param projectParticipateRequestDto
      */
     public void sendParticipateAlert(
-            Long projectId, ProjectParticipateRequestDto projectParticipateRequestDto) {
+            Long userId, Long projectId, ProjectParticipateRequestDto projectParticipateRequestDto) {
         Project project = projectService.findById(projectId);
-        User user = userService.findById(1L);
+        User user = userService.findById(userId);
         Position position = positionService.findById(projectParticipateRequestDto.getPositionId());
         Alert alert =
                 Alert.builder()

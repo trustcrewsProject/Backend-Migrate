@@ -13,6 +13,7 @@ import com.example.demo.dto.user.request.UserCreateRequestDto;
 import com.example.demo.dto.user.request.UserUpdateRequestDto;
 import com.example.demo.dto.user.response.UserMyInfoResponseDto;
 import com.example.demo.dto.user.response.UserProjectHistoryInfoResponseDto;
+import com.example.demo.dto.user.response.UserSimpleInfoResponseDto;
 import com.example.demo.dto.user.response.UserUpdateResponseDto;
 import com.example.demo.global.util.DateTimeConverter;
 import com.example.demo.model.position.Position;
@@ -211,6 +212,20 @@ public class UserFacade {
         }
 
         return null;
+    }
+
+    /**
+     * 간단한 내 정보 조회 로직 (닉네임, 프로필 이미지 경로) - 로그인한 회원의 정보를 클라이언트 헤더에서 사용하기 위함
+     * @param user
+     * @return simpleMyInfoResponse
+     */
+
+    @Transactional(readOnly = true)
+    public ResponseDto<?> getSimpleMyInfo(PrincipalDetails user) {
+        User currentUser = userService.findById(user.getId());
+        UserSimpleInfoResponseDto simpleMyInfoResponse = UserSimpleInfoResponseDto.of(currentUser.getNickname(), currentUser.getProfileImgSrc());
+
+        return ResponseDto.success("내 정보 조회가 완료되었습니다.", simpleMyInfoResponse);
     }
 
     /**

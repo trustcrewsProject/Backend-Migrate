@@ -85,7 +85,7 @@ public class SecurityConfig {
                 .disable()
                 .authorizeRequests()
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
-                .antMatchers("/api/public/**").permitAll()
+                .antMatchers("/**/public").permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterAfter(userAuthenticationFilter(), LogoutFilter.class);

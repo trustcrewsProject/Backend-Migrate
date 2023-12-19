@@ -29,7 +29,7 @@ public class BoardController {
     private final BoardService boardService;
     private final BoardFacade boardFacade;
 
-    @PostMapping(value = {"/search", "/search/{page}"})
+    @PostMapping(value = {"/search/public", "/search/{page}/public"})
     public ResponseEntity<ResponseDto<?>> search(
             @RequestBody BoardSearchRequestDto dto, @PathVariable("page") Optional<Integer> page) {
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 5);
@@ -37,7 +37,7 @@ public class BoardController {
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 
-    @GetMapping("/{boardId}")
+    @GetMapping("/{boardId}/public")
     public ResponseEntity<ResponseDto<?>> getDetail(@PathVariable("boardId") Long boardId) {
         BoardTotalDetailResponseDto result = boardService.getDetail(boardId);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);

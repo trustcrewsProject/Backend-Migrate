@@ -28,7 +28,7 @@ public class TrustScoreRepositoryTest {
     @Autowired private EntityManager entityManager;
 
     @Test
-    @DisplayName("updateTrustGrade 메서드 테스트 - 성공")
+    @DisplayName("updateTrustGradeBatch 메서드 테스트 - 성공")
     public void updateTrustGradeBatch_Method_Test_Pass() {
         // given
         // 유저 생성 및 저장

@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class TrustScoreController {
     private final TrustScoreService trustScoreService;
 
+    // TODO : ResponseDto 삭제
+
     @PostMapping("/api/trust-score")
     public ResponseEntity<ResponseDto<?>> updateScoreByApi(
             @RequestBody @Valid TrustScoreUpdateRequestDto requestDto) {

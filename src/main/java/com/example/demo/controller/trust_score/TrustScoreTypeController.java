@@ -83,7 +83,6 @@ public class TrustScoreTypeController {
         return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.OK);
     }
     /** 신뢰점수타입 논리적 삭제 */
-    // TODO : 유효성 검사 trustScoreTypeId
     @DeleteMapping("/api/trust-score-type/{trustScoreTypeId}/disable")
     public ResponseEntity<ResponseDto<?>> disableTrustSCoreType(
             @PathVariable(name = "trustScoreTypeId") Long trustScoreTypeId) {

@@ -20,7 +20,7 @@ public class TrustScoreType extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "up_trust_score_type_id")
-    private TrustScoreType upTrustScoreType; // Reference to the same entity
+    private TrustScoreType upTrustScoreType;
 
     @OneToMany(mappedBy = "upTrustScoreType")
     private List<TrustScoreType> subTrustScoreTypes = new ArrayList<>();

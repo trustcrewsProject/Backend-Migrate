@@ -1,7 +1,6 @@
 package com.example.demo.security.custom;
 
 import com.example.demo.dto.common.ResponseDto;
-import com.example.demo.dto.user.response.UserLoginSuccessResponseDto;
 import com.example.demo.security.SecurityResponseHandler;
 import com.example.demo.security.jwt.JsonWebTokenDto;
 import com.example.demo.security.jwt.JsonWebTokenProvider;
@@ -46,18 +45,11 @@ public class UserAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
         // Redis RefreshToken 저장
         refreshTokenRedisService.save(principalDetails.getId(), tokens.getRefreshToken());
 
-        // 로그인 성공 반환 데이터 셋팅
-        UserLoginSuccessResponseDto loginSuccessResponse =
-                UserLoginSuccessResponseDto.of(
-                        principalDetails.getId(),
-                        principalDetails.getEmail(),
-                        principalDetails.getNickname());
-
         // 클라이언트로 응답 전송
         securityResponseHandler.sendResponse(
                 response,
                 HttpStatus.OK,
-                ResponseDto.success("로그인이 완료되었습니다.", loginSuccessResponse));
+                ResponseDto.success("로그인이 완료되었습니다.", principalDetails.getId()));
     }
 
     // RefreshToken 쿠키 생성

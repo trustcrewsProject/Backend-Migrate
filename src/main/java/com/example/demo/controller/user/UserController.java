@@ -48,6 +48,12 @@ public class UserController {
                 .body(userFacade.updateUser(user, updateRequest));
     }
 
+    // 간단한 내 정보 조회
+    @GetMapping("/api/user/simple-me")
+    public ResponseEntity<ResponseDto<?>> simpleMyInfo(@AuthenticationPrincipal PrincipalDetails user) {
+        return ResponseEntity.status(HttpStatus.OK).body(userFacade.getSimpleMyInfo(user));
+    }
+
     // 내 정보 조회
     @GetMapping("/api/user/me")
     public ResponseEntity<ResponseDto<?>> myInfo(@AuthenticationPrincipal PrincipalDetails user) {

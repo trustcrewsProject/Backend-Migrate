@@ -22,19 +22,19 @@ public class UserController {
     private final UserService userService;
 
     // 이메일 중복확인 요청
-    @GetMapping("/check-email/{email}")
+    @GetMapping("/check-email/{email}/public")
     public ResponseEntity<ResponseDto<?>> checkEmail(@PathVariable String email) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.checkEmail(email));
     }
 
     // 닉네임 중복확인 요청
-    @GetMapping("/check-nickname/{nickname}")
+    @GetMapping("/check-nickname/{nickname}/public")
     public ResponseEntity<ResponseDto<?>> checkNickname(@PathVariable String nickname) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.checkNickname(nickname));
     }
 
     // 회원가입
-    @PostMapping()
+    @PostMapping("/public")
     public ResponseEntity<ResponseDto<?>> signup(
             @Valid @RequestBody UserCreateRequestDto createRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userFacade.createUser(createRequest));

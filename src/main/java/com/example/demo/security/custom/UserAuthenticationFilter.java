@@ -20,14 +20,14 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class UserAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
     // 로그인 요청 URL
-    private static final String DEFAULT_LOGIN_REQUEST_URL = "/api/user/login";
+    private static final String DEFAULT_LOGIN_REQUEST_URI = "/api/user/login/public";
 
     // 로그인 HTTP 메소드
     private static final String HTTP_METHOD = "POST";
 
     // "/api/user/login" + POST로 온 요청에 매칭
     private static final AntPathRequestMatcher DEFAULT_LOGIN_PATH_REQUEST_MATCHER =
-            new AntPathRequestMatcher(DEFAULT_LOGIN_REQUEST_URL, HTTP_METHOD);
+            new AntPathRequestMatcher(DEFAULT_LOGIN_REQUEST_URI, HTTP_METHOD);
 
     private final ObjectMapper objectMapper;
 

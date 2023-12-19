@@ -82,7 +82,11 @@ public class SecurityConfig {
                 .formLogin()
                 .disable()
                 .httpBasic()
-                .disable();
+                .disable()
+                .authorizeRequests()
+                .antMatchers("/api/admin/**").hasRole("ADMIN")
+                .antMatchers("/api/public/**").permitAll()
+                .anyRequest().authenticated();
 
         http.addFilterAfter(userAuthenticationFilter(), LogoutFilter.class);
         http.addFilterBefore(

@@ -15,7 +15,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Slf4j
 public class JsonWebTokenAuthenticationFilter extends OncePerRequestFilter {
 
-    private static final List<String> PERMIT_URI = List.of("/api/user/login");
     private JsonWebTokenProvider jsonWebTokenProvider;
 
     public JsonWebTokenAuthenticationFilter(JsonWebTokenProvider jsonWebTokenProvider) {
@@ -26,12 +25,11 @@ public class JsonWebTokenAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(
             HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        String requestUri = request.getRequestURI();
         String accessToken = jsonWebTokenProvider.resolveAccessToken(request);
         log.info("AccessToken : {}", accessToken);
 
         // 요청 URI 확인 및 토큰 검증
-        if (!PERMIT_URI.contains(requestUri) && jsonWebTokenProvider.validateToken(accessToken)) {
+        if(!isPublicEndpoint(request.getRequestURI()) && jsonWebTokenProvider.validateToken(accessToken)) {
             // 토큰에 담긴 회원정보를 추출해 시큐리티에서 사용할 인증 객체 반환
             Authentication authentication = jsonWebTokenProvider.getAuthentication(accessToken);
 
@@ -40,5 +38,10 @@ public class JsonWebTokenAuthenticationFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    // 요청한 URI가 public URI인지 확인
+    private boolean isPublicEndpoint(String requestUri) {
+        return requestUri.endsWith("/public");
     }
 }

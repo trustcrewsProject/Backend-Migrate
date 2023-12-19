@@ -15,7 +15,7 @@ public class TechnologyStackController {
     private final TechnologyStackService technologyStackService;
 
     // 기술스택 목록 조회 요청
-    @GetMapping("/api/technology-stack-list")
+    @GetMapping("/api/technology-stack-list/public")
     public ResponseEntity<ResponseDto<?>> getTechnologyStackList() {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(technologyStackService.getTechnologyStackList());

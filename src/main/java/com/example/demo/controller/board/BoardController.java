@@ -29,10 +29,10 @@ public class BoardController {
     private final BoardService boardService;
     private final BoardFacade boardFacade;
 
-    @PostMapping(value = {"/search/public", "/search/{page}/public"})
+    @PostMapping("/search/public")
     public ResponseEntity<ResponseDto<?>> search(
-            @RequestBody BoardSearchRequestDto dto, @PathVariable("page") Optional<Integer> page) {
-        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 5);
+            @RequestBody BoardSearchRequestDto dto, @RequestParam("page") Optional<Integer> page) {
+        Pageable pageable = PageRequest.of(page.orElse(0), 5);
         Page<BoardSearchResponseDto> result = boardService.search(dto, pageable);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }

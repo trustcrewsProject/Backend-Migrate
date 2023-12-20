@@ -4,11 +4,14 @@ import com.example.demo.constant.ProjectStatus;
 import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
 import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
 import com.example.demo.dto.user.response.UserProjectResponseDto;
+import com.example.demo.global.util.LocalDateTimeFormatSerializer;
 import com.example.demo.model.project.Project;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -24,7 +27,11 @@ public class ProjectDetailResponseDto {
     private int crewNumber;
     private LocalDate startDate;
     private LocalDate endDate;
+
+    @JsonSerialize(using = LocalDateTimeFormatSerializer.class)
     private LocalDateTime createDate;
+
+    @JsonSerialize(using = LocalDateTimeFormatSerializer.class)
     private LocalDateTime updateDate;
     private List<TechnologyStackInfoResponseDto> technologyStacks;
 

@@ -5,6 +5,8 @@ import com.example.demo.dto.project.request.ProjectUpdateRequestDto;
 import com.example.demo.global.common.BaseTimeEntity;
 import com.example.demo.model.trust_grade.TrustGrade;
 import com.example.demo.model.user.User;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +43,8 @@ public class Project extends BaseTimeEntity {
     @Column(nullable = true)
     private int crewNumber;
 
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     @OneToMany(mappedBy = "project", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<ProjectMember> projectMembers = new ArrayList<>();
@@ -58,8 +60,8 @@ public class Project extends BaseTimeEntity {
             User user,
             ProjectStatus status,
             int crewNumber,
-            LocalDateTime startDate,
-            LocalDateTime endDate) {
+            LocalDate startDate,
+            LocalDate endDate) {
         this.name = name;
         this.subject = subject;
         this.trustGrade = trustGrade;

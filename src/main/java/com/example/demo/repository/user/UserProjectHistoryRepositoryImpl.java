@@ -42,9 +42,7 @@ public class UserProjectHistoryRepositoryImpl implements UserProjectHistoryRepos
                                         userProjectHistory.id,
                                         userProjectHistory.status,
                                         userProjectHistory.project.name,
-                                        Expressions.stringTemplate(
-                                                "DATE_FORMAT(userProjectHistory.updateDate, '%Y %b %d %H:%i:%s')",
-                                                userProjectHistory.updateDate)))
+                                        userProjectHistory.updateDate))
                         .from(userProjectHistory)
                         .leftJoin(userProjectHistory.project, project)
                         .leftJoin(userProjectHistory.user, user)

@@ -3,6 +3,8 @@ package com.example.demo.dto.user.response;
 import com.example.demo.dto.position.response.PositionInfoResponseDto;
 import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
 import com.example.demo.dto.trust_grade.response.TrustGradeInfoResponseDto;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,9 +33,9 @@ public class UserMyInfoResponseDto {
 
     private long projectHistoryTotalCount;
 
-    private String createDate;
+    private LocalDateTime createDate;
 
-    private String updateDate;
+    private LocalDateTime updateDate;
 
     public static UserMyInfoResponseDto of(
             Long userId,
@@ -46,8 +48,8 @@ public class UserMyInfoResponseDto {
             PositionInfoResponseDto position,
             List<TechnologyStackInfoResponseDto> techStacks,
             long projectHistoryTotalCount,
-            String createDate,
-            String updateDate) {
+            LocalDateTime createDate,
+            LocalDateTime updateDate) {
         return UserMyInfoResponseDto.builder()
                 .userId(userId)
                 .email(email)

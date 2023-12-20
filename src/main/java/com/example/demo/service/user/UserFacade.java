@@ -262,7 +262,7 @@ public class UserFacade {
         // 내 정보 응답 DTO 생성
         UserMyInfoResponseDto myInfoResponse = UserMyInfoResponseDto.of(currentUser.getId(), currentUser.getEmail(), currentUser.getNickname(),
                 currentUser.getProfileImgSrc(), currentUser.getIntro(), trustScore.getScore(), trustGradeInfo, positionInfo, techStacksInfo, projectHistoryTotalCount,
-                DateTimeConverter.toStringConvert(currentUser.getCreateDate()), DateTimeConverter.toStringConvert(currentUser.getUpdateDate()));
+                currentUser.getCreateDate(), currentUser.getUpdateDate());
 
         return ResponseDto.success("내 정보 조회가 완료되었습니다.", myInfoResponse);
     }

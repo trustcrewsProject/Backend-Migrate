@@ -5,6 +5,8 @@ import com.example.demo.dto.milestone.request.MilestoneUpdateContentRequestDto;
 import com.example.demo.dto.milestone.request.MilestoneUpdateDateRequestDto;
 import com.example.demo.global.common.BaseTimeEntity;
 import com.example.demo.model.project.Project;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.*;
 import lombok.AccessLevel;
@@ -32,10 +34,10 @@ public class Milestone extends BaseTimeEntity {
     private String content;
 
     @Column(name = "start_date")
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
     @Column(name = "end_date")
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
     @Column(name = "expire_status")
     private boolean expireStatus;
@@ -47,8 +49,8 @@ public class Milestone extends BaseTimeEntity {
     public Milestone(
             Project project,
             String content,
-            LocalDateTime startDate,
-            LocalDateTime endDate,
+            LocalDate startDate,
+            LocalDate endDate,
             boolean expireStatus,
             boolean completeStatus) {
         this.project = project;

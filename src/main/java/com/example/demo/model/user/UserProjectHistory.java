@@ -3,6 +3,8 @@ package com.example.demo.model.user;
 import com.example.demo.constant.UserProjectHistoryStatus;
 import com.example.demo.global.common.BaseTimeEntity;
 import com.example.demo.model.project.Project;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.*;
 import lombok.AccessLevel;
@@ -31,10 +33,10 @@ public class UserProjectHistory extends BaseTimeEntity {
     private Project project;
 
     @Column(name = "start_date")
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
     @Column(name = "end_date")
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
     @Enumerated(value = EnumType.STRING)
     private UserProjectHistoryStatus status;
@@ -43,8 +45,8 @@ public class UserProjectHistory extends BaseTimeEntity {
     public UserProjectHistory(
             User user,
             Project project,
-            LocalDateTime startDate,
-            LocalDateTime endDate,
+            LocalDate startDate,
+            LocalDate endDate,
             UserProjectHistoryStatus status) {
         this.user = user;
         this.project = project;

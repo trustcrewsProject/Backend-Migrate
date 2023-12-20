@@ -6,6 +6,9 @@ import com.example.demo.dto.trust_grade.response.TrustGradeInfoResponseDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import com.example.demo.global.util.LocalDateTimeFormatSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -33,8 +36,10 @@ public class UserMyInfoResponseDto {
 
     private long projectHistoryTotalCount;
 
+    @JsonSerialize(using = LocalDateTimeFormatSerializer.class)
     private LocalDateTime createDate;
 
+    @JsonSerialize(using = LocalDateTimeFormatSerializer.class)
     private LocalDateTime updateDate;
 
     public static UserMyInfoResponseDto of(

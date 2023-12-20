@@ -8,6 +8,8 @@ import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
 import com.example.demo.model.user.User;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.*;
 import lombok.AccessLevel;
@@ -49,10 +51,10 @@ public class Work extends BaseTimeEntity {
     private boolean completeStatus;
 
     @Column(name = "start_date")
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
     @Column(name = "end_date")
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
     @OneToOne
     @JoinColumn(name = "project_member_id")
@@ -69,8 +71,8 @@ public class Work extends BaseTimeEntity {
             String content,
             boolean expireStatus,
             boolean completeStatus,
-            LocalDateTime startDate,
-            LocalDateTime endDate,
+            LocalDate startDate,
+            LocalDate endDate,
             ProjectMember lastModifiedMember) {
         this.project = project;
         this.milestone = milestone;

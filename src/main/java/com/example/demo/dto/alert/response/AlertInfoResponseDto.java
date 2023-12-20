@@ -1,8 +1,11 @@
 package com.example.demo.dto.alert.response;
 
 import com.example.demo.constant.AlertType;
+import com.example.demo.global.util.LocalDateTimeFormatSerializer;
 import com.example.demo.model.alert.Alert;
 import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.util.ObjectUtils;
@@ -19,7 +22,11 @@ public class AlertInfoResponseDto {
     private Long positionId;
     private String content;
     private AlertType type;
+
+    @JsonSerialize(using = LocalDateTimeFormatSerializer.class)
     private LocalDateTime createDate;
+
+    @JsonSerialize(using = LocalDateTimeFormatSerializer.class)
     private LocalDateTime updateDate;
 
     public static AlertInfoResponseDto of(Alert alert) {

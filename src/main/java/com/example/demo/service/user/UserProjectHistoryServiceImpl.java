@@ -43,7 +43,7 @@ public class UserProjectHistoryServiceImpl implements UserProjectHistoryService 
     @Override
     public List<UserProjectHistoryInfoResponseDto> getUserProjectHistoryList(
             Long userId, int pageNumber) {
-        PageRequest pageRequest = PageRequest.of(pageNumber - 1, 5);
+        PageRequest pageRequest = PageRequest.of(pageNumber, 5);
         return userProjectHistoryRepository.findAllByUserIdOrderByUpdateDateDesc(
                 userId, pageRequest);
     }

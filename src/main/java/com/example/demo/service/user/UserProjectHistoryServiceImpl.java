@@ -6,7 +6,8 @@ import com.example.demo.model.project.Project;
 import com.example.demo.model.user.User;
 import com.example.demo.model.user.UserProjectHistory;
 import com.example.demo.repository.user.UserProjectHistoryRepository;
-import java.time.LocalDateTime;
+
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -23,7 +24,7 @@ public class UserProjectHistoryServiceImpl implements UserProjectHistoryService 
         return UserProjectHistory.builder()
                 .user(user)
                 .project(project)
-                .startDate(LocalDateTime.now())
+                .startDate(LocalDate.now())
                 .endDate(project.getEndDate())
                 .status(UserProjectHistoryStatus.PARTICIPATING)
                 .build();

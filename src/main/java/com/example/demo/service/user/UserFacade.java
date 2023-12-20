@@ -15,7 +15,6 @@ import com.example.demo.dto.user.response.UserMyInfoResponseDto;
 import com.example.demo.dto.user.response.UserProjectHistoryInfoResponseDto;
 import com.example.demo.dto.user.response.UserSimpleInfoResponseDto;
 import com.example.demo.dto.user.response.UserUpdateResponseDto;
-import com.example.demo.global.util.DateTimeConverter;
 import com.example.demo.model.position.Position;
 import com.example.demo.model.technology_stack.TechnologyStack;
 import com.example.demo.model.trust_grade.TrustGrade;

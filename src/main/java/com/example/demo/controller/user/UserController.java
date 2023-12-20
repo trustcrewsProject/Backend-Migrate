@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
@@ -63,7 +65,7 @@ public class UserController {
 
     // 내 프로젝트 이력 목록 조회
     @GetMapping("/me/project-history")
-    public ResponseEntity<ResponseDto<?>> myProjectHistoryList(@AuthenticationPrincipal PrincipalDetails user, @RequestParam int pageNumber) {
-        return ResponseEntity.status(HttpStatus.OK).body(userFacade.getMyProjectHistoryList(user, pageNumber));
+    public ResponseEntity<ResponseDto<?>> myProjectHistoryList(@AuthenticationPrincipal PrincipalDetails user, @RequestParam Optional<Integer> pageNumber) {
+        return ResponseEntity.status(HttpStatus.OK).body(userFacade.getMyProjectHistoryList(user, pageNumber.orElse(0)));
     }
 }

@@ -1,6 +1,9 @@
 package com.example.demo.dto.trust_score;
 
 import java.time.LocalDateTime;
+
+import com.example.demo.global.util.LocalDateTimeFormatSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +14,8 @@ public class ProjectUserHistoryDto {
     Boolean completeStatus;
     String content;
     Integer trustScore;
+
+    @JsonSerialize(using = LocalDateTimeFormatSerializer.class)
     LocalDateTime createDate;
 
     public ProjectUserHistoryDto(

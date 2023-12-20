@@ -12,11 +12,11 @@ public enum PageNationErrorCode implements ErrorCode{
 
     @Override
     public HttpStatus getStatus() {
-        return null;
+        return this.status;
     }
 
     @Override
     public String getMessage() {
-        return null;
+        return this.message;
     }
 }

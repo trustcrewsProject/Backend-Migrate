@@ -2,7 +2,9 @@ package com.example.demo.dto.board.response;
 
 import com.example.demo.dto.project.response.ProjectSearchResponseDto;
 import com.example.demo.dto.user.response.UserSearchResponseDto;
+import com.example.demo.global.util.LocalDateTimeFormatSerializer;
 import com.example.demo.model.board.Board;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.querydsl.core.annotations.QueryProjection;
 import java.time.LocalDateTime;
 import lombok.Builder;
@@ -21,7 +23,11 @@ public class BoardSearchResponseDto {
     private boolean boardCompleteStatus;
     private UserSearchResponseDto user;
     private String boardContact;
+
+    @JsonSerialize(using = LocalDateTimeFormatSerializer.class)
     private LocalDateTime createDate;
+
+    @JsonSerialize(using = LocalDateTimeFormatSerializer.class)
     private LocalDateTime updateDate;
 
     @QueryProjection

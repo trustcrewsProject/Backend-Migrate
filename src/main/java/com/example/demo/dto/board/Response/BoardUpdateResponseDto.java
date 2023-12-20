@@ -1,7 +1,10 @@
 package com.example.demo.dto.board.response;
 
+import com.example.demo.global.util.LocalDateTimeFormatSerializer;
 import com.example.demo.model.board.Board;
 import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -15,7 +18,11 @@ public class BoardUpdateResponseDto {
     private boolean boardCompleteStatus;
     private long boardUserId;
     private String boardContact;
+
+    @JsonSerialize(using = LocalDateTimeFormatSerializer.class)
     private LocalDateTime createDate;
+
+    @JsonSerialize(using = LocalDateTimeFormatSerializer.class)
     private LocalDateTime updateDate;
 
     public static BoardUpdateResponseDto of(Board board) {

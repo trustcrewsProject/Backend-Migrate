@@ -3,6 +3,8 @@ package com.example.demo.dto.work.response;
 import com.example.demo.dto.user.response.UserProjectDetailResponseDto;
 import com.example.demo.model.project.ProjectMember;
 import com.example.demo.model.work.Work;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,8 +18,8 @@ public class WorkProjectDetailResponseDto {
     private String workContent;
     private Boolean expireStatus;
     private Boolean completeStatus;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 

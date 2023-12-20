@@ -1,6 +1,8 @@
 package com.example.demo.dto.work.request;
 
 import com.example.demo.model.work.Work;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,8 +16,8 @@ public class WorkReadResponseDto {
     private Long assignedUserId;
     private Long lastModifiedMember;
     private String content;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private boolean expireStatus;
     private boolean completeStauts;
 

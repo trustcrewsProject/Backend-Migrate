@@ -1,5 +1,6 @@
 package com.example.demo.dto.project.request;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
@@ -24,10 +25,10 @@ public class ProjectUpdateRequestDto {
     private int crewNumber;
 
     @NotBlank(message = "시작날짜는 필수 입력 값입니다.")
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
     @NotBlank(message = "종료날짜는 필수 입력 값입니다.")
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
     @NotBlank(message = "모집분야는 필수 입력 값입니다.")
     private List<Long> technologyIds;

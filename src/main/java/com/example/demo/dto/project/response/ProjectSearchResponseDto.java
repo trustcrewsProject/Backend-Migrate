@@ -3,6 +3,8 @@ package com.example.demo.dto.project.response;
 import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
 import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
 import com.example.demo.model.project.Project;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Builder;
@@ -15,8 +17,8 @@ public class ProjectSearchResponseDto {
     private String name;
     private String subject;
     private TrustGradeResponseDto trustGrade;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private List<TechnologyStackInfoResponseDto> technologyStacks;
 
     public static ProjectSearchResponseDto of(

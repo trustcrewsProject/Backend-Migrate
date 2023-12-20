@@ -2,6 +2,8 @@ package com.example.demo.dto.project.response;
 
 import com.example.demo.constant.ProjectStatus;
 import com.example.demo.model.project.Project;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,8 +17,8 @@ public class ProjectCreateResponseDto {
     private long userId;
     private ProjectStatus status;
     private int crewNumber;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 

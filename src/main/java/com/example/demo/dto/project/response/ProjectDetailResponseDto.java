@@ -5,6 +5,8 @@ import com.example.demo.dto.technology_stack.response.TechnologyStackInfoRespons
 import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
 import com.example.demo.dto.user.response.UserProjectResponseDto;
 import com.example.demo.model.project.Project;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Builder;
@@ -20,8 +22,8 @@ public class ProjectDetailResponseDto {
     private UserProjectResponseDto user;
     private ProjectStatus status;
     private int crewNumber;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
     private List<TechnologyStackInfoResponseDto> technologyStacks;

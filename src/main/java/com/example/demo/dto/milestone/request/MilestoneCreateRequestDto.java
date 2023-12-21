@@ -1,5 +1,6 @@
 package com.example.demo.dto.milestone.request;
 
+import com.example.demo.constant.ProgressStatus;
 import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.project.Project;
 
@@ -21,8 +22,7 @@ public class MilestoneCreateRequestDto {
                 .content(this.getContent())
                 .startDate(this.getStartDate())
                 .endDate(this.getEndDate())
-                .expireStatus(false)
-                .completeStatus(false)
+                .progressStatus(ProgressStatus.BEFORE_START)
                 .build();
     }
 }

@@ -1,6 +1,7 @@
 package com.example.demo.global.config;
 
 import com.example.demo.security.SecurityResponseHandler;
+import com.example.demo.security.custom.CustomAccessDeniedHandler;
 import com.example.demo.security.custom.UserAuthenticationFailureHandler;
 import com.example.demo.security.custom.UserAuthenticationFilter;
 import com.example.demo.security.custom.UserAuthenticationSuccessHandler;
@@ -86,7 +87,10 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
                 .antMatchers("/**/public").permitAll()
-                .anyRequest().authenticated();
+                .anyRequest().authenticated()
+                .and()
+                .exceptionHandling()
+                .accessDeniedHandler(new CustomAccessDeniedHandler(securityResponseHandler));
 
         http.addFilterAfter(userAuthenticationFilter(), LogoutFilter.class);
         http.addFilterBefore(

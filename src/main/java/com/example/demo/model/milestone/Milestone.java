@@ -1,5 +1,6 @@
 package com.example.demo.model.milestone;
 
+import com.example.demo.constant.ProgressStatus;
 import com.example.demo.dto.milestone.request.MileStoneUpdateRequestDto;
 import com.example.demo.dto.milestone.request.MilestoneUpdateContentRequestDto;
 import com.example.demo.dto.milestone.request.MilestoneUpdateDateRequestDto;
@@ -39,11 +40,9 @@ public class Milestone extends BaseTimeEntity {
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    @Column(name = "expire_status")
-    private boolean expireStatus;
-
-    @Column(name = "complete_status")
-    private boolean completeStatus;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "progress_status")
+    private ProgressStatus progressStatus;
 
     @Builder
     public Milestone(
@@ -51,14 +50,12 @@ public class Milestone extends BaseTimeEntity {
             String content,
             LocalDate startDate,
             LocalDate endDate,
-            boolean expireStatus,
-            boolean completeStatus) {
+            ProgressStatus progressStatus) {
         this.project = project;
         this.content = content;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.expireStatus = expireStatus;
-        this.completeStatus = completeStatus;
+        this.progressStatus = progressStatus;
     }
 
     public void update(MileStoneUpdateRequestDto dto) {

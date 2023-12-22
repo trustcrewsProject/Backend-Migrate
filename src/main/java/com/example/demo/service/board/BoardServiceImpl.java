@@ -33,12 +33,12 @@ public class BoardServiceImpl implements BoardService {
     /**
      * 게시글 목록 검색
      *
-     * @param dto
+     * @param
      * @return List<BoardSearchResponseDto>
      */
     @Transactional(readOnly = true)
-    public Page<BoardSearchResponseDto> search(BoardSearchRequestDto dto, Pageable pageable) {
-        return boardRepository.getBoardSearchPage(dto, pageable);
+    public Page<BoardSearchResponseDto> search(Long positionId, String keyword, List<Long> technologyIds, Pageable pageable) {
+        return boardRepository.getBoardSearchPage(positionId, keyword, technologyIds, pageable);
     }
 
     public Board findById(Long boardId) {

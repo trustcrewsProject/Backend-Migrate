@@ -8,11 +8,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Transactional
 public interface BoardService {
 
     @Transactional(readOnly = true)
-    public Page<BoardSearchResponseDto> search(BoardSearchRequestDto dto, Pageable pageable);
+    public Page<BoardSearchResponseDto> search(Long positionId, String keyword, List<Long> technologyIds, Pageable pageable);
 
     public Board findById(Long boardId);
 

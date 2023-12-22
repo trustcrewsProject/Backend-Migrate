@@ -7,8 +7,10 @@ import com.example.demo.dto.project.response.ProjectMeResponseDto;
 import com.example.demo.dto.project.response.ProjectSpecificDetailResponseDto;
 import com.example.demo.security.custom.PrincipalDetails;
 import com.example.demo.service.project.ProjectFacade;
+import com.example.demo.service.project.ProjectMemberService;
 import com.example.demo.service.project.ProjectService;
 import java.util.List;
+import java.util.Map;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,16 +25,22 @@ public class ProjectController {
 
     public final ProjectService projectService;
     public final ProjectFacade projectFacade;
+    public final ProjectMemberService projectMemberService;
 
     @GetMapping("/me")
     public ResponseEntity<ResponseDto<?>> getMyProjects(@AuthenticationPrincipal PrincipalDetails user) {
         List<ProjectMeResponseDto> result = projectFacade.getMyProjects(user.getId());
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
+    // TODO : 하드코딩 리팩토링 (setter 보단 다른 방법 강구)
 
     @GetMapping("/{projectId}")
-    public ResponseEntity<ResponseDto<?>> getDetail(@PathVariable("projectId") Long projectId) {
+    public ResponseEntity<ResponseDto<?>> getDetail(
+            @PathVariable("projectId") Long projectId,
+            @AuthenticationPrincipal PrincipalDetails user) {
+        Map<String, Boolean> userAuthMap = projectMemberService.getUserAuthMap(projectId, user.getId());
         ProjectSpecificDetailResponseDto result = projectFacade.getDetail(projectId);
+        result.setAuthMap(userAuthMap);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 

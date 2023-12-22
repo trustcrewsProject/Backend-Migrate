@@ -11,6 +11,8 @@ import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.security.custom.PrincipalDetails;
 import com.example.demo.service.board.BoardFacade;
 import com.example.demo.service.board.BoardService;
+
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -29,11 +31,14 @@ public class BoardController {
     private final BoardService boardService;
     private final BoardFacade boardFacade;
 
-    @PostMapping("/search/public")
+    @GetMapping("/search/public")
     public ResponseEntity<ResponseDto<?>> search(
-            @RequestBody BoardSearchRequestDto dto, @RequestParam("page") Optional<Integer> page) {
+            @RequestParam(value = "positionId", required = false) Long positionId,
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "technologyIds", required = false) List<Long> technologyIds,
+            @RequestParam("page") Optional<Integer> page) {
         Pageable pageable = PageRequest.of(page.orElse(0), 5);
-        Page<BoardSearchResponseDto> result = boardService.search(dto, pageable);
+        Page<BoardSearchResponseDto> result = boardService.search(positionId, keyword, technologyIds, pageable);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 

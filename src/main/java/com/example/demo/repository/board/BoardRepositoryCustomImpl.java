@@ -2,6 +2,8 @@ package com.example.demo.repository.board;
 
 import com.example.demo.dto.board.request.BoardSearchRequestDto;
 import com.example.demo.dto.board.response.BoardSearchResponseDto;
+import com.example.demo.dto.boardposition.BoardPositionDetailResponseDto;
+import com.example.demo.dto.position.response.PositionResponseDto;
 import com.example.demo.dto.project.response.ProjectSearchResponseDto;
 import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
 import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
@@ -9,6 +11,7 @@ import com.example.demo.dto.user.response.UserSearchResponseDto;
 import com.example.demo.global.exception.customexception.PositionCustomException;
 import com.example.demo.global.exception.customexception.TechnologyStackCustomException;
 import com.example.demo.model.board.Board;
+import com.example.demo.model.board.BoardPosition;
 import com.example.demo.model.board.QBoard;
 import com.example.demo.model.board.QBoardPosition;
 import com.example.demo.model.position.Position;
@@ -56,18 +59,14 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
         }
     }
 
-    public BooleanExpression containsPosition(List<Long> positionIds) {
-        if (positionIds != null && positionIds.size() > 0) {
-            List<Position> positionList = new ArrayList<>();
-            for (Long positionId : positionIds) {
-                Position position =
-                        positionRepository
-                                .findById(positionId)
-                                .orElseThrow(() -> PositionCustomException.NOT_FOUND_POSITION);
-                positionList.add(position);
-            }
+    public BooleanExpression containsPosition(Long positionId) {
+        if (positionId != null) {
+            Position position =
+                    positionRepository
+                            .findById(positionId)
+                            .orElseThrow(() -> PositionCustomException.NOT_FOUND_POSITION);
 
-            return qBoardPosition.position.in(positionList);
+            return qBoardPosition.position.in(position);
         } else {
             return null;
         }
@@ -95,19 +94,20 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
 
     @Override
     public Page<BoardSearchResponseDto> getBoardSearchPage(
-            BoardSearchRequestDto dto, Pageable pageable) {
+            Long positionId, String keyword, List<Long> technologyIds, Pageable pageable) {
         BooleanBuilder builder = new BooleanBuilder();
-        builder.or(searchByLike(dto.getKeyWord()));
-        builder.or(containsPosition(dto.getPositionIds()));
-        builder.or(containsProjectTechnologyStack(dto.getTechnologyIds()));
+        builder.and(searchByLike(keyword));
+        builder.and(containsPosition(positionId));
+        builder.and(containsProjectTechnologyStack(technologyIds));
 
         List<Board> boards =
                 queryFactory
                         .selectDistinct(qBoard)
                         .from(qBoard)
-                        .join(qBoard.project, qProject)
                         .join(qBoard.positions, qBoardPosition)
-                        .join(qBoard.project.projectTechnologies, qProjectTechnology)
+                        .join(qBoard.project, qProject)
+                        .join(qBoard.user, qUser)
+                        .join(qProject.projectTechnologies, qProjectTechnology)
                         .where(builder)
                         .offset(pageable.getOffset())
                         .limit(pageable.getPageSize())
@@ -116,6 +116,15 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
         List<BoardSearchResponseDto> boardSearchResponseDtos = new ArrayList<>();
 
         for (Board boardEntity : boards) {
+            List<BoardPositionDetailResponseDto> boardPositions = new ArrayList<>();
+            for(BoardPosition boardPosition : boardEntity.getPositions()) {
+                BoardPositionDetailResponseDto boardPositionResponse = BoardPositionDetailResponseDto.of(
+                        boardPosition, PositionResponseDto.of(boardPosition.getPosition())
+                );
+
+                boardPositions.add(boardPositionResponse);
+            }
+
             Project project = boardEntity.getProject();
             TrustGradeResponseDto projectTrustGradeResponseDto =
                     TrustGradeResponseDto.of(project.getTrustGrade());
@@ -136,13 +145,13 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
             User user = boardEntity.getUser();
 
             // 임시수정
-            TrustGradeResponseDto userTrustGradeResponseDto = TrustGradeResponseDto.of(null);
+            TrustGradeResponseDto userTrustGradeResponseDto = TrustGradeResponseDto.of(user.getTrustScore().getTrustGrade());
             UserSearchResponseDto userSearchResponseDto =
                     UserSearchResponseDto.of(user, userTrustGradeResponseDto);
 
             boardSearchResponseDtos.add(
                     BoardSearchResponseDto.of(
-                            boardEntity, projectSearchResponseDto, userSearchResponseDto));
+                            boardEntity, boardPositions, projectSearchResponseDto, userSearchResponseDto));
         }
 
         long total = boardSearchResponseDtos.size();

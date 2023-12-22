@@ -1,5 +1,6 @@
 package com.example.demo.dto.board.response;
 
+import com.example.demo.dto.boardposition.BoardPositionDetailResponseDto;
 import com.example.demo.dto.project.response.ProjectSearchResponseDto;
 import com.example.demo.dto.user.response.UserSearchResponseDto;
 import com.example.demo.global.util.LocalDateTimeFormatSerializer;
@@ -7,6 +8,8 @@ import com.example.demo.model.board.Board;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.querydsl.core.annotations.QueryProjection;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -16,6 +19,7 @@ public class BoardSearchResponseDto {
     private Long boardId;
     private String boardTitle;
     private String boardContent;
+    private List<BoardPositionDetailResponseDto> boardPositions;
     private ProjectSearchResponseDto project;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
@@ -35,6 +39,7 @@ public class BoardSearchResponseDto {
             Long boardId,
             String boardTitle,
             String boardContent,
+            List<BoardPositionDetailResponseDto> boardPositions,
             ProjectSearchResponseDto project,
             LocalDateTime startDate,
             LocalDateTime endDate,
@@ -47,6 +52,7 @@ public class BoardSearchResponseDto {
         this.boardId = boardId;
         this.boardTitle = boardTitle;
         this.boardContent = boardContent;
+        this.boardPositions = boardPositions;
         this.project = project;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -60,12 +66,14 @@ public class BoardSearchResponseDto {
 
     public static BoardSearchResponseDto of(
             Board board,
+            List<BoardPositionDetailResponseDto> boardPositions,
             ProjectSearchResponseDto boardProjectSearchResponseDto,
             UserSearchResponseDto userSearchResponseDto) {
         return BoardSearchResponseDto.builder()
                 .boardId(board.getId())
                 .boardTitle(board.getTitle())
                 .boardContent(board.getContent())
+                .boardPositions(boardPositions)
                 .project(boardProjectSearchResponseDto)
                 .boardPageView(board.getPageView())
                 .boardCompleteStatus(board.isCompleteStatus())

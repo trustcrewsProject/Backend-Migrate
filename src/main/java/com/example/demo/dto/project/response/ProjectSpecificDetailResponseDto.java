@@ -7,12 +7,15 @@ import com.example.demo.model.project.Project;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Map;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @Builder
 public class ProjectSpecificDetailResponseDto {
     private Long projectId;
@@ -23,6 +26,7 @@ public class ProjectSpecificDetailResponseDto {
     private int crewNumber;
     private LocalDate startDate;
     private LocalDate endDate;
+    private Map<String, Boolean> authMap;
 
     @JsonSerialize(using = LocalDateTimeFormatSerializer.class)
     private LocalDateTime createDate;

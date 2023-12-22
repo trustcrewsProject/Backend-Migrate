@@ -5,8 +5,10 @@ import com.example.demo.dto.board.response.BoardSearchResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface BoardRepositoryCustom {
 
     Page<BoardSearchResponseDto> getBoardSearchPage(
-            BoardSearchRequestDto boardSearchRequestDto, Pageable pageable);
+            Long positionId, String keyword, List<Long> technologyIds, Pageable pageable);
 }

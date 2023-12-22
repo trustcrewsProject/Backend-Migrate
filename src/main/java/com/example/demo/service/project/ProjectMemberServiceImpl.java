@@ -8,7 +8,13 @@ import com.example.demo.model.project.ProjectMember;
 import com.example.demo.model.project.ProjectMemberAuth;
 import com.example.demo.model.user.User;
 import com.example.demo.repository.project.ProjectMemberRepository;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import com.example.demo.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +22,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ProjectMemberServiceImpl implements ProjectMemberService {
     private final ProjectMemberRepository projectMemberRepository;
+    private final UserService userService;
+
+    private final ProjectService projectService;
 
     public ProjectMember toProjectMemberEntity(
             Project project,
@@ -74,5 +83,29 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     public void withdrawlForce(Long projectMemberId) {
         ProjectMember projectMember = findById(projectMemberId);
         projectMemberRepository.delete(projectMember);
+    }
+
+    /**
+     * 사용자의 생성 및 수정 권한 확인하기 (마일스톤, 업무)
+     * @param projectId
+     * @param userId
+     * @return
+     */
+    @Override
+    public Map<String, Boolean> getUserAuthMap(Long projectId, Long userId) {
+        return getAuthMap(getProjectMemberAuth(projectId, userId));
+    }
+
+    private static Map<String, Boolean> getAuthMap(ProjectMemberAuth projectMemberAuth) {
+        Map<String, Boolean> authMap = new HashMap<>();
+        authMap.put("milestoneAuth", projectMemberAuth.isMilestoneChangeYN());
+        authMap.put("workAuth", projectMemberAuth.isWorkChangeYN());
+        return authMap;
+    }
+
+    private ProjectMemberAuth getProjectMemberAuth(Long projectId, Long userId) {
+        User findUser = userService.findById(userId);
+        Project findProject = projectService.findById(projectId);
+        return findProjectMemberByProjectAndUser(findProject, findUser).getProjectMemberAuth();
     }
 }

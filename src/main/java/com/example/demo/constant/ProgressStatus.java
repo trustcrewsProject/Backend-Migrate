@@ -1,5 +1,6 @@
 package com.example.demo.constant;
 
+import com.example.demo.global.exception.customexception.CommonCustomException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -24,6 +25,6 @@ public enum ProgressStatus {
         return Arrays.stream(ProgressStatus.values())
                 .filter(progressStatus -> progressStatus.getCode().equals(code))
                 .findFirst()
-                .orElse(null);
+                .orElseThrow(() -> CommonCustomException.INVALID_INPUT_VALUE);
     }
 }

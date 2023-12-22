@@ -1,6 +1,5 @@
 package com.example.demo.controller.board;
 
-import com.example.demo.dto.board.request.BoardSearchRequestDto;
 import com.example.demo.dto.board.response.BoardSearchResponseDto;
 import com.example.demo.dto.board.response.BoardTotalDetailResponseDto;
 import com.example.demo.dto.board_project.request.BoardProjectCreateRequestDto;

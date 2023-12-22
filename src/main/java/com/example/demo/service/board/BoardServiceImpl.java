@@ -1,6 +1,5 @@
 package com.example.demo.service.board;
 
-import com.example.demo.dto.board.request.BoardSearchRequestDto;
 import com.example.demo.dto.board.response.BoardDetailResponseDto;
 import com.example.demo.dto.board.response.BoardSearchResponseDto;
 import com.example.demo.dto.board.response.BoardTotalDetailResponseDto;

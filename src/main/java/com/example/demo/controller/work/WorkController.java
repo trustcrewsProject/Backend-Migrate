@@ -2,12 +2,14 @@ package com.example.demo.controller.work;
 
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.dto.work.request.*;
+import com.example.demo.security.custom.PrincipalDetails;
 import com.example.demo.service.work.WorkFacade;
 import com.example.demo.service.work.WorkService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -49,9 +51,10 @@ public class WorkController {
 
     @PatchMapping("/api/work/{workId}")
     public ResponseEntity<ResponseDto<?>> update(
+            @AuthenticationPrincipal PrincipalDetails user,
             @PathVariable("workId") Long workId,
             @RequestBody WorkUpdateRequestDto workUpdateRequestDto) {
-        workFacade.update(workId, workUpdateRequestDto);
+        workFacade.update(user.getId(), workId, workUpdateRequestDto);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 

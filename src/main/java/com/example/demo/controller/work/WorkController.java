@@ -59,7 +59,7 @@ public class WorkController {
     }
 
     @DeleteMapping("/api/work/{workId}")
-    public ResponseEntity<ResponseDto<?>> update(@PathVariable("workId") Long workId) {
+    public ResponseEntity<ResponseDto<?>> delete(@PathVariable("workId") Long workId) {
         workService.delete(workId);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }

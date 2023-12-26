@@ -1,10 +1,12 @@
 package com.example.demo.dto.trust_grade.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
+@AllArgsConstructor
 public class TrustGradeInfoResponseDto {
 
     private Long trustGradeId;

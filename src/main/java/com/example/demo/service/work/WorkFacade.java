@@ -69,16 +69,16 @@ public class WorkFacade {
     }
 
     /**
-     * 업무 수정 TODO : 마지막 수정자 현재 유저인 구성원으로 변경
+     * 업무 수정
      *
      * @param workId
      */
-    public void update(Long workId, WorkUpdateRequestDto workUpdateRequestDto) {
+    public void update(Long userId, Long workId, WorkUpdateRequestDto workUpdateRequestDto) {
         Work work = workService.findById(workId);
-        User user = userService.findById(1L);
+        User user = userService.findById(userId);
         ProjectMember projectMember =
                 projectMemberService.findProjectMemberByProjectAndUser(work.getProject(), user);
-        work.update(workUpdateRequestDto);
+        work.update(workUpdateRequestDto, projectMember);
     }
 
     /**

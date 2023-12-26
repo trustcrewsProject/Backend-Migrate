@@ -32,7 +32,7 @@ public class TrustScoreHistoryRepositoryImpl implements TrustScoreHistoryReposit
                                 ProjectUserHistoryDto.class,
                                 trustScoreHistory.workId,
                                 trustScoreHistory.score,
-                                work.completeStatus,
+                                work.progressStatus,
                                 work.content,
                                 trustScoreHistory.createDate))
                 .from(trustScoreHistory)

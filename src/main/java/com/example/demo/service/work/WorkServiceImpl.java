@@ -1,5 +1,6 @@
 package com.example.demo.service.work;
 
+import com.example.demo.constant.ProgressStatus;
 import com.example.demo.dto.work.request.WorkReadResponseDto;
 import com.example.demo.global.exception.customexception.WorkCustomException;
 import com.example.demo.model.milestone.Milestone;
@@ -31,10 +32,10 @@ public class WorkServiceImpl implements WorkService {
                 .orElseThrow(() -> WorkCustomException.NOT_FOUND_WORK);
     }
 
-    public Work findLastCompleteWork(Project project, User user, Boolean completeStatus) {
+    public Work findLastCompleteWork(Project project, User user) {
         return workRepository
-                .findFirstByProjectAndAssignedUserIdAndCompleteStatusOrderByIdDesc(
-                        project, user, completeStatus)
+                .findFirstByProjectAndAssignedUserIdAndProgressStatusOrderByIdDesc(
+                        project, user, ProgressStatus.COMPLETION)
                 .orElseThrow(() -> WorkCustomException.NOT_FOUND_WORK);
     }
 

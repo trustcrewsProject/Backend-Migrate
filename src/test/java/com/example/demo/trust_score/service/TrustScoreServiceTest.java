@@ -2,6 +2,7 @@ package com.example.demo.trust_score.service;
 
 import static com.example.demo.constant.TrustScoreTypeIdentifier.*;
 
+import com.example.demo.constant.ProgressStatus;
 import com.example.demo.dto.trust_score.AddPointDto;
 import com.example.demo.dto.trust_score.response.TrustScoreUpdateResponseDto;
 import com.example.demo.model.milestone.Milestone;
@@ -42,7 +43,7 @@ public class TrustScoreServiceTest {
         // 업무 생성 및 저장
         Work work =
                 Work.builder()
-                        .completeStatus(true)
+                        .progressStatus(ProgressStatus.COMPLETION)
                         .assignedUserId(user)
                         .project(project)
                         .milestone(milestone)
@@ -91,7 +92,7 @@ public class TrustScoreServiceTest {
         // 업무 생성 및 저장
         Work work =
                 Work.builder()
-                        .completeStatus(true)
+                        .progressStatus(ProgressStatus.COMPLETION)
                         .assignedUserId(user)
                         .project(project)
                         .milestone(milestone)

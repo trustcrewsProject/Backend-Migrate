@@ -109,7 +109,7 @@ public class ProjectMemberFacade {
             PositionResponseDto positionResponseDto =
                     PositionResponseDto.of(projectMember.getPosition());
             Work lastCompleteWork =
-                    workService.findLastCompleteWork(project, projectMember.getUser(), true);
+                    workService.findLastCompleteWork(project, projectMember.getUser());
 
             ProjectMemberReadProjectCrewsResponseDto projectMemberReadProjectCrewsResponseDto =
                     ProjectMemberReadProjectCrewsResponseDto.of(

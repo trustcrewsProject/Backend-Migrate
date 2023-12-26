@@ -2,6 +2,7 @@ package com.example.demo.dto.trust_score;
 
 import java.time.LocalDateTime;
 
+import com.example.demo.constant.ProgressStatus;
 import com.example.demo.global.util.LocalDateTimeFormatSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import lombok.Setter;
 @Setter
 public class ProjectUserHistoryDto {
     Long id;
-    Boolean completeStatus;
+    ProgressStatus progressStatus;
     String content;
     Integer trustScore;
 
@@ -21,12 +22,12 @@ public class ProjectUserHistoryDto {
     public ProjectUserHistoryDto(
             Long workId,
             Integer score,
-            Boolean completeStatus,
+            ProgressStatus progressStatus,
             String content,
             LocalDateTime createDate) {
         this.id = workId;
         this.trustScore = score;
-        this.completeStatus = completeStatus;
+        this.progressStatus = progressStatus;
         this.content = content;
         this.createDate = createDate;
     }

@@ -1,5 +1,6 @@
 package com.example.demo.trust_score.repository;
 
+import com.example.demo.constant.ProgressStatus;
 import com.example.demo.dto.trust_score.ProjectUserHistoryDto;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.trust_score.TrustScoreHistory;
@@ -78,9 +79,9 @@ public class TrustScoreHistoryRepositoryTest {
         Long projectId = saveProject.getId();
 
         // 테스트 업무 생성 및 저장
-        Work testWork1 = Work.builder().content("테스트 업무입니다").completeStatus(true).build();
+        Work testWork1 = Work.builder().content("테스트 업무입니다").progressStatus(ProgressStatus.COMPLETION).build();
 
-        Work testWork2 = Work.builder().content("테스트 업무입니다").completeStatus(false).build();
+        Work testWork2 = Work.builder().content("테스트 업무입니다").progressStatus(ProgressStatus.BEFORE_START).build();
         Work saveWork1 = workRepository.save(testWork1);
         Work saveWork2 = workRepository.save(testWork2);
 

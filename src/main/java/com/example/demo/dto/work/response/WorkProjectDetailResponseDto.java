@@ -19,8 +19,7 @@ public class WorkProjectDetailResponseDto {
     private UserProjectDetailResponseDto assginedUser;
     private ProjectMember lastModifiedMember;
     private String workContent;
-    private Boolean expireStatus;
-    private Boolean completeStatus;
+    private String progressStatus;
     private LocalDate startDate;
     private LocalDate endDate;
 
@@ -37,8 +36,7 @@ public class WorkProjectDetailResponseDto {
                 .assginedUser(userProjectDetailResponseDto)
                 .lastModifiedMember(work.getLastModifiedMember())
                 .workContent(work.getContent())
-                .expireStatus(work.isExpireStatus())
-                .completeStatus(work.isCompleteStatus())
+                .progressStatus(work.getProgressStatus().getDescription())
                 .startDate(work.getStartDate())
                 .endDate(work.getEndDate())
                 .createDate(work.getCreateDate())

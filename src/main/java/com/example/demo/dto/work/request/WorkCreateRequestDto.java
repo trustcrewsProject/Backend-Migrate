@@ -1,5 +1,6 @@
 package com.example.demo.dto.work.request;
 
+import com.example.demo.constant.ProgressStatus;
 import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
@@ -27,8 +28,7 @@ public class WorkCreateRequestDto {
                 .assignedUserId(user)
                 .lastModifiedMember(projectMember)
                 .content(this.getContent())
-                .expireStatus(false)
-                .completeStatus(false)
+                .progressStatus(ProgressStatus.BEFORE_START)
                 .startDate(this.getStartDate())
                 .endDate(this.getEndDate())
                 .build();

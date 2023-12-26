@@ -2,6 +2,7 @@ package com.example.demo.global.validation.validator;
 
 import static com.example.demo.constant.TrustScoreTypeIdentifier.*;
 
+import com.example.demo.constant.ProgressStatus;
 import com.example.demo.dto.trust_score.AddPointDto;
 import com.example.demo.global.exception.customexception.ProjectCustomException;
 import com.example.demo.global.exception.customexception.UserCustomException;
@@ -84,7 +85,7 @@ public class AddPointDtoValidator implements ConstraintValidator<ValidAddPointDt
                         .findById(workId)
                         .orElseThrow(() -> WorkCustomException.NOT_FOUND_WORK);
 
-        if (work.isCompleteStatus()) {
+        if (work.getProgressStatus().equals(ProgressStatus.COMPLETION)) {
             log.info("데이터 무결성 위배. 업무 완료여부 불일치. workId : {}", workId);
             return false;
         }
@@ -257,7 +258,7 @@ public class AddPointDtoValidator implements ConstraintValidator<ValidAddPointDt
                         .findById(workId)
                         .orElseThrow(() -> WorkCustomException.NOT_FOUND_WORK);
 
-        if (!work.isCompleteStatus()) {
+        if (!work.getProgressStatus().equals(ProgressStatus.COMPLETION)) {
             log.info("데이터 무결성 위배. 업무 미완성. workId : {}", workId);
             return false;
         }

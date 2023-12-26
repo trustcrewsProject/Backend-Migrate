@@ -17,7 +17,7 @@ public interface WorkService {
 
     public List<Work> findWorksByProject(Project project);
 
-    public Work findLastCompleteWork(Project project, User user, Boolean completeStatus);
+    public Work findLastCompleteWork(Project project, User user);
 
     public List<Work> findWorksByProjectAndMilestone(Project project, Milestone milestone);
 

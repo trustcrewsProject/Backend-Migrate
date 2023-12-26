@@ -18,8 +18,7 @@ public class WorkReadResponseDto {
     private String content;
     private LocalDate startDate;
     private LocalDate endDate;
-    private boolean expireStatus;
-    private boolean completeStauts;
+    private String progressStatus;
 
     public static WorkReadResponseDto of(Work work) {
         return WorkReadResponseDto.builder()
@@ -31,8 +30,7 @@ public class WorkReadResponseDto {
                 .content(work.getContent())
                 .startDate(work.getStartDate())
                 .endDate(work.getEndDate())
-                .expireStatus(work.isExpireStatus())
-                .completeStauts(work.isCompleteStatus())
+                .progressStatus(work.getProgressStatus().getDescription())
                 .build();
     }
 }

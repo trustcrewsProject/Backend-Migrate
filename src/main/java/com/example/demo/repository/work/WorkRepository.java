@@ -1,5 +1,6 @@
 package com.example.demo.repository.work;
 
+import com.example.demo.constant.ProgressStatus;
 import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.user.User;
@@ -13,6 +14,6 @@ public interface WorkRepository extends JpaRepository<Work, Long> {
 
     Optional<List<Work>> findWorksByProjectAndMilestone(Project project, Milestone milestone);
 
-    Optional<Work> findFirstByProjectAndAssignedUserIdAndCompleteStatusOrderByIdDesc(
-            Project project, User user, Boolean completeStatus);
+    Optional<Work> findFirstByProjectAndAssignedUserIdAndProgressStatusOrderByIdDesc(
+            Project project, User user, ProgressStatus progressStatus);
 }

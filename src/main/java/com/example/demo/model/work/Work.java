@@ -1,5 +1,6 @@
 package com.example.demo.model.work;
 
+import com.example.demo.constant.ProgressStatus;
 import com.example.demo.dto.work.request.WorkUpdateCompleteStatusRequestDto;
 import com.example.demo.dto.work.request.WorkUpdateContentRequestDto;
 import com.example.demo.dto.work.request.WorkUpdateRequestDto;
@@ -44,11 +45,9 @@ public class Work extends BaseTimeEntity {
     @Column(name = "work_content")
     private String content;
 
-    @Column(name = "expire_statue")
-    private boolean expireStatus;
-
-    @Column(name = "complete_status")
-    private boolean completeStatus;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "progressStatus")
+    private ProgressStatus progressStatus;
 
     @Column(name = "start_date")
     private LocalDate startDate;
@@ -69,8 +68,7 @@ public class Work extends BaseTimeEntity {
             Milestone milestone,
             User assignedUserId,
             String content,
-            boolean expireStatus,
-            boolean completeStatus,
+            ProgressStatus progressStatus,
             LocalDate startDate,
             LocalDate endDate,
             ProjectMember lastModifiedMember) {
@@ -78,8 +76,7 @@ public class Work extends BaseTimeEntity {
         this.milestone = milestone;
         this.assignedUserId = assignedUserId;
         this.content = content;
-        this.expireStatus = expireStatus;
-        this.completeStatus = completeStatus;
+        this.progressStatus = progressStatus;
         this.startDate = startDate;
         this.endDate = endDate;
         this.lastModifiedMember = lastModifiedMember;
@@ -99,7 +96,7 @@ public class Work extends BaseTimeEntity {
 
     public void updateCompleteStatus(
             WorkUpdateCompleteStatusRequestDto dto, ProjectMember projectMember) {
-        this.completeStatus = dto.getCompleteStatus();
+        //this.completeStatus = dto.getCompleteStatus();
         this.lastModifiedMember = projectMember;
     }
 

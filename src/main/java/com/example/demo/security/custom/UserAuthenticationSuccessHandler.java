@@ -39,7 +39,7 @@ public class UserAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
 
         // 응답 헤더에 토큰 셋팅
         response.setHeader(
-                JsonWebTokenProvider.AUTHORIZATION_HEADER, "Bearer " + tokens.getAccessToken());
+                JsonWebTokenProvider.AUTHORIZATION_HEADER, tokens.getAccessToken());
         response.addCookie(createRefreshTokenCookie(tokens.getRefreshToken()));
 
         // Redis RefreshToken 저장

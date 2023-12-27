@@ -1,6 +1,7 @@
 package com.example.demo.global.config;
 
 import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
@@ -18,11 +19,14 @@ public class CorsConfig {
     private static final List<String> PERMIT_HTTP_METHOD =
             List.of("GET", "POST", "PUT", "PATCH", "DELETE");
 
+    private static final String AUTHORIZATION_HEADER = "Authorization";
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOrigin(DEPLOYED_SERVER_ORIGIN);
         configuration.setAllowedMethods(PERMIT_HTTP_METHOD);
+        configuration.addExposedHeader(AUTHORIZATION_HEADER);
         configuration.addAllowedHeader("*");
         configuration.setMaxAge(3600L);
 

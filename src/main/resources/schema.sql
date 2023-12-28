@@ -7,20 +7,23 @@ DROP TABLE IF EXISTS trust_grade;
 DROP TABLE IF EXISTS project_member_auth;
 DROP TABLE IF EXISTS trust_score_type;
 
--- CREATE TABLE `user` (
---     `user_id` bigint NOT NULL,
---     `create_date` datetime(6) DEFAULT NULL,
---     `update_date` datetime(6) DEFAULT NULL,
---     `email` varchar(255) DEFAULT NULL,
---     `intro` varchar(255) DEFAULT NULL,
---     `nickname` varchar(255) DEFAULT NULL,
---     `password` varchar(255) DEFAULT NULL,
---     `profile_img_src` varchar(255) DEFAULT NULL,
---     `role` varchar(255) DEFAULT NULL,
---     `position_id` bigint DEFAULT NULL,
---     PRIMARY KEY (`user_id`),
---     FOREIGN KEY (`position_id`) REFERENCES `position` (`position_id`)
--- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `user` (
+    `user_id` bigint NOT NULL,
+    `email` varchar(255) DEFAULT NULL,
+    `password` varchar(255) DEFAULT NULL,
+    `nickname` varchar(255) DEFAULT NULL,
+    `profile_img_src` varchar(255) DEFAULT NULL,
+    `intro` varchar(255) DEFAULT NULL,
+    `position_id` bigint DEFAULT NULL,
+    `role` varchar(255) DEFAULT NULL,
+    `trust_score_id` bigint DEFAULT NULL,
+    `status` varchar(255) DEFAULT NULL,
+    `create_date` datetime(6) DEFAULT NULL,
+    `update_date` datetime(6) DEFAULT NULL,
+    PRIMARY KEY (`user_id`),
+    FOREIGN KEY (`position_id`) REFERENCES `position` (`position_id`),
+    FOREIGN KEY (`trust_score_id`) REFERENCES `trust_score` (`trust_score_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `position` (
     `position_id` bigint NOT NULL,

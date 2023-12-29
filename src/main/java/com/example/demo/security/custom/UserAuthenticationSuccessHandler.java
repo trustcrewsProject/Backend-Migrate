@@ -6,12 +6,12 @@ import com.example.demo.security.jwt.JsonWebTokenDto;
 import com.example.demo.security.jwt.JsonWebTokenProvider;
 import com.example.demo.service.token.RefreshTokenRedisService;
 import java.io.IOException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
@@ -22,6 +22,8 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 @Slf4j
 @RequiredArgsConstructor
 public class UserAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+
+    private static final String SET_COOKIE_HEADER = "Set-Cookie";
 
     private final JsonWebTokenProvider jsonWebTokenProvider;
     private final RefreshTokenRedisService refreshTokenRedisService;
@@ -40,7 +42,7 @@ public class UserAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
         // 응답 헤더에 토큰 셋팅
         response.setHeader(
                 JsonWebTokenProvider.AUTHORIZATION_HEADER, tokens.getAccessToken());
-        response.addCookie(createRefreshTokenCookie(tokens.getRefreshToken()));
+        response.addHeader(SET_COOKIE_HEADER, createRefreshTokenCookie(tokens.getRefreshToken()));
 
         // Redis RefreshToken 저장
         refreshTokenRedisService.save(principalDetails.getId(), tokens.getRefreshToken());
@@ -53,11 +55,14 @@ public class UserAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
     }
 
     // RefreshToken 쿠키 생성
-    private Cookie createRefreshTokenCookie(String refreshToken) {
-        Cookie cookie = new Cookie("Refresh", refreshToken);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
+    private String createRefreshTokenCookie(String refreshToken) {
+        ResponseCookie cookie = ResponseCookie.from("Refresh", refreshToken)
+                .path("/")
+                .sameSite("None")
+                .httpOnly(true)
+                .secure(true)
+                .build();
 
-        return cookie;
+        return cookie.toString();
     }
 }

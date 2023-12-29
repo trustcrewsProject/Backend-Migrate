@@ -93,53 +93,60 @@ public class TrustScoreTypeRepositoryImpl implements TrustScoreTypeRepositoryCus
             TrustScoreTypeSearchCriteria criteria, Pageable pageable) {
         QTrustScoreType trustScoreType = QTrustScoreType.trustScoreType;
         QTrustScoreType subTrustScoreType = new QTrustScoreType("subTrustScoreType");
-        JPAQuery<TrustScoreTypeReadResponseDto> query = jpaQueryFactory
-                .select(
-                        Projections.constructor(
-                                TrustScoreTypeReadResponseDto.class,
-                                trustScoreType.id,
-                                getUpTrustScoreTypeName(trustScoreType),
-                                trustScoreType.trustScoreTypeName,
-                                getTrustGradeName(trustScoreType),
-                                getScore(trustScoreType),
-                                trustScoreType.gubunCode,
-                                trustScoreType.deleteStatus,
-                                trustScoreType.createDate,
-                                trustScoreType.updateDate))
-                .from(trustScoreType)
-                .leftJoin(trustScoreType.upTrustScoreType, subTrustScoreType)
-                .on(trustScoreType.upTrustScoreType.id.eq(subTrustScoreType.id))
-                .where(
-                        isDeleted(criteria.getIsDeleted()),
-                        isParentType(criteria.getIsParentType()),
-                        gubunCodeEq(criteria.getGubunCode()),
-                        trustGradeContain(criteria.getTrustGrade()),
-                        parentTypeIdContain(criteria.getParentTypeId()),
-                        keywordLike(criteria.getKeyword())
-                )
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .orderBy(getOrderSpecifiers(pageable.getSort()));
+        JPAQuery<TrustScoreTypeReadResponseDto> query =
+                jpaQueryFactory
+                        .select(
+                                Projections.constructor(
+                                        TrustScoreTypeReadResponseDto.class,
+                                        trustScoreType.id,
+                                        getUpTrustScoreTypeName(trustScoreType),
+                                        trustScoreType.trustScoreTypeName,
+                                        getTrustGradeName(trustScoreType),
+                                        getScore(trustScoreType),
+                                        trustScoreType.gubunCode,
+                                        trustScoreType.deleteStatus,
+                                        trustScoreType.createDate,
+                                        trustScoreType.updateDate))
+                        .from(trustScoreType)
+                        .leftJoin(trustScoreType.upTrustScoreType, subTrustScoreType)
+                        .on(trustScoreType.upTrustScoreType.id.eq(subTrustScoreType.id))
+                        .where(
+                                isDeleted(criteria.getIsDeleted()),
+                                isParentType(criteria.getIsParentType()),
+                                gubunCodeEq(criteria.getGubunCode()),
+                                trustGradeContain(criteria.getTrustGrade()),
+                                parentTypeIdContain(criteria.getParentTypeId()),
+                                keywordLike(criteria.getKeyword()))
+                        .offset(pageable.getOffset())
+                        .limit(pageable.getPageSize())
+                        .orderBy(getOrderSpecifiers(pageable.getSort()));
 
         List<TrustScoreTypeReadResponseDto> list = query.fetch();
 
         long total = query.stream().count();
 
         return new PageImpl<>(list, pageable, total);
-
     }
 
     @Override
     public void disableTrustScoreType(Long trustScoreTypeId) {
-        jpaQueryFactory.update(trustScoreType)
+        jpaQueryFactory
+                .update(trustScoreType)
                 .set(trustScoreType.deleteStatus, "Y")
                 .set(trustScoreType.updateDate, LocalDateTime.now())
-                .where(trustScoreType.id.eq(trustScoreTypeId)
-                        .or(trustScoreType.upTrustScoreType.isNotNull()
-                        .and(trustScoreType.upTrustScoreType.id.eq(trustScoreTypeId))))
+                .where(
+                        trustScoreType
+                                .id
+                                .eq(trustScoreTypeId)
+                                .or(
+                                        trustScoreType
+                                                .upTrustScoreType
+                                                .isNotNull()
+                                                .and(
+                                                        trustScoreType.upTrustScoreType.id.eq(
+                                                                trustScoreTypeId))))
                 .execute();
     }
-
 
     // TODO : 삼항연산자로 refactor
     private static Expression<String> getUpTrustScoreTypeName(QTrustScoreType trustScoreType) {
@@ -220,12 +227,18 @@ public class TrustScoreTypeRepositoryImpl implements TrustScoreTypeRepositoryCus
 
     private OrderSpecifier<?>[] getOrderSpecifiers(Sort sort) {
         // Sort
-        return sort.stream().map(order -> {
-            Order direction = order.isAscending() ? Order.ASC : Order.DESC;
-            String property = order.getProperty();
-            PathBuilder<TrustScoreType> path = new PathBuilder<>(trustScoreType.getType(), trustScoreType.getMetadata());
-            Expression propertyExpression = path.get(property, TrustScoreType.class);
-            return new OrderSpecifier(direction, propertyExpression);
-        }).toArray(OrderSpecifier<?>[]::new);
+        return sort.stream()
+                .map(
+                        order -> {
+                            Order direction = order.isAscending() ? Order.ASC : Order.DESC;
+                            String property = order.getProperty();
+                            PathBuilder<TrustScoreType> path =
+                                    new PathBuilder<>(
+                                            trustScoreType.getType(), trustScoreType.getMetadata());
+                            Expression propertyExpression =
+                                    path.get(property, TrustScoreType.class);
+                            return new OrderSpecifier(direction, propertyExpression);
+                        })
+                .toArray(OrderSpecifier<?>[]::new);
     }
 }

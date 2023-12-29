@@ -216,20 +216,23 @@ public class UserFacade {
 
     /**
      * 간단한 내 정보 조회 로직 (닉네임, 프로필 이미지 경로) - 로그인한 회원의 정보를 클라이언트 헤더에서 사용하기 위함
+     *
      * @param user
      * @return simpleMyInfoResponse
      */
-
     @Transactional(readOnly = true)
     public ResponseDto<?> getSimpleMyInfo(PrincipalDetails user) {
         User currentUser = userService.findById(user.getId());
-        UserSimpleInfoResponseDto simpleMyInfoResponse = UserSimpleInfoResponseDto.of(currentUser.getNickname(), currentUser.getProfileImgSrc());
+        UserSimpleInfoResponseDto simpleMyInfoResponse =
+                UserSimpleInfoResponseDto.of(
+                        currentUser.getNickname(), currentUser.getProfileImgSrc());
 
         return ResponseDto.success("내 정보 조회가 완료되었습니다.", simpleMyInfoResponse);
     }
 
     /**
      * 내 정보 조회 로직
+     *
      * @param user
      * @return UserMyInfoResponseDto myInfoResponse
      */
@@ -244,31 +247,51 @@ public class UserFacade {
         // 포지션
         Position position = currentUser.getPosition();
         // 기술스택목록
-        List<TechnologyStack> techStacks = currentUser.getTechStacks().stream()
-                .map(UserTechnologyStack::getTechnologyStack)
-                .collect(Collectors.toList());
+        List<TechnologyStack> techStacks =
+                currentUser.getTechStacks().stream()
+                        .map(UserTechnologyStack::getTechnologyStack)
+                        .collect(Collectors.toList());
 
         // 신뢰등급 정보 응답 DTO
-        TrustGradeInfoResponseDto trustGradeInfo = TrustGradeInfoResponseDto.of(trustGrade.getId(), trustGrade.getName());
+        TrustGradeInfoResponseDto trustGradeInfo =
+                TrustGradeInfoResponseDto.of(trustGrade.getId(), trustGrade.getName());
         // 포지션 정보 응답 DTO
-        PositionInfoResponseDto positionInfo = PositionInfoResponseDto.of(position.getId(), position.getName());
+        PositionInfoResponseDto positionInfo =
+                PositionInfoResponseDto.of(position.getId(), position.getName());
         // 기술스택목록 정보 응답 DTO
-        List<TechnologyStackInfoResponseDto> techStacksInfo = techStacks.stream()
-                .map(technologyStack -> TechnologyStackInfoResponseDto.of(technologyStack.getId(), technologyStack.getName()))
-                .collect(Collectors.toList());
+        List<TechnologyStackInfoResponseDto> techStacksInfo =
+                techStacks.stream()
+                        .map(
+                                technologyStack ->
+                                        TechnologyStackInfoResponseDto.of(
+                                                technologyStack.getId(), technologyStack.getName()))
+                        .collect(Collectors.toList());
         // 회원 프로젝트 이력 개수
-        long projectHistoryTotalCount = userProjectHistoryService.getUserProjectHistoryTotalCount(currentUser.getId());
+        long projectHistoryTotalCount =
+                userProjectHistoryService.getUserProjectHistoryTotalCount(currentUser.getId());
 
         // 내 정보 응답 DTO 생성
-        UserMyInfoResponseDto myInfoResponse = UserMyInfoResponseDto.of(currentUser.getId(), currentUser.getEmail(), currentUser.getNickname(),
-                currentUser.getProfileImgSrc(), currentUser.getIntro(), trustScore.getScore(), trustGradeInfo, positionInfo, techStacksInfo, projectHistoryTotalCount,
-                currentUser.getCreateDate(), currentUser.getUpdateDate());
+        UserMyInfoResponseDto myInfoResponse =
+                UserMyInfoResponseDto.of(
+                        currentUser.getId(),
+                        currentUser.getEmail(),
+                        currentUser.getNickname(),
+                        currentUser.getProfileImgSrc(),
+                        currentUser.getIntro(),
+                        trustScore.getScore(),
+                        trustGradeInfo,
+                        positionInfo,
+                        techStacksInfo,
+                        projectHistoryTotalCount,
+                        currentUser.getCreateDate(),
+                        currentUser.getUpdateDate());
 
         return ResponseDto.success("내 정보 조회가 완료되었습니다.", myInfoResponse);
     }
 
     /**
      * 내 프로젝트 이력 목록 조회 (페이징)
+     *
      * @param user
      * @param pageNumber
      * @return
@@ -276,11 +299,12 @@ public class UserFacade {
     @Transactional(readOnly = true)
     public ResponseDto<?> getMyProjectHistoryList(PrincipalDetails user, int pageNumber) {
         // 페이지 번호가 0번보다 작은 경우
-        if(pageNumber < 0) {
+        if (pageNumber < 0) {
             throw PageNationCustomException.INVALID_PAGE_NUMBER;
         }
 
-        List<UserProjectHistoryInfoResponseDto> projectHistoryList = userProjectHistoryService.getUserProjectHistoryList(user.getId(), pageNumber);
+        List<UserProjectHistoryInfoResponseDto> projectHistoryList =
+                userProjectHistoryService.getUserProjectHistoryList(user.getId(), pageNumber);
 
         return ResponseDto.success("내 프로젝트 이력 목록 조회가 완료되었습니다.", projectHistoryList);
     }

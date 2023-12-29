@@ -93,7 +93,9 @@ public class ProjectFacade {
      * @param projectParticipateRequestDto
      */
     public void sendParticipateAlert(
-            Long userId, Long projectId, ProjectParticipateRequestDto projectParticipateRequestDto) {
+            Long userId,
+            Long projectId,
+            ProjectParticipateRequestDto projectParticipateRequestDto) {
         Project project = projectService.findById(projectId);
         User user = userService.findById(userId);
         Position position = positionService.findById(projectParticipateRequestDto.getPositionId());
@@ -119,7 +121,8 @@ public class ProjectFacade {
      * @param projectId
      * @param projectConfirmRequestDto
      */
-    public void confirm(Long userId, Long projectId, ProjectConfirmRequestDto projectConfirmRequestDto) {
+    public void confirm(
+            Long userId, Long projectId, ProjectConfirmRequestDto projectConfirmRequestDto) {
         Project project = projectService.findById(projectId);
         User user = userService.findById(userId);
         ProjectMemberAuth projectMemberAuth = projectMemberAuthService.findTopByOrderByIdDesc();

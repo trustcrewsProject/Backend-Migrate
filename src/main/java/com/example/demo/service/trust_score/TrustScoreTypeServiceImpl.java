@@ -7,7 +7,6 @@ import com.example.demo.dto.trust_score_type.request.TrustScoreTypeUpdateRequest
 import com.example.demo.dto.trust_score_type.response.TrustScoreTypeCreateResponseDto;
 import com.example.demo.dto.trust_score_type.response.TrustScoreTypeReadResponseDto;
 import com.example.demo.global.exception.customexception.TrustScoreTypeCustomException;
-import com.example.demo.model.trust_score.TrustScore;
 import com.example.demo.model.trust_score.TrustScoreType;
 import com.example.demo.repository.trust_score.TrustScoreTypeRepository;
 import java.util.List;
@@ -75,24 +74,30 @@ public class TrustScoreTypeServiceImpl implements TrustScoreTypeService {
                 .createDate(saveTrustScoreType.getCreateDate())
                 .build();
     }
+
     @Override
-    public void updateTrustScoreType(Long trustScoreTypeId, TrustScoreTypeUpdateRequestDto requestDto) {
-        TrustScoreType trustScoreType = TrustScoreType.builder()
-                .id(trustScoreTypeId)
-                .upTrustScoreType(getUpTrustScoreType(requestDto))
-                .trustScoreTypeName(requestDto.getTrustScoreTypeName())
-                .trustGradeName(requestDto.getTrustGradeName())
-                .score(requestDto.getScore())
-                .gubunCode(requestDto.getGubunCode())
-                .deleteStatus(requestDto.getDeleteStatus())
-                .build();
+    public void updateTrustScoreType(
+            Long trustScoreTypeId, TrustScoreTypeUpdateRequestDto requestDto) {
+        TrustScoreType trustScoreType =
+                TrustScoreType.builder()
+                        .id(trustScoreTypeId)
+                        .upTrustScoreType(getUpTrustScoreType(requestDto))
+                        .trustScoreTypeName(requestDto.getTrustScoreTypeName())
+                        .trustGradeName(requestDto.getTrustGradeName())
+                        .score(requestDto.getScore())
+                        .gubunCode(requestDto.getGubunCode())
+                        .deleteStatus(requestDto.getDeleteStatus())
+                        .build();
         trustScoreTypeRepository.save(trustScoreType);
     }
 
     public void disableTrustScoreType(Long trustScoreTypeId) {
 
-        TrustScoreType trustScoreType = trustScoreTypeRepository.findById(trustScoreTypeId)
-                        .orElseThrow(() -> TrustScoreTypeCustomException.NOT_FOUND_TRUST_SCORE_TYPE);
+        TrustScoreType trustScoreType =
+                trustScoreTypeRepository
+                        .findById(trustScoreTypeId)
+                        .orElseThrow(
+                                () -> TrustScoreTypeCustomException.NOT_FOUND_TRUST_SCORE_TYPE);
 
         // 비활성화 여부 유효성 검사
         if (!trustScoreType.getDeleteStatus().equals("N")) {
@@ -106,7 +111,8 @@ public class TrustScoreTypeServiceImpl implements TrustScoreTypeService {
         if (requestDto.getUpTrustScoreTypeId() == null) {
             return null;
         }
-        return trustScoreTypeRepository.findById(requestDto.getUpTrustScoreTypeId())
+        return trustScoreTypeRepository
+                .findById(requestDto.getUpTrustScoreTypeId())
                 .orElseThrow(() -> TrustScoreTypeCustomException.NOT_FOUND_TRUST_SCORE_TYPE);
     }
 }

@@ -5,9 +5,7 @@ import com.example.demo.dto.project.request.ProjectUpdateRequestDto;
 import com.example.demo.global.common.BaseTimeEntity;
 import com.example.demo.model.trust_grade.TrustGrade;
 import com.example.demo.model.user.User;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;

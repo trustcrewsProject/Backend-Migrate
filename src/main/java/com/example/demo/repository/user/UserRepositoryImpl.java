@@ -44,11 +44,16 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 
         return jpaQueryFactory
                 .selectFrom(qUser)
-                .leftJoin(qUser.position, qPosition).fetchJoin()
-                .leftJoin(qUser.techStacks, qUserTechnologyStack).fetchJoin()
-                .leftJoin(qUserTechnologyStack.technologyStack, qTechnologyStack).fetchJoin()
-                .leftJoin(qUser.trustScore, qTrustScore).fetchJoin()
-                .leftJoin(qTrustScore.trustGrade, qTrustGrade).fetchJoin()
+                .leftJoin(qUser.position, qPosition)
+                .fetchJoin()
+                .leftJoin(qUser.techStacks, qUserTechnologyStack)
+                .fetchJoin()
+                .leftJoin(qUserTechnologyStack.technologyStack, qTechnologyStack)
+                .fetchJoin()
+                .leftJoin(qUser.trustScore, qTrustScore)
+                .fetchJoin()
+                .leftJoin(qTrustScore.trustGrade, qTrustGrade)
+                .fetchJoin()
                 .where(qUser.id.eq(userId))
                 .fetchOne();
     }

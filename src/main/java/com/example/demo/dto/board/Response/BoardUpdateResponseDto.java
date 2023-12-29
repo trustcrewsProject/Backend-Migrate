@@ -2,9 +2,8 @@ package com.example.demo.dto.board.response;
 
 import com.example.demo.global.util.LocalDateTimeFormatSerializer;
 import com.example.demo.model.board.Board;
-import java.time.LocalDateTime;
-
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 

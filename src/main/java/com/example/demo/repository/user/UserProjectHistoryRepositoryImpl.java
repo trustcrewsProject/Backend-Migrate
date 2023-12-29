@@ -6,7 +6,6 @@ import static com.example.demo.model.user.QUserProjectHistory.userProjectHistory
 
 import com.example.demo.dto.user.response.UserProjectHistoryInfoResponseDto;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

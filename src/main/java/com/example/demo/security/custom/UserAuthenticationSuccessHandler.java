@@ -40,8 +40,7 @@ public class UserAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
         JsonWebTokenDto tokens = jsonWebTokenProvider.generateToken(principalDetails);
 
         // 응답 헤더에 토큰 셋팅
-        response.setHeader(
-                JsonWebTokenProvider.AUTHORIZATION_HEADER, tokens.getAccessToken());
+        response.setHeader(JsonWebTokenProvider.AUTHORIZATION_HEADER, tokens.getAccessToken());
         response.addHeader(SET_COOKIE_HEADER, createRefreshTokenCookie(tokens.getRefreshToken()));
 
         // Redis RefreshToken 저장
@@ -56,12 +55,13 @@ public class UserAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
 
     // RefreshToken 쿠키 생성
     private String createRefreshTokenCookie(String refreshToken) {
-        ResponseCookie cookie = ResponseCookie.from("Refresh", refreshToken)
-                .path("/")
-                .sameSite("None")
-                .httpOnly(true)
-                .secure(true)
-                .build();
+        ResponseCookie cookie =
+                ResponseCookie.from("Refresh", refreshToken)
+                        .path("/")
+                        .sameSite("None")
+                        .httpOnly(true)
+                        .secure(true)
+                        .build();
 
         return cookie.toString();
     }

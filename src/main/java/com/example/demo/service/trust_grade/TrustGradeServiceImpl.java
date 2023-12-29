@@ -4,10 +4,9 @@ import com.example.demo.dto.trust_grade.response.TrustGradeInfoResponseDto;
 import com.example.demo.global.exception.customexception.TrustGradeCustomException;
 import com.example.demo.model.trust_grade.TrustGrade;
 import com.example.demo.repository.trust_grade.TrustGradeRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

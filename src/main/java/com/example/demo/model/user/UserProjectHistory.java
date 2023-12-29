@@ -3,9 +3,7 @@ package com.example.demo.model.user;
 import com.example.demo.constant.UserProjectHistoryStatus;
 import com.example.demo.global.common.BaseTimeEntity;
 import com.example.demo.model.project.Project;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

@@ -6,12 +6,10 @@ import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
 import com.example.demo.dto.user.response.UserProjectResponseDto;
 import com.example.demo.global.util.LocalDateTimeFormatSerializer;
 import com.example.demo.model.project.Project;
-
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -33,6 +31,7 @@ public class ProjectDetailResponseDto {
 
     @JsonSerialize(using = LocalDateTimeFormatSerializer.class)
     private LocalDateTime updateDate;
+
     private List<TechnologyStackInfoResponseDto> technologyStacks;
 
     public static ProjectDetailResponseDto of(

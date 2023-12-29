@@ -1,10 +1,9 @@
 package com.example.demo.dto.trust_score;
 
-import java.time.LocalDateTime;
-
 import com.example.demo.constant.ProgressStatus;
 import com.example.demo.global.util.LocalDateTimeFormatSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -6,7 +6,6 @@ import com.example.demo.model.project.Project;
 import com.example.demo.model.user.User;
 import com.example.demo.model.user.UserProjectHistory;
 import com.example.demo.repository.user.UserProjectHistoryRepository;
-
 import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

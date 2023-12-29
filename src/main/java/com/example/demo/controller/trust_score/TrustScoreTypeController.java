@@ -70,7 +70,8 @@ public class TrustScoreTypeController {
     @PostMapping("/api/trust-score-type")
     public ResponseEntity<ResponseDto<?>> createTrustScoreType(
             @RequestBody @Valid TrustScoreTypeCreateRequestDto requestDto) {
-        TrustScoreTypeCreateResponseDto responseDto = trustScoreTypeService.createTrustScoreType(requestDto);
+        TrustScoreTypeCreateResponseDto responseDto =
+                trustScoreTypeService.createTrustScoreType(requestDto);
 
         return new ResponseEntity<>(ResponseDto.success("success", responseDto), HttpStatus.OK);
     }

@@ -9,7 +9,6 @@ import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
 import com.example.demo.model.user.User;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.*;
@@ -98,7 +97,7 @@ public class Work extends BaseTimeEntity {
 
     public void updateCompleteStatus(
             WorkUpdateCompleteStatusRequestDto dto, ProjectMember projectMember) {
-        //this.completeStatus = dto.getCompleteStatus();
+        // this.completeStatus = dto.getCompleteStatus();
         this.lastModifiedMember = projectMember;
     }
 

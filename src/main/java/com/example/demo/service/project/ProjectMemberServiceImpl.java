@@ -8,13 +8,10 @@ import com.example.demo.model.project.ProjectMember;
 import com.example.demo.model.project.ProjectMemberAuth;
 import com.example.demo.model.user.User;
 import com.example.demo.repository.project.ProjectMemberRepository;
-
+import com.example.demo.service.user.UserService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-
-import com.example.demo.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -87,6 +84,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
 
     /**
      * 사용자의 생성 및 수정 권한 확인하기 (마일스톤, 업무)
+     *
      * @param projectId
      * @param userId
      * @return

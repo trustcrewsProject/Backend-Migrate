@@ -28,7 +28,8 @@ public class ProjectController {
     public final ProjectMemberService projectMemberService;
 
     @GetMapping("/me")
-    public ResponseEntity<ResponseDto<?>> getMyProjects(@AuthenticationPrincipal PrincipalDetails user) {
+    public ResponseEntity<ResponseDto<?>> getMyProjects(
+            @AuthenticationPrincipal PrincipalDetails user) {
         List<ProjectMeResponseDto> result = projectFacade.getMyProjects(user.getId());
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
@@ -38,7 +39,8 @@ public class ProjectController {
     public ResponseEntity<ResponseDto<?>> getDetail(
             @PathVariable("projectId") Long projectId,
             @AuthenticationPrincipal PrincipalDetails user) {
-        Map<String, Boolean> userAuthMap = projectMemberService.getUserAuthMap(projectId, user.getId());
+        Map<String, Boolean> userAuthMap =
+                projectMemberService.getUserAuthMap(projectId, user.getId());
         ProjectSpecificDetailResponseDto result = projectFacade.getDetail(projectId);
         result.setAuthMap(userAuthMap);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);

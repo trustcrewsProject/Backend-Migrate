@@ -26,7 +26,9 @@ jobs:
       - name: gradlew에 실행 권한 부여
         run: chmod +x ./gradlew
       - name: 프로젝트 빌드 및 테스트
-        run: ./gradlew clean build -x test
+        uses: gradle/gradle-build-action@0d13054264b0bb894ded474f08ebb30921341cee
+        with:
+          arguments: clean build -x test
       - name: AWS credential 설정
         uses: aws-actions/configure-aws-credentials@v1
         with:

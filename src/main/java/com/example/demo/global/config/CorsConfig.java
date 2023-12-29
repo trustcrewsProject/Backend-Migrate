@@ -12,23 +12,29 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 public class CorsConfig {
 
+    // 로컬 서버 주소 (프로젝트 완료 후 제거)
+    private static final String LOCAL_SERVER_ORIGIN = "http://localhost:3000";
     // 배포 서버 주소
-    private static final String DEPLOYED_SERVER_ORIGIN = "*";
+    private static final String DEPLOYED_SERVER_ORIGIN = "http://15.164.93.239";
 
     // 허용 HttpMethod 리스트
     private static final List<String> PERMIT_HTTP_METHOD =
             List.of("GET", "POST", "PUT", "PATCH", "DELETE");
 
     private static final String AUTHORIZATION_HEADER = "Authorization";
+    private static final String SET_COOKIE_HEADER = "Set-Cookie";
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOrigin(LOCAL_SERVER_ORIGIN);
         configuration.addAllowedOrigin(DEPLOYED_SERVER_ORIGIN);
         configuration.setAllowedMethods(PERMIT_HTTP_METHOD);
         configuration.addExposedHeader(AUTHORIZATION_HEADER);
+        configuration.addExposedHeader(SET_COOKIE_HEADER);
         configuration.addAllowedHeader("*");
         configuration.setMaxAge(3600L);
+        configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

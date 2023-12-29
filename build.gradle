@@ -11,7 +11,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 
 	/* 코드 포맷팅 */
-	id 'com.diffplug.spotless' version '6.11.0'
+	//id 'com.diffplug.spotless' version '6.11.0'
 
 	// (2) queryDSL 추가
 	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
@@ -65,17 +65,17 @@ tasks.named('test') {
 }
 
 /* 코드 포맷팅 spotless 설정 */
-spotless {
-	java {
-		target("**/*.java")
-		removeUnusedImports()
-		trimTrailingWhitespace()
-		endWithNewline()
-		importOrder()
-		indentWithTabs()
-		googleJavaFormat().aosp()
-	}
-}
+//spotless {
+//	java {
+//		target("**/*.java")
+//		removeUnusedImports()
+//		trimTrailingWhitespace()
+//		endWithNewline()
+//		importOrder()
+//		indentWithTabs()
+//		googleJavaFormat().aosp()
+//	}
+//}
 
 // (4) queryDSL 추가 : QueryDSL 빌드 옵션
 def querydslDir = "$buildDir/generated/querydsl"

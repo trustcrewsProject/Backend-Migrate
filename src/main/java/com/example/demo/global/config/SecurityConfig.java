@@ -85,9 +85,12 @@ public class SecurityConfig {
                 .httpBasic()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/api/admin/**").hasRole("ADMIN")
-                .antMatchers("/**/public").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/api/admin/**")
+                .hasRole("ADMIN")
+                .antMatchers("/**/public")
+                .permitAll()
+                .anyRequest()
+                .authenticated()
                 .and()
                 .exceptionHandling()
                 .accessDeniedHandler(new CustomAccessDeniedHandler(securityResponseHandler));
@@ -103,7 +106,12 @@ public class SecurityConfig {
                 new JsonWebTokenExceptionFilter(securityResponseHandler),
                 JsonWebTokenAuthenticationFilter.class);
         http.addFilterBefore(
-                new JsonWebTokenReissueFilter(refreshTokenRedisService, userService, objectMapper, jsonWebTokenProvider, securityResponseHandler),
+                new JsonWebTokenReissueFilter(
+                        refreshTokenRedisService,
+                        userService,
+                        objectMapper,
+                        jsonWebTokenProvider,
+                        securityResponseHandler),
                 JsonWebTokenExceptionFilter.class);
 
         return http.build();

@@ -149,13 +149,13 @@ public class JsonWebTokenProvider {
     // Request Header 에서 Refresh Cookie 정보 추출
     public Cookie resolveRefreshCookie(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
-        if(cookies == null) {
+        if (cookies == null) {
             throw TokenCustomException.DOES_NOT_REFRESH_TOKEN;
         }
 
         return Arrays.stream(cookies)
-                        .filter(cookie -> cookie.getName().equals(REFRESH_HEADER))
-                        .findFirst()
-                        .orElseThrow(() -> TokenCustomException.DOES_NOT_REFRESH_TOKEN);
+                .filter(cookie -> cookie.getName().equals(REFRESH_HEADER))
+                .findFirst()
+                .orElseThrow(() -> TokenCustomException.DOES_NOT_REFRESH_TOKEN);
     }
 }

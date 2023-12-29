@@ -36,7 +36,8 @@ public class BoardServiceImpl implements BoardService {
      * @return List<BoardSearchResponseDto>
      */
     @Transactional(readOnly = true)
-    public Page<BoardSearchResponseDto> search(Long positionId, String keyword, List<Long> technologyIds, Pageable pageable) {
+    public Page<BoardSearchResponseDto> search(
+            Long positionId, String keyword, List<Long> technologyIds, Pageable pageable) {
         return boardRepository.getBoardSearchPage(positionId, keyword, technologyIds, pageable);
     }
 

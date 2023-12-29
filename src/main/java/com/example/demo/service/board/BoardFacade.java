@@ -124,7 +124,8 @@ public class BoardFacade {
      * @param dto
      * @return
      */
-    public BoardProjectUpdateResponseDto update(Long userId, Long boardId, BoardProjectUpdateRequestDto dto) {
+    public BoardProjectUpdateResponseDto update(
+            Long userId, Long boardId, BoardProjectUpdateRequestDto dto) {
         User tempUser = userService.findById(userId); // 나중에 Security로 고쳐야 함.
         Board board = boardService.findById(boardId);
 

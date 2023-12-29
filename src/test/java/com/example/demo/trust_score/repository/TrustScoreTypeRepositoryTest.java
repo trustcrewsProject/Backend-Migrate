@@ -12,6 +12,7 @@ import com.example.demo.model.trust_score.TrustScoreType;
 import com.example.demo.repository.project.ProjectRepository;
 import com.example.demo.repository.trust_grade.TrustGradeRepository;
 import com.example.demo.repository.trust_score.TrustScoreTypeRepository;
+import java.util.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,9 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.*;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.*;
-
-import static com.example.demo.constant.TrustScoreTypeIdentifier.*;
 
 @SpringBootTest
 @Transactional
@@ -349,17 +347,20 @@ public class TrustScoreTypeRepositoryTest {
 
         // then
         TrustScoreType findTrustScoreType =
-                trustScoreTypeRepository.findById(trustScoreTypeId)
-                        .orElseThrow(() -> TrustScoreTypeCustomException.NOT_FOUND_TRUST_SCORE_TYPE);
+                trustScoreTypeRepository
+                        .findById(trustScoreTypeId)
+                        .orElseThrow(
+                                () -> TrustScoreTypeCustomException.NOT_FOUND_TRUST_SCORE_TYPE);
         Assertions.assertThat(findTrustScoreType.getDeleteStatus()).isEqualTo("Y");
 
         TrustScoreType findTrustScoreType2 =
-                trustScoreTypeRepository.findById(trustScoreTypeId)
-                        .orElseThrow(() -> TrustScoreTypeCustomException.NOT_FOUND_TRUST_SCORE_TYPE);
+                trustScoreTypeRepository
+                        .findById(trustScoreTypeId)
+                        .orElseThrow(
+                                () -> TrustScoreTypeCustomException.NOT_FOUND_TRUST_SCORE_TYPE);
         Assertions.assertThat(findTrustScoreType2.getDeleteStatus()).isEqualTo("Y");
-
-
     }
+
     @Test
     @DisplayName("하위신뢰점수타입 비활성화")
     public void disableTrustScoreType_DownTrustScoreType() {
@@ -371,10 +372,11 @@ public class TrustScoreTypeRepositoryTest {
 
         // then
         TrustScoreType findTrustScoreType =
-                trustScoreTypeRepository.findById(trustScoreTypeId)
-                        .orElseThrow(() -> TrustScoreTypeCustomException.NOT_FOUND_TRUST_SCORE_TYPE);
+                trustScoreTypeRepository
+                        .findById(trustScoreTypeId)
+                        .orElseThrow(
+                                () -> TrustScoreTypeCustomException.NOT_FOUND_TRUST_SCORE_TYPE);
         Assertions.assertThat(findTrustScoreType.getDeleteStatus()).isEqualTo("Y");
-
     }
 
     @Test
@@ -385,14 +387,11 @@ public class TrustScoreTypeRepositoryTest {
         Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "id"));
 
         // when
-        Page<TrustScoreTypeReadResponseDto> searchResults
-                = trustScoreTypeRepository.findSearchResults(criteria, pageable);
+        Page<TrustScoreTypeReadResponseDto> searchResults =
+                trustScoreTypeRepository.findSearchResults(criteria, pageable);
 
         // then
         Assertions.assertThat(searchResults).isNotNull();
         Assertions.assertThat(searchResults.getContent().size()).isEqualTo(10);
-
-
-
     }
 }

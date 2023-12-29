@@ -3,12 +3,10 @@ package com.example.demo.dto.user.response;
 import com.example.demo.dto.position.response.PositionInfoResponseDto;
 import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
 import com.example.demo.dto.trust_grade.response.TrustGradeInfoResponseDto;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
 import com.example.demo.global.util.LocalDateTimeFormatSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 

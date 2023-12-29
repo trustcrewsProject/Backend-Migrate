@@ -116,10 +116,10 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
 
         for (Board boardEntity : boards) {
             List<BoardPositionDetailResponseDto> boardPositions = new ArrayList<>();
-            for(BoardPosition boardPosition : boardEntity.getPositions()) {
-                BoardPositionDetailResponseDto boardPositionResponse = BoardPositionDetailResponseDto.of(
-                        boardPosition, PositionResponseDto.of(boardPosition.getPosition())
-                );
+            for (BoardPosition boardPosition : boardEntity.getPositions()) {
+                BoardPositionDetailResponseDto boardPositionResponse =
+                        BoardPositionDetailResponseDto.of(
+                                boardPosition, PositionResponseDto.of(boardPosition.getPosition()));
 
                 boardPositions.add(boardPositionResponse);
             }
@@ -144,13 +144,17 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
             User user = boardEntity.getUser();
 
             // 임시수정
-            TrustGradeResponseDto userTrustGradeResponseDto = TrustGradeResponseDto.of(user.getTrustScore().getTrustGrade());
+            TrustGradeResponseDto userTrustGradeResponseDto =
+                    TrustGradeResponseDto.of(user.getTrustScore().getTrustGrade());
             UserSearchResponseDto userSearchResponseDto =
                     UserSearchResponseDto.of(user, userTrustGradeResponseDto);
 
             boardSearchResponseDtos.add(
                     BoardSearchResponseDto.of(
-                            boardEntity, boardPositions, projectSearchResponseDto, userSearchResponseDto));
+                            boardEntity,
+                            boardPositions,
+                            projectSearchResponseDto,
+                            userSearchResponseDto));
         }
 
         long total = boardSearchResponseDtos.size();

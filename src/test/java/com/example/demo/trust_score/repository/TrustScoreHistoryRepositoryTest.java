@@ -79,9 +79,17 @@ public class TrustScoreHistoryRepositoryTest {
         Long projectId = saveProject.getId();
 
         // 테스트 업무 생성 및 저장
-        Work testWork1 = Work.builder().content("테스트 업무입니다").progressStatus(ProgressStatus.COMPLETION).build();
+        Work testWork1 =
+                Work.builder()
+                        .content("테스트 업무입니다")
+                        .progressStatus(ProgressStatus.COMPLETION)
+                        .build();
 
-        Work testWork2 = Work.builder().content("테스트 업무입니다").progressStatus(ProgressStatus.BEFORE_START).build();
+        Work testWork2 =
+                Work.builder()
+                        .content("테스트 업무입니다")
+                        .progressStatus(ProgressStatus.BEFORE_START)
+                        .build();
         Work saveWork1 = workRepository.save(testWork1);
         Work saveWork2 = workRepository.save(testWork2);
 

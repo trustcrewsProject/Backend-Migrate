@@ -1,14 +1,11 @@
 package com.example.demo.constant;
 
 import com.example.demo.global.exception.customexception.CommonCustomException;
+import java.util.Arrays;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.Arrays;
-
-/**
- * 마일스톤, 업무의 진행 상태를 관리하는 enum
- */
+/** 마일스톤, 업무의 진행 상태를 관리하는 enum */
 @AllArgsConstructor
 @Getter
 public enum ProgressStatus {

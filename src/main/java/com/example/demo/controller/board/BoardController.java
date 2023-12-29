@@ -10,7 +10,6 @@ import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.security.custom.PrincipalDetails;
 import com.example.demo.service.board.BoardFacade;
 import com.example.demo.service.board.BoardService;
-
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +36,8 @@ public class BoardController {
             @RequestParam(value = "technologyIds", required = false) List<Long> technologyIds,
             @RequestParam("page") Optional<Integer> page) {
         Pageable pageable = PageRequest.of(page.orElse(0), 5);
-        Page<BoardSearchResponseDto> result = boardService.search(positionId, keyword, technologyIds, pageable);
+        Page<BoardSearchResponseDto> result =
+                boardService.search(positionId, keyword, technologyIds, pageable);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 
@@ -61,7 +61,8 @@ public class BoardController {
             @PathVariable("boardId") Long boardId,
             @RequestBody BoardProjectUpdateRequestDto requestDto) {
         try {
-            BoardProjectUpdateResponseDto result = boardFacade.update(user.getId(), boardId, requestDto);
+            BoardProjectUpdateResponseDto result =
+                    boardFacade.update(user.getId(), boardId, requestDto);
             return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -70,7 +71,8 @@ public class BoardController {
     }
 
     @DeleteMapping("/{boardId}")
-    public ResponseEntity<ResponseDto<?>> delete(@AuthenticationPrincipal PrincipalDetails user, @PathVariable("boardId") Long boardId) {
+    public ResponseEntity<ResponseDto<?>> delete(
+            @AuthenticationPrincipal PrincipalDetails user, @PathVariable("boardId") Long boardId) {
         boardFacade.deleteBoard(user.getId(), boardId);
         return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.NO_CONTENT);
     }

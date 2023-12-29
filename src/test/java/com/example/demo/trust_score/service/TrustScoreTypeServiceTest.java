@@ -1,6 +1,7 @@
 package com.example.demo.trust_score.service;
 
-import com.example.demo.constant.TrustScoreTypeIdentifier;
+import static com.example.demo.constant.TrustScoreTypeIdentifier.WORK_INCOMPLETE;
+
 import com.example.demo.dto.trust_score_type.request.TrustScoreTypeCreateRequestDto;
 import com.example.demo.dto.trust_score_type.request.TrustScoreTypeUpdateRequestDto;
 import com.example.demo.dto.trust_score_type.response.TrustScoreTypeCreateResponseDto;
@@ -16,18 +17,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import static com.example.demo.constant.TrustScoreTypeIdentifier.WORK_INCOMPLETE;
-
 
 @Transactional
 @SpringBootTest
 public class TrustScoreTypeServiceTest {
 
-    @Autowired
-    private TrustScoreTypeService trustScoreTypeService;
+    @Autowired private TrustScoreTypeService trustScoreTypeService;
 
-    @Autowired
-    private TrustScoreTypeRepository trustScoreTypeRepository;
+    @Autowired private TrustScoreTypeRepository trustScoreTypeRepository;
 
     @Test
     @DisplayName("신뢰점수타입 전체 DTO 반환")
@@ -141,7 +138,6 @@ public class TrustScoreTypeServiceTest {
                 trustScoreTypeService.createTrustScoreType(createRequestDto);
         Long id = createResponseDto.getId();
 
-
         // when
         // 테스트 신뢰점수타입 수정
         TrustScoreTypeUpdateRequestDto updateRequestDto = new TrustScoreTypeUpdateRequestDto();
@@ -153,13 +149,17 @@ public class TrustScoreTypeServiceTest {
         updateRequestDto.setGubunCode("P");
 
         trustScoreTypeService.updateTrustScoreType(id, updateRequestDto);
-        TrustScoreType trustScoreType = trustScoreTypeRepository.findById(id).
-                orElseThrow(() -> TrustScoreTypeCustomException.NOT_FOUND_TRUST_SCORE_TYPE);
+        TrustScoreType trustScoreType =
+                trustScoreTypeRepository
+                        .findById(id)
+                        .orElseThrow(
+                                () -> TrustScoreTypeCustomException.NOT_FOUND_TRUST_SCORE_TYPE);
 
         // then
         // 수정사항 적용 여부 검증
         Assertions.assertThat(createResponseDto.getScore()).isNotEqualTo(trustScoreType.getScore());
-        Assertions.assertThat(createResponseDto.getDeleteStatus()).isNotEqualTo(trustScoreType.getDeleteStatus());
+        Assertions.assertThat(createResponseDto.getDeleteStatus())
+                .isNotEqualTo(trustScoreType.getDeleteStatus());
     }
 
     @Test
@@ -178,8 +178,8 @@ public class TrustScoreTypeServiceTest {
         TrustScoreType saveType = trustScoreTypeRepository.save(trustScoreType);
 
         // when - then
-        Assertions.assertThatThrownBy(() -> trustScoreTypeService.disableTrustScoreType(saveType.getId()))
+        Assertions.assertThatThrownBy(
+                        () -> trustScoreTypeService.disableTrustScoreType(saveType.getId()))
                 .isInstanceOf(TrustScoreTypeCustomException.class);
     }
 }
-

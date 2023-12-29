@@ -3,9 +3,7 @@ package com.example.demo.dto.milestone.request;
 import com.example.demo.constant.ProgressStatus;
 import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.project.Project;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

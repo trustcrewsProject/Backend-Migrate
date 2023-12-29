@@ -5,9 +5,7 @@ import static com.example.demo.constant.ProjectStatus.RECRUITING;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.trust_grade.TrustGrade;
 import com.example.demo.model.user.User;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

@@ -63,7 +63,7 @@ public class Board extends BaseTimeEntity {
 
     // 게시글 작성자 검증
     public void validationUser(User user) {
-        if(!this.user.equals(user)) {
+        if (!this.user.equals(user)) {
             throw BoardCustomException.NO_PERMISSION_TO_EDIT_OR_DELETE;
         }
     }

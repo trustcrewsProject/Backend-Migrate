@@ -6,14 +6,13 @@ import com.example.demo.dto.user.request.UserUpdateRequestDto;
 import com.example.demo.security.custom.PrincipalDetails;
 import com.example.demo.service.user.UserFacade;
 import com.example.demo.service.user.UserService;
+import java.util.Optional;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
@@ -53,7 +52,8 @@ public class UserController {
 
     // 간단한 내 정보 조회
     @GetMapping("/simple-me")
-    public ResponseEntity<ResponseDto<?>> simpleMyInfo(@AuthenticationPrincipal PrincipalDetails user) {
+    public ResponseEntity<ResponseDto<?>> simpleMyInfo(
+            @AuthenticationPrincipal PrincipalDetails user) {
         return ResponseEntity.status(HttpStatus.OK).body(userFacade.getSimpleMyInfo(user));
     }
 
@@ -65,7 +65,10 @@ public class UserController {
 
     // 내 프로젝트 이력 목록 조회
     @GetMapping("/me/project-history")
-    public ResponseEntity<ResponseDto<?>> myProjectHistoryList(@AuthenticationPrincipal PrincipalDetails user, @RequestParam Optional<Integer> pageNumber) {
-        return ResponseEntity.status(HttpStatus.OK).body(userFacade.getMyProjectHistoryList(user, pageNumber.orElse(0)));
+    public ResponseEntity<ResponseDto<?>> myProjectHistoryList(
+            @AuthenticationPrincipal PrincipalDetails user,
+            @RequestParam Optional<Integer> pageNumber) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(userFacade.getMyProjectHistoryList(user, pageNumber.orElse(0)));
     }
 }

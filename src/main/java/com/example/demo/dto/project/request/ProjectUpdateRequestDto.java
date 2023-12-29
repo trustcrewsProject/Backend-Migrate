@@ -1,7 +1,6 @@
 package com.example.demo.dto.project.request;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

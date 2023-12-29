@@ -1,13 +1,14 @@
 package com.example.demo.repository.trust_score;
 
+import static com.example.demo.model.trust_grade.QTrustGrade.*;
+import static com.example.demo.model.trust_score.QTrustScore.trustScore;
+
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Repository;
-import static com.example.demo.model.trust_grade.QTrustGrade.*;
-import static com.example.demo.model.trust_score.QTrustScore.trustScore;
 
 @Repository
 @RequiredArgsConstructor
@@ -26,11 +27,20 @@ public class TrustScoreRepositoryImpl implements TrustScoreRepositoryCustom {
         BooleanExpression builder = trustScore.userId.eq(userId);
         updateTrustGrade(builder);
     }
+
     private void updateTrustGrade(BooleanExpression builder) {
-        jpaQueryFactory.update(trustScore)
-                .set(trustScore.trustGrade, JPAExpressions.selectFrom(trustGrade)
-                            .where(trustScore.score.goe(trustGrade.minimumScore)
-                            .and(trustScore.score.loe(trustGrade.maximumScore))))
+        jpaQueryFactory
+                .update(trustScore)
+                .set(
+                        trustScore.trustGrade,
+                        JPAExpressions.selectFrom(trustGrade)
+                                .where(
+                                        trustScore
+                                                .score
+                                                .goe(trustGrade.minimumScore)
+                                                .and(
+                                                        trustScore.score.loe(
+                                                                trustGrade.maximumScore))))
                 .where(builder)
                 .execute();
     }

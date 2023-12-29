@@ -13,7 +13,8 @@ public enum TokenErrorCode implements ErrorCode {
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "만료된 토큰 정보입니다."),
     MALFORMED_TOKEN(HttpStatus.UNAUTHORIZED, "손상된 토큰 정보입니다."),
     DOES_NOT_REFRESH_TOKEN(HttpStatus.BAD_REQUEST, "요청 정보에 리프레시 토큰 정보가 존재하지 않습니다."),
-    INSUFFICIENT_USER_IDENTIFICATION_FOR_TOKEN_REISSUE(HttpStatus.BAD_REQUEST, "토큰 재발급을 위한 회원 식별 정보가 부족합니다."),
+    INSUFFICIENT_USER_IDENTIFICATION_FOR_TOKEN_REISSUE(
+            HttpStatus.BAD_REQUEST, "토큰 재발급을 위한 회원 식별 정보가 부족합니다."),
     INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "제공된 리프레시 토큰 정보가 올바르지 않습니다."),
     REFRESH_TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED, "리프레시 토큰 정보가 존재하지 않습니다. 재로그인이 필요합니다.");
 

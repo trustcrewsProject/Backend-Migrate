@@ -1,4 +1,4 @@
-package com.example.demo.dto.work.request;
+package com.example.demo.dto.work.response;
 
 import com.example.demo.model.work.Work;
 import java.time.LocalDate;

@@ -13,6 +13,10 @@ public class CorsConfig {
 
     // 로컬 서버 주소 (프로젝트 완료 후 제거)
     private static final String LOCAL_SERVER_ORIGIN = "http://localhost:3000";
+
+    // 백엔드 로컬 서버 주소 (프로젝트 완료 후 제거)
+    private static final String LOCAL_BACKEND_SERVER_ORIGIN = "http://localhost:8080";
+
     // 배포 서버 주소
     private static final String DEPLOYED_SERVER_ORIGIN = "http://15.164.93.239";
 
@@ -27,6 +31,7 @@ public class CorsConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOrigin(LOCAL_SERVER_ORIGIN);
+        configuration.addAllowedOrigin(LOCAL_BACKEND_SERVER_ORIGIN);
         configuration.addAllowedOrigin(DEPLOYED_SERVER_ORIGIN);
         configuration.setAllowedMethods(PERMIT_HTTP_METHOD);
         configuration.addExposedHeader(AUTHORIZATION_HEADER);

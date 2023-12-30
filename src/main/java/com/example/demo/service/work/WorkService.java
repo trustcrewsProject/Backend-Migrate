@@ -1,6 +1,6 @@
 package com.example.demo.service.work;
 
-import com.example.demo.dto.work.request.WorkReadResponseDto;
+import com.example.demo.dto.work.response.WorkReadResponseDto;
 import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.user.User;

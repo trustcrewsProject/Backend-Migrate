@@ -2,6 +2,7 @@ package com.example.demo.controller.work;
 
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.dto.work.request.*;
+import com.example.demo.dto.work.response.WorkReadResponseDto;
 import com.example.demo.security.custom.PrincipalDetails;
 import com.example.demo.service.work.WorkFacade;
 import com.example.demo.service.work.WorkService;

@@ -13,10 +13,9 @@ INSERT INTO position (position_id,name) VALUES (6,'디자이너');
 -- 기술 스택 상위 카테고리 값 넣기
 INSERT INTO technology_stack_category (technology_stack_category_id,name) VALUES (1,'프론트엔드');
 INSERT INTO technology_stack_category (technology_stack_category_id,name) VALUES (2,'백엔드');
-INSERT INTO technology_stack_category (technology_stack_category_id,name) VALUES (3,'안드로이드');
-INSERT INTO technology_stack_category (technology_stack_category_id,name) VALUES (4,'IOS');
-INSERT INTO technology_stack_category (technology_stack_category_id,name) VALUES (5,'데브옵스');
-INSERT INTO technology_stack_category (technology_stack_category_id,name) VALUES (6,'디자이너');
+INSERT INTO technology_stack_category (technology_stack_category_id,name) VALUES (3,'IOS');
+INSERT INTO technology_stack_category (technology_stack_category_id,name) VALUES (4,'안드로이드');
+INSERT INTO technology_stack_category (technology_stack_category_id,name) VALUES (5,'기타');
 
 -- technology_stack 값 넣기.
 INSERT INTO technology_stack (technology_stack_id, name) VALUES (1,'Java');

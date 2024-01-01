@@ -79,7 +79,11 @@ public class WorkFacade {
         User user = userService.findById(userId);
         ProjectMember projectMember =
                 projectMemberService.findProjectMemberByProjectAndUser(work.getProject(), user);
-        work.update(workUpdateRequestDto, projectMember);
+
+        // 할당된 회원 정보
+        ProjectMember assignedUser = projectMemberService.findById(workUpdateRequestDto.getAssignedUserId());
+
+        work.update(workUpdateRequestDto, projectMember, assignedUser.getUser());
     }
 
     /**

@@ -49,6 +49,44 @@ INSERT INTO technology_stack (technology_stack_id, name) VALUES (28,'Zeplin');
 INSERT INTO technology_stack (technology_stack_id, name) VALUES (29,'Jest');
 INSERT INTO technology_stack (technology_stack_id, name) VALUES (30,'C');
 
+-- technology_stack_category_mapping 값 넣기.
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (1, 1, 2);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (2, 2, 1);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (3, 3, 1);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (4, 4, 2);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (5, 5, 1);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (6, 6, 5);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (7, 7, 1);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (8, 8, 1);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (9, 9, 1);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (10, 10, 4);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (11, 11, 2);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (12, 12, 2);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (13, 13, 2);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (14, 14, 2);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (15, 15, 2);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (16, 16, 2);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (17, 17, 2);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (18, 18, 2);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (19, 19, 2);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (20, 20, 2);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (21, 21, 3);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (22, 21, 4);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (23, 22, 3);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (24, 22, 4);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (25, 22, 5);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (26, 23, 3);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (27, 23, 4);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (28, 24, 3);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (29, 25, 5);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (30, 26, 5);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (31, 27, 5);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (32, 28, 5);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (33, 29, 5);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (34, 30, 5);
+
+
+
 -- trust_grade 값 넣기.
 INSERT INTO trust_grade (trust_grade_id, name, minimum_score, maximum_score, create_date, update_date) VALUES (1,'1등급', 5000, 1000000, CURRENT_DATE, CURRENT_DATE);
 INSERT INTO trust_grade (trust_grade_id, name, minimum_score, maximum_score, create_date, update_date) VALUES (2,'2등급', 3000, 4999, CURRENT_DATE, CURRENT_DATE);

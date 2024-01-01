@@ -39,10 +39,8 @@ CREATE TABLE `technology_stack_category` (
 
 CREATE TABLE `technology_stack` (
     `technology_stack_id` bigint NOT NULL,
-    `technology_stack_category_id` bigint DEFAULT NULL,
     `name` varchar(255) DEFAULT NULL,
-    PRIMARY KEY (`technology_stack_id`),
-    FOREIGN KEY (`technology_stack_category_id`) REFERENCES `technology_stack_category` (`technology_stack_category_id`)
+    PRIMARY KEY (`technology_stack_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `trust_grade` (

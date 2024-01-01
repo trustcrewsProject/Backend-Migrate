@@ -19,32 +19,36 @@ INSERT INTO technology_stack_category (technology_stack_category_id,name) VALUES
 INSERT INTO technology_stack_category (technology_stack_category_id,name) VALUES (6,'디자이너');
 
 -- technology_stack 값 넣기.
--- 기술 스택 프론트엔드 넣기
-INSERT INTO technology_stack (technology_stack_id, name, technology_stack_category_id) VALUES (1,'REACT', 1);
-INSERT INTO technology_stack (technology_stack_id, name, technology_stack_category_id) VALUES (2,'TYPESCRIPT', 1);
-INSERT INTO technology_stack (technology_stack_id, name, technology_stack_category_id) VALUES (3,'JAVASCRIPT', 1);
-INSERT INTO technology_stack (technology_stack_id, name, technology_stack_category_id) VALUES (4,'VUE', 1);
-INSERT INTO technology_stack (technology_stack_id, name, technology_stack_category_id) VALUES (5,'NEXTJS', 1);
-
--- 기술 스택 백엔드 넣기
-INSERT INTO technology_stack (technology_stack_id, name, technology_stack_category_id) VALUES (6,'NODEJS', 2);
-INSERT INTO technology_stack (technology_stack_id, name, technology_stack_category_id) VALUES (7,'JAVA', 2);
-INSERT INTO technology_stack (technology_stack_id, name, technology_stack_category_id) VALUES (8,'SPRING', 2);
-INSERT INTO technology_stack (technology_stack_id, name, technology_stack_category_id) VALUES (9,'KOTLIN', 2);
-INSERT INTO technology_stack (technology_stack_id, name, technology_stack_category_id) VALUES (10,'NESTJS', 2);
-
--- 기술 스택 안드로이드 넣기
-INSERT INTO technology_stack (technology_stack_id, name, technology_stack_category_id) VALUES (11,'ANDROID', 3);
-
--- 기술 스택 IOS 넣기
-INSERT INTO technology_stack (technology_stack_id, name, technology_stack_category_id) VALUES (12,'SWIFT', 4);
-
--- 기술 스택 데브옵스 넣기
-INSERT INTO technology_stack (technology_stack_id, name, technology_stack_category_id) VALUES (13,'JENKINS', 5);
-INSERT INTO technology_stack (technology_stack_id, name, technology_stack_category_id) VALUES (14,'KUBERNETES', 5);
-
--- 기술 스택 디자이너 넣기
-INSERT INTO technology_stack (technology_stack_id, name, technology_stack_category_id) VALUES (15,'FIGMA', 6);
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (1,'Java');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (2,'JavaScript');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (3,'React');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (4,'Spring');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (5,'TypeScript');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (6,'Figma');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (7,'Vue');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (8,'Svelte');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (9,'Nextjs');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (10,'Kotlin');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (11,'Nodejs');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (12,'Express');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (13,'Mysql');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (14,'Mongodb');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (15,'Python');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (16,'Django');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (17,'Php');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (18,'Graphql');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (19,'Firebase');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (20,'ReactNative');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (21,'Unity');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (22,'Flutter');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (23,'Swift');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (24,'Aws');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (25,'Kubernetes');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (26,'Docker');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (27,'Git');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (28,'Zeplin');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (29,'Jest');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (30,'C');
 
 -- trust_grade 값 넣기.
 INSERT INTO trust_grade (trust_grade_id, name, minimum_score, maximum_score, create_date, update_date) VALUES (1,'1등급', 5000, 1000000, CURRENT_DATE, CURRENT_DATE);

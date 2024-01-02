@@ -19,4 +19,10 @@ public interface UserProjectHistoryService {
 
     // 회원 프로젝트 이력 조회
     List<UserProjectHistoryInfoResponseDto> getUserProjectHistoryList(Long userId, int pageNumber);
+
+    // 회원 참여중인 프로젝트 이력 조회
+    List<UserProjectHistory> getUserProjectHistoryListParticipates(Long userId, int pageIndex, int itemCount);
+
+    // 회원 참여중인 프로젝트 이력 개수 조회
+    Long getUserProjectHistoryParticipatesTotalCount(Long userId);
 }

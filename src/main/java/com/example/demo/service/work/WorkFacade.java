@@ -32,13 +32,16 @@ public class WorkFacade {
     private final ProjectMemberService projectMemberService;
 
     public void create(
-            Long projectId, Long milestoneId, WorkCreateRequestDto workCreateRequestDto) {
+            Long userId, Long projectId, Long milestoneId, WorkCreateRequestDto workCreateRequestDto) {
         Project project = projectService.findById(projectId);
         Milestone milestone = milestoneService.findById(milestoneId);
-        User user = userService.findById(workCreateRequestDto.getAssignedUserId());
+        User user = userService.findById(userId);
         ProjectMember projectMember =
                 projectMemberService.findProjectMemberByProjectAndUser(project, user);
-        Work work = workCreateRequestDto.toWorkEntity(project, milestone, user, projectMember);
+
+        ProjectMember assignedProjectMember = projectMemberService.findById(workCreateRequestDto.getAssignedUserId());
+
+        Work work = workCreateRequestDto.toWorkEntity(project, milestone, assignedProjectMember.getUser(), projectMember);
 
         workService.save(work);
     }

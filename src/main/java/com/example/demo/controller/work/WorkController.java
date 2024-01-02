@@ -26,10 +26,11 @@ public class WorkController {
 
     @PostMapping("/api/work/project/{projectId}/milestone/{milestoneId}")
     public ResponseEntity<ResponseDto<?>> create(
+            @AuthenticationPrincipal PrincipalDetails user,
             @PathVariable("projectId") Long projectId,
             @PathVariable("milestoneId") Long milestoneId,
             @RequestBody WorkCreateRequestDto workCreateRequestDto) {
-        workFacade.create(projectId, milestoneId, workCreateRequestDto);
+        workFacade.create(user.getId(), projectId, milestoneId, workCreateRequestDto);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 

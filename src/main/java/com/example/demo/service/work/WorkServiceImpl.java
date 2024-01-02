@@ -1,7 +1,8 @@
 package com.example.demo.service.work;
 
 import com.example.demo.constant.ProgressStatus;
-import com.example.demo.dto.work.request.WorkReadResponseDto;
+import com.example.demo.dto.work.response.WorkPaginationResponseDto;
+import com.example.demo.dto.work.response.WorkReadResponseDto;
 import com.example.demo.global.exception.customexception.WorkCustomException;
 import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.project.Project;
@@ -10,6 +11,7 @@ import com.example.demo.model.work.Work;
 import com.example.demo.repository.work.WorkRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -39,10 +41,9 @@ public class WorkServiceImpl implements WorkService {
                 .orElseThrow(() -> WorkCustomException.NOT_FOUND_WORK);
     }
 
-    public List<Work> findWorksByProjectAndMilestone(Project project, Milestone milestone) {
+    public WorkPaginationResponseDto findWorksByProjectAndMilestone(Long projectId, Long milestoneId, Pageable pageable) {
         return workRepository
-                .findWorksByProjectAndMilestone(project, milestone)
-                .orElseThrow(() -> WorkCustomException.NOT_FOUND_WORK);
+                .findWorkByProjectIdAndMilestoneIdOrderByStartDateAsc(projectId, milestoneId, pageable);
     }
 
     public WorkReadResponseDto getOne(Long workId) {

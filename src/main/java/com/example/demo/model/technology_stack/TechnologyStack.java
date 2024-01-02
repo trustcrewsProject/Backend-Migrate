@@ -17,8 +17,4 @@ public class TechnologyStack {
     private Long id;
 
     private String name;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "technology_stack_category_id")
-    private TechnologyStackCategory technologyStackCategory;
 }

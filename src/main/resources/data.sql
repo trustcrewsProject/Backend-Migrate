@@ -13,38 +13,79 @@ INSERT INTO position (position_id,name) VALUES (6,'디자이너');
 -- 기술 스택 상위 카테고리 값 넣기
 INSERT INTO technology_stack_category (technology_stack_category_id,name) VALUES (1,'프론트엔드');
 INSERT INTO technology_stack_category (technology_stack_category_id,name) VALUES (2,'백엔드');
-INSERT INTO technology_stack_category (technology_stack_category_id,name) VALUES (3,'안드로이드');
-INSERT INTO technology_stack_category (technology_stack_category_id,name) VALUES (4,'IOS');
-INSERT INTO technology_stack_category (technology_stack_category_id,name) VALUES (5,'데브옵스');
-INSERT INTO technology_stack_category (technology_stack_category_id,name) VALUES (6,'디자이너');
+INSERT INTO technology_stack_category (technology_stack_category_id,name) VALUES (3,'IOS');
+INSERT INTO technology_stack_category (technology_stack_category_id,name) VALUES (4,'안드로이드');
+INSERT INTO technology_stack_category (technology_stack_category_id,name) VALUES (5,'기타');
 
 -- technology_stack 값 넣기.
--- 기술 스택 프론트엔드 넣기
-INSERT INTO technology_stack (technology_stack_id, name, technology_stack_category_id) VALUES (1,'REACT', 1);
-INSERT INTO technology_stack (technology_stack_id, name, technology_stack_category_id) VALUES (2,'TYPESCRIPT', 1);
-INSERT INTO technology_stack (technology_stack_id, name, technology_stack_category_id) VALUES (3,'JAVASCRIPT', 1);
-INSERT INTO technology_stack (technology_stack_id, name, technology_stack_category_id) VALUES (4,'VUE', 1);
-INSERT INTO technology_stack (technology_stack_id, name, technology_stack_category_id) VALUES (5,'NEXTJS', 1);
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (1,'Java');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (2,'JavaScript');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (3,'React');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (4,'Spring');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (5,'TypeScript');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (6,'Figma');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (7,'Vue');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (8,'Svelte');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (9,'Nextjs');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (10,'Kotlin');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (11,'Nodejs');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (12,'Express');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (13,'Mysql');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (14,'Mongodb');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (15,'Python');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (16,'Django');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (17,'Php');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (18,'Graphql');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (19,'Firebase');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (20,'ReactNative');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (21,'Unity');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (22,'Flutter');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (23,'Swift');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (24,'Aws');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (25,'Kubernetes');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (26,'Docker');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (27,'Git');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (28,'Zeplin');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (29,'Jest');
+INSERT INTO technology_stack (technology_stack_id, name) VALUES (30,'C');
 
--- 기술 스택 백엔드 넣기
-INSERT INTO technology_stack (technology_stack_id, name, technology_stack_category_id) VALUES (6,'NODEJS', 2);
-INSERT INTO technology_stack (technology_stack_id, name, technology_stack_category_id) VALUES (7,'JAVA', 2);
-INSERT INTO technology_stack (technology_stack_id, name, technology_stack_category_id) VALUES (8,'SPRING', 2);
-INSERT INTO technology_stack (technology_stack_id, name, technology_stack_category_id) VALUES (9,'KOTLIN', 2);
-INSERT INTO technology_stack (technology_stack_id, name, technology_stack_category_id) VALUES (10,'NESTJS', 2);
+-- technology_stack_category_mapping 값 넣기.
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (1, 1, 2);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (2, 2, 1);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (3, 3, 1);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (4, 4, 2);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (5, 5, 1);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (6, 6, 5);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (7, 7, 1);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (8, 8, 1);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (9, 9, 1);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (10, 10, 4);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (11, 11, 2);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (12, 12, 2);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (13, 13, 2);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (14, 14, 2);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (15, 15, 2);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (16, 16, 2);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (17, 17, 2);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (18, 18, 2);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (19, 19, 2);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (20, 20, 2);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (21, 21, 3);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (22, 21, 4);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (23, 22, 3);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (24, 22, 4);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (25, 22, 5);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (26, 23, 3);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (27, 23, 4);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (28, 24, 3);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (29, 25, 5);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (30, 26, 5);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (31, 27, 5);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (32, 28, 5);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (33, 29, 5);
+INSERT INTO technology_stack_category_mapping (technology_stack_category_mapping_id, technology_stack_id, technology_stack_category_id) VALUES (34, 30, 5);
 
--- 기술 스택 안드로이드 넣기
-INSERT INTO technology_stack (technology_stack_id, name, technology_stack_category_id) VALUES (11,'ANDROID', 3);
 
--- 기술 스택 IOS 넣기
-INSERT INTO technology_stack (technology_stack_id, name, technology_stack_category_id) VALUES (12,'SWIFT', 4);
-
--- 기술 스택 데브옵스 넣기
-INSERT INTO technology_stack (technology_stack_id, name, technology_stack_category_id) VALUES (13,'JENKINS', 5);
-INSERT INTO technology_stack (technology_stack_id, name, technology_stack_category_id) VALUES (14,'KUBERNETES', 5);
-
--- 기술 스택 디자이너 넣기
-INSERT INTO technology_stack (technology_stack_id, name, technology_stack_category_id) VALUES (15,'FIGMA', 6);
 
 -- trust_grade 값 넣기.
 INSERT INTO trust_grade (trust_grade_id, name, minimum_score, maximum_score, create_date, update_date) VALUES (1,'1등급', 5000, 1000000, CURRENT_DATE, CURRENT_DATE);

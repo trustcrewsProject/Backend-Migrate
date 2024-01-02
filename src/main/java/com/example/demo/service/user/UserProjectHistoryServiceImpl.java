@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -45,5 +46,16 @@ public class UserProjectHistoryServiceImpl implements UserProjectHistoryService 
         PageRequest pageRequest = PageRequest.of(pageNumber, 5);
         return userProjectHistoryRepository.findAllByUserIdOrderByUpdateDateDesc(
                 userId, pageRequest);
+    }
+
+    @Override
+    public List<UserProjectHistory> getUserProjectHistoryListParticipates(Long userId, int pageIndex, int itemCount) {
+        Pageable pageable = PageRequest.of(pageIndex, itemCount);
+        return userProjectHistoryRepository.findAllUserParticipates(userId, pageable);
+    }
+
+    @Override
+    public Long getUserProjectHistoryParticipatesTotalCount(Long userId) {
+        return userProjectHistoryRepository.countParticipatesUserProjectHistoryByUserId(userId);
     }
 }

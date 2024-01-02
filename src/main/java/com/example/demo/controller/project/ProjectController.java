@@ -11,6 +11,7 @@ import com.example.demo.service.project.ProjectMemberService;
 import com.example.demo.service.project.ProjectService;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,14 @@ public class ProjectController {
     public final ProjectService projectService;
     public final ProjectFacade projectFacade;
     public final ProjectMemberService projectMemberService;
+
+    @GetMapping("/me/participating")
+    public ResponseEntity<ResponseDto<?>> getMyProjectsParticipates(
+            @AuthenticationPrincipal PrincipalDetails user,
+            @RequestParam("pageIndex") Optional<Integer> pageIndex,
+            @RequestParam("itemCount") Optional<Integer> itemCount) {
+        return new ResponseEntity<>(ResponseDto.success("success", projectFacade.getMyProjectsParticipates(user.getId(), pageIndex.orElse(0), itemCount.orElse(6))), HttpStatus.OK);
+    }
 
     @GetMapping("/me")
     public ResponseEntity<ResponseDto<?>> getMyProjects(

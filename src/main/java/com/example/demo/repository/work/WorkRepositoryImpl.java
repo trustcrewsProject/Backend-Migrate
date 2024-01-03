@@ -53,7 +53,10 @@ public class WorkRepositoryImpl implements WorkRepositoryCustom{
                 .leftJoin(qWork.milestone, qMilestone)
                 .leftJoin(qWork.assignedUserId, qUser)
                 .leftJoin(qWork.lastModifiedMember, qProjectMember)
-                .where(getPredicateForProjectAndMilestone(projectId, milestoneId))
+                .where(
+                        eqProjectId(projectId),
+                        eqMilestoneId(milestoneId)
+                )
                 .orderBy(qWork.startDate.asc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())

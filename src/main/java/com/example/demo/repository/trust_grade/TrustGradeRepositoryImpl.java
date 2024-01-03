@@ -27,7 +27,7 @@ public class TrustGradeRepositoryImpl implements TrustGradeRepositoryCustom {
     }
     @Override
     public List<TrustGradeInfoResponseDto> getPossibleTrustGrades(Integer score) {
-        BooleanExpression builder = trustGrade.maximumScore.goe(score);
+        BooleanExpression builder = trustGrade.minimumScore.loe(score);
         return getListByCriteria(builder);
     }
 }

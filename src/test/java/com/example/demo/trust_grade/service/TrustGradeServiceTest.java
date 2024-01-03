@@ -45,7 +45,7 @@ public class TrustGradeServiceTest {
                 .email("aaa@gmail.com")
                 .build();
         TrustScore trustScore = TrustScore.builder()
-                .score(1500)
+                .score(200)
                 .build();
         trustScoreRepository.save(trustScore);
         user.setTrustScore(trustScore);
@@ -57,7 +57,7 @@ public class TrustGradeServiceTest {
                 trustGradeService.getPossibleUserGrades(saveUser.getId());
 
         // then
-        Assertions.assertThat(grades.size()).isEqualTo(4);
+        Assertions.assertThat(grades.size()).isEqualTo(1);
 
     }
 }

@@ -82,17 +82,19 @@ public class ProjectMemberFacade {
             technologyStackInfoResponseDtoList.add(technologyStackInfoResponseDto);
         }
 
-        // 임시
         UserCrewDetailResponseDto userCrewDetailResponseDto =
                 UserCrewDetailResponseDto.of(
                         projectMember.getUser(),
-                        1,
+                        projectMember.getUser().getTrustScore().getScore(),
                         positionResponseDto,
                         trustGradeResponseDto,
                         technologyStackInfoResponseDtoList);
 
+        ProjectMemberAuthResponseDto projectMemberAuthResponse =
+                ProjectMemberAuthResponseDto.of(projectMember.getProjectMemberAuth());
+
         return ProjectMemberReadCrewDetailResponseDto.of(
-                projectMember, projectCount, userCrewDetailResponseDto, positionResponseDto);
+                projectMember, projectCount, userCrewDetailResponseDto, projectMemberAuthResponse, positionResponseDto);
     }
 
     @Transactional(readOnly = true)

@@ -9,6 +9,7 @@ import com.example.demo.model.user.QUser;
 import com.example.demo.model.work.QWork;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -64,26 +65,33 @@ public class WorkRepositoryImpl implements WorkRepositoryCustom{
         return WorkPaginationResponseDto.of(content, totalPages);
     }
 
+    // 조건에 맞는 업무의 총 개수 조회
     private Long getTotalItemCount(Long projectId, Long milestoneId) {
-        // 프로젝트 > 마일스톤 > 업무 전체 갯수 조회
         return jpaQueryFactory
                 .select(qWork.count())
                 .from(qWork)
-                .where(getPredicateForProjectAndMilestone(projectId, milestoneId))
+                .where(
+                        eqProjectId(projectId),
+                        eqMilestoneId(milestoneId)
+                )
                 .fetchOne();
     }
 
-    private BooleanBuilder getPredicateForProjectAndMilestone(Long projectId, Long milestoneId) {
-        BooleanBuilder builder = new BooleanBuilder();
-
-        if(projectId != null) {
-            builder.and(qProject.id.eq(projectId));
+    // 프로젝트 ID 비교
+    private BooleanExpression eqProjectId(Long projectId) {
+        if(projectId == null) {
+            return null;
         }
 
-        if(milestoneId != null) {
-            builder.and(qMilestone.id.eq(milestoneId));
+        return qProject.id.eq(projectId);
+    }
+
+    // 마일스톤 ID 비교
+    private BooleanExpression eqMilestoneId(Long milestoneId) {
+        if(milestoneId == null) {
+            return null;
         }
 
-        return builder;
+        return qMilestone.id.eq(milestoneId);
     }
 }

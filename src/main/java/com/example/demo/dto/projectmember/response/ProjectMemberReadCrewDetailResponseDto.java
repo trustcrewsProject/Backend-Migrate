@@ -14,7 +14,7 @@ public class ProjectMemberReadCrewDetailResponseDto {
     private Long projectId;
     private int projectCount;
     private UserCrewDetailResponseDto user;
-    private Long projectMemberAuthId;
+    private ProjectMemberAuthResponseDto projectMemberAuth;
     private PositionResponseDto position;
     private ProjectMemberStatus status;
 
@@ -22,13 +22,14 @@ public class ProjectMemberReadCrewDetailResponseDto {
             ProjectMember projectMember,
             int projectCount,
             UserCrewDetailResponseDto user,
+            ProjectMemberAuthResponseDto projectMemberAuth,
             PositionResponseDto position) {
         return ProjectMemberReadCrewDetailResponseDto.builder()
                 .projectMemberId(projectMember.getId())
                 .projectId(projectMember.getProject().getId())
                 .projectCount(projectCount)
                 .user(user)
-                .projectMemberAuthId(projectMember.getProjectMemberAuth().getId())
+                .projectMemberAuth(projectMemberAuth)
                 .position(position)
                 .status(projectMember.getStatus())
                 .build();

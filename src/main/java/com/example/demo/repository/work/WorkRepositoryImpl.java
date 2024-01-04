@@ -24,14 +24,12 @@ public class WorkRepositoryImpl implements WorkRepositoryCustom{
     private final JPAQueryFactory jpaQueryFactory;
     private final QProject qProject = QProject.project;
     private final QMilestone qMilestone = QMilestone.milestone;
-
     private final QWork qWork = QWork.work;
+    private final QUser qUser = QUser.user;
+    private final QProjectMember qProjectMember = QProjectMember.projectMember;
 
     @Override
     public WorkPaginationResponseDto findWorkByProjectIdAndMilestoneIdOrderByStartDateAsc(Long projectId, Long milestoneId, Pageable pageable) {
-        QUser qUser = QUser.user;
-        QProjectMember qProjectMember = QProjectMember.projectMember;
-
         // 업무 목록 조회
         List<WorkReadResponseDto> content = jpaQueryFactory
                 .select(

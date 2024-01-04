@@ -9,16 +9,16 @@ import java.util.Objects;
 @Getter
 public class ProjectMemberWorkWithTrustScoreResponseDto {
 
-    private String content;
+    private String workContent;
     private LocalDate startDate;
     private LocalDate endDate;
     private String progressStatus;
     private Integer point;
     private String point_type;
 
-    public ProjectMemberWorkWithTrustScoreResponseDto(String content, LocalDate startDate,
+    public ProjectMemberWorkWithTrustScoreResponseDto(String workContent, LocalDate startDate,
                                                       LocalDate endDate, ProgressStatus progressStatus, Integer point, String point_type) {
-        this.content = content;
+        this.workContent = workContent;
         this.startDate = startDate;
         this.endDate = endDate;
         this.progressStatus = progressStatus.getDescription();

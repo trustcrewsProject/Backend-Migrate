@@ -9,6 +9,7 @@ import java.util.Objects;
 @Getter
 public class ProjectMemberWorkWithTrustScoreResponseDto {
 
+    private Long workId;
     private String workContent;
     private LocalDate startDate;
     private LocalDate endDate;
@@ -16,8 +17,9 @@ public class ProjectMemberWorkWithTrustScoreResponseDto {
     private Integer point;
     private String point_type;
 
-    public ProjectMemberWorkWithTrustScoreResponseDto(String workContent, LocalDate startDate,
+    public ProjectMemberWorkWithTrustScoreResponseDto(Long workId, String workContent, LocalDate startDate,
                                                       LocalDate endDate, ProgressStatus progressStatus, Integer point, String point_type) {
+        this.workId = workId;
         this.workContent = workContent;
         this.startDate = startDate;
         this.endDate = endDate;

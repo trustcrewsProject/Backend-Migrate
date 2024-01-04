@@ -60,19 +60,20 @@ public class WorkRepositoryImpl implements WorkRepositoryCustom{
                 .fetch();
 
         // 업무 전체 갯수 조회
-        long totalPages = getTotalItemCount(projectId, milestoneId);
+        long totalPages = getTotalItemCount(projectId, milestoneId, null);
 
         return WorkPaginationResponseDto.of(content, totalPages);
     }
 
     // 조건에 맞는 업무의 총 개수 조회
-    private Long getTotalItemCount(Long projectId, Long milestoneId) {
+    private Long getTotalItemCount(Long projectId, Long milestoneId, Long assignedUserId) {
         return jpaQueryFactory
                 .select(qWork.count())
                 .from(qWork)
                 .where(
                         eqProjectId(projectId),
-                        eqMilestoneId(milestoneId)
+                        eqMilestoneId(milestoneId),
+                        eqAssignedUserId(assignedUserId)
                 )
                 .fetchOne();
     }

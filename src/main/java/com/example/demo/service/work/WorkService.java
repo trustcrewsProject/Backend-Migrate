@@ -1,8 +1,8 @@
 package com.example.demo.service.work;
 
+import com.example.demo.dto.projectmember.response.ProjectMemberWorksPaginationResponseDto;
 import com.example.demo.dto.work.response.WorkPaginationResponseDto;
 import com.example.demo.dto.work.response.WorkReadResponseDto;
-import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.user.User;
 import com.example.demo.model.work.Work;
@@ -27,4 +27,7 @@ public interface WorkService {
     public WorkReadResponseDto getOne(Long workId);
 
     public void delete(Long workId);
+
+    // 특정 프로젝트에 할당된 특정 회원의 업무 내역 + 업무 신뢰점수 내역 조회
+    ProjectMemberWorksPaginationResponseDto findWorksWithTrustScoreHistoryByProjectIdAndAssignedUserId(Long projectId, Long assignedUserId, Pageable pageable);
 }

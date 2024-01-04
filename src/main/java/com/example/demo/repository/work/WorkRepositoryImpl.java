@@ -84,7 +84,7 @@ public class WorkRepositoryImpl implements WorkRepositoryCustom{
             return null;
         }
 
-        return qProject.id.eq(projectId);
+        return qWork.project.id.eq(projectId);
     }
 
     // 마일스톤 ID 비교
@@ -93,6 +93,6 @@ public class WorkRepositoryImpl implements WorkRepositoryCustom{
             return null;
         }
 
-        return qMilestone.id.eq(milestoneId);
+        return qWork.milestone.id.eq(milestoneId);
     }
 }

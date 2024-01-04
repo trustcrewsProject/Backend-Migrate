@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -31,7 +32,7 @@ public class JsonWebTokenReissueFilter extends OncePerRequestFilter {
 
     private static final String TOKEN_REISSUE_REQUEST_URI = "/api/user/token-reissue";
     private static final String AUTHORIZATION_HEADER = "Authorization";
-    private static final String BEARER_TOKEN_PREFIX = "Bearer ";
+    private static final String SET_COOKIE_HEADER = "Set-Cookie";
     private final RefreshTokenRedisService refreshTokenRedisService;
     private final UserService userService;
     private final ObjectMapper objectMapper;
@@ -151,23 +152,24 @@ public class JsonWebTokenReissueFilter extends OncePerRequestFilter {
     }
 
     // ResponseHeader 토큰 셋팅
-    private void setTokensInResponseHeader(
-            HttpServletRequest request, HttpServletResponse response, JsonWebTokenDto tokens) {
-        // RefreshToken 업데이트
-        response.addCookie(updateRefreshTokenCookie(request, tokens.getRefreshToken()));
+    private void setTokensInResponseHeader(HttpServletRequest request, HttpServletResponse response, JsonWebTokenDto tokens) {
         // AccessToken 셋팅
-        response.setHeader(AUTHORIZATION_HEADER, BEARER_TOKEN_PREFIX + tokens.getAccessToken());
+        response.setHeader(AUTHORIZATION_HEADER, tokens.getAccessToken());
+        // RefreshToken 업데이트
+        response.addHeader(SET_COOKIE_HEADER, updateRefreshTokenCookie(request, tokens.getRefreshToken()));
     }
 
     // RefreshTokenCookie 업데이트
-    private Cookie updateRefreshTokenCookie(HttpServletRequest request, String newRefreshToken) {
+    private String updateRefreshTokenCookie(HttpServletRequest request, String newRefreshToken) {
         Cookie refreshCookie = jsonWebTokenProvider.resolveRefreshCookie(request);
+        ResponseCookie cookie = ResponseCookie.from(refreshCookie.getName(), newRefreshToken)
+                .path("/")
+                .sameSite("None")
+                .httpOnly(true)
+                .secure(true)
+                .build();
 
-        refreshCookie.setValue(newRefreshToken);
-        refreshCookie.setHttpOnly(true);
-        refreshCookie.setPath("/");
-
-        return refreshCookie;
+        return cookie.toString();
     }
 
     // 토큰 재발급 성공 응답

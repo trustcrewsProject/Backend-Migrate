@@ -11,10 +11,7 @@ import com.example.demo.dto.trust_score.AddPointDto;
 import com.example.demo.dto.trust_score.request.TrustScoreUpdateRequestDto;
 import com.example.demo.dto.user.request.UserCreateRequestDto;
 import com.example.demo.dto.user.request.UserUpdateRequestDto;
-import com.example.demo.dto.user.response.UserMyInfoResponseDto;
-import com.example.demo.dto.user.response.UserProjectHistoryInfoResponseDto;
-import com.example.demo.dto.user.response.UserSimpleInfoResponseDto;
-import com.example.demo.dto.user.response.UserUpdateResponseDto;
+import com.example.demo.dto.user.response.*;
 import com.example.demo.global.exception.customexception.PageNationCustomException;
 import com.example.demo.model.position.Position;
 import com.example.demo.model.technology_stack.TechnologyStack;
@@ -303,7 +300,7 @@ public class UserFacade {
             throw PageNationCustomException.INVALID_PAGE_NUMBER;
         }
 
-        List<UserProjectHistoryInfoResponseDto> projectHistoryList =
+        UserProjectHistoryPaginationResponseDto projectHistoryList =
                 userProjectHistoryService.getUserProjectHistoryList(user.getId(), pageNumber);
 
         return ResponseDto.success("내 프로젝트 이력 목록 조회가 완료되었습니다.", projectHistoryList);

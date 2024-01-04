@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/projectmember")
 @AllArgsConstructor
@@ -54,4 +56,14 @@ public class ProjectMemberController {
                 projectMemberFacade.getCrewsByProject(projectId);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
+
+    // 프로젝트 멤버 업무 이력 조회
+    @GetMapping("/{projectMemberId}/works")
+    public ResponseEntity<ResponseDto<?>> getCrewWorksWithTrustScoreHistory(
+            @PathVariable("projectMemberId") Long projectMemberId,
+            @RequestParam("pageIndex") Optional<Integer> pageIndex,
+            @RequestParam("itemCount") Optional<Integer> itemCount) {
+        return new ResponseEntity<>(ResponseDto.success("success", projectMemberFacade.getCrewWorksWithTrustScoreHistory(projectMemberId, pageIndex.orElse(0), itemCount.orElse(5))), HttpStatus.OK);
+    }
+
 }

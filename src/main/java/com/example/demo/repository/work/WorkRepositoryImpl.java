@@ -7,7 +7,6 @@ import com.example.demo.model.project.QProject;
 import com.example.demo.model.project.QProjectMember;
 import com.example.demo.model.user.QUser;
 import com.example.demo.model.work.QWork;
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -94,5 +93,14 @@ public class WorkRepositoryImpl implements WorkRepositoryCustom{
         }
 
         return qWork.milestone.id.eq(milestoneId);
+    }
+
+    // 할당자 ID 비교
+    private BooleanExpression eqAssignedUserId(Long assignedUserId) {
+        if(assignedUserId == null) {
+            return null;
+        }
+
+        return qWork.assignedUserId.id.eq(assignedUserId);
     }
 }

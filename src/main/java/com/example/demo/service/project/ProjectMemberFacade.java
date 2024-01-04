@@ -7,6 +7,7 @@ import com.example.demo.dto.technology_stack.response.TechnologyStackInfoRespons
 import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
 import com.example.demo.dto.user.response.UserCrewDetailResponseDto;
 import com.example.demo.dto.user.response.UserReadProjectCrewResponseDto;
+import com.example.demo.global.exception.customexception.PageNationCustomException;
 import com.example.demo.model.alert.Alert;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
@@ -19,6 +20,7 @@ import com.example.demo.service.work.WorkService;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -126,6 +128,31 @@ public class ProjectMemberFacade {
         ProjectMemberReadTotalProjectCrewsResponseDto result =
                 ProjectMemberReadTotalProjectCrewsResponseDto.of(
                         projectMemberReadProjectCrewsResponseDtos);
+        return result;
+    }
+
+    /**
+     * 프로젝트 멤버가 할당된 업무 이력 + 업무 별 신뢰점수 내역 조회
+     * @param projectMemberId
+     * @param pageIndex
+     * @param itemCount
+     * @return ProjectMemberWorkPaginationResponseDto
+     */
+    @Transactional(readOnly = true)
+    public ProjectMemberWorksPaginationResponseDto getCrewWorksWithTrustScoreHistory(Long projectMemberId, int pageIndex, int itemCount) {
+        if(pageIndex < 0) {
+            throw PageNationCustomException.INVALID_PAGE_NUMBER;
+        }
+
+        if(itemCount < 0 || itemCount > 6) {
+            throw PageNationCustomException.INVALID_PAGE_ITEM_COUNT;
+        }
+
+        ProjectMember projectMember = projectMemberService.findById(projectMemberId);
+
+        // 해당 프로젝트 멤버의 업무 + 업무 별 신뢰점수 내역 & 해당 프로젝트 멤버 업무 총 개수 조회
+        ProjectMemberWorksPaginationResponseDto result = workService.findWorksWithTrustScoreHistoryByProjectIdAndAssignedUserId(projectMember.getProject().getId(), projectMember.getUser().getId(), PageRequest.of(pageIndex, itemCount));
+
         return result;
     }
 }

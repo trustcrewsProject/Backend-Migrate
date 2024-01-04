@@ -78,6 +78,7 @@ public class WorkRepositoryImpl implements WorkRepositoryCustom{
                 .select(
                         Projections.constructor(
                                 ProjectMemberWorkWithTrustScoreResponseDto.class,
+                                qWork.id,
                                 qWork.content,
                                 qWork.startDate,
                                 qWork.endDate,

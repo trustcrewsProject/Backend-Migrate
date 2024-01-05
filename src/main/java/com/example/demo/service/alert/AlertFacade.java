@@ -64,7 +64,7 @@ public class AlertFacade {
         List<AlertInfoResponseDto> alertInfoResponseDtos = new ArrayList<>();
 
         for (Alert alert : alerts) {
-            alertInfoResponseDtos.add(AlertInfoResponseDto.of(alert));
+            alertInfoResponseDtos.add(AlertInfoResponseDto.of(alert, alert.getPosition()));
         }
 
         return alertInfoResponseDtos;
@@ -76,7 +76,7 @@ public class AlertFacade {
         List<AlertInfoResponseDto> alertInfoResponseDtos = new ArrayList<>();
 
         for (Alert alert : alerts) {
-            alertInfoResponseDtos.add(AlertInfoResponseDto.of(alert));
+            alertInfoResponseDtos.add(AlertInfoResponseDto.of(alert, alert.getPosition()));
         }
 
         return alertInfoResponseDtos;
@@ -88,7 +88,7 @@ public class AlertFacade {
         List<AlertInfoResponseDto> alertInfoResponseDtos = new ArrayList<>();
 
         for (Alert alert : alerts) {
-            alertInfoResponseDtos.add(AlertInfoResponseDto.of(alert));
+            alertInfoResponseDtos.add(AlertInfoResponseDto.of(alert, alert.getPosition()));
         }
 
         return alertInfoResponseDtos;
@@ -100,7 +100,7 @@ public class AlertFacade {
         List<AlertInfoResponseDto> alertInfoResponseDtos = new ArrayList<>();
 
         for (Alert alert : alerts) {
-            alertInfoResponseDtos.add(AlertInfoResponseDto.of(alert));
+            alertInfoResponseDtos.add(AlertInfoResponseDto.of(alert, alert.getPosition()));
         }
 
         return alertInfoResponseDtos;

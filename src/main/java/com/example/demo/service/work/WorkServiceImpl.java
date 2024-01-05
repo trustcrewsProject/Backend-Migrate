@@ -46,11 +46,6 @@ public class WorkServiceImpl implements WorkService {
                 .findWorkByProjectIdAndMilestoneIdOrderByStartDateAsc(projectId, milestoneId, pageable);
     }
 
-    public WorkReadResponseDto getOne(Long workId) {
-        Work work = findById(workId);
-        return WorkReadResponseDto.of(work);
-    }
-
     public void delete(Long workId) {
         Work work = findById(workId);
         workRepository.delete(work);

@@ -1,8 +1,10 @@
 package com.example.demo.dto.alert.response;
 
 import com.example.demo.constant.AlertType;
+import com.example.demo.dto.position.response.PositionInfoResponseDto;
 import com.example.demo.global.util.LocalDateTimeFormatSerializer;
 import com.example.demo.model.alert.Alert;
+import com.example.demo.model.position.Position;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.time.LocalDateTime;
 import lombok.Builder;
@@ -18,7 +20,7 @@ public class AlertInfoResponseDto {
     private Long sendUserId;
     private Long workId;
     private Long milestoneId;
-    private Long positionId;
+    private PositionInfoResponseDto position;
     private String content;
     private AlertType type;
 
@@ -28,7 +30,7 @@ public class AlertInfoResponseDto {
     @JsonSerialize(using = LocalDateTimeFormatSerializer.class)
     private LocalDateTime updateDate;
 
-    public static AlertInfoResponseDto of(Alert alert) {
+    public static AlertInfoResponseDto of(Alert alert, Position position) {
         return AlertInfoResponseDto.builder()
                 .alertId(alert.getId())
                 .projectId(alert.getProject().getId())
@@ -39,10 +41,10 @@ public class AlertInfoResponseDto {
                         ObjectUtils.isEmpty(alert.getMilestone())
                                 ? null
                                 : alert.getMilestone().getId())
-                .positionId(
-                        ObjectUtils.isEmpty(alert.getPosition())
+                .position(
+                        ObjectUtils.isEmpty(position)
                                 ? null
-                                : alert.getPosition().getId())
+                                : PositionInfoResponseDto.of(position.getId(), position.getName()))
                 .content(alert.getContent())
                 .type(alert.getType())
                 .createDate(alert.getCreateDate())

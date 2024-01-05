@@ -47,13 +47,25 @@ public class WorkFacade {
     }
 
     @Transactional(readOnly = true)
+    public WorkReadResponseDto getOne(Long workId) {
+        Work work = workService.findById(workId);
+        User assignedUser = work.getAssignedUserId();
+        ProjectMember projectMember = projectMemberService.findProjectMemberByProjectAndUser(work.getProject(), assignedUser);
+
+        return WorkReadResponseDto.of(work, projectMember, assignedUser);
+    }
+
+    @Transactional(readOnly = true)
     public List<WorkReadResponseDto> getAllByProject(Long projectId) {
         Project project = projectService.findById(projectId);
         List<Work> works = workService.findWorksByProject(project);
 
         List<WorkReadResponseDto> workReadResponseDtos = new ArrayList<>();
         for (Work work : works) {
-            WorkReadResponseDto workReadResponseDto = WorkReadResponseDto.of(work);
+            User assignedUser = work.getAssignedUserId();
+            ProjectMember projectMember = projectMemberService.findProjectMemberByProjectAndUser(project, assignedUser);
+
+            WorkReadResponseDto workReadResponseDto = WorkReadResponseDto.of(work, projectMember, assignedUser);
             workReadResponseDtos.add(workReadResponseDto);
         }
 

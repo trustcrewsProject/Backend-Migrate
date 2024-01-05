@@ -24,8 +24,6 @@ public interface WorkService {
 
     public WorkPaginationResponseDto findWorksByProjectAndMilestone(Long projectId, Long milestoneId, Pageable pageable);
 
-    public WorkReadResponseDto getOne(Long workId);
-
     public void delete(Long workId);
 
     // 특정 프로젝트에 할당된 특정 회원의 업무 내역 + 업무 신뢰점수 내역 조회

@@ -2,6 +2,7 @@ package com.example.demo.repository.work;
 
 import com.example.demo.dto.projectmember.response.ProjectMemberWorksPaginationResponseDto;
 import com.example.demo.dto.projectmember.response.ProjectMemberWorkWithTrustScoreResponseDto;
+import com.example.demo.dto.work.response.WorkAssignedUserInfoResponseDto;
 import com.example.demo.dto.work.response.WorkPaginationResponseDto;
 import com.example.demo.dto.work.response.WorkReadResponseDto;
 import com.example.demo.model.milestone.QMilestone;
@@ -11,8 +12,11 @@ import com.example.demo.model.trust_score.QTrustScoreHistory;
 import com.example.demo.model.trust_score.QTrustScoreType;
 import com.example.demo.model.user.QUser;
 import com.example.demo.model.work.QWork;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +34,7 @@ public class WorkRepositoryImpl implements WorkRepositoryCustom{
     private final QWork qWork = QWork.work;
     private final QUser qUser = QUser.user;
     private final QProjectMember qProjectMember = QProjectMember.projectMember;
+    private final QProjectMember subProjectMember = QProjectMember.projectMember;
     private final QTrustScoreHistory qTrustScoreHistory = QTrustScoreHistory.trustScoreHistory;
     private final QTrustScoreType qTrustScoreType = QTrustScoreType.trustScoreType;
 
@@ -43,7 +48,11 @@ public class WorkRepositoryImpl implements WorkRepositoryCustom{
                                 qWork.id,
                                 qProject.id,
                                 qMilestone.id,
-                                qUser.nickname,
+                                Projections.constructor(
+                                        WorkAssignedUserInfoResponseDto.class,
+                                        subProjectMember.id,
+                                        qUser.nickname
+                                ),
                                 qProjectMember.user.nickname,
                                 qWork.content,
                                 qWork.startDate,
@@ -58,7 +67,8 @@ public class WorkRepositoryImpl implements WorkRepositoryCustom{
                 .leftJoin(qWork.lastModifiedMember, qProjectMember)
                 .where(
                         eqProjectId(projectId),
-                        eqMilestoneId(milestoneId)
+                        eqMilestoneId(milestoneId),
+                        subProjectMember.project.eq(qProject)
                 )
                 .orderBy(qWork.startDate.asc())
                 .offset(pageable.getOffset())

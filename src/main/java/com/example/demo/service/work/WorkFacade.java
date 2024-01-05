@@ -53,7 +53,10 @@ public class WorkFacade {
 
         List<WorkReadResponseDto> workReadResponseDtos = new ArrayList<>();
         for (Work work : works) {
-            WorkReadResponseDto workReadResponseDto = WorkReadResponseDto.of(work);
+            User assignedUser = work.getAssignedUserId();
+            ProjectMember projectMember = projectMemberService.findProjectMemberByProjectAndUser(project, assignedUser);
+
+            WorkReadResponseDto workReadResponseDto = WorkReadResponseDto.of(work, projectMember, assignedUser);
             workReadResponseDtos.add(workReadResponseDto);
         }
 

@@ -48,7 +48,7 @@ public class WorkServiceImpl implements WorkService {
 
     public WorkReadResponseDto getOne(Long workId) {
         Work work = findById(workId);
-        return WorkReadResponseDto.of(work);
+        return WorkReadResponseDto.of(work, null, null);
     }
 
     public void delete(Long workId) {

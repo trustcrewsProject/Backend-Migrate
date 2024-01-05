@@ -46,9 +46,13 @@ public class WorkFacade {
         workService.save(work);
     }
 
+    @Transactional(readOnly = true)
     public WorkReadResponseDto getOne(Long workId) {
         Work work = workService.findById(workId);
-        return WorkReadResponseDto.of(work, null, null);
+        User assignedUser = work.getAssignedUserId();
+        ProjectMember projectMember = projectMemberService.findProjectMemberByProjectAndUser(work.getProject(), assignedUser);
+
+        return WorkReadResponseDto.of(work, projectMember, assignedUser);
     }
 
     @Transactional(readOnly = true)

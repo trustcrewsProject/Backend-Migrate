@@ -46,6 +46,11 @@ public class WorkFacade {
         workService.save(work);
     }
 
+    public WorkReadResponseDto getOne(Long workId) {
+        Work work = workService.findById(workId);
+        return WorkReadResponseDto.of(work, null, null);
+    }
+
     @Transactional(readOnly = true)
     public List<WorkReadResponseDto> getAllByProject(Long projectId) {
         Project project = projectService.findById(projectId);

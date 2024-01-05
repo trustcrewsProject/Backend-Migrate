@@ -52,7 +52,7 @@ public class WorkController {
 
     @GetMapping("/api/work/{workId}")
     public ResponseEntity<ResponseDto<?>> getOne(@PathVariable("workId") Long workId) {
-        WorkReadResponseDto result = workService.getOne(workId);
+        WorkReadResponseDto result = workFacade.getOne(workId);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 

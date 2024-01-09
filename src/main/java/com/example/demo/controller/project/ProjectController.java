@@ -61,7 +61,7 @@ public class ProjectController {
             @PathVariable("projectId") Long projectId,
             @RequestBody @Valid ProjectParticipateRequestDto projectParticipateRequestDto) {
         projectFacade.sendParticipateAlert(user.getId(), projectId, projectParticipateRequestDto);
-        return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseDto.success("참여 요청이 완료되었습니다.", null), HttpStatus.OK);
     }
 
     @PostMapping("/{projectId}/participate/confirm")

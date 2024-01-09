@@ -1,7 +1,7 @@
 package com.example.demo.service.board;
 
+import com.example.demo.dto.board.response.BoardSearchPaginationResponseDto;
 import com.example.demo.dto.board.response.BoardDetailResponseDto;
-import com.example.demo.dto.board.response.BoardSearchResponseDto;
 import com.example.demo.dto.board.response.BoardTotalDetailResponseDto;
 import com.example.demo.dto.boardposition.BoardPositionDetailResponseDto;
 import com.example.demo.dto.position.response.PositionResponseDto;
@@ -19,7 +19,6 @@ import com.example.demo.repository.board.BoardRepository;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +35,7 @@ public class BoardServiceImpl implements BoardService {
      * @return List<BoardSearchResponseDto>
      */
     @Transactional(readOnly = true)
-    public Page<BoardSearchResponseDto> search(
+    public BoardSearchPaginationResponseDto search(
             Long positionId, String keyword, List<Long> technologyIds, Pageable pageable) {
         return boardRepository.getBoardSearchPage(positionId, keyword, technologyIds, pageable);
     }

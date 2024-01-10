@@ -1,6 +1,6 @@
 package com.example.demo.controller.board;
 
-import com.example.demo.dto.board.response.BoardSearchResponseDto;
+import com.example.demo.dto.board.response.BoardSearchPaginationResponseDto;
 import com.example.demo.dto.board.response.BoardTotalDetailResponseDto;
 import com.example.demo.dto.board_project.request.BoardProjectCreateRequestDto;
 import com.example.demo.dto.board_project.request.BoardProjectUpdateRequestDto;
@@ -13,7 +13,6 @@ import com.example.demo.service.board.BoardService;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -35,8 +34,8 @@ public class BoardController {
             @RequestParam(value = "keyword", required = false) String keyword,
             @RequestParam(value = "technologyIds", required = false) List<Long> technologyIds,
             @RequestParam("page") Optional<Integer> page) {
-        Pageable pageable = PageRequest.of(page.orElse(0), 5);
-        Page<BoardSearchResponseDto> result =
+        Pageable pageable = PageRequest.of(page.orElse(0), 8);
+        BoardSearchPaginationResponseDto result =
                 boardService.search(positionId, keyword, technologyIds, pageable);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }

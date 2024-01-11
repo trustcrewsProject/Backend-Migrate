@@ -5,7 +5,6 @@ import com.example.demo.constant.ProjectMemberStatus;
 import com.example.demo.dto.project.request.ProjectConfirmRequestDto;
 import com.example.demo.dto.project.request.ProjectParticipateRequestDto;
 import com.example.demo.dto.project.response.ProjectMeResponseDto;
-import com.example.demo.dto.project.response.ProjectPaginationResponseDto;
 import com.example.demo.dto.project.response.ProjectSpecificDetailResponseDto;
 import com.example.demo.dto.projectmember.response.MyProjectMemberResponseDto;
 import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;

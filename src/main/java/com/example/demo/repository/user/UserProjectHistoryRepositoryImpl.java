@@ -6,7 +6,6 @@ import static com.example.demo.model.user.QUserProjectHistory.userProjectHistory
 
 import com.example.demo.constant.UserProjectHistoryStatus;
 import com.example.demo.dto.user.response.UserProjectHistoryInfoResponseDto;
-import com.example.demo.dto.user.response.UserProjectHistoryPaginationResponseDto;
 import com.example.demo.model.project.QProjectMember;
 import com.example.demo.model.trust_grade.QTrustGrade;
 import com.example.demo.model.user.UserProjectHistory;

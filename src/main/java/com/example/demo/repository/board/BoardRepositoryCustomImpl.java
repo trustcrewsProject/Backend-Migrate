@@ -1,6 +1,5 @@
 package com.example.demo.repository.board;
 
-import com.example.demo.dto.board.response.BoardSearchPaginationResponseDto;
 import com.example.demo.dto.board.response.BoardSearchResponseDto;
 import com.example.demo.dto.boardposition.BoardPositionDetailResponseDto;
 import com.example.demo.dto.position.response.PositionResponseDto;

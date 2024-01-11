@@ -1,7 +1,5 @@
 package com.example.demo.repository.work;
 
-import com.example.demo.dto.projectmember.response.ProjectMemberWorksPaginationResponseDto;
-import com.example.demo.dto.work.response.WorkPaginationResponseDto;
 import org.springframework.data.domain.Pageable;
 
 public interface WorkRepositoryCustom {

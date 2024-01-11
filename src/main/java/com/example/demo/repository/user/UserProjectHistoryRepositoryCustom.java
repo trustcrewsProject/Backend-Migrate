@@ -1,9 +1,7 @@
 package com.example.demo.repository.user;
 
-import com.example.demo.dto.user.response.UserProjectHistoryInfoResponseDto;
 import java.util.List;
 
-import com.example.demo.dto.user.response.UserProjectHistoryPaginationResponseDto;
 import com.example.demo.model.user.UserProjectHistory;
 import org.springframework.data.domain.Pageable;
 

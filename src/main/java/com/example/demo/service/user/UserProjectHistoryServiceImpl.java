@@ -1,8 +1,6 @@
 package com.example.demo.service.user;
 
 import com.example.demo.constant.UserProjectHistoryStatus;
-import com.example.demo.dto.user.response.UserProjectHistoryInfoResponseDto;
-import com.example.demo.dto.user.response.UserProjectHistoryPaginationResponseDto;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.user.User;
 import com.example.demo.model.user.UserProjectHistory;

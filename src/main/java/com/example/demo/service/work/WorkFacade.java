@@ -1,7 +1,6 @@
 package com.example.demo.service.work;
 
 import com.example.demo.dto.work.request.*;
-import com.example.demo.dto.work.response.WorkPaginationResponseDto;
 import com.example.demo.dto.work.response.WorkReadResponseDto;
 import com.example.demo.global.exception.customexception.PageNationCustomException;
 import com.example.demo.model.milestone.Milestone;
@@ -17,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,6 +1,5 @@
 package com.example.demo.service.board;
 
-import com.example.demo.dto.board.response.BoardSearchPaginationResponseDto;
 import com.example.demo.dto.board.response.BoardTotalDetailResponseDto;
 import com.example.demo.model.board.Board;
 import java.util.List;

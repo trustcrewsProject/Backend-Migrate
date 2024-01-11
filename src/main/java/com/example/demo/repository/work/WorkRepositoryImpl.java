@@ -1,9 +1,7 @@
 package com.example.demo.repository.work;
 
-import com.example.demo.dto.projectmember.response.ProjectMemberWorksPaginationResponseDto;
 import com.example.demo.dto.projectmember.response.ProjectMemberWorkWithTrustScoreResponseDto;
 import com.example.demo.dto.work.response.WorkAssignedUserInfoResponseDto;
-import com.example.demo.dto.work.response.WorkPaginationResponseDto;
 import com.example.demo.dto.work.response.WorkReadResponseDto;
 import com.example.demo.model.milestone.QMilestone;
 import com.example.demo.model.project.QProject;
@@ -12,11 +10,8 @@ import com.example.demo.model.trust_score.QTrustScoreHistory;
 import com.example.demo.model.trust_score.QTrustScoreType;
 import com.example.demo.model.user.QUser;
 import com.example.demo.model.work.QWork;
-import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;

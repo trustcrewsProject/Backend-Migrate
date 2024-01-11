@@ -7,13 +7,13 @@ import java.util.List;
 
 @Getter
 @Builder
-public class PaginationResponseDto {
+public class PaginationResponseDto<T> {
 
-    private List<?> content;
+    private List<T> content;
     private long totalPages;
 
-    public static PaginationResponseDto of(List<?> content, long totalPages) {
-        return PaginationResponseDto.builder()
+    public static <T> PaginationResponseDto<T> of(List<T> content, long totalPages) {
+        return PaginationResponseDto.<T>builder()
                 .content(content)
                 .totalPages(totalPages)
                 .build();

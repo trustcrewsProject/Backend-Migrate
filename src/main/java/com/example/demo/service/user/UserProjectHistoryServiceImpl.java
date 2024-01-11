@@ -1,8 +1,7 @@
 package com.example.demo.service.user;
 
 import com.example.demo.constant.UserProjectHistoryStatus;
-import com.example.demo.dto.user.response.UserProjectHistoryInfoResponseDto;
-import com.example.demo.dto.user.response.UserProjectHistoryPaginationResponseDto;
+import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.user.User;
 import com.example.demo.model.user.UserProjectHistory;
@@ -42,7 +41,7 @@ public class UserProjectHistoryServiceImpl implements UserProjectHistoryService 
     }
 
     @Override
-    public UserProjectHistoryPaginationResponseDto getUserProjectHistoryList(
+    public PaginationResponseDto getUserProjectHistoryList(
             Long userId, int pageNumber) {
         return userProjectHistoryRepository.findAllByUserIdOrderByUpdateDateDesc(
                 userId, PageRequest.of(pageNumber, 5));

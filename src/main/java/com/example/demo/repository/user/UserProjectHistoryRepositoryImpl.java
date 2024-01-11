@@ -5,8 +5,8 @@ import static com.example.demo.model.user.QUser.user;
 import static com.example.demo.model.user.QUserProjectHistory.userProjectHistory;
 
 import com.example.demo.constant.UserProjectHistoryStatus;
+import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.user.response.UserProjectHistoryInfoResponseDto;
-import com.example.demo.dto.user.response.UserProjectHistoryPaginationResponseDto;
 import com.example.demo.model.project.QProjectMember;
 import com.example.demo.model.trust_grade.QTrustGrade;
 import com.example.demo.model.user.UserProjectHistory;
@@ -25,7 +25,7 @@ public class UserProjectHistoryRepositoryImpl implements UserProjectHistoryRepos
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public UserProjectHistoryPaginationResponseDto findAllByUserIdOrderByUpdateDateDesc(
+    public PaginationResponseDto findAllByUserIdOrderByUpdateDateDesc(
             Long userId, Pageable pageable) {
         // 요청한 페이지의 회원 프로젝트 이력 목록 조회
         List<UserProjectHistoryInfoResponseDto> content =
@@ -49,7 +49,7 @@ public class UserProjectHistoryRepositoryImpl implements UserProjectHistoryRepos
         // 사용자 프로젝트 이력 총 개수 조회
         long totalPages = countUserProjectHistoryByUserId(userId);
 
-        return UserProjectHistoryPaginationResponseDto.of(content, totalPages);
+        return PaginationResponseDto.of(content, totalPages);
     }
 
     @Override

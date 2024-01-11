@@ -1,9 +1,7 @@
 package com.example.demo.service.work;
 
 import com.example.demo.constant.ProgressStatus;
-import com.example.demo.dto.projectmember.response.ProjectMemberWorksPaginationResponseDto;
-import com.example.demo.dto.work.response.WorkPaginationResponseDto;
-import com.example.demo.dto.work.response.WorkReadResponseDto;
+import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.global.exception.customexception.WorkCustomException;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.user.User;
@@ -41,7 +39,7 @@ public class WorkServiceImpl implements WorkService {
                 .orElseThrow(() -> WorkCustomException.NOT_FOUND_WORK);
     }
 
-    public WorkPaginationResponseDto findWorksByProjectAndMilestone(Long projectId, Long milestoneId, Pageable pageable) {
+    public PaginationResponseDto findWorksByProjectAndMilestone(Long projectId, Long milestoneId, Pageable pageable) {
         return workRepository
                 .findWorkByProjectIdAndMilestoneIdOrderByStartDateAsc(projectId, milestoneId, pageable);
     }
@@ -52,7 +50,7 @@ public class WorkServiceImpl implements WorkService {
     }
 
     @Override
-    public ProjectMemberWorksPaginationResponseDto findWorksWithTrustScoreHistoryByProjectIdAndAssignedUserId(Long projectId, Long assignedUserId, Pageable pageable) {
+    public PaginationResponseDto findWorksWithTrustScoreHistoryByProjectIdAndAssignedUserId(Long projectId, Long assignedUserId, Pageable pageable) {
         return workRepository.findWorksWithTrustScoreHistoryByProjectIdAndAssignedUserIdOrderByStartDateDesc(projectId, assignedUserId, pageable);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.demo.repository.work;
 
+import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.projectmember.response.ProjectMemberWorkWithTrustScoreResponseDto;
 import com.example.demo.dto.work.response.WorkAssignedUserInfoResponseDto;
 import com.example.demo.dto.work.response.WorkReadResponseDto;
@@ -34,7 +35,7 @@ public class WorkRepositoryImpl implements WorkRepositoryCustom{
     private final QTrustScoreType qTrustScoreType = QTrustScoreType.trustScoreType;
 
     @Override
-    public WorkPaginationResponseDto findWorkByProjectIdAndMilestoneIdOrderByStartDateAsc(Long projectId, Long milestoneId, Pageable pageable) {
+    public PaginationResponseDto findWorkByProjectIdAndMilestoneIdOrderByStartDateAsc(Long projectId, Long milestoneId, Pageable pageable) {
         // 업무 목록 조회
         List<WorkReadResponseDto> content = jpaQueryFactory
                 .select(
@@ -73,11 +74,11 @@ public class WorkRepositoryImpl implements WorkRepositoryCustom{
         // 업무 전체 갯수 조회
         long totalPages = getTotalItemCount(projectId, milestoneId, null);
 
-        return WorkPaginationResponseDto.of(content, totalPages);
+        return PaginationResponseDto.of(content, totalPages);
     }
 
     @Override
-    public ProjectMemberWorksPaginationResponseDto findWorksWithTrustScoreHistoryByProjectIdAndAssignedUserIdOrderByStartDateDesc(Long projectId, Long assignedUserId, Pageable pageable) {
+    public PaginationResponseDto findWorksWithTrustScoreHistoryByProjectIdAndAssignedUserIdOrderByStartDateDesc(Long projectId, Long assignedUserId, Pageable pageable) {
         // 프로젝트 멤버 업무 목록 + 업무 별 신뢰점수 내역 조회
         List<ProjectMemberWorkWithTrustScoreResponseDto> content = jpaQueryFactory
                 .select(
@@ -107,7 +108,7 @@ public class WorkRepositoryImpl implements WorkRepositoryCustom{
         // 업무 전체 갯수 조회
         long totalPages = getTotalItemCount(projectId, null, assignedUserId);
 
-        return ProjectMemberWorksPaginationResponseDto.of(content, totalPages);
+        return PaginationResponseDto.of(content, totalPages);
     }
 
     // 조건에 맞는 업무의 총 개수 조회

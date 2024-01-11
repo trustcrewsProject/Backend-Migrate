@@ -1,6 +1,7 @@
 package com.example.demo.service.project;
 
 import com.example.demo.constant.AlertType;
+import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.position.response.PositionResponseDto;
 import com.example.demo.dto.projectmember.response.*;
 import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
@@ -136,10 +137,10 @@ public class ProjectMemberFacade {
      * @param projectMemberId
      * @param pageIndex
      * @param itemCount
-     * @return ProjectMemberWorkPaginationResponseDto
+     * @return PaginationResponseDto
      */
     @Transactional(readOnly = true)
-    public ProjectMemberWorksPaginationResponseDto getCrewWorksWithTrustScoreHistory(Long projectMemberId, int pageIndex, int itemCount) {
+    public PaginationResponseDto getCrewWorksWithTrustScoreHistory(Long projectMemberId, int pageIndex, int itemCount) {
         if(pageIndex < 0) {
             throw PageNationCustomException.INVALID_PAGE_NUMBER;
         }
@@ -151,7 +152,7 @@ public class ProjectMemberFacade {
         ProjectMember projectMember = projectMemberService.findById(projectMemberId);
 
         // 해당 프로젝트 멤버의 업무 + 업무 별 신뢰점수 내역 & 해당 프로젝트 멤버 업무 총 개수 조회
-        ProjectMemberWorksPaginationResponseDto result = workService.findWorksWithTrustScoreHistoryByProjectIdAndAssignedUserId(projectMember.getProject().getId(), projectMember.getUser().getId(), PageRequest.of(pageIndex, itemCount));
+        PaginationResponseDto result = workService.findWorksWithTrustScoreHistoryByProjectIdAndAssignedUserId(projectMember.getProject().getId(), projectMember.getUser().getId(), PageRequest.of(pageIndex, itemCount));
 
         return result;
     }

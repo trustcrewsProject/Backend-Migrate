@@ -5,6 +5,7 @@ import com.example.demo.dto.board_project.request.BoardProjectCreateRequestDto;
 import com.example.demo.dto.board_project.request.BoardProjectUpdateRequestDto;
 import com.example.demo.dto.board_project.response.BoardProjectCreateResponseDto;
 import com.example.demo.dto.board_project.response.BoardProjectUpdateResponseDto;
+import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.security.custom.PrincipalDetails;
 import com.example.demo.service.board.BoardFacade;
@@ -34,7 +35,7 @@ public class BoardController {
             @RequestParam(value = "technologyIds", required = false) List<Long> technologyIds,
             @RequestParam("page") Optional<Integer> page) {
         Pageable pageable = PageRequest.of(page.orElse(0), 8);
-        BoardSearchPaginationResponseDto result =
+        PaginationResponseDto result =
                 boardService.search(positionId, keyword, technologyIds, pageable);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }

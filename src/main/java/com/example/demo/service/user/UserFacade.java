@@ -3,6 +3,7 @@ package com.example.demo.service.user;
 import com.example.demo.constant.Role;
 import com.example.demo.constant.TrustScoreTypeIdentifier;
 import com.example.demo.constant.UserStatus;
+import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.dto.position.response.PositionInfoResponseDto;
 import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
@@ -291,7 +292,7 @@ public class UserFacade {
      *
      * @param user
      * @param pageNumber
-     * @return
+     * @return PaginationResponseDto
      */
     @Transactional(readOnly = true)
     public ResponseDto<?> getMyProjectHistoryList(PrincipalDetails user, int pageNumber) {
@@ -300,7 +301,7 @@ public class UserFacade {
             throw PageNationCustomException.INVALID_PAGE_NUMBER;
         }
 
-        UserProjectHistoryPaginationResponseDto projectHistoryList =
+        PaginationResponseDto projectHistoryList =
                 userProjectHistoryService.getUserProjectHistoryList(user.getId(), pageNumber);
 
         return ResponseDto.success("내 프로젝트 이력 목록 조회가 완료되었습니다.", projectHistoryList);

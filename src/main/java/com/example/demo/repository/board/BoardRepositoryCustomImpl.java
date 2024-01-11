@@ -2,6 +2,7 @@ package com.example.demo.repository.board;
 
 import com.example.demo.dto.board.response.BoardSearchResponseDto;
 import com.example.demo.dto.boardposition.BoardPositionDetailResponseDto;
+import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.position.response.PositionResponseDto;
 import com.example.demo.dto.project.response.ProjectSearchResponseDto;
 import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
@@ -101,7 +102,7 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
     }
 
     @Override
-    public BoardSearchPaginationResponseDto getBoardSearchPage(
+    public PaginationResponseDto getBoardSearchPage(
             Long positionId, String keyword, List<Long> technologyIds, Pageable pageable) {
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(searchByLike(keyword));
@@ -169,6 +170,6 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
 
         long totalPages = countBoardBySearchCriteria(builder);
 
-        return BoardSearchPaginationResponseDto.of(boardSearchResponseDtos, totalPages);
+        return PaginationResponseDto.of(boardSearchResponseDtos, totalPages);
     }
 }

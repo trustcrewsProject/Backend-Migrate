@@ -1,5 +1,6 @@
 package com.example.demo.service.work;
 
+import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.work.request.*;
 import com.example.demo.dto.work.response.WorkReadResponseDto;
 import com.example.demo.global.exception.customexception.PageNationCustomException;
@@ -71,7 +72,7 @@ public class WorkFacade {
     }
 
     @Transactional(readOnly = true)
-    public WorkPaginationResponseDto getAllByMilestone(Long projectId, Long milestoneId, int pageIndex, int itemCount) {
+    public PaginationResponseDto getAllByMilestone(Long projectId, Long milestoneId, int pageIndex, int itemCount) {
         Project project = projectService.findById(projectId);
         Milestone milestone = milestoneService.findById(milestoneId);
 
@@ -83,7 +84,7 @@ public class WorkFacade {
             throw PageNationCustomException.INVALID_PAGE_ITEM_COUNT;
         }
 
-        WorkPaginationResponseDto workPaginationResponse = workService
+        PaginationResponseDto workPaginationResponse = workService
                 .findWorksByProjectAndMilestone(project.getId(), milestone.getId(), PageRequest.of(pageIndex, itemCount));
 
         return workPaginationResponse;

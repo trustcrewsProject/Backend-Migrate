@@ -2,6 +2,7 @@ package com.example.demo.service.project;
 
 import com.example.demo.constant.AlertType;
 import com.example.demo.constant.ProjectMemberStatus;
+import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.project.request.ProjectConfirmRequestDto;
 import com.example.demo.dto.project.request.ProjectParticipateRequestDto;
 import com.example.demo.dto.project.response.ProjectMeResponseDto;
@@ -47,7 +48,7 @@ public class ProjectFacade {
     private final UserProjectHistoryService userProjectHistoryService;
 
     @Transactional(readOnly = true)
-    public ProjectPaginationResponseDto getMyProjectsParticipates(Long userId, int pageIndex, int itemCount) {
+    public PaginationResponseDto getMyProjectsParticipates(Long userId, int pageIndex, int itemCount) {
         User user = userService.findById(userId);
 
         if(pageIndex < 0) {
@@ -78,7 +79,7 @@ public class ProjectFacade {
             content.add(ProjectMeResponseDto.of(project, TrustGradeResponseDto.of(project.getTrustGrade()), myProjectMembers));
         }
 
-        return ProjectPaginationResponseDto.of(content, totalPages);
+        return PaginationResponseDto.of(content, totalPages);
     }
 
     /**

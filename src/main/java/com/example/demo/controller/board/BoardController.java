@@ -75,4 +75,11 @@ public class BoardController {
         boardFacade.deleteBoard(user.getId(), boardId);
         return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.NO_CONTENT);
     }
+
+    @PatchMapping("/{boardId}/recruitment-status")
+    public ResponseEntity<ResponseDto<?>> updateBoardRecruitmentStatus(
+            @PathVariable Long boardId, @AuthenticationPrincipal PrincipalDetails user) {
+        boardService.updateRecruitmentStatus(boardId, user.getId());
+        return new ResponseEntity<>(ResponseDto.success("게시글 모집상태 변경이 완료되었습니다."), HttpStatus.OK);
+    }
 }

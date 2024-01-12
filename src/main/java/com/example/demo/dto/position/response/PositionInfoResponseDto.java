@@ -11,6 +11,11 @@ public class PositionInfoResponseDto {
 
     private String positionName;
 
+    public PositionInfoResponseDto(Long positionId, String positionName) {
+        this.positionId = positionId;
+        this.positionName = positionName;
+    }
+
     public static PositionInfoResponseDto of(Long positionId, String positionName) {
         return PositionInfoResponseDto.builder()
                 .positionId(positionId)

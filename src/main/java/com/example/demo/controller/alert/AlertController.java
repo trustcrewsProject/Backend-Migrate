@@ -6,6 +6,8 @@ import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.service.alert.AlertFacade;
 import com.example.demo.service.alert.AlertService;
 import java.util.List;
+import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,9 +29,10 @@ public class AlertController {
 
     @GetMapping("/api/alert/project/{projectId}")
     public ResponseEntity<ResponseDto<?>> getAllByProject(
-            @PathVariable("projectId") Long projectId) {
-        List<AlertInfoResponseDto> result = alertFacade.getAllByProject(projectId);
-        return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
+            @PathVariable("projectId") Long projectId,
+            @RequestParam("pageIndex") Optional<Integer> pageIndex,
+            @RequestParam("itemCount") Optional<Integer> itemCount) {
+        return new ResponseEntity<>(ResponseDto.success("success", alertFacade.getAllByProject(projectId, pageIndex.orElse(0), itemCount.orElse(6))), HttpStatus.OK);
     }
 
     @GetMapping("/api/alert/project/{projectId}/recruits")

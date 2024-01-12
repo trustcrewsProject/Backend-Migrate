@@ -7,6 +7,8 @@ import com.example.demo.model.alert.Alert;
 import com.example.demo.model.position.Position;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.time.LocalDateTime;
+import java.util.Objects;
+
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.util.ObjectUtils;
@@ -29,6 +31,22 @@ public class AlertInfoResponseDto {
 
     @JsonSerialize(using = LocalDateTimeFormatSerializer.class)
     private LocalDateTime updateDate;
+
+    public AlertInfoResponseDto(Long alertId, Long projectId, Long checkUserId, Long sendUserId,
+                                Long workId, Long milestoneId, PositionInfoResponseDto position,
+                                String content, AlertType type, LocalDateTime createDate, LocalDateTime updateDate) {
+        this.alertId = alertId;
+        this.projectId = projectId;
+        this.checkUserId = checkUserId;
+        this.sendUserId = sendUserId;
+        this.workId = Objects.nonNull(workId) ? workId : null;
+        this.milestoneId = Objects.nonNull(milestoneId) ? milestoneId : null;
+        this.position = Objects.nonNull(position.getPositionId()) ? position : null;
+        this.content = content;
+        this.type = type;
+        this.createDate = createDate;
+        this.updateDate = updateDate;
+    }
 
     public static AlertInfoResponseDto of(Alert alert, Position position) {
         return AlertInfoResponseDto.builder()

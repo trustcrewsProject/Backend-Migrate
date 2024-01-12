@@ -21,4 +21,7 @@ public interface BoardService {
     public BoardTotalDetailResponseDto getDetail(Long boardId);
 
     public void delete(Board board);
+
+    @Transactional
+    void updateRecruitmentStatus(Long boardId, Long userId);
 }

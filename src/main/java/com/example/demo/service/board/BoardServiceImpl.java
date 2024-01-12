@@ -112,4 +112,29 @@ public class BoardServiceImpl implements BoardService {
     public void delete(Board board) {
         boardRepository.delete(board);
     }
+
+    /**
+     * 게시글 모집상태 변경, 모집중 -> 모집완료 or 모집완료 -> 모집중
+     * @param boardId
+     * @param userId
+     */
+    @Override
+    public void updateRecruitmentStatus(Long boardId, Long userId) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> BoardCustomException.NOT_FOUND_BOARD);
+
+        // 요청한 사용자와 게시글의 작성자가 다른 경우, 예외처리
+        if(!userId.equals(board.getUser().getId())) {
+            throw BoardCustomException.NO_PERMISSION_TO_EDIT_OR_DELETE;
+        }
+
+        // 게시글 모집상태가 모집중(false)인 경우, 모집완료(true)로 수정
+        if(!board.isRecruitmentStatus()) {
+            board.updateRecruitmentStatus(true);
+            return;
+        }
+
+        // 게시글 모집상태가 완료(true)인 경우, 모집중(false)으로 수정
+        board.updateRecruitmentStatus(false);
+    }
 }

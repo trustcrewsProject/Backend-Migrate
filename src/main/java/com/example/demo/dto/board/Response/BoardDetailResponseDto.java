@@ -17,7 +17,7 @@ public class BoardDetailResponseDto {
     private String title;
     private String content;
     private int pageView;
-    private boolean completeStatus;
+    private boolean recruitmentStatus;
     private UserBoardDetailResponseDto user;
     private String contact;
 
@@ -38,7 +38,7 @@ public class BoardDetailResponseDto {
                 .title(board.getTitle())
                 .content(board.getContent())
                 .pageView(board.getPageView())
-                .completeStatus(board.isCompleteStatus())
+                .recruitmentStatus(board.isRecruitmentStatus())
                 .user(userBoardDetailResponseDto)
                 .contact(board.getContact())
                 .createDate(board.getCreateDate())

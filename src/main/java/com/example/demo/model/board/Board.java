@@ -32,7 +32,7 @@ public class Board extends BaseTimeEntity {
     private int pageView;
 
     @ColumnDefault("false")
-    private boolean completeStatus;
+    private boolean recruitmentStatus;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -49,14 +49,14 @@ public class Board extends BaseTimeEntity {
             String content,
             Project project,
             int pageView,
-            boolean completeStatus,
+            boolean recruitmentStatus,
             User user,
             String contact) {
         this.title = title;
         this.content = content;
         this.project = project;
         this.pageView = pageView;
-        this.completeStatus = completeStatus;
+        this.recruitmentStatus = recruitmentStatus;
         this.user = user;
         this.contact = contact;
     }

@@ -13,7 +13,7 @@ public class BoardCreateResponseDto {
     private String boardTitle;
     private String boardContent;
     private long boardPageView;
-    private boolean boardCompleteStatus;
+    private boolean recruitmentStatus;
     private long boardUserId;
     private String boardContact;
 
@@ -28,7 +28,7 @@ public class BoardCreateResponseDto {
                 .boardTitle(board.getTitle())
                 .boardContent(board.getContent())
                 .boardPageView(board.getPageView())
-                .boardCompleteStatus(board.isCompleteStatus())
+                .recruitmentStatus(board.isRecruitmentStatus())
                 .boardUserId(board.getUser().getId())
                 .boardContact(board.getContact())
                 .createDate(board.getCreateDate())

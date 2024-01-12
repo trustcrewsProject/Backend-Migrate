@@ -23,7 +23,7 @@ public class BoardSearchResponseDto {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private int boardPageView;
-    private boolean boardCompleteStatus;
+    private boolean recruitmentStatus;
     private UserSearchResponseDto user;
     private String boardContact;
 
@@ -43,7 +43,7 @@ public class BoardSearchResponseDto {
             LocalDateTime startDate,
             LocalDateTime endDate,
             int boardPageView,
-            boolean boardCompleteStatus,
+            boolean recruitmentStatus,
             UserSearchResponseDto user,
             String boardContact,
             LocalDateTime createDate,
@@ -56,7 +56,7 @@ public class BoardSearchResponseDto {
         this.startDate = startDate;
         this.endDate = endDate;
         this.boardPageView = boardPageView;
-        this.boardCompleteStatus = boardCompleteStatus;
+        this.recruitmentStatus = recruitmentStatus;
         this.user = user;
         this.boardContact = boardContact;
         this.createDate = createDate;
@@ -75,7 +75,7 @@ public class BoardSearchResponseDto {
                 .boardPositions(boardPositions)
                 .project(boardProjectSearchResponseDto)
                 .boardPageView(board.getPageView())
-                .boardCompleteStatus(board.isCompleteStatus())
+                .recruitmentStatus(board.isRecruitmentStatus())
                 .user(userSearchResponseDto)
                 .boardContent(board.getContent())
                 .createDate(board.getCreateDate())

@@ -1,10 +1,9 @@
 package com.example.demo.service.board;
 
-import com.example.demo.dto.board.response.BoardSearchResponseDto;
 import com.example.demo.dto.board.response.BoardTotalDetailResponseDto;
+import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.model.board.Board;
 import java.util.List;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface BoardService {
 
     @Transactional(readOnly = true)
-    public Page<BoardSearchResponseDto> search(
+    public PaginationResponseDto search(
             Long positionId, String keyword, List<Long> technologyIds, Pageable pageable);
 
     public Board findById(Long boardId);

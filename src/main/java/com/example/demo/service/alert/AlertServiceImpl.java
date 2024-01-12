@@ -1,11 +1,14 @@
 package com.example.demo.service.alert;
 
+import com.example.demo.dto.alert.response.AlertInfoResponseDto;
+import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.global.exception.customexception.AlertCustomException;
 import com.example.demo.model.alert.Alert;
 import com.example.demo.model.project.Project;
 import com.example.demo.repository.alert.AlertRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,10 +26,9 @@ public class AlertServiceImpl implements AlertService {
         return alertRepository.save(alert);
     }
 
-    public List<Alert> findAlertsByProjectId(Project project) {
+    public PaginationResponseDto findAlertsByProjectId(Project project, int pageIndex, int itemCount) {
         return alertRepository
-                .findAlertsByProject(project)
-                .orElseThrow(() -> AlertCustomException.NOT_FOUND_ALERT);
+                .findAlertsByProjectIdOrderByCreateDateDesc(project.getId(), PageRequest.of(pageIndex, itemCount));
     }
 
     public List<Alert> findRecruitAlertsByProject(Project project) {

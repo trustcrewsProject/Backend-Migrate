@@ -2,6 +2,8 @@ package com.example.demo.service.alert;
 
 import com.example.demo.dto.alert.AlertCreateRequestDto;
 import com.example.demo.dto.alert.response.AlertInfoResponseDto;
+import com.example.demo.dto.common.PaginationResponseDto;
+import com.example.demo.global.exception.customexception.PageNationCustomException;
 import com.example.demo.model.alert.Alert;
 import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.position.Position;
@@ -58,16 +60,20 @@ public class AlertFacade {
         alertService.save(alert);
     }
 
-    public List<AlertInfoResponseDto> getAllByProject(Long projectId) {
+    public PaginationResponseDto getAllByProject(Long projectId, int pageIndex, int itemCount) {
         Project project = projectService.findById(projectId);
-        List<Alert> alerts = alertService.findAlertsByProjectId(project);
-        List<AlertInfoResponseDto> alertInfoResponseDtos = new ArrayList<>();
 
-        for (Alert alert : alerts) {
-            alertInfoResponseDtos.add(AlertInfoResponseDto.of(alert));
+        if(pageIndex < 0) {
+            throw PageNationCustomException.INVALID_PAGE_NUMBER;
         }
 
-        return alertInfoResponseDtos;
+        if(itemCount < 0 || itemCount > 8) {
+            throw PageNationCustomException.INVALID_PAGE_ITEM_COUNT;
+        }
+
+        PaginationResponseDto alerts = alertService.findAlertsByProjectId(project, pageIndex, itemCount);
+
+        return alerts;
     }
 
     public List<AlertInfoResponseDto> getRecruitsByProject(Long projectId) {
@@ -76,7 +82,7 @@ public class AlertFacade {
         List<AlertInfoResponseDto> alertInfoResponseDtos = new ArrayList<>();
 
         for (Alert alert : alerts) {
-            alertInfoResponseDtos.add(AlertInfoResponseDto.of(alert));
+            alertInfoResponseDtos.add(AlertInfoResponseDto.of(alert, alert.getPosition()));
         }
 
         return alertInfoResponseDtos;
@@ -88,7 +94,7 @@ public class AlertFacade {
         List<AlertInfoResponseDto> alertInfoResponseDtos = new ArrayList<>();
 
         for (Alert alert : alerts) {
-            alertInfoResponseDtos.add(AlertInfoResponseDto.of(alert));
+            alertInfoResponseDtos.add(AlertInfoResponseDto.of(alert, alert.getPosition()));
         }
 
         return alertInfoResponseDtos;
@@ -100,7 +106,7 @@ public class AlertFacade {
         List<AlertInfoResponseDto> alertInfoResponseDtos = new ArrayList<>();
 
         for (Alert alert : alerts) {
-            alertInfoResponseDtos.add(AlertInfoResponseDto.of(alert));
+            alertInfoResponseDtos.add(AlertInfoResponseDto.of(alert, alert.getPosition()));
         }
 
         return alertInfoResponseDtos;

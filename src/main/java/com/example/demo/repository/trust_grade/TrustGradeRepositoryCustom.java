@@ -7,4 +7,6 @@ import java.util.List;
 public interface TrustGradeRepositoryCustom {
 
     List<TrustGradeInfoResponseDto> getListByCriteria(BooleanExpression builder);
+
+    List<TrustGradeInfoResponseDto> getPossibleTrustGrades(Integer score);
 }

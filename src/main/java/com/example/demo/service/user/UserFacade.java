@@ -3,6 +3,7 @@ package com.example.demo.service.user;
 import com.example.demo.constant.Role;
 import com.example.demo.constant.TrustScoreTypeIdentifier;
 import com.example.demo.constant.UserStatus;
+import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.dto.position.response.PositionInfoResponseDto;
 import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
@@ -11,10 +12,7 @@ import com.example.demo.dto.trust_score.AddPointDto;
 import com.example.demo.dto.trust_score.request.TrustScoreUpdateRequestDto;
 import com.example.demo.dto.user.request.UserCreateRequestDto;
 import com.example.demo.dto.user.request.UserUpdateRequestDto;
-import com.example.demo.dto.user.response.UserMyInfoResponseDto;
-import com.example.demo.dto.user.response.UserProjectHistoryInfoResponseDto;
-import com.example.demo.dto.user.response.UserSimpleInfoResponseDto;
-import com.example.demo.dto.user.response.UserUpdateResponseDto;
+import com.example.demo.dto.user.response.*;
 import com.example.demo.global.exception.customexception.PageNationCustomException;
 import com.example.demo.model.position.Position;
 import com.example.demo.model.technology_stack.TechnologyStack;
@@ -294,7 +292,7 @@ public class UserFacade {
      *
      * @param user
      * @param pageNumber
-     * @return
+     * @return PaginationResponseDto
      */
     @Transactional(readOnly = true)
     public ResponseDto<?> getMyProjectHistoryList(PrincipalDetails user, int pageNumber) {
@@ -303,7 +301,7 @@ public class UserFacade {
             throw PageNationCustomException.INVALID_PAGE_NUMBER;
         }
 
-        List<UserProjectHistoryInfoResponseDto> projectHistoryList =
+        PaginationResponseDto projectHistoryList =
                 userProjectHistoryService.getUserProjectHistoryList(user.getId(), pageNumber);
 
         return ResponseDto.success("내 프로젝트 이력 목록 조회가 완료되었습니다.", projectHistoryList);

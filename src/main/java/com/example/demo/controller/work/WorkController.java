@@ -7,7 +7,11 @@ import com.example.demo.security.custom.PrincipalDetails;
 import com.example.demo.service.work.WorkFacade;
 import com.example.demo.service.work.WorkService;
 import java.util.List;
+import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,10 +26,11 @@ public class WorkController {
 
     @PostMapping("/api/work/project/{projectId}/milestone/{milestoneId}")
     public ResponseEntity<ResponseDto<?>> create(
+            @AuthenticationPrincipal PrincipalDetails user,
             @PathVariable("projectId") Long projectId,
             @PathVariable("milestoneId") Long milestoneId,
             @RequestBody WorkCreateRequestDto workCreateRequestDto) {
-        workFacade.create(projectId, milestoneId, workCreateRequestDto);
+        workFacade.create(user.getId(), projectId, milestoneId, workCreateRequestDto);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 
@@ -39,14 +44,15 @@ public class WorkController {
     @GetMapping("/api/work/project/{projectId}/milestone/{milestoneId}")
     public ResponseEntity<ResponseDto<?>> getAllByMilestone(
             @PathVariable("projectId") Long projectId,
-            @PathVariable("milestoneId") Long milestoneId) {
-        List<WorkReadResponseDto> result = workFacade.getAllByMilestone(projectId, milestoneId);
-        return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
+            @PathVariable("milestoneId") Long milestoneId,
+            @RequestParam("pageIndex") Optional<Integer> pageIndex,
+            @RequestParam("itemCount") Optional<Integer> itemCount) {
+        return new ResponseEntity<>(ResponseDto.success("success", workFacade.getAllByMilestone(projectId, milestoneId, pageIndex.orElse(0), itemCount.orElse(6))), HttpStatus.OK);
     }
 
     @GetMapping("/api/work/{workId}")
     public ResponseEntity<ResponseDto<?>> getOne(@PathVariable("workId") Long workId) {
-        WorkReadResponseDto result = workService.getOne(workId);
+        WorkReadResponseDto result = workFacade.getOne(workId);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 

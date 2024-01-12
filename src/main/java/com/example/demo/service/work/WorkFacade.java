@@ -1,7 +1,9 @@
 package com.example.demo.service.work;
 
+import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.work.request.*;
 import com.example.demo.dto.work.response.WorkReadResponseDto;
+import com.example.demo.global.exception.customexception.PageNationCustomException;
 import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
@@ -14,6 +16,7 @@ import com.example.demo.service.user.UserService;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,15 +31,27 @@ public class WorkFacade {
     private final ProjectMemberService projectMemberService;
 
     public void create(
-            Long projectId, Long milestoneId, WorkCreateRequestDto workCreateRequestDto) {
+            Long userId, Long projectId, Long milestoneId, WorkCreateRequestDto workCreateRequestDto) {
         Project project = projectService.findById(projectId);
         Milestone milestone = milestoneService.findById(milestoneId);
-        User user = userService.findById(workCreateRequestDto.getAssignedUserId());
+        User user = userService.findById(userId);
         ProjectMember projectMember =
                 projectMemberService.findProjectMemberByProjectAndUser(project, user);
-        Work work = workCreateRequestDto.toWorkEntity(project, milestone, user, projectMember);
+
+        ProjectMember assignedProjectMember = projectMemberService.findById(workCreateRequestDto.getAssignedUserId());
+
+        Work work = workCreateRequestDto.toWorkEntity(project, milestone, assignedProjectMember.getUser(), projectMember);
 
         workService.save(work);
+    }
+
+    @Transactional(readOnly = true)
+    public WorkReadResponseDto getOne(Long workId) {
+        Work work = workService.findById(workId);
+        User assignedUser = work.getAssignedUserId();
+        ProjectMember projectMember = projectMemberService.findProjectMemberByProjectAndUser(work.getProject(), assignedUser);
+
+        return WorkReadResponseDto.of(work, projectMember, assignedUser);
     }
 
     @Transactional(readOnly = true)
@@ -46,7 +61,10 @@ public class WorkFacade {
 
         List<WorkReadResponseDto> workReadResponseDtos = new ArrayList<>();
         for (Work work : works) {
-            WorkReadResponseDto workReadResponseDto = WorkReadResponseDto.of(work);
+            User assignedUser = work.getAssignedUserId();
+            ProjectMember projectMember = projectMemberService.findProjectMemberByProjectAndUser(project, assignedUser);
+
+            WorkReadResponseDto workReadResponseDto = WorkReadResponseDto.of(work, projectMember, assignedUser);
             workReadResponseDtos.add(workReadResponseDto);
         }
 
@@ -54,19 +72,22 @@ public class WorkFacade {
     }
 
     @Transactional(readOnly = true)
-    public List<WorkReadResponseDto> getAllByMilestone(Long projectId, Long milestoneId) {
+    public PaginationResponseDto getAllByMilestone(Long projectId, Long milestoneId, int pageIndex, int itemCount) {
         Project project = projectService.findById(projectId);
-
         Milestone milestone = milestoneService.findById(milestoneId);
-        List<Work> works = workService.findWorksByProjectAndMilestone(project, milestone);
 
-        List<WorkReadResponseDto> workReadResponseDtos = new ArrayList<>();
-        for (Work work : works) {
-            WorkReadResponseDto workReadResponseDto = WorkReadResponseDto.of(work);
-            workReadResponseDtos.add(workReadResponseDto);
+        if(pageIndex < 0) {
+            throw PageNationCustomException.INVALID_PAGE_NUMBER;
         }
 
-        return workReadResponseDtos;
+        if(itemCount < 1 || itemCount > 6) {
+            throw PageNationCustomException.INVALID_PAGE_ITEM_COUNT;
+        }
+
+        PaginationResponseDto workPaginationResponse = workService
+                .findWorksByProjectAndMilestone(project.getId(), milestone.getId(), PageRequest.of(pageIndex, itemCount));
+
+        return workPaginationResponse;
     }
 
     /**
@@ -79,7 +100,11 @@ public class WorkFacade {
         User user = userService.findById(userId);
         ProjectMember projectMember =
                 projectMemberService.findProjectMemberByProjectAndUser(work.getProject(), user);
-        work.update(workUpdateRequestDto, projectMember);
+
+        // 할당된 회원 정보
+        ProjectMember assignedUser = projectMemberService.findById(workUpdateRequestDto.getAssignedUserId());
+
+        work.update(workUpdateRequestDto, projectMember, assignedUser.getUser());
     }
 
     /**

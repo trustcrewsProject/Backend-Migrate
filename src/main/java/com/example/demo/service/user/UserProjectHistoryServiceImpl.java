@@ -1,7 +1,7 @@
 package com.example.demo.service.user;
 
 import com.example.demo.constant.UserProjectHistoryStatus;
-import com.example.demo.dto.user.response.UserProjectHistoryInfoResponseDto;
+import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.user.User;
 import com.example.demo.model.user.UserProjectHistory;
@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -40,10 +41,20 @@ public class UserProjectHistoryServiceImpl implements UserProjectHistoryService 
     }
 
     @Override
-    public List<UserProjectHistoryInfoResponseDto> getUserProjectHistoryList(
+    public PaginationResponseDto getUserProjectHistoryList(
             Long userId, int pageNumber) {
-        PageRequest pageRequest = PageRequest.of(pageNumber, 5);
         return userProjectHistoryRepository.findAllByUserIdOrderByUpdateDateDesc(
-                userId, pageRequest);
+                userId, PageRequest.of(pageNumber, 5));
+    }
+
+    @Override
+    public List<UserProjectHistory> getUserProjectHistoryListParticipates(Long userId, int pageIndex, int itemCount) {
+        Pageable pageable = PageRequest.of(pageIndex, itemCount);
+        return userProjectHistoryRepository.findAllUserParticipates(userId, pageable);
+    }
+
+    @Override
+    public Long getUserProjectHistoryParticipatesTotalCount(Long userId) {
+        return userProjectHistoryRepository.countParticipatesUserProjectHistoryByUserId(userId);
     }
 }

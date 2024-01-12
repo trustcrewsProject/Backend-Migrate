@@ -2,6 +2,7 @@ package com.example.demo.repository.board;
 
 import com.example.demo.dto.board.response.BoardSearchResponseDto;
 import com.example.demo.dto.boardposition.BoardPositionDetailResponseDto;
+import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.position.response.PositionResponseDto;
 import com.example.demo.dto.project.response.ProjectSearchResponseDto;
 import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
@@ -29,8 +30,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
@@ -49,10 +48,10 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
 
     private BooleanExpression searchByLike(String searchQuery) {
         if (StringUtils.hasText(searchQuery)) {
-            return QBoard.board
+            return qBoard
                     .title
                     .like("%" + searchQuery + "%")
-                    .or(QBoard.board.content.like("%" + searchQuery + "%"));
+                    .or(qBoard.content.like("%" + searchQuery + "%"));
         } else {
             return null;
         }
@@ -91,8 +90,19 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
         }
     }
 
+    private Long countBoardBySearchCriteria(BooleanBuilder builder) {
+        return queryFactory
+                .select(qBoard.id.countDistinct())
+                .from(qBoard)
+                .join(qBoard.positions, qBoardPosition)
+                .leftJoin(qBoard.project, qProject)
+                .leftJoin(qProject.projectTechnologies, qProjectTechnology)
+                .where(builder)
+                .fetchOne();
+    }
+
     @Override
-    public Page<BoardSearchResponseDto> getBoardSearchPage(
+    public PaginationResponseDto getBoardSearchPage(
             Long positionId, String keyword, List<Long> technologyIds, Pageable pageable) {
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(searchByLike(keyword));
@@ -108,6 +118,7 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
                         .join(qBoard.user, qUser)
                         .join(qProject.projectTechnologies, qProjectTechnology)
                         .where(builder)
+                        .orderBy(qBoard.createDate.desc())
                         .offset(pageable.getOffset())
                         .limit(pageable.getPageSize())
                         .fetch();
@@ -157,7 +168,8 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
                             userSearchResponseDto));
         }
 
-        long total = boardSearchResponseDtos.size();
-        return new PageImpl<>(boardSearchResponseDtos, pageable, total);
+        long totalPages = countBoardBySearchCriteria(builder);
+
+        return PaginationResponseDto.of(boardSearchResponseDtos, totalPages);
     }
 }

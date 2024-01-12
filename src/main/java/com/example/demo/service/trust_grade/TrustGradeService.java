@@ -9,4 +9,6 @@ public interface TrustGradeService {
     TrustGrade getTrustGradeById(Long id);
 
     List<TrustGradeInfoResponseDto> getListByCriteria();
+
+    List<TrustGradeInfoResponseDto> getPossibleUserGrades(Long userId);
 }

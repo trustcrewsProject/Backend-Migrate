@@ -9,10 +9,8 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface WorkRepository extends JpaRepository<Work, Long> {
+public interface WorkRepository extends JpaRepository<Work, Long>, WorkRepositoryCustom {
     Optional<List<Work>> findWorksByProject(Project project);
-
-    Optional<List<Work>> findWorksByProjectAndMilestone(Project project, Milestone milestone);
 
     Optional<Work> findFirstByProjectAndAssignedUserIdAndProgressStatusOrderByIdDesc(
             Project project, User user, ProgressStatus progressStatus);

@@ -73,4 +73,11 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(userFacade.getMyProjectHistoryList(user, pageNumber.orElse(0)));
     }
+
+    // 내 프로필 이미지 삭제
+    @DeleteMapping("/me/profile-img")
+    public ResponseEntity<ResponseDto<?>> myProfileImgDelete(@AuthenticationPrincipal PrincipalDetails user) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(userFacade.deleteMyProfileImg(user.getId()));
+    }
 }

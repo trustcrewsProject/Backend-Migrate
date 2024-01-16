@@ -13,6 +13,7 @@ import com.example.demo.dto.trust_score.request.TrustScoreUpdateRequestDto;
 import com.example.demo.dto.user.request.UserCreateRequestDto;
 import com.example.demo.dto.user.request.UserUpdateRequestDto;
 import com.example.demo.dto.user.response.*;
+import com.example.demo.global.exception.customexception.CommonCustomException;
 import com.example.demo.global.exception.customexception.PageNationCustomException;
 import com.example.demo.model.position.Position;
 import com.example.demo.model.technology_stack.TechnologyStack;
@@ -21,9 +22,12 @@ import com.example.demo.model.trust_score.TrustScore;
 import com.example.demo.model.user.User;
 import com.example.demo.model.user.UserTechnologyStack;
 import com.example.demo.security.custom.PrincipalDetails;
+import com.example.demo.service.file.AwsS3FileService;
 import com.example.demo.service.position.PositionService;
 import com.example.demo.service.technology_stack.TechnologyStackService;
 import com.example.demo.service.trust_score.TrustScoreService;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -32,6 +36,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +49,7 @@ public class UserFacade {
     private final TrustScoreService trustScoreService;
     private final UserTechnologyStackService userTechnologyStackService;
     private final UserProjectHistoryService userProjectHistoryService;
+    private final AwsS3FileService awsS3FileService;
 
     /**
      * 회원가입 로직
@@ -116,8 +122,17 @@ public class UserFacade {
      * @return updateResponse
      */
     @Transactional
-    public ResponseDto<?> updateUser(PrincipalDetails user, UserUpdateRequestDto updateRequest) {
+    public ResponseDto<?> updateUser(PrincipalDetails user, MultipartFile file, UserUpdateRequestDto updateRequest) {
         User currentUser = userService.getUserForUpdate(user.getId());
+
+        // 이미지 파일이 존재할 경우, 이미지 변경 수행
+        if(Objects.nonNull(file)) {
+            try {
+                currentUser.updateProfileImgSrc(awsS3FileService.uploadImage(file));
+            } catch (IOException e) {
+                throw CommonCustomException.INTERNAL_SERVER_ERROR;
+            }
+        }
 
         // 기존 포지션과 수정 요청한 포지션 비교
         Position position = currentUser.getPosition();

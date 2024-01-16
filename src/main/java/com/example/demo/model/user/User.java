@@ -94,4 +94,9 @@ public class User extends BaseTimeEntity {
         this.position = position;
         this.intro = intro;
     }
+
+    // 회원 프로필 수정
+    public void updateProfileImgSrc(String profileImgSrc) {
+        this.profileImgSrc = profileImgSrc;
+    }
 }

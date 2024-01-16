@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/user")
@@ -45,9 +46,10 @@ public class UserController {
     @PutMapping()
     public ResponseEntity<ResponseDto<?>> update(
             @AuthenticationPrincipal PrincipalDetails user,
-            @Valid @RequestBody UserUpdateRequestDto updateRequest) {
+            @RequestPart MultipartFile file,
+            @Valid @RequestPart UserUpdateRequestDto updateRequest) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(userFacade.updateUser(user, updateRequest));
+                .body(userFacade.updateUser(user, file, updateRequest));
     }
 
     // 간단한 내 정보 조회

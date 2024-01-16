@@ -2,6 +2,7 @@ package com.example.demo.service.file;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.demo.global.exception.customexception.CommonCustomException;
 import com.example.demo.global.util.FileUtil;
@@ -55,5 +56,16 @@ public class AwsS3FileService {
                         .withCannedAcl(CannedAccessControlList.PublicRead)
         );
         return amazonS3Client.getUrl(bucket, fileName).toString();
+    }
+
+    // 이미지 삭제
+    public void deleteImage(String fileName) {
+        String key = fileName.substring(fileName.lastIndexOf('/') + 1);
+        deleteS3(key);
+    }
+
+    // AWS S3 버킷에서 파일 삭제
+    private void deleteS3(String key) {
+        amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, key));
     }
 }

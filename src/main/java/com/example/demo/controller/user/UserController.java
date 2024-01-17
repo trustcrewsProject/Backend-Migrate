@@ -46,7 +46,7 @@ public class UserController {
     @PutMapping()
     public ResponseEntity<ResponseDto<?>> update(
             @AuthenticationPrincipal PrincipalDetails user,
-            @RequestPart MultipartFile file,
+            @RequestPart(required = false) MultipartFile file,
             @Valid @RequestPart UserUpdateRequestDto updateRequest) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(userFacade.updateUser(user, file, updateRequest));

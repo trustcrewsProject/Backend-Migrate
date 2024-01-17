@@ -127,7 +127,14 @@ public class UserFacade {
         User currentUser = userService.getUserForUpdate(user.getId());
 
         // 이미지 파일이 존재할 경우, 이미지 변경 수행
-        if(Objects.nonNull(file)) {
+        if(Objects.nonNull(file) && !file.isEmpty()) {
+            String profileImgSrc = currentUser.getProfileImgSrc();
+
+            // 기존 회원의 프로필 이미지가 존재할 경우 삭제
+            if(Objects.nonNull(profileImgSrc) && !profileImgSrc.isEmpty()) {
+                awsS3FileService.deleteImage(profileImgSrc);
+            }
+
             try {
                 currentUser.updateProfileImgSrc(awsS3FileService.uploadImage(file));
             } catch (IOException e) {

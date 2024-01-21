@@ -1,6 +1,7 @@
 package com.example.demo.security.custom;
 
 import com.example.demo.dto.user.request.UserLoginRequestDto;
+import com.example.demo.global.exception.customexception.AuthenticationCustomException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
@@ -52,6 +53,10 @@ public class UserAuthenticationFilter extends AbstractAuthenticationProcessingFi
                         loginRequest.getEmail(), loginRequest.getPassword());
 
         // 회원 인증 로직 수행
-        return this.getAuthenticationManager().authenticate(token);
+        try {
+            return this.getAuthenticationManager().authenticate(token);
+        } catch(AuthenticationException e) {
+            throw AuthenticationCustomException.INVALID_AUTHENTICATION;
+        }
     }
 }

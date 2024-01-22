@@ -99,4 +99,9 @@ public class User extends BaseTimeEntity {
     public void updateProfileImgSrc(String profileImgSrc) {
         this.profileImgSrc = profileImgSrc;
     }
+
+    // 회원 삭제
+    public void deleteUser() {
+        this.status = UserStatus.DELETED;
+    }
 }

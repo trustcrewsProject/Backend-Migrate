@@ -80,4 +80,11 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(userFacade.deleteMyProfileImg(user.getId()));
     }
+
+    // 회원 탈퇴
+    @DeleteMapping()
+    public ResponseEntity<ResponseDto<?>> deleteUser(@AuthenticationPrincipal PrincipalDetails user) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(userFacade.deleteUser(user.getId()));
+    }
 }

@@ -353,4 +353,19 @@ public class UserFacade {
 
         return ResponseDto.success("프로필 이미지가 삭제되었습니다.");
     }
+
+    /**
+     * 회원 탈퇴
+     * @param userId
+     * @return
+     */
+    @Transactional
+    public ResponseDto<?> deleteUser(Long userId) {
+        User currentUser = userService.findById(userId);
+
+        // 회원 삭제(회원 엔티티의 status 필드에 UserStatus.DELETED 적용)
+        currentUser.deleteUser();
+
+        return ResponseDto.success("회원 탈퇴가 완료되었습니다.");
+    }
 }

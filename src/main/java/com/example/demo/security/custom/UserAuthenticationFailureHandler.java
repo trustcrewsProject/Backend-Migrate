@@ -1,6 +1,7 @@
 package com.example.demo.security.custom;
 
 import com.example.demo.dto.common.ResponseDto;
+import com.example.demo.global.exception.customexception.AuthenticationCustomException;
 import com.example.demo.global.exception.errorcode.UserErrorCode;
 import com.example.demo.security.SecurityResponseHandler;
 import java.io.IOException;
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
@@ -19,9 +21,6 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 @RequiredArgsConstructor
 public class UserAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
-    // 회원 인증 실패 시 응답 할 커스텀 ErrorCode
-    private static final UserErrorCode INVALID_AUTHENTICATION =
-            UserErrorCode.INVALID_AUTHENTICATION;
     private final SecurityResponseHandler securityResponseHandler;
 
     @Override
@@ -30,10 +29,12 @@ public class UserAuthenticationFailureHandler extends SimpleUrlAuthenticationFai
             HttpServletResponse response,
             AuthenticationException exception)
             throws IOException {
-        // 클라이언트로 응답 전송
-        securityResponseHandler.sendResponse(
-                response,
-                INVALID_AUTHENTICATION.getStatus(),
-                ResponseDto.fail(INVALID_AUTHENTICATION.getMessage()));
+        if(exception instanceof AuthenticationCustomException) {
+            // 클라이언트로 응답 전송
+            securityResponseHandler.sendResponse(
+                    response,
+                    HttpStatus.UNAUTHORIZED,
+                    ResponseDto.fail(exception.getMessage()));
+        }
     }
 }

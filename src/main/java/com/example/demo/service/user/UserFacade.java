@@ -13,7 +13,9 @@ import com.example.demo.dto.trust_score.request.TrustScoreUpdateRequestDto;
 import com.example.demo.dto.user.request.UserCreateRequestDto;
 import com.example.demo.dto.user.request.UserUpdateRequestDto;
 import com.example.demo.dto.user.response.*;
+import com.example.demo.global.exception.customexception.CommonCustomException;
 import com.example.demo.global.exception.customexception.PageNationCustomException;
+import com.example.demo.global.exception.customexception.UserCustomException;
 import com.example.demo.model.position.Position;
 import com.example.demo.model.technology_stack.TechnologyStack;
 import com.example.demo.model.trust_grade.TrustGrade;
@@ -21,9 +23,12 @@ import com.example.demo.model.trust_score.TrustScore;
 import com.example.demo.model.user.User;
 import com.example.demo.model.user.UserTechnologyStack;
 import com.example.demo.security.custom.PrincipalDetails;
+import com.example.demo.service.file.AwsS3FileService;
 import com.example.demo.service.position.PositionService;
 import com.example.demo.service.technology_stack.TechnologyStackService;
 import com.example.demo.service.trust_score.TrustScoreService;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -32,6 +37,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +50,7 @@ public class UserFacade {
     private final TrustScoreService trustScoreService;
     private final UserTechnologyStackService userTechnologyStackService;
     private final UserProjectHistoryService userProjectHistoryService;
+    private final AwsS3FileService awsS3FileService;
 
     /**
      * 회원가입 로직
@@ -116,8 +123,24 @@ public class UserFacade {
      * @return updateResponse
      */
     @Transactional
-    public ResponseDto<?> updateUser(PrincipalDetails user, UserUpdateRequestDto updateRequest) {
+    public ResponseDto<?> updateUser(PrincipalDetails user, MultipartFile file, UserUpdateRequestDto updateRequest) {
         User currentUser = userService.getUserForUpdate(user.getId());
+
+        // 이미지 파일이 존재할 경우, 이미지 변경 수행
+        if(Objects.nonNull(file) && !file.isEmpty()) {
+            String profileImgSrc = currentUser.getProfileImgSrc();
+
+            // 기존 회원의 프로필 이미지가 존재할 경우 삭제
+            if(Objects.nonNull(profileImgSrc) && !profileImgSrc.isEmpty()) {
+                awsS3FileService.deleteImage(profileImgSrc);
+            }
+
+            try {
+                currentUser.updateProfileImgSrc(awsS3FileService.uploadImage(file));
+            } catch (IOException e) {
+                throw CommonCustomException.INTERNAL_SERVER_ERROR;
+            }
+        }
 
         // 기존 포지션과 수정 요청한 포지션 비교
         Position position = currentUser.getPosition();
@@ -305,5 +328,44 @@ public class UserFacade {
                 userProjectHistoryService.getUserProjectHistoryList(user.getId(), pageNumber);
 
         return ResponseDto.success("내 프로젝트 이력 목록 조회가 완료되었습니다.", projectHistoryList);
+    }
+
+    /**
+     * 내 프로필 이미지 삭제 (aws s3에 저장된 이미지 파일 삭제)
+     * @param userId
+     * @return
+     */
+    @Transactional
+    public ResponseDto<?> deleteMyProfileImg(Long userId) {
+        User currentUser = userService.findById(userId);
+
+        // 요청한 회원의 프로필 이미지가 존재하지 않는 경우 예외처리
+        if(Objects.isNull(currentUser.getProfileImgSrc())
+                || currentUser.getProfileImgSrc().equals("")) {
+            throw UserCustomException.DOES_NOT_EXIST_PROFILE_IMG;
+        }
+
+        // aws s3 저장된 파일 삭제
+        awsS3FileService.deleteImage(currentUser.getProfileImgSrc());
+
+        // 회원의 프로필 이미지 경로를 빈 값으로 수정
+        currentUser.updateProfileImgSrc("");
+
+        return ResponseDto.success("프로필 이미지가 삭제되었습니다.");
+    }
+
+    /**
+     * 회원 탈퇴
+     * @param userId
+     * @return
+     */
+    @Transactional
+    public ResponseDto<?> deleteUser(Long userId) {
+        User currentUser = userService.findById(userId);
+
+        // 회원 삭제(회원 엔티티의 status 필드에 UserStatus.DELETED 적용)
+        currentUser.deleteUser();
+
+        return ResponseDto.success("회원 탈퇴가 완료되었습니다.");
     }
 }

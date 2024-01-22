@@ -1,5 +1,7 @@
 package com.example.demo.security.custom;
 
+import com.example.demo.constant.UserStatus;
+import com.example.demo.global.exception.customexception.AuthenticationCustomException;
 import com.example.demo.global.exception.customexception.UserCustomException;
 import com.example.demo.model.user.User;
 import com.example.demo.repository.user.UserRepository;
@@ -22,7 +24,11 @@ public class PrincipalDetailsService implements UserDetailsService {
         User user =
                 userRepository
                         .findByEmail(username)
-                        .orElseThrow(() -> UserCustomException.INVALID_AUTHENTICATION);
+                        .orElse(null);
+
+        if(user == null || user.getStatus().equals(UserStatus.DELETED)) {
+            throw AuthenticationCustomException.INVALID_AUTHENTICATION;
+        }
 
         return new PrincipalDetails(user);
     }

@@ -14,7 +14,7 @@ public class BoardUpdateResponseDto {
     private String boardTitle;
     private String boardContent;
     private long boardPageView;
-    private boolean boardCompleteStatus;
+    private boolean recruitmentStatus;
     private long boardUserId;
     private String boardContact;
 
@@ -30,7 +30,7 @@ public class BoardUpdateResponseDto {
                 .boardTitle(board.getTitle())
                 .boardContent(board.getContent())
                 .boardPageView(board.getPageView())
-                .boardCompleteStatus(board.isCompleteStatus())
+                .recruitmentStatus(board.isRecruitmentStatus())
                 .boardUserId(board.getUser().getId())
                 .boardContact(board.getContent())
                 .createDate(board.getCreateDate())

@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/user")
@@ -45,9 +46,10 @@ public class UserController {
     @PutMapping()
     public ResponseEntity<ResponseDto<?>> update(
             @AuthenticationPrincipal PrincipalDetails user,
-            @Valid @RequestBody UserUpdateRequestDto updateRequest) {
+            @RequestPart(required = false) MultipartFile file,
+            @Valid @RequestPart UserUpdateRequestDto updateRequest) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(userFacade.updateUser(user, updateRequest));
+                .body(userFacade.updateUser(user, file, updateRequest));
     }
 
     // 간단한 내 정보 조회
@@ -70,5 +72,19 @@ public class UserController {
             @RequestParam Optional<Integer> pageNumber) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(userFacade.getMyProjectHistoryList(user, pageNumber.orElse(0)));
+    }
+
+    // 내 프로필 이미지 삭제
+    @DeleteMapping("/me/profile-img")
+    public ResponseEntity<ResponseDto<?>> myProfileImgDelete(@AuthenticationPrincipal PrincipalDetails user) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(userFacade.deleteMyProfileImg(user.getId()));
+    }
+
+    // 회원 탈퇴
+    @DeleteMapping()
+    public ResponseEntity<ResponseDto<?>> deleteUser(@AuthenticationPrincipal PrincipalDetails user) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(userFacade.deleteUser(user.getId()));
     }
 }

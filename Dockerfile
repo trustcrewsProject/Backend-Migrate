@@ -9,4 +9,4 @@ ARG JAR_FILE=build/libs/demo-0.0.1-SNAPSHOT.jar
 COPY ${JAR_FILE} /app/projectmatch.jar
 
 # 애플리케이션 실행 (스프링 부트 JAR 실행)
-ENTRYPOINT ["java","-jar","/projectmatch.jar"]
+ENTRYPOINT ["java","-jar","/app/projectmatch.jar"]

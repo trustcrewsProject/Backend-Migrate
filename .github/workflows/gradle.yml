@@ -44,12 +44,12 @@ jobs:
       with:
         host: ${{ secrets.EC2_HOST }} # EC2 인스턴스 퍼블릭 DNS
         username: ubuntu
-        key: ${{ secrets.PRIVATE_KEY }} # pem 키
+        key: ${{ secrets.PRIVATE_KEY }} # EC2 pem 키
         # 도커 작업
         script: |
           docker pull ${{ secrets.DOCKER_USERNAME }}/projectmatch:latest
           docker stop $(docker ps -a -q)
-          docker run -d --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/projectmatch:latest
+          docker run -d --log-driver=syslog -p 8080:8080 --env-file .env ${{ secrets.DOCKER_USERNAME }}/projectmatch:latest
           docker rm $(docker ps --filter 'status=exited' -a -q)
           docker image prune -a -f
 

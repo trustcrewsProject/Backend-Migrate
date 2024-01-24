@@ -5,7 +5,7 @@ FROM openjdk:11-jdk
 #WORKDIR /app
 
 # .env 복사
-COPY $ENV_FILE_PATH .env
+#COPY $ENV_FILE_PATH .env
 
 # JAR 파일 복사
 ARG JAR_FILE=build/libs/*.jar

@@ -35,7 +35,7 @@ jobs:
     - name: Docker build
       run: |
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-        docker build -t app .
+        docker build --build-arg ENV_FILE_PATH=.env -t app .
         docker tag app ${{ secrets.DOCKER_USERNAME }}/projectmatch:latest
         docker push ${{ secrets.DOCKER_USERNAME }}/projectmatch:latest
 

@@ -48,4 +48,9 @@ public class AlertServiceImpl implements AlertService {
                 .findCrewAlertsByProject(project)
                 .orElseThrow(() -> AlertCustomException.NOT_FOUND_ALERT);
     }
+
+    @Override
+    public void updateAlertStatus(Long alertId) {
+        alertRepository.updateAlertStatus(alertId);
+    }
 }

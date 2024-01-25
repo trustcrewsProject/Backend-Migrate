@@ -26,7 +26,7 @@ public class Alert extends BaseTimeEntity {
     private Project project;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "check_user_id", referencedColumnName = "user_id", nullable = false)
+    @JoinColumn(name = "check_user_id", referencedColumnName = "user_id")
     private User checkUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -53,6 +53,9 @@ public class Alert extends BaseTimeEntity {
     @Column(name = "checked_yn")
     private boolean checked_YN;
 
+    @Column(name = "project_participate_confirm")
+    private Boolean projectConfirmResult;
+
     @Builder
     private Alert(
             Project project,
@@ -63,7 +66,8 @@ public class Alert extends BaseTimeEntity {
             Position position,
             String content,
             AlertType type,
-            boolean checked_YN) {
+            boolean checked_YN,
+            Boolean projectConfirmResult) {
         this.project = project;
         this.checkUser = checkUser;
         this.sendUser = sendUser;
@@ -73,5 +77,10 @@ public class Alert extends BaseTimeEntity {
         this.content = content;
         this.type = type;
         this.checked_YN = checked_YN;
+        this.projectConfirmResult = projectConfirmResult;
+    }
+
+    public void updateProjectConfirmResult(boolean projectConfirmResult) {
+        this.projectConfirmResult = projectConfirmResult;
     }
 }

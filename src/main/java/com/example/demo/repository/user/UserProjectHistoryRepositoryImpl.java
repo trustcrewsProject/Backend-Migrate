@@ -34,6 +34,7 @@ public class UserProjectHistoryRepositoryImpl implements UserProjectHistoryRepos
                                 Projections.constructor(
                                         UserProjectHistoryInfoResponseDto.class,
                                         userProjectHistory.id,
+                                        userProjectHistory.project.id,
                                         userProjectHistory.status,
                                         userProjectHistory.project.name,
                                         userProjectHistory.updateDate))

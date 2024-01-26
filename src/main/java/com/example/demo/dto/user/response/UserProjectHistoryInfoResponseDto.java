@@ -13,6 +13,8 @@ public class UserProjectHistoryInfoResponseDto {
 
     private Long userProjectHistoryId;
 
+    private Long projectId;
+
     private UserProjectHistoryStatus status;
 
     private String projectName;

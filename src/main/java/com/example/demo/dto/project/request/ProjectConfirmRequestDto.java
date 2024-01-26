@@ -7,6 +7,10 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class ProjectConfirmRequestDto {
-    @NotNull(message = "포지션은 필수 입력 값입니다.")
-    private Long positionId;
+
+    @NotNull(message = "알림 정보는 필수 요청 값입니다.")
+    private Long alertId;
+
+    @NotNull(message = "참여 수락 혹은 거절 정보는 필수 요청 값입니다.")
+    private boolean confirmResult;
 }

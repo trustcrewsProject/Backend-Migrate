@@ -55,4 +55,10 @@ public class AlertController {
         List<AlertInfoResponseDto> result = alertFacade.getCrewsByProject(projectId);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
+
+    @PutMapping("/api/alert/{alertId}/status")
+    public ResponseEntity<ResponseDto<?>> updateAlertStatus(@PathVariable Long alertId) {
+        alertService.updateAlertStatus(alertId);
+        return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.OK);
+    }
 }

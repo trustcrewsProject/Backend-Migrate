@@ -10,7 +10,10 @@ import com.example.demo.dto.project.response.ProjectSpecificDetailResponseDto;
 import com.example.demo.dto.projectmember.response.MyProjectMemberResponseDto;
 import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
 import com.example.demo.dto.user.response.UserMyProjectResponseDto;
+import com.example.demo.global.exception.customexception.CommonCustomException;
 import com.example.demo.global.exception.customexception.PageNationCustomException;
+import com.example.demo.global.exception.customexception.ProjectCustomException;
+import com.example.demo.global.exception.customexception.UserCustomException;
 import com.example.demo.model.alert.Alert;
 import com.example.demo.model.position.Position;
 import com.example.demo.model.project.Project;
@@ -158,25 +161,55 @@ public class ProjectFacade {
     }
 
     /**
-     * 참여 수락하기
-     *
-     * @param projectId
+     * 프로젝트 참여 수락/거절
+     * @param userId
      * @param projectConfirmRequestDto
      */
+    @Transactional
     public void confirm(
-            Long userId, Long projectId, ProjectConfirmRequestDto projectConfirmRequestDto) {
-        Project project = projectService.findById(projectId);
-        User user = userService.findById(userId);
-        ProjectMemberAuth projectMemberAuth = projectMemberAuthService.findTopByOrderByIdDesc();
-        Position position = positionService.findById(projectConfirmRequestDto.getPositionId());
+            Long userId, ProjectConfirmRequestDto projectConfirmRequestDto) {
+        // 참여지원 알림
+        Alert supportedAlert = alertService.findById(projectConfirmRequestDto.getAlertId());
 
-        ProjectMember projectMember =
-                projectMemberService.toProjectMemberEntity(
-                        project,
-                        user,
-                        projectMemberAuth,
-                        ProjectMemberStatus.PARTICIPATING,
-                        position);
-        projectMemberService.save(projectMember);
+        // 프로젝트 생성자 (모집지원 처리 결정자)
+        User checkUser = supportedAlert.getCheckUser();
+
+        // 요청한 회원과 알림의 체크 회원이 다른 경우
+        if(!userId.equals(checkUser.getId())) {
+            throw ProjectCustomException.NO_PERMISSION_TO_TASK;
+        }
+
+        // 프로젝트 참여 수락
+        if(projectConfirmRequestDto.isConfirmResult()) {
+            // 지원 알림의 confirm 필드 수락으로 변경
+            supportedAlert.updateProjectConfirmResult(projectConfirmRequestDto.isConfirmResult());
+
+            Project project = supportedAlert.getProject();
+            User sendUser = supportedAlert.getSendUser();
+            ProjectMemberAuth projectMemberAuth = projectMemberAuthService.findTopByOrderByIdDesc();
+
+            // 프로젝트 멤버 등록
+            ProjectMember projectMember =
+                    projectMemberService.toProjectMemberEntity(
+                            project,
+                            sendUser,
+                            projectMemberAuth,
+                            ProjectMemberStatus.PARTICIPATING,
+                            supportedAlert.getPosition());
+            projectMemberService.save(projectMember);
+
+            // 프로젝트 합류 알림 생성
+            Alert participationAlert = Alert.builder()
+                    .project(project)
+                    .sendUser(checkUser)
+                    .content(sendUser.getNickname() + "님이 " + project.getName() + "에 합류했습니다.")
+                    .type(AlertType.ADD)
+                    .build();
+            alertService.save(participationAlert);
+            return;
+        }
+
+        // 프로젝트 참여 거절
+        supportedAlert.updateProjectConfirmResult(false);
     }
 }

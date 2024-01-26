@@ -1,5 +1,6 @@
 package com.example.demo.service.alert;
 
+import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.model.alert.Alert;
 import com.example.demo.model.project.Project;
 import java.util.List;
@@ -12,7 +13,7 @@ public interface AlertService {
 
     Alert save(Alert alert);
 
-    List<Alert> findAlertsByProjectId(Project project);
+    PaginationResponseDto findAlertsByProjectId(Project project, int pageIndex, int itemCount);
 
     List<Alert> findRecruitAlertsByProject(Project project);
 

@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -110,5 +111,16 @@ public class AlertFacade {
         }
 
         return alertInfoResponseDtos;
+    }
+
+    @Transactional(readOnly = true)
+    public PaginationResponseDto getSupportedProjects(Long userId, int pageIndex, int itemCount) {
+        if(pageIndex < 0) {
+            throw PageNationCustomException.INVALID_PAGE_NUMBER;
+        }
+
+        User currentUser = userService.findById(userId);
+
+        return alertService.findAlertsBySendUserIdAndType(currentUser, pageIndex, itemCount);
     }
 }

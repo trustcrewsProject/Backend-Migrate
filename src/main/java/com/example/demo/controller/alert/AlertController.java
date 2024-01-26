@@ -3,6 +3,7 @@ package com.example.demo.controller.alert;
 import com.example.demo.dto.alert.AlertCreateRequestDto;
 import com.example.demo.dto.alert.response.AlertInfoResponseDto;
 import com.example.demo.dto.common.ResponseDto;
+import com.example.demo.security.custom.PrincipalDetails;
 import com.example.demo.service.alert.AlertFacade;
 import com.example.demo.service.alert.AlertService;
 import java.util.List;
@@ -11,7 +12,10 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import javax.persistence.criteria.CriteriaBuilder;
 
 @RestController
 @RequiredArgsConstructor
@@ -60,5 +64,15 @@ public class AlertController {
     public ResponseEntity<ResponseDto<?>> updateAlertStatus(@PathVariable Long alertId) {
         alertService.updateAlertStatus(alertId);
         return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.OK);
+    }
+
+    @GetMapping("/api/alert/supported-projects")
+    public ResponseEntity<ResponseDto<?>> getSupportedProjects(
+            @AuthenticationPrincipal PrincipalDetails user,
+            @RequestParam Optional<Integer> pageIndex,
+            @RequestParam Optional<Integer> itemCount) {
+        return new ResponseEntity<>(
+                ResponseDto.success("사용자가 지원한 프로젝트 알림목록 조회가 완료되었습니다.",
+                        alertFacade.getSupportedProjects(user.getId(), pageIndex.orElse(0), itemCount.orElse(6))), HttpStatus.OK);
     }
 }

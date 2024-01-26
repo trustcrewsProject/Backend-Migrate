@@ -5,6 +5,7 @@ import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.global.exception.customexception.AlertCustomException;
 import com.example.demo.model.alert.Alert;
 import com.example.demo.model.project.Project;
+import com.example.demo.model.user.User;
 import com.example.demo.repository.alert.AlertRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -52,5 +53,11 @@ public class AlertServiceImpl implements AlertService {
     @Override
     public void updateAlertStatus(Long alertId) {
         alertRepository.updateAlertStatus(alertId);
+    }
+
+    @Override
+    public PaginationResponseDto findAlertsBySendUserIdAndType(User user, int pageIndex, int itemCount) {
+        return alertRepository
+                .findAlertsBySendUserIdAndTypeOrderByCreateDateDesc(user.getId(), PageRequest.of(pageIndex, itemCount));
     }
 }

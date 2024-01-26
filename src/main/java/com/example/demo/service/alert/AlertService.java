@@ -4,6 +4,8 @@ import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.model.alert.Alert;
 import com.example.demo.model.project.Project;
 import java.util.List;
+
+import com.example.demo.model.user.User;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,4 +24,6 @@ public interface AlertService {
     List<Alert> findCrewAlertsByProject(Project project);
 
     void updateAlertStatus(Long alertId);
+
+    PaginationResponseDto findAlertsBySendUserIdAndType(User user, int pageIndex, int itemCount);
 }

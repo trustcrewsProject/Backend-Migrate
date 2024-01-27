@@ -8,6 +8,7 @@ import com.example.demo.constant.UserProjectHistoryStatus;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.user.response.UserProjectHistoryInfoResponseDto;
 import com.example.demo.model.user.UserProjectHistory;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
@@ -45,31 +46,9 @@ public class UserProjectHistoryRepositoryImpl implements UserProjectHistoryRepos
                         .fetch();
 
         // 사용자 프로젝트 이력 총 개수 조회
-        long totalPages = countUserProjectHistoryByUserId(userId);
+        long totalPages = countUserProjectHistory(userId, null);
 
         return PaginationResponseDto.of(content, totalPages);
-    }
-
-    @Override
-    public Long countUserProjectHistoryByUserId(Long userId) {
-        // 회원의 전체 프로젝트 이력 개수 조회
-        return jpaQueryFactory
-                .select(userProjectHistory.count())
-                .from(userProjectHistory)
-                .leftJoin(userProjectHistory.user, user)
-                .where(userProjectHistory.user.id.eq(userId))
-                .fetchOne();
-    }
-
-    @Override
-    public Long countParticipatesUserProjectHistoryByUserId(Long userId) {
-        // 회원 참여중인 프로젝트 이력 개수 조회
-        return jpaQueryFactory
-                .select(userProjectHistory.count())
-                .from(userProjectHistory)
-                .where(userProjectHistory.user.id.eq(userId),
-                        userProjectHistory.status.eq(UserProjectHistoryStatus.PARTICIPATING))
-                .fetchOne();
     }
 
     @Override
@@ -84,5 +63,29 @@ public class UserProjectHistoryRepositoryImpl implements UserProjectHistoryRepos
                 .fetch();
 
         return results;
+    }
+
+    @Override
+    public Long countUserProjectHistory(Long userId, UserProjectHistoryStatus status) {
+        return jpaQueryFactory
+                .select(userProjectHistory.count())
+                .from(userProjectHistory)
+                .where(eq(userId, status))
+                .fetchOne();
+    }
+
+    // 갯수 조건 동적쿼리
+    private BooleanBuilder eq(Long userId, UserProjectHistoryStatus status) {
+        BooleanBuilder builder = new BooleanBuilder();
+
+        if(userId != null) {
+            builder.and(userProjectHistory.user.id.eq(userId));
+        }
+
+        if(status != null) {
+            builder.and(userProjectHistory.status.eq(status));
+        }
+
+        return builder;
     }
 }

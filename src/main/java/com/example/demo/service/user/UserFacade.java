@@ -290,7 +290,7 @@ public class UserFacade {
                         .collect(Collectors.toList());
         // 회원 프로젝트 이력 개수
         long projectHistoryTotalCount =
-                userProjectHistoryService.getUserProjectHistoryTotalCount(currentUser.getId());
+                userProjectHistoryService.getUserProjectHistoryTotalCount(currentUser.getId(), null);
 
         // 내 정보 응답 DTO 생성
         UserMyInfoResponseDto myInfoResponse =

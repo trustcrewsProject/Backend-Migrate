@@ -2,6 +2,7 @@ package com.example.demo.service.project;
 
 import com.example.demo.constant.AlertType;
 import com.example.demo.constant.ProjectMemberStatus;
+import com.example.demo.constant.UserProjectHistoryStatus;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.project.request.ProjectConfirmRequestDto;
 import com.example.demo.dto.project.request.ProjectParticipateRequestDto;
@@ -63,7 +64,7 @@ public class ProjectFacade {
         }
 
         // 참여중인 프로젝트 개수 조회
-        long totalPages = userProjectHistoryService.getUserProjectHistoryParticipatesTotalCount(user.getId());
+        long totalPages = userProjectHistoryService.getUserProjectHistoryTotalCount(user.getId(), UserProjectHistoryStatus.PARTICIPATING);
 
         // 내가 참여중인 프로젝트 이력 목록 불러오기 (정렬, 페이징)
         List<UserProjectHistory> projectHistories = userProjectHistoryService.getUserProjectHistoryListParticipates(userId, pageIndex, itemCount);

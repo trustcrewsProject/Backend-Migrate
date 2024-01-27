@@ -7,10 +7,7 @@ import static com.example.demo.model.user.QUserProjectHistory.userProjectHistory
 import com.example.demo.constant.UserProjectHistoryStatus;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.user.response.UserProjectHistoryInfoResponseDto;
-import com.example.demo.model.project.QProjectMember;
-import com.example.demo.model.trust_grade.QTrustGrade;
 import com.example.demo.model.user.UserProjectHistory;
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
@@ -70,39 +67,22 @@ public class UserProjectHistoryRepositoryImpl implements UserProjectHistoryRepos
         return jpaQueryFactory
                 .select(userProjectHistory.count())
                 .from(userProjectHistory)
-                .where(getPredicateForUserAndUserProjectHistoryStatus(userId))
+                .where(userProjectHistory.user.id.eq(userId),
+                        userProjectHistory.status.eq(UserProjectHistoryStatus.PARTICIPATING))
                 .fetchOne();
     }
 
     @Override
     public List<UserProjectHistory> findAllUserParticipates(Long userId, Pageable pageable) {
-        QTrustGrade qTrustGrade = QTrustGrade.trustGrade;
-        QProjectMember qProjectMember = QProjectMember.projectMember;
-
         List<UserProjectHistory> results = jpaQueryFactory
                 .selectFrom(userProjectHistory)
-                .join(userProjectHistory.project, project)
-                .join(project.trustGrade, qTrustGrade)
-                .join(project.projectMembers, qProjectMember)
-                .join(qProjectMember.user, user)
-                .where(getPredicateForUserAndUserProjectHistoryStatus(userId))
+                .where(userProjectHistory.user.id.eq(userId),
+                        userProjectHistory.status.eq(UserProjectHistoryStatus.PARTICIPATING))
                 .orderBy(userProjectHistory.startDate.asc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
         return results;
-    }
-
-    private BooleanBuilder getPredicateForUserAndUserProjectHistoryStatus(Long userId) {
-        BooleanBuilder builder = new BooleanBuilder();
-
-        if(userId != null) {
-            builder.and(user.id.eq(userId));
-        }
-
-        builder.and(userProjectHistory.status.eq(UserProjectHistoryStatus.PARTICIPATING));
-
-        return builder;
     }
 }

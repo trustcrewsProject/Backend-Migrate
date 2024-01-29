@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -93,5 +91,13 @@ public class WorkController {
             @RequestBody WorkUpdateAssignUserRequestDto workUpdateAssignUserRequestDto) {
         workFacade.updateAssignUser(workId, workUpdateAssignUserRequestDto);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
+    }
+
+    @PostMapping("/api/work/confirm")
+    public ResponseEntity<ResponseDto<?>> workConfirm(
+            @AuthenticationPrincipal PrincipalDetails user,
+            @RequestBody WorkConfirmRequestDto workConfirmRequest) {
+        workFacade.workConfirm(user.getId(), workConfirmRequest);
+        return new ResponseEntity<>(ResponseDto.success("업무 컨펌이 완료되었습니다."), HttpStatus.OK);
     }
 }

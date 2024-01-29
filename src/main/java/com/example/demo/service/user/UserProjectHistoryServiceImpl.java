@@ -36,8 +36,8 @@ public class UserProjectHistoryServiceImpl implements UserProjectHistoryService 
     }
 
     @Override
-    public Long getUserProjectHistoryTotalCount(Long userId) {
-        return userProjectHistoryRepository.countUserProjectHistoryByUserId(userId);
+    public Long getUserProjectHistoryTotalCount(Long userId, UserProjectHistoryStatus status) {
+        return userProjectHistoryRepository.countUserProjectHistory(userId, status);
     }
 
     @Override
@@ -51,10 +51,5 @@ public class UserProjectHistoryServiceImpl implements UserProjectHistoryService 
     public List<UserProjectHistory> getUserProjectHistoryListParticipates(Long userId, int pageIndex, int itemCount) {
         Pageable pageable = PageRequest.of(pageIndex, itemCount);
         return userProjectHistoryRepository.findAllUserParticipates(userId, pageable);
-    }
-
-    @Override
-    public Long getUserProjectHistoryParticipatesTotalCount(Long userId) {
-        return userProjectHistoryRepository.countParticipatesUserProjectHistoryByUserId(userId);
     }
 }

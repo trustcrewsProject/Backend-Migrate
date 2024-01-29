@@ -51,7 +51,7 @@ public class BoardController {
             @AuthenticationPrincipal PrincipalDetails user,
             @RequestBody BoardProjectCreateRequestDto requestDto) {
         BoardProjectCreateResponseDto result = boardFacade.create(user.getId(), requestDto);
-        return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseDto.success("게시글을 생성하였습니다.", result), HttpStatus.OK);
     }
 
     @PatchMapping("/{boardId}")
@@ -62,7 +62,7 @@ public class BoardController {
         try {
             BoardProjectUpdateResponseDto result =
                     boardFacade.update(user.getId(), boardId, requestDto);
-            return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
+            return new ResponseEntity<>(ResponseDto.success("게시글을 수정하였습니다.", result), HttpStatus.OK);
         } catch (Exception ex) {
             ex.printStackTrace();
             return new ResponseEntity<>(ResponseDto.fail(ex.getMessage()), HttpStatus.BAD_REQUEST);
@@ -73,7 +73,7 @@ public class BoardController {
     public ResponseEntity<ResponseDto<?>> delete(
             @AuthenticationPrincipal PrincipalDetails user, @PathVariable("boardId") Long boardId) {
         boardFacade.deleteBoard(user.getId(), boardId);
-        return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(ResponseDto.success("게시글을 삭제하였습니다.", null), HttpStatus.NO_CONTENT);
     }
 
     @PatchMapping("/{boardId}/recruitment-status")

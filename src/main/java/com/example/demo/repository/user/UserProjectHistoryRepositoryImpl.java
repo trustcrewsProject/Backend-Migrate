@@ -7,8 +7,6 @@ import static com.example.demo.model.user.QUserProjectHistory.userProjectHistory
 import com.example.demo.constant.UserProjectHistoryStatus;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.user.response.UserProjectHistoryInfoResponseDto;
-import com.example.demo.model.project.QProjectMember;
-import com.example.demo.model.trust_grade.QTrustGrade;
 import com.example.demo.model.user.UserProjectHistory;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
@@ -34,6 +32,7 @@ public class UserProjectHistoryRepositoryImpl implements UserProjectHistoryRepos
                                 Projections.constructor(
                                         UserProjectHistoryInfoResponseDto.class,
                                         userProjectHistory.id,
+                                        userProjectHistory.project.id,
                                         userProjectHistory.status,
                                         userProjectHistory.project.name,
                                         userProjectHistory.updateDate))
@@ -47,44 +46,17 @@ public class UserProjectHistoryRepositoryImpl implements UserProjectHistoryRepos
                         .fetch();
 
         // 사용자 프로젝트 이력 총 개수 조회
-        long totalPages = countUserProjectHistoryByUserId(userId);
+        long totalPages = countUserProjectHistory(userId, null);
 
         return PaginationResponseDto.of(content, totalPages);
     }
 
     @Override
-    public Long countUserProjectHistoryByUserId(Long userId) {
-        // 회원의 전체 프로젝트 이력 개수 조회
-        return jpaQueryFactory
-                .select(userProjectHistory.count())
-                .from(userProjectHistory)
-                .leftJoin(userProjectHistory.user, user)
-                .where(userProjectHistory.user.id.eq(userId))
-                .fetchOne();
-    }
-
-    @Override
-    public Long countParticipatesUserProjectHistoryByUserId(Long userId) {
-        // 회원 참여중인 프로젝트 이력 개수 조회
-        return jpaQueryFactory
-                .select(userProjectHistory.count())
-                .from(userProjectHistory)
-                .where(getPredicateForUserAndUserProjectHistoryStatus(userId))
-                .fetchOne();
-    }
-
-    @Override
     public List<UserProjectHistory> findAllUserParticipates(Long userId, Pageable pageable) {
-        QTrustGrade qTrustGrade = QTrustGrade.trustGrade;
-        QProjectMember qProjectMember = QProjectMember.projectMember;
-
         List<UserProjectHistory> results = jpaQueryFactory
                 .selectFrom(userProjectHistory)
-                .join(userProjectHistory.project, project)
-                .join(project.trustGrade, qTrustGrade)
-                .join(project.projectMembers, qProjectMember)
-                .join(qProjectMember.user, user)
-                .where(getPredicateForUserAndUserProjectHistoryStatus(userId))
+                .where(userProjectHistory.user.id.eq(userId),
+                        userProjectHistory.status.eq(UserProjectHistoryStatus.PARTICIPATING))
                 .orderBy(userProjectHistory.startDate.asc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -93,14 +65,26 @@ public class UserProjectHistoryRepositoryImpl implements UserProjectHistoryRepos
         return results;
     }
 
-    private BooleanBuilder getPredicateForUserAndUserProjectHistoryStatus(Long userId) {
+    @Override
+    public Long countUserProjectHistory(Long userId, UserProjectHistoryStatus status) {
+        return jpaQueryFactory
+                .select(userProjectHistory.count())
+                .from(userProjectHistory)
+                .where(eq(userId, status))
+                .fetchOne();
+    }
+
+    // 갯수 조건 동적쿼리
+    private BooleanBuilder eq(Long userId, UserProjectHistoryStatus status) {
         BooleanBuilder builder = new BooleanBuilder();
 
         if(userId != null) {
-            builder.and(user.id.eq(userId));
+            builder.and(userProjectHistory.user.id.eq(userId));
         }
 
-        builder.and(userProjectHistory.status.eq(UserProjectHistoryStatus.PARTICIPATING));
+        if(status != null) {
+            builder.and(userProjectHistory.status.eq(status));
+        }
 
         return builder;
     }

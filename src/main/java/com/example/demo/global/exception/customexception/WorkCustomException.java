@@ -7,6 +7,9 @@ public class WorkCustomException extends CustomException {
     public static final WorkCustomException NOT_FOUND_WORK =
             new WorkCustomException(WorkErrorCode.NOT_FOUND_WORK);
 
+    public static final WorkCustomException NO_PERMISSION_TO_TASK =
+            new WorkCustomException(WorkErrorCode.NO_PERMISSION_TO_TASK);
+
     public WorkCustomException(WorkErrorCode workErrorCode) {
         super(workErrorCode);
     }

@@ -1,17 +1,24 @@
 package com.example.demo.service.work;
 
+import com.example.demo.constant.ProgressStatus;
 import com.example.demo.dto.common.PaginationResponseDto;
+import com.example.demo.dto.trust_score.AddPointDto;
 import com.example.demo.dto.work.request.*;
 import com.example.demo.dto.work.response.WorkReadResponseDto;
 import com.example.demo.global.exception.customexception.PageNationCustomException;
+import com.example.demo.global.exception.customexception.WorkCustomException;
+import com.example.demo.model.alert.Alert;
 import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
+import com.example.demo.model.project.ProjectMemberAuth;
 import com.example.demo.model.user.User;
 import com.example.demo.model.work.Work;
+import com.example.demo.service.alert.AlertService;
 import com.example.demo.service.milestone.MilestoneService;
 import com.example.demo.service.project.ProjectMemberService;
 import com.example.demo.service.project.ProjectService;
+import com.example.demo.service.trust_score.TrustScoreService;
 import com.example.demo.service.user.UserService;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +35,8 @@ public class WorkFacade {
     private final ProjectService projectService;
     private final MilestoneService milestoneService;
     private final UserService userService;
+    private final AlertService alertService;
+    private final TrustScoreService trustScoreService;
     private final ProjectMemberService projectMemberService;
 
     public void create(
@@ -145,5 +154,40 @@ public class WorkFacade {
                 projectMemberService.findProjectMemberByProjectAndUser(work.getProject(), user);
 
         work.updateAssignedUserId(user, projectMember);
+    }
+
+    /**
+     * 업무 컨펌 (프로젝트 등급과 업무 상태에 따른 신뢰점수 부여 및 신뢰점수 내역 추가)
+     *
+     * @param userId
+     * @param workConfirmRequest
+     */
+    public void workConfirm(Long userId, WorkConfirmRequestDto workConfirmRequest) {
+        User currentUser = userService.findById(userId);
+        Alert alert = alertService.findById(workConfirmRequest.getAlertId());
+
+        // 업무을 컨펌할 수 있는 회원인지 검증
+        if(!currentUser.getId().equals(alert.getCheckUser().getId())) {
+            throw WorkCustomException.NO_PERMISSION_TO_TASK;
+        }
+
+        Work work = alert.getWork();
+
+        // 업무가 기간만료된 상태라면
+        if(work.getProgressStatus().equals(ProgressStatus.EXPIRED)) {
+            workConfirmRequest.updateScoreTypeId(22L);
+        }
+
+        // 신뢰점수 부여 DTO
+        AddPointDto addPoint = AddPointDto.builder()
+                .userId(alert.getSendUser().getId())
+                .projectId(alert.getProject().getId())
+                .milestoneId(alert.getMilestone().getId())
+                .workId(work.getId())
+                .scoreTypeId(workConfirmRequest.getScoreTypeId())
+                .build();
+
+        // 신뢰점수 부여 및 신뢰점수 내역 추가
+        trustScoreService.addPoint(addPoint);
     }
 }

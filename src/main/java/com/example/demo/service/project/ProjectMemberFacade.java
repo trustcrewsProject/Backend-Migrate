@@ -122,7 +122,7 @@ public class ProjectMemberFacade {
                             userReadProjectCrewResponseDto,
                             projectMemberAuthResponseDto,
                             positionResponseDto,
-                            lastCompleteWork.getCompleteDate());
+                            lastCompleteWork != null ? lastCompleteWork.getCompleteDate() : null);
             projectMemberReadProjectCrewsResponseDtos.add(projectMemberReadProjectCrewsResponseDto);
         }
 

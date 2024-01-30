@@ -36,7 +36,7 @@ public class WorkServiceImpl implements WorkService {
         return workRepository
                 .findFirstByProjectAndAssignedUserIdAndProgressStatusOrderByIdDesc(
                         project, user, ProgressStatus.COMPLETION)
-                .orElseThrow(() -> WorkCustomException.NOT_FOUND_WORK);
+                .orElse(null);
     }
 
     public PaginationResponseDto findWorksByProjectAndMilestone(Long projectId, Long milestoneId, Pageable pageable) {

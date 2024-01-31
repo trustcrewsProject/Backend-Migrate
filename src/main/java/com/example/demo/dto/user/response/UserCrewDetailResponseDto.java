@@ -41,7 +41,7 @@ public class UserCrewDetailResponseDto {
         return UserCrewDetailResponseDto.builder()
                 .userId(user.getId())
                 .email(user.getEmail())
-                .nickname(user.getEmail())
+                .nickname(user.getNickname())
                 .profileImgSrc(user.getProfileImgSrc())
                 .position(position)
                 .trustGrade(trustGrade)

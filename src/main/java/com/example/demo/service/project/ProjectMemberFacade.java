@@ -3,6 +3,7 @@ package com.example.demo.service.project;
 import com.example.demo.constant.AlertType;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.position.response.PositionResponseDto;
+import com.example.demo.dto.project.request.ProjectWithdrawConfirmRequestDto;
 import com.example.demo.dto.projectmember.response.*;
 import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
 import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
@@ -13,10 +14,12 @@ import com.example.demo.model.alert.Alert;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
 import com.example.demo.model.technology_stack.TechnologyStack;
+import com.example.demo.model.user.User;
 import com.example.demo.model.user.UserTechnologyStack;
 import com.example.demo.model.work.Work;
 import com.example.demo.service.alert.AlertService;
 import com.example.demo.service.trust_score.TrustScoreHistoryService;
+import com.example.demo.service.user.UserService;
 import com.example.demo.service.work.WorkService;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ProjectMemberFacade {
 
+    private final UserService userService;
     private final ProjectMemberService projectMemberService;
     private final AlertService alertService;
     private final ProjectService projectService;
@@ -58,6 +62,41 @@ public class ProjectMemberFacade {
                         .build();
 
         alertService.save(alert);
+    }
+
+    /**
+     * 프로젝트 탈퇴 컨펌 (수락 / 거절)
+     *
+     * @param userId
+     * @param withdrawConfirmRequest
+     */
+    @Transactional
+    public void withdrawConfirm(Long userId, ProjectWithdrawConfirmRequestDto withdrawConfirmRequest) {
+        // 탈퇴신청 알림 정보
+        Alert withdrawAlert = alertService.findById(withdrawConfirmRequest.getAlertId());
+
+        User currentUser = userService.findById(userId);
+        Project project = withdrawAlert.getProject();
+
+        // 프로젝트 매니저 검증
+        projectMemberService.verifiedProjectManager(project, currentUser);
+
+        // 탈퇴 수락인 경우
+        if(withdrawConfirmRequest.isWithdrawConfirm()) {
+            // 프로젝트 멤버 삭제
+            ProjectMember projectMember = projectMemberService.findProjectMemberByProjectAndUser(project, withdrawAlert.getSendUser());
+            projectMemberService.delete(projectMember);
+
+            // 프로젝트 탈퇴 알림 생성
+            Alert alert = Alert.builder()
+                    .project(project)
+                    .sendUser(currentUser)
+                    .content(projectMember.getUser().getNickname() + "님이 프로젝트를 탈퇴했습니다.")
+                    .type(AlertType.WITHDRAWL)
+                    .checked_YN(false)
+                    .build();
+            alertService.save(alert);
+        }
     }
 
     /**

@@ -165,14 +165,12 @@ public class WorkFacade {
     public void workConfirm(Long userId, WorkConfirmRequestDto workConfirmRequest) {
         User currentUser = userService.findById(userId);
         Alert alert = alertService.findById(workConfirmRequest.getAlertId());
+        Project project = alert.getProject();
 
-        // 업무을 컨펌할 수 있는 회원인지 검증
-        if(!currentUser.getId().equals(alert.getCheckUser().getId())) {
-            throw WorkCustomException.NO_PERMISSION_TO_TASK;
-        }
+        // 프로젝트 매니저 확인
+        projectMemberService.verifiedProjectManager(project, currentUser);
 
         Work work = alert.getWork();
-
         // 업무가 기간만료된 상태라면
         if(work.getProgressStatus().equals(ProgressStatus.EXPIRED)) {
             workConfirmRequest.updateScoreTypeId(22L);
@@ -181,7 +179,7 @@ public class WorkFacade {
         // 신뢰점수 부여 DTO
         AddPointDto addPoint = AddPointDto.builder()
                 .userId(alert.getSendUser().getId())
-                .projectId(alert.getProject().getId())
+                .projectId(project.getId())
                 .milestoneId(alert.getMilestone().getId())
                 .workId(work.getId())
                 .scoreTypeId(workConfirmRequest.getScoreTypeId())

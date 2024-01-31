@@ -8,6 +8,9 @@ public class ProjectMemberAuthCustomException extends CustomException {
             new ProjectMemberAuthCustomException(
                     ProjectMemberAuthErrorCode.NOT_FOUND_PROJECT_MEMBER_AUTH);
 
+    public static final ProjectMemberAuthCustomException INSUFFICIENT_PROJECT_AUTH =
+            new ProjectMemberAuthCustomException(ProjectMemberAuthErrorCode.INSUFFICIENT_PROJECT_AUTH);
+
     public ProjectMemberAuthCustomException(ProjectMemberAuthErrorCode projectMemberAuthErrorCode) {
         super(projectMemberAuthErrorCode);
     }

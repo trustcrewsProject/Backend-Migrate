@@ -1,6 +1,8 @@
 package com.example.demo.service.project;
 
 import com.example.demo.constant.ProjectMemberStatus;
+import com.example.demo.constant.ProjectRole;
+import com.example.demo.global.exception.customexception.ProjectMemberAuthCustomException;
 import com.example.demo.global.exception.customexception.ProjectMemberCustomException;
 import com.example.demo.model.position.Position;
 import com.example.demo.model.project.Project;
@@ -92,6 +94,19 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     @Override
     public Map<String, Boolean> getUserAuthMap(Long projectId, Long userId) {
         return getAuthMap(getProjectMemberAuth(projectId, userId));
+    }
+
+    @Override
+    public void verifiedProjectManager(Project project, User user) {
+        ProjectMember member = projectMemberRepository
+                .findProjectMemberByProjectAndUser(project, user)
+                .orElseThrow(() -> ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER);
+
+        // 프로젝트 매니저 확인
+        ProjectRole projectRole = ProjectRole.findProjectRole(member.getProjectMemberAuth().getId());
+        if(!projectRole.isManager()) {
+            throw ProjectMemberAuthCustomException.INSUFFICIENT_PROJECT_AUTH;
+        }
     }
 
     private static Map<String, Boolean> getAuthMap(ProjectMemberAuth projectMemberAuth) {

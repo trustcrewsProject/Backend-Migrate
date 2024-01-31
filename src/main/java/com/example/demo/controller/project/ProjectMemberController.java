@@ -1,13 +1,16 @@
 package com.example.demo.controller.project;
 
 import com.example.demo.dto.common.ResponseDto;
+import com.example.demo.dto.project.request.ProjectWithdrawConfirmRequestDto;
 import com.example.demo.dto.projectmember.response.ProjectMemberReadCrewDetailResponseDto;
 import com.example.demo.dto.projectmember.response.ProjectMemberReadTotalProjectCrewsResponseDto;
+import com.example.demo.security.custom.PrincipalDetails;
 import com.example.demo.service.project.ProjectMemberFacade;
 import com.example.demo.service.project.ProjectMemberService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -20,17 +23,18 @@ public class ProjectMemberController {
     private final ProjectMemberService projectMemberService;
     private final ProjectMemberFacade projectMemberFacade;
 
-    @PostMapping("/{projectMemberId}/withdrawl")
-    public ResponseEntity<ResponseDto<?>> withdrawl(
+    @PostMapping("/{projectMemberId}/withdraw")
+    public ResponseEntity<ResponseDto<?>> withdraw(
             @PathVariable("projectMemberId") Long projectMemberId) {
         projectMemberFacade.sendWithdrawlAlert(projectMemberId);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 
-    @PostMapping("/{projectMemberId}/withdrawl/confirm")
-    public ResponseEntity<ResponseDto<?>> withdrawlConfirm(
-            @PathVariable("projectMemberId") Long projectMemberId) {
-        projectMemberService.withdrawlConfirm(projectMemberId);
+    @PostMapping("/withdraw/confirm")
+    public ResponseEntity<ResponseDto<?>> withdrawConfirm(
+            @AuthenticationPrincipal PrincipalDetails user,
+            @RequestBody ProjectWithdrawConfirmRequestDto withdrawConfirmRequest) {
+        projectMemberFacade.withdrawConfirm(user.getId(), withdrawConfirmRequest);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 

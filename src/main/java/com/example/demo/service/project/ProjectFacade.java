@@ -169,23 +169,21 @@ public class ProjectFacade {
     @Transactional
     public void confirm(
             Long userId, ProjectConfirmRequestDto projectConfirmRequestDto) {
+        User currentUser = userService.findById(userId);
+
         // 참여지원 알림
         Alert supportedAlert = alertService.findById(projectConfirmRequestDto.getAlertId());
+        Project project = supportedAlert.getProject();
+        // project null -> 예외처리
 
-        // 프로젝트 생성자 (모집지원 처리 결정자)
-        User checkUser = supportedAlert.getCheckUser();
-
-        // 요청한 회원과 알림의 체크 회원이 다른 경우
-        if(!userId.equals(checkUser.getId())) {
-            throw ProjectCustomException.NO_PERMISSION_TO_TASK;
-        }
+        // 프로젝트 매니저 확인
+        projectMemberService.verifiedProjectManager(project, currentUser);
 
         // 프로젝트 참여 수락
         if(projectConfirmRequestDto.isConfirmResult()) {
             // 지원 알림의 confirm 필드 수락으로 변경
             supportedAlert.updateProjectConfirmResult(projectConfirmRequestDto.isConfirmResult());
 
-            Project project = supportedAlert.getProject();
             User sendUser = supportedAlert.getSendUser();
             ProjectMemberAuth projectMemberAuth = projectMemberAuthService.findTopByOrderByIdDesc();
 
@@ -202,7 +200,7 @@ public class ProjectFacade {
             // 프로젝트 합류 알림 생성
             Alert participationAlert = Alert.builder()
                     .project(project)
-                    .sendUser(checkUser)
+                    .sendUser(currentUser)
                     .content(sendUser.getNickname() + "님이 " + project.getName() + "에 합류했습니다.")
                     .type(AlertType.ADD)
                     .build();

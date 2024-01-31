@@ -64,13 +64,8 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
         return projectMemberRepository.save(projectMember);
     }
 
-    /**
-     * 프로젝트 멤버 탈퇴 수락하기
-     *
-     * @param projectMemberId
-     */
-    public void withdrawlConfirm(Long projectMemberId) {
-        ProjectMember projectMember = findById(projectMemberId);
+    @Override
+    public void delete(ProjectMember projectMember) {
         projectMemberRepository.delete(projectMember);
     }
 

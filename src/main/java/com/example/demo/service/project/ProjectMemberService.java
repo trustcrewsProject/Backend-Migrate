@@ -24,9 +24,9 @@ public interface ProjectMemberService {
 
     public ProjectMember save(ProjectMember projectMember);
 
-    public List<ProjectMember> findProjectsMemberByProject(Project project);
+    void delete(ProjectMember projectMember);
 
-    public void withdrawlConfirm(Long projectMemberId);
+    public List<ProjectMember> findProjectsMemberByProject(Project project);
 
     public void withdrawlForce(Long projectMemberId);
 

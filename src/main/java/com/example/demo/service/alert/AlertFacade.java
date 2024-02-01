@@ -38,11 +38,20 @@ public class AlertFacade {
      */
     public void send(AlertCreateRequestDto alertCreateRequestDto) {
         Project project = projectService.findById(alertCreateRequestDto.getProjectId());
-        User checkUser = userService.findById(alertCreateRequestDto.getCheckUserId());
-        User sendUser = userService.findById(alertCreateRequestDto.getSendUserId());
+        User checkUser = null;
+        User sendUser = null;
         Work work = null;
         Milestone milestone = null;
         Position position = null;
+
+        if (alertCreateRequestDto.getCheckUserId() != null) {
+            checkUser = userService.findById(alertCreateRequestDto.getCheckUserId());
+        }
+
+        if(alertCreateRequestDto.getSendUserId() != null) {
+            sendUser = userService.findById(alertCreateRequestDto.getSendUserId());
+        }
+
         if (alertCreateRequestDto.getWorkId() != null) {
             work = workService.findById(alertCreateRequestDto.getWorkId());
         }

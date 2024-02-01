@@ -17,10 +17,8 @@ public class AlertCreateRequestDto {
     @NotNull(message = "프로젝트 아이디는 필수입니다.")
     private Long projectId;
 
-    @NotNull(message = "체크해야 하는 유저 아이디는 필수입니다.")
     private Long checkUserId;
 
-    @NotNull(message = "보내는 유저 아이디는 필수입니다.")
     private Long sendUserId;
 
     private Long workId;

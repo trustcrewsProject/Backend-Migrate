@@ -37,7 +37,7 @@ public class Work extends BaseTimeEntity {
     @JoinColumn(name = "milestone_id")
     private Milestone milestone;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User assignedUserId;
 
@@ -54,7 +54,7 @@ public class Work extends BaseTimeEntity {
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_member_id")
     private ProjectMember lastModifiedMember;
 

@@ -30,7 +30,7 @@ public class Alert extends BaseTimeEntity {
     private User checkUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "send_user_id", referencedColumnName = "user_id", nullable = false)
+    @JoinColumn(name = "send_user_id", referencedColumnName = "user_id")
     private User sendUser;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -52,4 +52,8 @@ public class UserProjectHistory extends BaseTimeEntity {
         this.endDate = endDate;
         this.status = status;
     }
+
+    public void updateStatus(UserProjectHistoryStatus status) {
+        this.status = status;
+    }
 }

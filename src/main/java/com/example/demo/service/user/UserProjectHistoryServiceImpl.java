@@ -2,6 +2,7 @@ package com.example.demo.service.user;
 
 import com.example.demo.constant.UserProjectHistoryStatus;
 import com.example.demo.dto.common.PaginationResponseDto;
+import com.example.demo.global.exception.customexception.UserProjectHistoryCustomException;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.user.User;
 import com.example.demo.model.user.UserProjectHistory;
@@ -33,6 +34,13 @@ public class UserProjectHistoryServiceImpl implements UserProjectHistoryService 
     @Override
     public UserProjectHistory save(UserProjectHistory userProjectHistory) {
         return userProjectHistoryRepository.save(userProjectHistory);
+    }
+
+    @Override
+    public UserProjectHistory getUserProjectHistoryByProjectAndUser(Project project, User user) {
+        return userProjectHistoryRepository
+                .findUserProjectHistoryByProjectAndUser(project, user)
+                .orElseThrow(() -> UserProjectHistoryCustomException.NOT_FOUND_USER_PROJECT_HISTORY);
     }
 
     @Override

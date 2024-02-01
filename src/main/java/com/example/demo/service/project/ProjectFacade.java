@@ -150,9 +150,7 @@ public class ProjectFacade {
                         .project(project)
                         .checkUser(project.getUser())
                         .sendUser(user)
-                        .work(null)
-                        .milestone(null)
-                        .content("프로젝트 지원했습니다.")
+                        .content(user.getNickname() + "님이 프로젝트의 " + position.getName() + " 포지션에 지원하셨습니다.")
                         .position(position)
                         .type(AlertType.RECRUIT)
                         .checked_YN(false)
@@ -174,7 +172,6 @@ public class ProjectFacade {
         // 참여지원 알림
         Alert supportedAlert = alertService.findById(projectConfirmRequestDto.getAlertId());
         Project project = supportedAlert.getProject();
-        // project null -> 예외처리
 
         // 프로젝트 매니저 확인
         projectMemberService.verifiedProjectManager(project, currentUser);
@@ -196,6 +193,11 @@ public class ProjectFacade {
                             ProjectMemberStatus.PARTICIPATING,
                             supportedAlert.getPosition());
             projectMemberService.save(projectMember);
+
+            // 회원 프로젝트 이력 등록
+            UserProjectHistory userProjectHistory =
+                    userProjectHistoryService.toUserProjectHistoryEntity(sendUser, project);
+            userProjectHistoryService.save(userProjectHistory);
 
             // 프로젝트 합류 알림 생성
             Alert participationAlert = Alert.builder()

@@ -25,8 +25,9 @@ public class ProjectMemberController {
 
     @PostMapping("/{projectMemberId}/withdraw")
     public ResponseEntity<ResponseDto<?>> withdraw(
+            @AuthenticationPrincipal PrincipalDetails user,
             @PathVariable("projectMemberId") Long projectMemberId) {
-        projectMemberFacade.sendWithdrawlAlert(projectMemberId);
+        projectMemberFacade.sendWithdrawAlert(user.getId(), projectMemberId);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 

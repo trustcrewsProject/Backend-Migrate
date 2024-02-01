@@ -11,9 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface UserProjectHistoryService {
 
-    public UserProjectHistory toUserProjectHistoryEntity(User user, Project project);
+    UserProjectHistory toUserProjectHistoryEntity(User user, Project project);
 
-    public UserProjectHistory save(UserProjectHistory userProjectHistory);
+    UserProjectHistory save(UserProjectHistory userProjectHistory);
+
+    // 프로젝트, 회원정보로 회원 프로젝트 이력 조회
+    UserProjectHistory getUserProjectHistoryByProjectAndUser(Project project, User user);
 
     // 회원 프로젝트 이력 전체 개수 조회
     Long getUserProjectHistoryTotalCount(Long userId, UserProjectHistoryStatus status);

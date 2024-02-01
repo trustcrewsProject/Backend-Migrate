@@ -1,6 +1,8 @@
 package com.example.demo.service.project;
 
 import com.example.demo.constant.AlertType;
+import com.example.demo.constant.ProjectMemberStatus;
+import com.example.demo.constant.UserProjectHistoryStatus;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.position.response.PositionResponseDto;
 import com.example.demo.dto.project.request.ProjectWithdrawConfirmRequestDto;
@@ -15,10 +17,12 @@ import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
 import com.example.demo.model.technology_stack.TechnologyStack;
 import com.example.demo.model.user.User;
+import com.example.demo.model.user.UserProjectHistory;
 import com.example.demo.model.user.UserTechnologyStack;
 import com.example.demo.model.work.Work;
 import com.example.demo.service.alert.AlertService;
 import com.example.demo.service.trust_score.TrustScoreHistoryService;
+import com.example.demo.service.user.UserProjectHistoryService;
 import com.example.demo.service.user.UserService;
 import com.example.demo.service.work.WorkService;
 import java.util.ArrayList;
@@ -38,6 +42,7 @@ public class ProjectMemberFacade {
     private final AlertService alertService;
     private final ProjectService projectService;
     private final WorkService workService;
+    private final UserProjectHistoryService userProjectHistoryService;
     private final TrustScoreHistoryService trustScoreHistoryService;
 
     /**
@@ -83,9 +88,13 @@ public class ProjectMemberFacade {
 
         // 탈퇴 수락인 경우
         if(withdrawConfirmRequest.isWithdrawConfirm()) {
-            // 프로젝트 멤버 삭제
+            // 프로젝트 멤버 상태 탈퇴로 변경
             ProjectMember projectMember = projectMemberService.findProjectMemberByProjectAndUser(project, withdrawAlert.getSendUser());
-            projectMemberService.delete(projectMember);
+            projectMember.updateStatus(ProjectMemberStatus.WITHDRAW);
+
+            // 회원 프로젝트 이력 상태 탈퇴로 변경
+            UserProjectHistory userProjectHistory = userProjectHistoryService.getUserProjectHistoryByProjectAndUser(project, withdrawAlert.getSendUser());
+            userProjectHistory.updateStatus(UserProjectHistoryStatus.WITHDRAWAL);
 
             // 프로젝트 탈퇴 알림 생성
             Alert alert = Alert.builder()

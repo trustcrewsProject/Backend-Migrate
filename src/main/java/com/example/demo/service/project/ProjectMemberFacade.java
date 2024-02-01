@@ -12,6 +12,7 @@ import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
 import com.example.demo.dto.user.response.UserCrewDetailResponseDto;
 import com.example.demo.dto.user.response.UserReadProjectCrewResponseDto;
 import com.example.demo.global.exception.customexception.PageNationCustomException;
+import com.example.demo.global.exception.customexception.ProjectCustomException;
 import com.example.demo.model.alert.Alert;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
@@ -50,19 +51,23 @@ public class ProjectMemberFacade {
      *
      * @param projectMemberId
      */
-    public void sendWithdrawlAlert(Long projectMemberId) {
+    public void sendWithdrawAlert(Long userId, Long projectMemberId) {
         ProjectMember projectMember = projectMemberService.findById(projectMemberId);
+        User user = projectMember.getUser();
 
+        if(!user.getId().equals(userId)) {
+            throw ProjectCustomException.NO_PERMISSION_TO_TASK;
+        }
+
+        Project project = projectMember.getProject();
         Alert alert =
                 Alert.builder()
-                        .project(projectMember.getProject())
-                        .checkUser(projectMember.getProject().getUser())
-                        .sendUser(projectMember.getUser())
-                        .work(null)
-                        .milestone(null)
-                        .content("프로젝트 지원했습니다.")
+                        .project(project)
+                        .checkUser(project.getUser())
+                        .sendUser(user)
+                        .content(user.getNickname() + "님이 프로젝트 탈퇴 신청을 했습니다.")
                         .position(projectMember.getPosition())
-                        .type(AlertType.RECRUIT)
+                        .type(AlertType.WITHDRAWL)
                         .checked_YN(false)
                         .build();
 

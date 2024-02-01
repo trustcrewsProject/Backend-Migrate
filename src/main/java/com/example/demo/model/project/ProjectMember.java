@@ -56,4 +56,8 @@ public class ProjectMember extends BaseTimeEntity {
         this.status = status;
         this.position = position;
     }
+
+    public void updateStatus(ProjectMemberStatus status) {
+        this.status = status;
+    }
 }

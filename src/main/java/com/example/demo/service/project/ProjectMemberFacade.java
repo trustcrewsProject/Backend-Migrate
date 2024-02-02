@@ -157,9 +157,12 @@ public class ProjectMemberFacade {
     public ProjectMemberReadTotalProjectCrewsResponseDto getCrewsByProject(Long projectId) {
         Project project = projectService.findById(projectId);
 
+        // 프로젝트에 참여중인 멤버목록 조회
+        List<ProjectMember> projectMembers = projectMemberService.getProjectMembersByProjectAndStatus(project, ProjectMemberStatus.PARTICIPATING);
+
         List<ProjectMemberReadProjectCrewsResponseDto> projectMemberReadProjectCrewsResponseDtos =
                 new ArrayList<>();
-        for (ProjectMember projectMember : project.getProjectMembers()) {
+        for (ProjectMember projectMember : projectMembers) {
             UserReadProjectCrewResponseDto userReadProjectCrewResponseDto =
                     UserReadProjectCrewResponseDto.of(projectMember.getUser());
             ProjectMemberAuthResponseDto projectMemberAuthResponseDto =

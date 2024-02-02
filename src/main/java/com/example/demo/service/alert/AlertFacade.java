@@ -12,6 +12,7 @@ import com.example.demo.model.user.User;
 import com.example.demo.model.work.Work;
 import com.example.demo.service.milestone.MilestoneService;
 import com.example.demo.service.position.PositionService;
+import com.example.demo.service.project.ProjectMemberService;
 import com.example.demo.service.project.ProjectService;
 import com.example.demo.service.user.UserService;
 import com.example.demo.service.work.WorkService;
@@ -26,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AlertFacade {
     private final AlertService alertService;
     private final ProjectService projectService;
+    private final ProjectMemberService projectMemberService;
     private final UserService userService;
     private final WorkService workService;
     private final PositionService positionService;
@@ -49,7 +51,8 @@ public class AlertFacade {
         }
 
         if(alertCreateRequestDto.getSendUserId() != null) {
-            sendUser = userService.findById(alertCreateRequestDto.getSendUserId());
+            // 클라이언트로부터 해당 회원의 project_member_id 정보를 요청받음
+            sendUser = projectMemberService.findById(alertCreateRequestDto.getSendUserId()).getUser();
         }
 
         if (alertCreateRequestDto.getWorkId() != null) {

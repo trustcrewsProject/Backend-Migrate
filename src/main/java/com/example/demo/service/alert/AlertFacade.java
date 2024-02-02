@@ -1,5 +1,6 @@
 package com.example.demo.service.alert;
 
+import com.example.demo.constant.AlertType;
 import com.example.demo.dto.alert.AlertCreateRequestDto;
 import com.example.demo.dto.alert.response.AlertInfoResponseDto;
 import com.example.demo.dto.common.PaginationResponseDto;
@@ -74,55 +75,46 @@ public class AlertFacade {
     }
 
     public PaginationResponseDto getAllByProject(Long projectId, int pageIndex, int itemCount) {
+        verifiedPageIndex(pageIndex);
+        verifiedItemCount(itemCount);
+
         Project project = projectService.findById(projectId);
-
-        if(pageIndex < 0) {
-            throw PageNationCustomException.INVALID_PAGE_NUMBER;
-        }
-
-        if(itemCount < 0 || itemCount > 8) {
-            throw PageNationCustomException.INVALID_PAGE_ITEM_COUNT;
-        }
-
-        PaginationResponseDto alerts = alertService.findAlertsByProjectId(project, pageIndex, itemCount);
+        PaginationResponseDto alerts = alertService.findAlertsByProjectIdAndType(project, null, pageIndex, itemCount);
 
         return alerts;
     }
 
-    public List<AlertInfoResponseDto> getRecruitsByProject(Long projectId) {
+    public PaginationResponseDto getRecruitsByProject(Long projectId, int pageIndex, int itemCount) {
+        verifiedPageIndex(pageIndex);
+        verifiedItemCount(itemCount);
+
         Project project = projectService.findById(projectId);
-        List<Alert> alerts = alertService.findRecruitAlertsByProject(project);
-        List<AlertInfoResponseDto> alertInfoResponseDtos = new ArrayList<>();
+        PaginationResponseDto alerts = alertService
+                .findAlertsByProjectIdAndType(project, AlertType.RECRUIT, pageIndex, itemCount);
 
-        for (Alert alert : alerts) {
-            alertInfoResponseDtos.add(AlertInfoResponseDto.of(alert, alert.getPosition()));
-        }
-
-        return alertInfoResponseDtos;
+        return alerts;
     }
 
-    public List<AlertInfoResponseDto> getWorksByProject(Long projectId) {
+    public PaginationResponseDto getWorksByProject(Long projectId, int pageIndex, int itemCount) {
+        verifiedPageIndex(pageIndex);
+        verifiedItemCount(itemCount);
+
         Project project = projectService.findById(projectId);
-        List<Alert> alerts = alertService.findWorkAlertsByProject(project);
-        List<AlertInfoResponseDto> alertInfoResponseDtos = new ArrayList<>();
+        PaginationResponseDto alerts = alertService
+                .findAlertsByProjectIdAndType(project, AlertType.WORK, pageIndex, itemCount);
 
-        for (Alert alert : alerts) {
-            alertInfoResponseDtos.add(AlertInfoResponseDto.of(alert, alert.getPosition()));
-        }
-
-        return alertInfoResponseDtos;
+        return alerts;
     }
 
-    public List<AlertInfoResponseDto> getCrewsByProject(Long projectId) {
+    public PaginationResponseDto getCrewsByProject(Long projectId, int pageIndex, int itemCount) {
+        verifiedPageIndex(pageIndex);
+        verifiedItemCount(itemCount);
+
         Project project = projectService.findById(projectId);
-        List<Alert> alerts = alertService.findCrewAlertsByProject(project);
-        List<AlertInfoResponseDto> alertInfoResponseDtos = new ArrayList<>();
+        PaginationResponseDto alerts = alertService
+                .findAlertsByProjectIdAndType(project, AlertType.ADD, pageIndex, itemCount);
 
-        for (Alert alert : alerts) {
-            alertInfoResponseDtos.add(AlertInfoResponseDto.of(alert, alert.getPosition()));
-        }
-
-        return alertInfoResponseDtos;
+        return alerts;
     }
 
     @Transactional(readOnly = true)
@@ -134,5 +126,17 @@ public class AlertFacade {
         User currentUser = userService.findById(userId);
 
         return alertService.findAlertsBySendUserIdAndType(currentUser, pageIndex, itemCount);
+    }
+
+    private void verifiedPageIndex(int pageIndex) {
+        if(pageIndex < 0) {
+            throw PageNationCustomException.INVALID_PAGE_NUMBER;
+        }
+    }
+
+    private void verifiedItemCount(int itemCount) {
+        if(itemCount < 0 || itemCount > 8) {
+            throw PageNationCustomException.INVALID_PAGE_ITEM_COUNT;
+        }
     }
 }

@@ -36,28 +36,35 @@ public class AlertController {
             @PathVariable("projectId") Long projectId,
             @RequestParam("pageIndex") Optional<Integer> pageIndex,
             @RequestParam("itemCount") Optional<Integer> itemCount) {
-        return new ResponseEntity<>(ResponseDto.success("success", alertFacade.getAllByProject(projectId, pageIndex.orElse(0), itemCount.orElse(6))), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseDto.success("success",
+                alertFacade.getAllByProject(projectId, pageIndex.orElse(0), itemCount.orElse(6))), HttpStatus.OK);
     }
 
     @GetMapping("/api/alert/project/{projectId}/recruits")
     public ResponseEntity<ResponseDto<?>> getRecruitsByProject(
-            @PathVariable("projectId") Long projectId) {
-        List<AlertInfoResponseDto> result = alertFacade.getRecruitsByProject(projectId);
-        return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
+            @PathVariable("projectId") Long projectId,
+            @RequestParam("pageIndex") Optional<Integer> pageIndex,
+            @RequestParam("itemCount") Optional<Integer> itemCount) {
+        return new ResponseEntity<>(ResponseDto.success("success",
+                alertFacade.getRecruitsByProject(projectId, pageIndex.orElse(0), itemCount.orElse(6))), HttpStatus.OK);
     }
 
     @GetMapping("/api/alert/project/{projectId}/works")
     public ResponseEntity<ResponseDto<?>> getWorksByProject(
-            @PathVariable("projectId") Long projectId) {
-        List<AlertInfoResponseDto> result = alertFacade.getWorksByProject(projectId);
-        return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
+            @PathVariable("projectId") Long projectId,
+            @RequestParam("pageIndex") Optional<Integer> pageIndex,
+            @RequestParam("itemCount") Optional<Integer> itemCount) {
+        return new ResponseEntity<>(ResponseDto.success("success",
+                alertFacade.getWorksByProject(projectId, pageIndex.orElse(0), itemCount.orElse(6))), HttpStatus.OK);
     }
 
     @GetMapping("/api/alert/project/{projectId}/crews")
     public ResponseEntity<ResponseDto<?>> getCrewsByProject(
-            @PathVariable("projectId") Long projectId) {
-        List<AlertInfoResponseDto> result = alertFacade.getCrewsByProject(projectId);
-        return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
+            @PathVariable("projectId") Long projectId,
+            @RequestParam("pageIndex") Optional<Integer> pageIndex,
+            @RequestParam("itemCount") Optional<Integer> itemCount) {
+        return new ResponseEntity<>(ResponseDto.success("success",
+                alertFacade.getCrewsByProject(projectId, pageIndex.orElse(0), itemCount.orElse(6))), HttpStatus.OK);
     }
 
     @PutMapping("/api/alert/{alertId}/status")

@@ -1,5 +1,6 @@
 package com.example.demo.service.alert;
 
+import com.example.demo.constant.AlertType;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.model.alert.Alert;
 import com.example.demo.model.project.Project;
@@ -15,13 +16,7 @@ public interface AlertService {
 
     Alert save(Alert alert);
 
-    PaginationResponseDto findAlertsByProjectId(Project project, int pageIndex, int itemCount);
-
-    List<Alert> findRecruitAlertsByProject(Project project);
-
-    List<Alert> findWorkAlertsByProject(Project project);
-
-    List<Alert> findCrewAlertsByProject(Project project);
+    PaginationResponseDto findAlertsByProjectIdAndType(Project project, AlertType type, int pageIndex, int itemCount);
 
     void updateAlertStatus(Long alertId);
 

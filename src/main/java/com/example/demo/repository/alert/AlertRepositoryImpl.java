@@ -36,7 +36,7 @@ public class AlertRepositoryImpl implements AlertRepositoryCustom{
     private final QMilestone qMilestone = QMilestone.milestone;
 
     @Override
-    public PaginationResponseDto findAlertsByProjectIdOrderByCreateDateDesc(Long projectId, Pageable pageable) {
+    public List<AlertInfoResponseDto> findAlertsByProjectIdOrTypeOrderByCreateDateDesc(Long projectId, AlertType type, Pageable pageable) {
         List<AlertInfoResponseDto> content = jpaQueryFactory
                 .select(
                         Projections.constructor(
@@ -65,19 +65,18 @@ public class AlertRepositoryImpl implements AlertRepositoryCustom{
                 .leftJoin(qAlert.work, qWork)
                 .leftJoin(qAlert.milestone, qMilestone)
                 .leftJoin(qAlert.position, qPosition)
-                .where(qProject.id.eq(projectId))
+                .where(eqProjectId(projectId),
+                        eqAlertType(type))
                 .orderBy(qAlert.createDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        long totalPages = getAlertsTotalItemCount(projectId, null, null);
-
-        return PaginationResponseDto.of(content, totalPages);
+        return content;
     }
 
     @Override
-    public PaginationResponseDto findAlertsBySendUserIdAndTypeOrderByCreateDateDesc(Long sendUserId, Pageable pageable) {
+    public List<AlertSupportedProjectInfoResponseDto> findAlertsBySendUserIdAndTypeOrderByCreateDateDesc(Long sendUserId, Pageable pageable) {
         List<AlertSupportedProjectInfoResponseDto> content = jpaQueryFactory
                 .select(
                         Projections.constructor(
@@ -99,42 +98,55 @@ public class AlertRepositoryImpl implements AlertRepositoryCustom{
                 .join(qAlert.project, qProject)
                 .join(qAlert.position, qPosition)
                 .join(qAlert.sendUser, qSendUser)
-                .where(qSendUser.id.eq(sendUserId),
-                        qAlert.type.eq(AlertType.RECRUIT))
+                .where(eqSendUserId(sendUserId),
+                        eqAlertType(AlertType.RECRUIT))
                 .orderBy(qAlert.createDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        long totalPages = getAlertsTotalItemCount(null, sendUserId, AlertType.RECRUIT);
-
-        return PaginationResponseDto.of(content, totalPages);
+        return content;
     }
 
+    @Override
     // 알람 전체 개수 조회 (조건)
-    private long getAlertsTotalItemCount(Long projectId, Long sendUserId, AlertType alertType) {
+    public long countAlertsTotalItem(Long projectId, Long sendUserId, AlertType alertType) {
         return jpaQueryFactory
                 .select(qAlert.count())
                 .from(qAlert)
-                .where(eq(projectId, sendUserId, alertType))
+                .where(eqProjectId(projectId),
+                        eqSendUserId(sendUserId),
+                        eqAlertType(alertType))
                 .fetchOne();
     }
 
-    private BooleanBuilder eq(Long projectId, Long sendUserId, AlertType alertType) {
-        BooleanBuilder builder = new BooleanBuilder();
-
+    private BooleanExpression eqProjectId(Long projectId) {
         if(projectId != null) {
-            builder.and(qAlert.project.id.eq(projectId));
+            return qAlert.project.id.eq((projectId));
         }
 
+        return null;
+    }
+
+    private BooleanExpression eqSendUserId(Long sendUserId) {
         if(sendUserId != null) {
-            builder.and(qAlert.sendUser.id.eq(sendUserId));
+            return qAlert.sendUser.id.eq(sendUserId);
         }
 
+        return null;
+    }
+
+    private BooleanExpression eqAlertType(AlertType alertType) {
         if(alertType != null) {
-            builder.and(qAlert.type.eq(alertType));
+            if (!alertType.equals(AlertType.RECRUIT) && !alertType.equals(AlertType.WORK)) {
+                return qAlert.type.eq(AlertType.ADD)
+                        .or(qAlert.type.eq(AlertType.WITHDRAWL))
+                        .or(qAlert.type.eq(AlertType.FORCEDWITHDRAWL));
+            } else {
+                return qAlert.type.eq(alertType);
+            }
         }
 
-        return builder;
+        return null;
     }
 }

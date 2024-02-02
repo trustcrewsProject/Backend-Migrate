@@ -1,6 +1,8 @@
 package com.example.demo.service.alert;
 
+import com.example.demo.constant.AlertType;
 import com.example.demo.dto.alert.response.AlertInfoResponseDto;
+import com.example.demo.dto.alert.response.AlertSupportedProjectInfoResponseDto;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.global.exception.customexception.AlertCustomException;
 import com.example.demo.model.alert.Alert;
@@ -27,27 +29,13 @@ public class AlertServiceImpl implements AlertService {
         return alertRepository.save(alert);
     }
 
-    public PaginationResponseDto findAlertsByProjectId(Project project, int pageIndex, int itemCount) {
-        return alertRepository
-                .findAlertsByProjectIdOrderByCreateDateDesc(project.getId(), PageRequest.of(pageIndex, itemCount));
-    }
+    public PaginationResponseDto findAlertsByProjectIdAndType(Project project, AlertType type, int pageIndex, int itemCount) {
+        List<AlertInfoResponseDto> content = alertRepository
+                                                .findAlertsByProjectIdOrTypeOrderByCreateDateDesc(project.getId(), type, PageRequest.of(pageIndex, itemCount));
 
-    public List<Alert> findRecruitAlertsByProject(Project project) {
-        return alertRepository
-                .findRecruitAlertsByProject(project)
-                .orElseThrow(() -> AlertCustomException.NOT_FOUND_ALERT);
-    }
+        long totalPages = alertRepository.countAlertsTotalItem(project.getId(), null, type);
 
-    public List<Alert> findWorkAlertsByProject(Project project) {
-        return alertRepository
-                .findWorkAlertsByProject(project)
-                .orElseThrow(() -> AlertCustomException.NOT_FOUND_ALERT);
-    }
-
-    public List<Alert> findCrewAlertsByProject(Project project) {
-        return alertRepository
-                .findCrewAlertsByProject(project)
-                .orElseThrow(() -> AlertCustomException.NOT_FOUND_ALERT);
+        return PaginationResponseDto.of(content, totalPages);
     }
 
     @Override
@@ -57,7 +45,11 @@ public class AlertServiceImpl implements AlertService {
 
     @Override
     public PaginationResponseDto findAlertsBySendUserIdAndType(User user, int pageIndex, int itemCount) {
-        return alertRepository
-                .findAlertsBySendUserIdAndTypeOrderByCreateDateDesc(user.getId(), PageRequest.of(pageIndex, itemCount));
+        List<AlertSupportedProjectInfoResponseDto> content = alertRepository
+                                                                .findAlertsBySendUserIdAndTypeOrderByCreateDateDesc(user.getId(), PageRequest.of(pageIndex, itemCount));
+
+        long totalPages = alertRepository.countAlertsTotalItem(null, user.getId(), AlertType.RECRUIT);
+
+        return PaginationResponseDto.of(content, totalPages);
     }
 }

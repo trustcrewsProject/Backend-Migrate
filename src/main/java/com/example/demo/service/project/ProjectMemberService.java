@@ -13,24 +13,27 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface ProjectMemberService {
 
-    public ProjectMember toProjectMemberEntity(
+    ProjectMember toProjectMemberEntity(
             Project project,
             User user,
             ProjectMemberAuth projectMemberAuth,
             ProjectMemberStatus projectMemberStatus,
             Position position);
 
-    public ProjectMember findById(Long id);
+    ProjectMember findById(Long id);
 
-    public ProjectMember save(ProjectMember projectMember);
+    ProjectMember save(ProjectMember projectMember);
 
     void delete(ProjectMember projectMember);
 
-    public List<ProjectMember> findProjectsMemberByProject(Project project);
+    List<ProjectMember> findProjectsMemberByProject(Project project);
 
-    public void withdrawlForce(Long projectMemberId);
+    // 프로젝트 정보, 프로젝트 멤버 상태로 멤버 목록 조회
+    List<ProjectMember> getProjectMembersByProjectAndStatus(Project project, ProjectMemberStatus status);
 
-    public ProjectMember findProjectMemberByProjectAndUser(Project project, User user);
+    void withdrawlForce(Long projectMemberId);
+
+    ProjectMember findProjectMemberByProjectAndUser(Project project, User user);
 
     Map<String, Boolean> getUserAuthMap(Long projectId, Long userId);
 

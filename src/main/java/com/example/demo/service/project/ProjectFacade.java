@@ -198,6 +198,15 @@ public class ProjectFacade {
             UserProjectHistory userProjectHistory =
                     userProjectHistoryService.toUserProjectHistoryEntity(sendUser, project);
             userProjectHistoryService.save(userProjectHistory);
+
+            // 프로젝트 합류 알림 생성
+            Alert participationAlert = Alert.builder()
+                    .project(project)
+                    .sendUser(currentUser)
+                    .content(sendUser.getNickname() + "님이 " + project.getName() + "에 합류했습니다.")
+                    .type(AlertType.ADD)
+                    .build();
+            alertService.save(participationAlert);
             return;
         }
 

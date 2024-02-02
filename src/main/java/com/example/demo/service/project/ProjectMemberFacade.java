@@ -100,6 +100,16 @@ public class ProjectMemberFacade {
             // 회원 프로젝트 이력 상태 탈퇴로 변경
             UserProjectHistory userProjectHistory = userProjectHistoryService.getUserProjectHistoryByProjectAndUser(project, withdrawAlert.getSendUser());
             userProjectHistory.updateStatus(UserProjectHistoryStatus.WITHDRAWAL);
+
+            // 프로젝트 탈퇴 알림 생성
+            Alert alert = Alert.builder()
+                    .project(project)
+                    .sendUser(currentUser)
+                    .content(projectMember.getUser().getNickname() + "님이 프로젝트를 탈퇴했습니다.")
+                    .type(AlertType.WITHDRAWL)
+                    .checked_YN(false)
+                    .build();
+            alertService.save(alert);
         }
     }
 

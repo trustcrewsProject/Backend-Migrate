@@ -138,6 +138,7 @@ public class ProjectFacade {
      * @param projectId
      * @param projectParticipateRequestDto
      */
+    @Transactional
     public void sendParticipateAlert(
             Long userId,
             Long projectId,

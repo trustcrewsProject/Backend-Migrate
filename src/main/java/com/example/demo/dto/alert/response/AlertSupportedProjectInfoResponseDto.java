@@ -9,9 +9,9 @@ public class AlertSupportedProjectInfoResponseDto {
 
     private ProjectSimpleInfoResponseDto project;
     private PositionInfoResponseDto position;
-    private boolean supportResult;
+    private Boolean supportResult;
 
-    public AlertSupportedProjectInfoResponseDto(ProjectSimpleInfoResponseDto project, PositionInfoResponseDto position, boolean supportResult) {
+    public AlertSupportedProjectInfoResponseDto(ProjectSimpleInfoResponseDto project, PositionInfoResponseDto position, Boolean supportResult) {
         this.project = project;
         this.position = position;
         this.supportResult = supportResult;

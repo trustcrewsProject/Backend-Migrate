@@ -23,6 +23,16 @@ public class UserController {
     private final UserFacade userFacade;
     private final UserService userService;
 
+    /**
+     * 사용자 정보 조회
+     * @param userId
+     * @return
+     */
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<ResponseDto<?>> getUserInfoById(@PathVariable String userId){
+        return ResponseEntity.status(HttpStatus.OK).body(userFacade.getUserInfoById(Long.parseLong(userId)));
+    }
+
     // 이메일 중복확인 요청
     @GetMapping("/check-email/{email}/public")
     public ResponseEntity<ResponseDto<?>> checkEmail(@PathVariable String email) {

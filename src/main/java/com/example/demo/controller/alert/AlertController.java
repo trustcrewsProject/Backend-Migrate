@@ -67,10 +67,10 @@ public class AlertController {
                 alertFacade.getCrewsByProject(projectId, pageIndex.orElse(0), itemCount.orElse(6))), HttpStatus.OK);
     }
 
-    @PutMapping("/api/alert/{alertId}/status")
+    @PatchMapping("/api/alert/{alertId}/status")
     public ResponseEntity<ResponseDto<?>> updateAlertStatus(@PathVariable Long alertId) {
         alertService.updateAlertStatus(alertId);
-        return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 
     @GetMapping("/api/alert/supported-projects")

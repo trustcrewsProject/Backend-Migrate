@@ -83,4 +83,8 @@ public class Alert extends BaseTimeEntity {
     public void updateProjectConfirmResult(boolean projectConfirmResult) {
         this.projectConfirmResult = projectConfirmResult;
     }
+
+    public void updateCheckedStatusIsTrue() {
+        this.checked_YN = true;
+    }
 }

@@ -7,11 +7,13 @@ import lombok.Getter;
 @Getter
 public class AlertSupportedProjectInfoResponseDto {
 
+    private Long alertId;
     private ProjectSimpleInfoResponseDto project;
     private PositionInfoResponseDto position;
     private Boolean supportResult;
 
-    public AlertSupportedProjectInfoResponseDto(ProjectSimpleInfoResponseDto project, PositionInfoResponseDto position, Boolean supportResult) {
+    public AlertSupportedProjectInfoResponseDto(Long alertId, ProjectSimpleInfoResponseDto project, PositionInfoResponseDto position, Boolean supportResult) {
+        this.alertId = alertId;
         this.project = project;
         this.position = position;
         this.supportResult = supportResult;

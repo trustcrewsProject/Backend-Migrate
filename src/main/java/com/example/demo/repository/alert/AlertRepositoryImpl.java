@@ -81,6 +81,7 @@ public class AlertRepositoryImpl implements AlertRepositoryCustom{
                 .select(
                         Projections.constructor(
                                 AlertSupportedProjectInfoResponseDto.class,
+                                qAlert.id,
                                 Projections.constructor(
                                         ProjectSimpleInfoResponseDto.class,
                                         qProject.id,

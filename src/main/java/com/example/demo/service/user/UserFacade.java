@@ -312,6 +312,65 @@ public class UserFacade {
     }
 
     /**
+     * 사용자 정보 조회 로직
+     *
+     * @param userId
+     * @return UserMyInfoResponseDto myInfoResponse
+     */
+    @Transactional(readOnly = true)
+    public ResponseDto<?> getUserInfoById(long userId) {
+        User currentUser = userService.fetchUserDetails(userId);
+
+        // 신뢰점수
+        TrustScore trustScore = currentUser.getTrustScore();
+        // 신뢰등급
+        TrustGrade trustGrade = trustScore.getTrustGrade();
+        // 포지션
+        Position position = currentUser.getPosition();
+        // 기술스택목록
+        List<TechnologyStack> techStacks =
+                currentUser.getTechStacks().stream()
+                        .map(UserTechnologyStack::getTechnologyStack)
+                        .collect(Collectors.toList());
+
+        // 신뢰등급 정보 응답 DTO
+        TrustGradeInfoResponseDto trustGradeInfo =
+                TrustGradeInfoResponseDto.of(trustGrade.getId(), trustGrade.getName());
+        // 포지션 정보 응답 DTO
+        PositionInfoResponseDto positionInfo =
+                PositionInfoResponseDto.of(position.getId(), position.getName());
+        // 기술스택목록 정보 응답 DTO
+        List<TechnologyStackInfoResponseDto> techStacksInfo =
+                techStacks.stream()
+                        .map(
+                                technologyStack ->
+                                        TechnologyStackInfoResponseDto.of(
+                                                technologyStack.getId(), technologyStack.getName()))
+                        .collect(Collectors.toList());
+        // 회원 프로젝트 이력 개수
+        long projectHistoryTotalCount =
+                userProjectHistoryService.getUserProjectHistoryTotalCount(currentUser.getId(), null);
+
+        // 내 정보 응답 DTO 생성
+        UserMyInfoResponseDto myInfoResponse =
+                UserMyInfoResponseDto.of(
+                        currentUser.getId(),
+                        currentUser.getEmail(),
+                        currentUser.getNickname(),
+                        currentUser.getProfileImgSrc(),
+                        currentUser.getIntro(),
+                        trustScore.getScore(),
+                        trustGradeInfo,
+                        positionInfo,
+                        techStacksInfo,
+                        projectHistoryTotalCount,
+                        currentUser.getCreateDate(),
+                        currentUser.getUpdateDate());
+
+        return ResponseDto.success("사용자 정보 조회가 완료되었습니다.", myInfoResponse);
+    }
+
+    /**
      * 내 프로젝트 이력 목록 조회 (페이징)
      *
      * @param user

@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.example.demo.model.user.User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public interface AlertService {
@@ -18,6 +19,7 @@ public interface AlertService {
 
     PaginationResponseDto findAlertsByProjectIdAndType(Project project, AlertType type, int pageIndex, int itemCount);
 
+    @Transactional
     void updateAlertStatus(Long alertId);
 
     PaginationResponseDto findAlertsBySendUserIdAndType(User user, int pageIndex, int itemCount);

@@ -40,7 +40,11 @@ public class AlertServiceImpl implements AlertService {
 
     @Override
     public void updateAlertStatus(Long alertId) {
-        alertRepository.updateAlertStatus(alertId);
+        Alert alert = alertRepository
+                .findById(alertId)
+                .orElseThrow(() -> AlertCustomException.NOT_FOUND_ALERT);
+
+        alert.updateCheckedStatusIsTrue();
     }
 
     @Override

@@ -32,9 +32,11 @@ public class AlertInfoResponseDto {
     @JsonSerialize(using = LocalDateTimeFormatSerializer.class)
     private LocalDateTime updateDate;
 
+    private boolean checkedStatus;
+
     public AlertInfoResponseDto(Long alertId, Long projectId, Long checkUserId, Long sendUserId,
                                 Long workId, Long milestoneId, PositionInfoResponseDto position,
-                                String content, AlertType type, LocalDateTime createDate, LocalDateTime updateDate) {
+                                String content, AlertType type, LocalDateTime createDate, LocalDateTime updateDate, boolean checkedStatus) {
         this.alertId = alertId;
         this.projectId = projectId;
         this.checkUserId = checkUserId;
@@ -46,6 +48,7 @@ public class AlertInfoResponseDto {
         this.type = type;
         this.createDate = createDate;
         this.updateDate = updateDate;
+        this.checkedStatus = checkedStatus;
     }
 
     public static AlertInfoResponseDto of(Alert alert, Position position) {
@@ -67,6 +70,7 @@ public class AlertInfoResponseDto {
                 .type(alert.getType())
                 .createDate(alert.getCreateDate())
                 .updateDate(alert.getUpdateDate())
+                .checkedStatus(alert.isChecked_YN())
                 .build();
     }
 }

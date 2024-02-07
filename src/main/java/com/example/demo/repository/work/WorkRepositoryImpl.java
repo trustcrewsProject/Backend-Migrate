@@ -89,13 +89,12 @@ public class WorkRepositoryImpl implements WorkRepositoryCustom{
                                 qWork.startDate,
                                 qWork.endDate,
                                 qWork.progressStatus,
-                                qTrustScoreType.score,
-                                qTrustScoreType.gubunCode
+                                qTrustScoreHistory.id,
+                                qTrustScoreHistory.score
                         )
                 )
                 .from(qWork)
-                .leftJoin(qTrustScoreHistory).on(qWork.id.eq(qTrustScoreHistory.workId))
-                .leftJoin(qTrustScoreType).on(qTrustScoreHistory.trustScoreTypeId.eq(qTrustScoreType.id))
+                .join(qTrustScoreHistory).on(qWork.id.eq(qTrustScoreHistory.workId))
                 .where(
                         eqProjectId(projectId),
                         eqAssignedUserId(assignedUserId)

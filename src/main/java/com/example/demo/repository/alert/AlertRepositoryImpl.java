@@ -55,7 +55,8 @@ public class AlertRepositoryImpl implements AlertRepositoryCustom{
                                 qAlert.content,
                                 qAlert.type,
                                 qAlert.createDate,
-                                qAlert.updateDate
+                                qAlert.updateDate,
+                                qAlert.checked_YN
                         )
                 )
                 .from(qAlert)

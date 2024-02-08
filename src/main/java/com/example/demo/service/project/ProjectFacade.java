@@ -222,12 +222,8 @@ public class ProjectFacade {
         User currentUser = userService.findById(userId);
         Project project = projectService.findById(projectId);
 
-        // 요청한 회원 프로젝트 매니저 검증
-        ProjectMemberAuth projectMemberAuth = projectMemberService.findProjectMemberByProjectAndUser(project, currentUser).getProjectMemberAuth();
-        ProjectRole projectRole = ProjectRole.findProjectRole(projectMemberAuth.getId());
-        if(!projectRole.isManager()) {
-            throw ProjectMemberAuthCustomException.INSUFFICIENT_PROJECT_AUTH;
-        }
+        // 프로젝트 매니저 검증
+        projectMemberService.verifiedProjectManager(project, currentUser);
 
         for(ProjectMember projectMember : project.getProjectMembers()) {
             // 프로젝트 멤버 프로젝트 완주 이력 추가

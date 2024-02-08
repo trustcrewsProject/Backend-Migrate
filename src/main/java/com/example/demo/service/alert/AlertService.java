@@ -23,4 +23,6 @@ public interface AlertService {
     void updateAlertStatus(Long alertId);
 
     PaginationResponseDto findAlertsBySendUserIdAndType(User user, int pageIndex, int itemCount);
+
+    void deleteAllByProject(Project project);
 }

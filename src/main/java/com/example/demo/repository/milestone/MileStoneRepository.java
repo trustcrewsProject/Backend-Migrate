@@ -11,4 +11,6 @@ public interface MileStoneRepository extends JpaRepository<Milestone, Long> {
     Optional<Milestone> findById(Long id);
 
     Optional<List<Milestone>> findMilestonesByProject(Project project);
+
+    void deleteAllByProject(Project project);
 }

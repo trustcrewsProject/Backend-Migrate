@@ -39,10 +39,11 @@ public class ProjectMemberController {
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 
-    @PostMapping("/{projectMemberId}/withdrawl/force")
-    public ResponseEntity<ResponseDto<?>> withdrawlForce(
+    @PostMapping("/{projectMemberId}/force-withdrawal")
+    public ResponseEntity<ResponseDto<?>> withdrawalForce(
+            @AuthenticationPrincipal PrincipalDetails user,
             @PathVariable("projectMemberId") Long projectMemberId) {
-        projectMemberService.withdrawlForce(projectMemberId);
+        projectMemberFacade.forcedWithdrawal(user.getId(), projectMemberId);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 

@@ -53,4 +53,9 @@ public class WorkServiceImpl implements WorkService {
     public PaginationResponseDto findWorksWithTrustScoreHistoryByProjectIdAndAssignedUserId(Long projectId, Long assignedUserId, Pageable pageable) {
         return workRepository.findWorksWithTrustScoreHistoryByProjectIdAndAssignedUserIdOrderByStartDateDesc(projectId, assignedUserId, pageable);
     }
+
+    @Override
+    public void deleteAllByProject(Project project) {
+        workRepository.deleteAllByProject(project);
+    }
 }

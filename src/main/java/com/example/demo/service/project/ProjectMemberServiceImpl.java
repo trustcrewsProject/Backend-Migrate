@@ -76,16 +76,6 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     }
 
     /**
-     * 프로젝트 멤버 강제 탈퇴하기.
-     *
-     * @param projectMemberId
-     */
-    public void withdrawlForce(Long projectMemberId) {
-        ProjectMember projectMember = findById(projectMemberId);
-        projectMemberRepository.delete(projectMember);
-    }
-
-    /**
      * 사용자의 생성 및 수정 권한 확인하기 (마일스톤, 업무)
      *
      * @param projectId

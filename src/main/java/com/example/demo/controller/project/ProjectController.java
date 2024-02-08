@@ -73,8 +73,10 @@ public class ProjectController {
     }
 
     @PostMapping("/{projectId}/end")
-    public ResponseEntity<ResponseDto<?>> end(@PathVariable("projectId") Long projectId) {
-        projectService.end(projectId);
-        return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.OK);
+    public ResponseEntity<ResponseDto<?>> end(
+            @PathVariable("projectId") Long projectId,
+            @AuthenticationPrincipal PrincipalDetails user) {
+        projectFacade.endProject(user.getId(), projectId);
+        return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 }

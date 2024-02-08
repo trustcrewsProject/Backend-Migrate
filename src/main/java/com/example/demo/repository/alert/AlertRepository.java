@@ -24,4 +24,6 @@ public interface AlertRepository extends JpaRepository<Alert, Long>, AlertReposi
     @Query(
             "select alert from Alert alert where alert.project = :#{#project} and (alert.type = com.example.demo.constant.AlertType.ADD or alert.type = com.example.demo.constant.AlertType.WITHDRAWL or alert.type = com.example.demo.constant.AlertType.FORCEDWITHDRAWL)")
     Optional<List<Alert>> findCrewAlertsByProject(@Param(value = "project") Project project);
+
+    void deleteAllByProject(Project project);
 }

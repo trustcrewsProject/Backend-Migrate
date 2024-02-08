@@ -1,8 +1,6 @@
 package com.example.demo.service.project;
 
-import com.example.demo.constant.AlertType;
-import com.example.demo.constant.ProjectMemberStatus;
-import com.example.demo.constant.UserProjectHistoryStatus;
+import com.example.demo.constant.*;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.project.request.ProjectConfirmRequestDto;
 import com.example.demo.dto.project.request.ProjectParticipateRequestDto;
@@ -11,10 +9,7 @@ import com.example.demo.dto.project.response.ProjectSpecificDetailResponseDto;
 import com.example.demo.dto.projectmember.response.MyProjectMemberResponseDto;
 import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
 import com.example.demo.dto.user.response.UserMyProjectResponseDto;
-import com.example.demo.global.exception.customexception.CommonCustomException;
-import com.example.demo.global.exception.customexception.PageNationCustomException;
-import com.example.demo.global.exception.customexception.ProjectCustomException;
-import com.example.demo.global.exception.customexception.UserCustomException;
+import com.example.demo.global.exception.customexception.*;
 import com.example.demo.model.alert.Alert;
 import com.example.demo.model.position.Position;
 import com.example.demo.model.project.Project;
@@ -213,5 +208,49 @@ public class ProjectFacade {
 
         // 프로젝트 참여 거절
         supportedAlert.updateProjectConfirmResult(false);
+    }
+
+    /**
+     * 프로젝트 종료
+     * 해당 프로젝트 멤버의 새로운 사용자 프로젝트 이력 추가(프로젝트 완주 이력)
+     * 해당 프로젝트와 관련된 업무, 마일스톤, 알림, 멤버, 기술스택 정보 삭제
+     * @param userId
+     * @param projectId
+     */
+    @Transactional
+    public void endProject(Long userId, Long projectId) {
+        User currentUser = userService.findById(userId);
+        Project project = projectService.findById(projectId);
+
+        // 프로젝트 매니저 검증
+        projectMemberService.verifiedProjectManager(project, currentUser);
+
+        for(ProjectMember projectMember : project.getProjectMembers()) {
+            // 프로젝트 멤버 프로젝트 완주 이력 추가
+            UserProjectHistory projectFinishHistory = UserProjectHistory.builder()
+                    .project(project)
+                    .user(projectMember.getUser())
+                    .status(UserProjectHistoryStatus.FINISH)
+                    .build();
+            userProjectHistoryService.save(projectFinishHistory);
+        }
+
+        // 프로젝트 멤버 삭제
+        project.removeProjectMembers();
+
+        // 프로젝트 기술목록 삭제
+        project.removeProjectTechnologies();
+
+        // 프로젝트 모든 업무 삭제
+        workService.deleteAllByProject(project);
+
+        // 프로젝트 모든 마일스톤 삭제
+        milestoneService.deleteAllByProject(project);
+
+        // 프로젝트 관련 모든 알림 삭제
+        alertService.deleteAllByProject(project);
+
+        // 프로젝트 status 종료로 변경
+        project.endProject();
     }
 }

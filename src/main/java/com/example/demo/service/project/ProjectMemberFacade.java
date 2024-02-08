@@ -2,7 +2,6 @@ package com.example.demo.service.project;
 
 import com.example.demo.constant.AlertType;
 import com.example.demo.constant.ProjectMemberStatus;
-import com.example.demo.constant.ProjectRole;
 import com.example.demo.constant.UserProjectHistoryStatus;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.position.response.PositionResponseDto;
@@ -14,11 +13,9 @@ import com.example.demo.dto.user.response.UserCrewDetailResponseDto;
 import com.example.demo.dto.user.response.UserReadProjectCrewResponseDto;
 import com.example.demo.global.exception.customexception.PageNationCustomException;
 import com.example.demo.global.exception.customexception.ProjectCustomException;
-import com.example.demo.global.exception.customexception.ProjectMemberAuthCustomException;
 import com.example.demo.model.alert.Alert;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
-import com.example.demo.model.project.ProjectMemberAuth;
 import com.example.demo.model.technology_stack.TechnologyStack;
 import com.example.demo.model.user.User;
 import com.example.demo.model.user.UserProjectHistory;
@@ -214,35 +211,5 @@ public class ProjectMemberFacade {
         PaginationResponseDto result = workService.findWorksWithTrustScoreHistoryByProjectIdAndAssignedUserId(projectMember.getProject().getId(), projectMember.getUser().getId(), PageRequest.of(pageIndex, itemCount));
 
         return result;
-    }
-
-    /**
-     * 프로젝트 멤버 강제탈퇴
-     * 사용자 프로젝트 이력에 해당 회원의 강제탈퇴 이력 추가
-     * @param projectMemberId
-     */
-    @Transactional
-    public void forcedWithdrawal(Long userId, Long projectMemberId) {
-        User currentUser = userService.findById(userId);
-        ProjectMember projectMember = projectMemberService.findById(projectMemberId);
-        Project project = projectMember.getProject();
-
-        // 프로젝트 매니저 검증
-        ProjectMemberAuth projectMemberAuth = projectMemberService.findProjectMemberByProjectAndUser(project, currentUser).getProjectMemberAuth();
-        ProjectRole projectRole = ProjectRole.findProjectRole(projectMemberAuth.getId());
-        if(!projectRole.isManager()) {
-            throw ProjectMemberAuthCustomException.INSUFFICIENT_PROJECT_AUTH;
-        }
-
-        // 사용자 프로젝트 이력에 강제탈퇴 이력 추가
-        UserProjectHistory forcedWithdrawalHistory = UserProjectHistory.builder()
-                .project(project)
-                .user(projectMember.getUser())
-                .status(UserProjectHistoryStatus.FORCED_WITHDRAWAL)
-                .build();
-        userProjectHistoryService.save(forcedWithdrawalHistory);
-
-        // 프로젝트에서 해당 멤버 삭제
-        project.removeProjectMember(projectMember);
     }
 }

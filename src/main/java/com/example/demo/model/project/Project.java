@@ -100,8 +100,4 @@ public class Project extends BaseTimeEntity {
     public void removeProjectTechnologies() {
         this.projectTechnologies.clear();
     }
-
-    public void removeProjectMember(ProjectMember projectMember) {
-        this.projectMembers.remove(projectMember);
-    }
 }

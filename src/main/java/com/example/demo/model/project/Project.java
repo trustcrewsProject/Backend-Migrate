@@ -92,4 +92,12 @@ public class Project extends BaseTimeEntity {
         this.projectTechnologies.clear();
         this.projectTechnologies.addAll(projectTechnologies);
     }
+
+    public void removeProjectMembers() {
+        this.projectMembers.clear();
+    }
+
+    public void removeProjectTechnologies() {
+        this.projectTechnologies.clear();
+    }
 }

@@ -33,14 +33,4 @@ public class ProjectServiceImpl implements ProjectService {
     public int countProjectsByUser(User user) {
         return projectRepository.countProjectsByUser(user);
     }
-
-    /**
-     * 프로젝트 종료하기
-     *
-     * @param projectId
-     */
-    public void end(Long projectId) {
-        Project project = findById(projectId);
-        project.endProject();
-    }
 }

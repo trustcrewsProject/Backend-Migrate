@@ -15,6 +15,4 @@ public interface ProjectService {
     public List<Project> findProjectsByUser(User user);
 
     public int countProjectsByUser(User user);
-
-    public void end(Long projectId);
 }

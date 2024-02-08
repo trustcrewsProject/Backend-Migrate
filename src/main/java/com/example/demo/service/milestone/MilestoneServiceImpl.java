@@ -67,4 +67,9 @@ public class MilestoneServiceImpl implements MilestoneService {
         Milestone milestone = findById(milestoneId);
         milestone.updateDate(milestoneUpdateDateRequestDto);
     }
+
+    @Override
+    public void deleteAllByProject(Project project) {
+        mileStoneRepository.deleteAllByProject(project);
+    }
 }

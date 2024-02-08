@@ -56,4 +56,9 @@ public class AlertServiceImpl implements AlertService {
 
         return PaginationResponseDto.of(content, totalPages);
     }
+
+    @Override
+    public void deleteAllByProject(Project project) {
+        alertRepository.deleteAllByProject(project);
+    }
 }

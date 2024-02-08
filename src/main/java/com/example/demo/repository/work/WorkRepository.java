@@ -14,4 +14,6 @@ public interface WorkRepository extends JpaRepository<Work, Long>, WorkRepositor
 
     Optional<Work> findFirstByProjectAndAssignedUserIdAndProgressStatusOrderByIdDesc(
             Project project, User user, ProgressStatus progressStatus);
+
+    void deleteAllByProject(Project project);
 }

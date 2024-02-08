@@ -26,4 +26,6 @@ public interface WorkService {
 
     // 특정 프로젝트에 할당된 특정 회원의 업무 내역 + 업무 신뢰점수 내역 조회
     PaginationResponseDto findWorksWithTrustScoreHistoryByProjectIdAndAssignedUserId(Long projectId, Long assignedUserId, Pageable pageable);
+
+    void deleteAllByProject(Project project);
 }

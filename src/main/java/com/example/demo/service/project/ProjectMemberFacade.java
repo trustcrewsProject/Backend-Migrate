@@ -114,6 +114,32 @@ public class ProjectMemberFacade {
     }
 
     /**
+     * 프로젝트 멤버 강제탈퇴
+     * 사용자 프로젝트 이력에 해당 회원의 강제탈퇴 이력 추가
+     * @param projectMemberId
+     */
+    @Transactional
+    public void forcedWithdrawal(Long userId, Long projectMemberId) {
+        User currentUser = userService.findById(userId);
+        ProjectMember projectMember = projectMemberService.findById(projectMemberId);
+        Project project = projectMember.getProject();
+
+        // 프로젝트 매니저 검증
+        projectMemberService.verifiedProjectManager(project, currentUser);
+
+        // 사용자 프로젝트 이력에 강제탈퇴 이력 추가
+        UserProjectHistory forcedWithdrawalHistory = UserProjectHistory.builder()
+                .project(project)
+                .user(projectMember.getUser())
+                .status(UserProjectHistoryStatus.FORCED_WITHDRAWAL)
+                .build();
+        userProjectHistoryService.save(forcedWithdrawalHistory);
+
+        // 프로젝트 멤버 상태 탈퇴로 변경
+        projectMember.updateStatus(ProjectMemberStatus.WITHDRAW);
+    }
+
+    /**
      * 크루정보 상세 페이지 TODO : 프로젝트 신뢰 이력 추가 해야함 유저 정보들, 유저 기술들, 프로젝트 개수, 신뢰점수 이력들
      *
      * @param projectMemberId

@@ -36,4 +36,6 @@ public interface ProjectMemberService {
     Map<String, Boolean> getUserAuthMap(Long projectId, Long userId);
 
     void verifiedProjectManager(Project project, User user);
+
+    List<ProjectMember> getProjectMemberByUserId(Long userId);
 }

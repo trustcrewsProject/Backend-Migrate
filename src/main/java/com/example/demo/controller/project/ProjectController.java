@@ -33,7 +33,7 @@ public class ProjectController {
             @AuthenticationPrincipal PrincipalDetails user,
             @RequestParam("pageIndex") Optional<Integer> pageIndex,
             @RequestParam("itemCount") Optional<Integer> itemCount) {
-        return new ResponseEntity<>(ResponseDto.success("success", projectFacade.getMyProjectsParticipates(user.getId(), pageIndex.orElse(0), itemCount.orElse(6))), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseDto.success("success", projectFacade.getMyParticipatingProjects(user.getId(), pageIndex.orElse(0), itemCount.orElse(6))), HttpStatus.OK);
     }
 
     @GetMapping("/me")

@@ -2,6 +2,7 @@ package com.example.demo.controller.project;
 
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.dto.project.request.ProjectConfirmRequestDto;
+import com.example.demo.dto.project.request.ProjectInfoUpdateRequestDto;
 import com.example.demo.dto.project.request.ProjectParticipateRequestDto;
 import com.example.demo.dto.project.response.ProjectMeResponseDto;
 import com.example.demo.dto.project.response.ProjectSpecificDetailResponseDto;
@@ -78,5 +79,13 @@ public class ProjectController {
             @AuthenticationPrincipal PrincipalDetails user) {
         projectFacade.endProject(user.getId(), projectId);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
+    }
+
+    @PutMapping("")
+    public ResponseEntity<ResponseDto<?>> updateProject(
+            @AuthenticationPrincipal PrincipalDetails user,
+            @RequestBody ProjectInfoUpdateRequestDto updateRequest) {
+        projectFacade.updateProject(user.getId(), updateRequest);
+        return new ResponseEntity<>(ResponseDto.success("프로젝트 정보 수정이 완료되었습니다."), HttpStatus.OK);
     }
 }

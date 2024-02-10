@@ -3,6 +3,7 @@ package com.example.demo.service.project;
 import com.example.demo.constant.*;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.project.request.ProjectConfirmRequestDto;
+import com.example.demo.dto.project.request.ProjectInfoUpdateRequestDto;
 import com.example.demo.dto.project.request.ProjectParticipateRequestDto;
 import com.example.demo.dto.project.response.ProjectMeResponseDto;
 import com.example.demo.dto.project.response.ProjectSpecificDetailResponseDto;
@@ -20,10 +21,12 @@ import com.example.demo.model.user.UserProjectHistory;
 import com.example.demo.service.alert.AlertService;
 import com.example.demo.service.milestone.MilestoneService;
 import com.example.demo.service.position.PositionService;
+import com.example.demo.service.trust_grade.TrustGradeService;
 import com.example.demo.service.user.UserProjectHistoryService;
 import com.example.demo.service.user.UserService;
 import com.example.demo.service.work.WorkService;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,6 +48,7 @@ public class ProjectFacade {
     private final ProjectMemberAuthService projectMemberAuthService;
     private final MilestoneService milestoneService;
     private final UserProjectHistoryService userProjectHistoryService;
+    private final TrustGradeService trustGradeService;
 
     @Transactional(readOnly = true)
     public PaginationResponseDto getMyProjectsParticipates(Long userId, int pageIndex, int itemCount) {
@@ -225,7 +229,7 @@ public class ProjectFacade {
         // 프로젝트 매니저 검증
         projectMemberService.verifiedProjectManager(project, currentUser);
 
-        for(ProjectMember projectMember : project.getProjectMembers()) {
+        for (ProjectMember projectMember : project.getProjectMembers()) {
             // 프로젝트 멤버 프로젝트 완주 이력 추가
             UserProjectHistory projectFinishHistory = UserProjectHistory.builder()
                     .project(project)
@@ -252,5 +256,48 @@ public class ProjectFacade {
 
         // 프로젝트 status 종료로 변경
         project.endProject();
+    }
+
+    @Transactional
+    public void updateProject(Long userId, ProjectInfoUpdateRequestDto updateRequest) {
+        User currentUser = userService.findById(userId);
+        Project project = projectService.findById(updateRequest.getProjectId());
+
+        // 프로젝트 매니저 검증
+        projectMemberService.verifiedProjectManager(project, currentUser);
+
+        // 프로젝트 정보 수정
+        project.updateProject(updateRequest.getProjectName(), updateRequest.getSubject(),
+                trustGradeService.getTrustGradeById(updateRequest.getTrustGradeId()), updateRequest.getStartDate(),
+                updateRequest.getEndDate());
+    }
+
+    @Transactional(readOnly = true)
+    public PaginationResponseDto getMyParticipatingProjects(Long userId, int pageIndex, int itemCount) {
+
+        List<ProjectMember> projects = projectMemberService.getProjectMemberByUserId(userId);
+        long totalPages = projects.size();
+
+        List<Project> sortedProjects = projects
+                .stream()
+                .map(ProjectMember::getProject)
+                .sorted(Comparator.comparing(Project::getStartDate).reversed())
+                .collect(Collectors.toList());
+
+        int startIndex = pageIndex * itemCount;
+        int endIndex = startIndex + itemCount;
+        List<Project> slicedProjects = new ArrayList<>(sortedProjects.subList(startIndex, endIndex));
+
+        List<ProjectMeResponseDto> content = new ArrayList<>();
+        for (Project project : slicedProjects) {
+            List<MyProjectMemberResponseDto> myProjectMembers = project.getProjectMembers().stream()
+                    .map(projectMember -> MyProjectMemberResponseDto.of(projectMember, UserMyProjectResponseDto.of(projectMember.getUser())))
+                    .collect(Collectors.toList());
+
+            content.add(ProjectMeResponseDto.of(project, TrustGradeResponseDto.of(project.getTrustGrade()), myProjectMembers));
+        }
+
+
+        return PaginationResponseDto.of(content, totalPages);
     }
 }

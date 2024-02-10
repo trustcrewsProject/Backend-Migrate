@@ -26,6 +26,7 @@ import com.example.demo.service.user.UserProjectHistoryService;
 import com.example.demo.service.user.UserService;
 import com.example.demo.service.work.WorkService;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -228,7 +229,7 @@ public class ProjectFacade {
         // 프로젝트 매니저 검증
         projectMemberService.verifiedProjectManager(project, currentUser);
 
-        for(ProjectMember projectMember : project.getProjectMembers()) {
+        for (ProjectMember projectMember : project.getProjectMembers()) {
             // 프로젝트 멤버 프로젝트 완주 이력 추가
             UserProjectHistory projectFinishHistory = UserProjectHistory.builder()
                     .project(project)
@@ -268,6 +269,35 @@ public class ProjectFacade {
         // 프로젝트 정보 수정
         project.updateProject(updateRequest.getProjectName(), updateRequest.getSubject(),
                 trustGradeService.getTrustGradeById(updateRequest.getTrustGradeId()), updateRequest.getStartDate(),
-                        updateRequest.getEndDate());
+                updateRequest.getEndDate());
+    }
+
+    @Transactional(readOnly = true)
+    public PaginationResponseDto getMyParticipatingProjects(Long userId, int pageIndex, int itemCount) {
+
+        List<ProjectMember> projects = projectMemberService.getProjectMemberByUserId(userId);
+        long totalPages = projects.size();
+
+        List<Project> sortedProjects = projects
+                .stream()
+                .map(ProjectMember::getProject)
+                .sorted(Comparator.comparing(Project::getStartDate).reversed())
+                .collect(Collectors.toList());
+
+        int startIndex = pageIndex * itemCount;
+        int endIndex = startIndex + itemCount;
+        List<Project> slicedProjects = new ArrayList<>(sortedProjects.subList(startIndex, endIndex));
+
+        List<ProjectMeResponseDto> content = new ArrayList<>();
+        for (Project project : slicedProjects) {
+            List<MyProjectMemberResponseDto> myProjectMembers = project.getProjectMembers().stream()
+                    .map(projectMember -> MyProjectMemberResponseDto.of(projectMember, UserMyProjectResponseDto.of(projectMember.getUser())))
+                    .collect(Collectors.toList());
+
+            content.add(ProjectMeResponseDto.of(project, TrustGradeResponseDto.of(project.getTrustGrade()), myProjectMembers));
+        }
+
+
+        return PaginationResponseDto.of(content, totalPages);
     }
 }

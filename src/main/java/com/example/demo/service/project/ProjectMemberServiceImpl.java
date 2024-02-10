@@ -112,4 +112,11 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
         Project findProject = projectService.findById(projectId);
         return findProjectMemberByProjectAndUser(findProject, findUser).getProjectMemberAuth();
     }
+
+    @Override
+    public List<ProjectMember> getProjectMemberByUserId(Long userId) {
+        return projectMemberRepository
+                .findByUserId(userId);
+    }
+
 }

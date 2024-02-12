@@ -15,8 +15,8 @@ public interface ProjectMemberRepository extends JpaRepository<ProjectMember, Lo
     Optional<ProjectMember> findProjectMemberByProjectAndUser(Project project, User user);
 
     @Query("select pm from ProjectMember pm where pm.project = :project and pm.status = :status")
-    List<ProjectMember> findByProjectAndStatus(Project project, ProjectMemberStatus status);
+    List<ProjectMember> findAllByProjectAndStatus(Project project, ProjectMemberStatus status);
 
-    @Query("select pm from ProjectMember pm where pm.user = :user")
-    List<ProjectMember> findByUserId(Long user);
+    @Query("select pm from ProjectMember pm where pm.user = :user and pm.status = :status")
+    List<ProjectMember> findAllByUserAndStatus(User user, ProjectMemberStatus status);
 }

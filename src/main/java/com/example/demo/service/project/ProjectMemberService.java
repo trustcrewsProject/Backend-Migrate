@@ -37,5 +37,5 @@ public interface ProjectMemberService {
 
     void verifiedProjectManager(Project project, User user);
 
-    List<ProjectMember> getProjectMemberByUserId(Long userId);
+    List<ProjectMember> getProjectMembersByUserAndStatus(User user, ProjectMemberStatus status);
 }

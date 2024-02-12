@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -56,7 +57,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     @Override
     public List<ProjectMember> getProjectMembersByProjectAndStatus(Project project, ProjectMemberStatus status) {
         return projectMemberRepository
-                .findByProjectAndStatus(project, status);
+                .findAllByProjectAndStatus(project, status);
     }
 
     public ProjectMember findProjectMemberByProjectAndUser(Project project, User user) {
@@ -114,9 +115,9 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     }
 
     @Override
-    public List<ProjectMember> getProjectMemberByUserId(Long userId) {
+    public List<ProjectMember> getProjectMembersByUserAndStatus(User user, ProjectMemberStatus status) {
         return projectMemberRepository
-                .findByUserId(userId);
+                .findAllByUserAndStatus(user, status);
     }
 
 }

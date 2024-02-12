@@ -51,36 +51,39 @@ public class ProjectFacade {
     private final TrustGradeService trustGradeService;
 
     @Transactional(readOnly = true)
-    public PaginationResponseDto getMyProjectsParticipates(Long userId, int pageIndex, int itemCount) {
-        User user = userService.findById(userId);
-
+    public PaginationResponseDto getMyParticipatingProjects(Long userId, int pageIndex, int itemCount) {
         if(pageIndex < 0) {
             throw PageNationCustomException.INVALID_PAGE_NUMBER;
         }
 
-        if(itemCount < 1 && itemCount > 6) {
+        if(itemCount > 6) {
             throw PageNationCustomException.INVALID_PAGE_ITEM_COUNT;
         }
 
-        // 참여중인 프로젝트 개수 조회
-        long totalPages = userProjectHistoryService.getUserProjectHistoryTotalCount(user.getId(), UserProjectHistoryStatus.PARTICIPATING);
+        User currentUser = userService.findById(userId);
 
-        // 내가 참여중인 프로젝트 이력 목록 불러오기 (정렬, 페이징)
-        List<UserProjectHistory> projectHistories = userProjectHistoryService.getUserProjectHistoryListParticipates(userId, pageIndex, itemCount);
+        List<ProjectMember> projects = projectMemberService.getProjectMembersByUserAndStatus(currentUser, ProjectMemberStatus.PARTICIPATING);
+        long totalPages = projects.size();
 
-        // 내가 참여중인 프로젝트 목록
-        List<Project> projects = projectHistories.stream()
-                .map(userProjectHistory -> userProjectHistory.getProject())
+        List<Project> sortedProjects = projects
+                .stream()
+                .map(ProjectMember::getProject)
+                .sorted(Comparator.comparing(Project::getStartDate).reversed())
                 .collect(Collectors.toList());
 
+        int startIndex = Math.min(pageIndex * itemCount, sortedProjects.size());
+        int endIndex = Math.min(startIndex + itemCount, sortedProjects.size());
+        List<Project> slicedProjects = new ArrayList<>(sortedProjects.subList(startIndex, endIndex));
+
         List<ProjectMeResponseDto> content = new ArrayList<>();
-        for(Project project : projects) {
+        for (Project project : slicedProjects) {
             List<MyProjectMemberResponseDto> myProjectMembers = project.getProjectMembers().stream()
                     .map(projectMember -> MyProjectMemberResponseDto.of(projectMember, UserMyProjectResponseDto.of(projectMember.getUser())))
                     .collect(Collectors.toList());
 
             content.add(ProjectMeResponseDto.of(project, TrustGradeResponseDto.of(project.getTrustGrade()), myProjectMembers));
         }
+
 
         return PaginationResponseDto.of(content, totalPages);
     }
@@ -270,34 +273,5 @@ public class ProjectFacade {
         project.updateProject(updateRequest.getProjectName(), updateRequest.getSubject(),
                 trustGradeService.getTrustGradeById(updateRequest.getTrustGradeId()), updateRequest.getStartDate(),
                 updateRequest.getEndDate());
-    }
-
-    @Transactional(readOnly = true)
-    public PaginationResponseDto getMyParticipatingProjects(Long userId, int pageIndex, int itemCount) {
-
-        List<ProjectMember> projects = projectMemberService.getProjectMemberByUserId(userId);
-        long totalPages = projects.size();
-
-        List<Project> sortedProjects = projects
-                .stream()
-                .map(ProjectMember::getProject)
-                .sorted(Comparator.comparing(Project::getStartDate).reversed())
-                .collect(Collectors.toList());
-
-        int startIndex = pageIndex * itemCount;
-        int endIndex = startIndex + itemCount;
-        List<Project> slicedProjects = new ArrayList<>(sortedProjects.subList(startIndex, endIndex));
-
-        List<ProjectMeResponseDto> content = new ArrayList<>();
-        for (Project project : slicedProjects) {
-            List<MyProjectMemberResponseDto> myProjectMembers = project.getProjectMembers().stream()
-                    .map(projectMember -> MyProjectMemberResponseDto.of(projectMember, UserMyProjectResponseDto.of(projectMember.getUser())))
-                    .collect(Collectors.toList());
-
-            content.add(ProjectMeResponseDto.of(project, TrustGradeResponseDto.of(project.getTrustGrade()), myProjectMembers));
-        }
-
-
-        return PaginationResponseDto.of(content, totalPages);
     }
 }

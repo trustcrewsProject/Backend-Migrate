@@ -11,8 +11,10 @@ import com.example.demo.model.trust_score.QTrustScoreHistory;
 import com.example.demo.model.trust_score.QTrustScoreType;
 import com.example.demo.model.user.QUser;
 import com.example.demo.model.work.QWork;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -29,10 +31,9 @@ public class WorkRepositoryImpl implements WorkRepositoryCustom{
     private final QMilestone qMilestone = QMilestone.milestone;
     private final QWork qWork = QWork.work;
     private final QUser qUser = QUser.user;
-    private final QProjectMember qProjectMember = QProjectMember.projectMember;
-    private final QProjectMember subProjectMember = QProjectMember.projectMember;
+    private final QProjectMember qLastModifiedProjectMember = QProjectMember.projectMember;
+    private final QProjectMember qAssignedProjectMember = QProjectMember.projectMember;
     private final QTrustScoreHistory qTrustScoreHistory = QTrustScoreHistory.trustScoreHistory;
-    private final QTrustScoreType qTrustScoreType = QTrustScoreType.trustScoreType;
 
     @Override
     public PaginationResponseDto findWorkByProjectIdAndMilestoneIdOrderByStartDateAsc(Long projectId, Long milestoneId, Pageable pageable) {
@@ -46,10 +47,14 @@ public class WorkRepositoryImpl implements WorkRepositoryCustom{
                                 qMilestone.id,
                                 Projections.constructor(
                                         WorkAssignedUserInfoResponseDto.class,
-                                        subProjectMember.id,
+                                        JPAExpressions
+                                                .select(qAssignedProjectMember.id)
+                                                .from(qAssignedProjectMember)
+                                                .where(qAssignedProjectMember.project.id.eq(projectId),
+                                                        qAssignedProjectMember.user.id.eq(qUser.id)),
                                         qUser.nickname
                                 ),
-                                qProjectMember.user.nickname,
+                                qLastModifiedProjectMember.user.nickname,
                                 qWork.content,
                                 qWork.startDate,
                                 qWork.endDate,
@@ -57,14 +62,13 @@ public class WorkRepositoryImpl implements WorkRepositoryCustom{
                         )
                 )
                 .from(qWork)
-                .leftJoin(qWork.project, qProject)
-                .leftJoin(qWork.milestone, qMilestone)
-                .leftJoin(qWork.assignedUserId, qUser)
-                .leftJoin(qWork.lastModifiedMember, qProjectMember)
+                .join(qWork.project, qProject)
+                .join(qWork.milestone, qMilestone)
+                .join(qWork.assignedUserId, qUser)
+                .join(qWork.lastModifiedMember, qLastModifiedProjectMember)
                 .where(
                         eqProjectId(projectId),
-                        eqMilestoneId(milestoneId),
-                        subProjectMember.project.eq(qProject)
+                        eqMilestoneId(milestoneId)
                 )
                 .orderBy(qWork.startDate.asc())
                 .offset(pageable.getOffset())

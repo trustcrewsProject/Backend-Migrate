@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -60,14 +61,14 @@ public class JsonWebTokenProvider {
     }
 
     // 토큰 발급 (Access Token & Refresh Token 함께 발급)
-    public JsonWebTokenDto generateToken(PrincipalDetails principalDetails) {
+    public JsonWebTokenDto generateToken(UserDetails principal) {
 
         // Access Token 생성
         Date accessTokenExpiresIn = getTokenExpiration(accessTokenExpirationMillis);
 
-        Claims claims = Jwts.claims().setSubject(principalDetails.getUsername());
-        claims.put("email", principalDetails.getEmail());
-        claims.put("role", principalDetails.getAuthorities());
+        Claims claims = Jwts.claims().setSubject(principal.getUsername());
+        //claims.put("email", principalDetails.getEmail());
+        claims.put("role", principal.getAuthorities());
 
         String accessToken =
                 Jwts.builder()

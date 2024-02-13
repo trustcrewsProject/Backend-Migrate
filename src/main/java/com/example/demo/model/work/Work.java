@@ -44,6 +44,9 @@ public class Work extends BaseTimeEntity {
     @Column(name = "work_content")
     private String content;
 
+    @Column(name = "content_detail", columnDefinition = "TEXT")
+    private String contentDetail;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "progressStatus")
     private ProgressStatus progressStatus;
@@ -67,6 +70,7 @@ public class Work extends BaseTimeEntity {
             Milestone milestone,
             User assignedUserId,
             String content,
+            String contentDetail,
             ProgressStatus progressStatus,
             LocalDate startDate,
             LocalDate endDate,
@@ -75,6 +79,7 @@ public class Work extends BaseTimeEntity {
         this.milestone = milestone;
         this.assignedUserId = assignedUserId;
         this.content = content;
+        this.contentDetail = contentDetail;
         this.progressStatus = progressStatus;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -84,6 +89,7 @@ public class Work extends BaseTimeEntity {
 
     public void update(WorkUpdateRequestDto dto, ProjectMember projectMember, User assignedUser) {
         this.content = dto.getContent();
+        this.contentDetail = dto.getContentDetail();
         this.startDate = dto.getStartDate();
         this.endDate = dto.getEndDate();
         this.progressStatus = ProgressStatus.getProgressStatusByCode(dto.getProgressStatusCode());

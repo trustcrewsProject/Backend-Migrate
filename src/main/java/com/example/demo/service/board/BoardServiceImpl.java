@@ -1,5 +1,6 @@
 package com.example.demo.service.board;
 
+import com.example.demo.constant.ProjectStatus;
 import com.example.demo.dto.board.response.BoardDetailResponseDto;
 import com.example.demo.dto.board.response.BoardTotalDetailResponseDto;
 import com.example.demo.dto.boardposition.BoardPositionDetailResponseDto;
@@ -37,7 +38,7 @@ public class BoardServiceImpl implements BoardService {
     @Transactional(readOnly = true)
     public PaginationResponseDto search(
             Long positionId, String keyword, List<Long> technologyIds, Pageable pageable) {
-        return boardRepository.getBoardSearchPage(positionId, keyword, technologyIds, pageable);
+        return boardRepository.getBoardSearchPage(positionId, keyword, technologyIds, false, ProjectStatus.FINISH, pageable);
     }
 
     public Board findById(Long boardId) {

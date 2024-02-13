@@ -1,5 +1,6 @@
 package com.example.demo.repository.board;
 
+import com.example.demo.constant.ProjectStatus;
 import com.example.demo.dto.board.response.BoardSearchResponseDto;
 import com.example.demo.dto.boardposition.BoardPositionDetailResponseDto;
 import com.example.demo.dto.common.PaginationResponseDto;
@@ -46,68 +47,9 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
 
     public QProjectTechnology qProjectTechnology = QProjectTechnology.projectTechnology;
 
-    private BooleanExpression searchByLike(String searchQuery) {
-        if (StringUtils.hasText(searchQuery)) {
-            return qBoard
-                    .title
-                    .like("%" + searchQuery + "%")
-                    .or(qBoard.content.like("%" + searchQuery + "%"));
-        } else {
-            return null;
-        }
-    }
-
-    public BooleanExpression containsPosition(Long positionId) {
-        if (positionId != null) {
-            Position position =
-                    positionRepository
-                            .findById(positionId)
-                            .orElseThrow(() -> PositionCustomException.NOT_FOUND_POSITION);
-
-            return qBoardPosition.position.in(position);
-        } else {
-            return null;
-        }
-    }
-
-    public BooleanExpression containsProjectTechnologyStack(List<Long> technologyIds) {
-        if (technologyIds != null && technologyIds.size() > 0) {
-            List<TechnologyStack> technologyStackList = new ArrayList<>();
-            for (Long technologyId : technologyIds) {
-                TechnologyStack technologyStack =
-                        technologyStackRepository
-                                .findById(technologyId)
-                                .orElseThrow(
-                                        () ->
-                                                TechnologyStackCustomException
-                                                        .NOT_FOUND_TECHNOLOGY_STACK);
-                technologyStackList.add(technologyStack);
-            }
-
-            return qProjectTechnology.technologyStack.in(technologyStackList);
-        } else {
-            return null;
-        }
-    }
-
-    private Long countBoardBySearchCriteria(BooleanBuilder builder) {
-        return queryFactory
-                .select(qBoard.id.countDistinct())
-                .from(qBoard)
-                .join(qBoard.positions, qBoardPosition)
-                .leftJoin(qBoard.project, qProject)
-                .leftJoin(qProject.projectTechnologies, qProjectTechnology)
-                .where(builder)
-                .fetchOne();
-    }
-
     @Override
     public PaginationResponseDto getBoardSearchPage(
-            Long positionId, String keyword, List<Long> technologyIds, Pageable pageable) {
-        BooleanBuilder builder = new BooleanBuilder();
-        builder.and(searchByLike(keyword));
-        builder.and(containsPosition(positionId));
-        builder.and(containsProjectTechnologyStack(technologyIds));
+            Long positionId, String keyword, List<Long> technologyIds, Boolean recruitmentStatus, ProjectStatus projectStatus, Pageable pageable) {
 
         List<Board> boards =
                 queryFactory
@@ -117,7 +59,11 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
                         .join(qBoard.project, qProject)
                         .join(qBoard.user, qUser)
                         .join(qProject.projectTechnologies, qProjectTechnology)
-                        .where(builder)
+                        .where(eqBoardStatus(recruitmentStatus),
+                                neBoardProjectStatus(projectStatus),
+                                searchByLike(keyword),
+                                containsPosition(positionId),
+                                containsProjectTechnologyStack(technologyIds))
                         .orderBy(qBoard.createDate.desc())
                         .offset(pageable.getOffset())
                         .limit(pageable.getPageSize())
@@ -168,8 +114,83 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
                             userSearchResponseDto));
         }
 
-        long totalPages = countBoardBySearchCriteria(builder);
+        long totalPages = countBoardBySearchCriteria(positionId, keyword, technologyIds, recruitmentStatus, projectStatus);
 
         return PaginationResponseDto.of(boardSearchResponseDtos, totalPages);
+    }
+
+    private Long countBoardBySearchCriteria(Long positionId, String keyword, List<Long> technologyIds, Boolean recruitmentStatus, ProjectStatus projectStatus) {
+        return queryFactory
+                .select(qBoard.id.countDistinct())
+                .from(qBoard)
+                .join(qBoard.positions, qBoardPosition)
+                .leftJoin(qBoard.project, qProject)
+                .leftJoin(qProject.projectTechnologies, qProjectTechnology)
+                .where(eqBoardStatus(recruitmentStatus),
+                        neBoardProjectStatus(projectStatus),
+                        searchByLike(keyword),
+                        containsPosition(positionId),
+                        containsProjectTechnologyStack(technologyIds))
+                .fetchOne();
+    }
+
+    private BooleanExpression searchByLike(String searchQuery) {
+        if (StringUtils.hasText(searchQuery)) {
+            return qBoard
+                    .title
+                    .like("%" + searchQuery + "%")
+                    .or(qBoard.content.like("%" + searchQuery + "%"));
+        } else {
+            return null;
+        }
+    }
+
+    private BooleanExpression containsPosition(Long positionId) {
+        if (positionId != null) {
+            Position position =
+                    positionRepository
+                            .findById(positionId)
+                            .orElseThrow(() -> PositionCustomException.NOT_FOUND_POSITION);
+
+            return qBoardPosition.position.in(position);
+        } else {
+            return null;
+        }
+    }
+
+    private BooleanExpression containsProjectTechnologyStack(List<Long> technologyIds) {
+        if (technologyIds != null && technologyIds.size() > 0) {
+            List<TechnologyStack> technologyStackList = new ArrayList<>();
+            for (Long technologyId : technologyIds) {
+                TechnologyStack technologyStack =
+                        technologyStackRepository
+                                .findById(technologyId)
+                                .orElseThrow(
+                                        () ->
+                                                TechnologyStackCustomException
+                                                        .NOT_FOUND_TECHNOLOGY_STACK);
+                technologyStackList.add(technologyStack);
+            }
+
+            return qProjectTechnology.technologyStack.in(technologyStackList);
+        } else {
+            return null;
+        }
+    }
+
+    private BooleanExpression eqBoardStatus(Boolean recruitmentStatus) {
+        if(recruitmentStatus == null) {
+            return null;
+        }
+
+        return qBoard.recruitmentStatus.eq(recruitmentStatus);
+    }
+
+    private BooleanExpression neBoardProjectStatus(ProjectStatus projectStatus) {
+        if(projectStatus == null) {
+            return null;
+        }
+
+        return qProject.status.ne(projectStatus);
     }
 }

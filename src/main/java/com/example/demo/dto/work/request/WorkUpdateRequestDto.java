@@ -8,6 +8,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class WorkUpdateRequestDto {
     private String content;
+    private String contentDetail;
     private LocalDate startDate;
     private LocalDate endDate;
     private String progressStatusCode;

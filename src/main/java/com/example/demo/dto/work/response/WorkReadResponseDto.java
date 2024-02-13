@@ -20,18 +20,20 @@ public class WorkReadResponseDto {
     private WorkAssignedUserInfoResponseDto assignedUser;
     private String lastModifiedMemberNickname;
     private String content;
+    private String contentDetail;
     private LocalDate startDate;
     private LocalDate endDate;
     private String progressStatus;
 
     public WorkReadResponseDto(Long workId, Long projectId, Long milestoneId, WorkAssignedUserInfoResponseDto assignedUser, String lastModifiedMemberNickname,
-                               String content, LocalDate startDate, LocalDate endDate, ProgressStatus progressStatus) {
+                               String content, String contentDetail, LocalDate startDate, LocalDate endDate, ProgressStatus progressStatus) {
         this.workId = workId;
         this.projectId = projectId;
         this.milestoneId = milestoneId;
         this.assignedUser = assignedUser;
         this.lastModifiedMemberNickname = lastModifiedMemberNickname;
         this.content = content;
+        this.contentDetail = contentDetail;
         this.startDate = startDate;
         this.endDate = endDate;
         this.progressStatus = progressStatus.getDescription();
@@ -45,6 +47,7 @@ public class WorkReadResponseDto {
                 .assignedUser(WorkAssignedUserInfoResponseDto.of(projectMember.getId(), assignedUser.getNickname()))
                 .lastModifiedMemberNickname(work.getLastModifiedMember().getUser().getNickname())
                 .content(work.getContent())
+                .contentDetail(work.getContentDetail())
                 .startDate(work.getStartDate())
                 .endDate(work.getEndDate())
                 .progressStatus(work.getProgressStatus().getDescription())

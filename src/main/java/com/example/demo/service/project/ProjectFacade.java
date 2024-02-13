@@ -78,6 +78,7 @@ public class ProjectFacade {
         List<ProjectMeResponseDto> content = new ArrayList<>();
         for (Project project : slicedProjects) {
             List<MyProjectMemberResponseDto> myProjectMembers = project.getProjectMembers().stream()
+                    .filter(projectMember -> projectMember.getStatus().equals(ProjectMemberStatus.PARTICIPATING))
                     .map(projectMember -> MyProjectMemberResponseDto.of(projectMember, UserMyProjectResponseDto.of(projectMember.getUser())))
                     .collect(Collectors.toList());
 

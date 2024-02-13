@@ -11,6 +11,7 @@ public class ProjectMemberWorkWithTrustScoreResponseDto {
 
     private Long workId;
     private String workContent;
+    private String workContentDetail;
     private LocalDate startDate;
     private LocalDate endDate;
     private String progressStatus;
@@ -18,10 +19,11 @@ public class ProjectMemberWorkWithTrustScoreResponseDto {
     private Integer point;
     private String point_type;
 
-    public ProjectMemberWorkWithTrustScoreResponseDto(Long workId, String workContent, LocalDate startDate,
+    public ProjectMemberWorkWithTrustScoreResponseDto(Long workId, String workContent, String workContentDetail, LocalDate startDate,
                                                       LocalDate endDate, ProgressStatus progressStatus, Long trustScoreHistoryId, Integer point) {
         this.workId = workId;
         this.workContent = workContent;
+        this.workContentDetail = workContentDetail;
         this.startDate = startDate;
         this.endDate = endDate;
         this.progressStatus = progressStatus.getDescription();

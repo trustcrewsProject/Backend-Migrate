@@ -56,6 +56,7 @@ public class WorkRepositoryImpl implements WorkRepositoryCustom{
                                 ),
                                 qLastModifiedProjectMember.user.nickname,
                                 qWork.content,
+                                qWork.contentDetail,
                                 qWork.startDate,
                                 qWork.endDate,
                                 qWork.progressStatus
@@ -90,6 +91,7 @@ public class WorkRepositoryImpl implements WorkRepositoryCustom{
                                 ProjectMemberWorkWithTrustScoreResponseDto.class,
                                 qWork.id,
                                 qWork.content,
+                                qWork.contentDetail,
                                 qWork.startDate,
                                 qWork.endDate,
                                 qWork.progressStatus,

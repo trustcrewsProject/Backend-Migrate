@@ -1,5 +1,6 @@
 package com.example.demo.model.user;
 
+import com.example.demo.constant.OAuthProvider;
 import com.example.demo.constant.Role;
 import com.example.demo.constant.UserStatus;
 import com.example.demo.global.common.BaseTimeEntity;
@@ -48,6 +49,13 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "oauth_provider")
+    private OAuthProvider oAuthProvider;
+
+    @Column(name = "oauth_provider_id")
+    private String oAuthProviderId;
+
     @Builder
     private User(
             String email,
@@ -57,7 +65,9 @@ public class User extends BaseTimeEntity {
             String intro,
             Position position,
             Role role,
-            UserStatus status) {
+            UserStatus status,
+            OAuthProvider oAuthProvider,
+            String oAuthProviderId) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
@@ -66,6 +76,8 @@ public class User extends BaseTimeEntity {
         this.position = position;
         this.role = role;
         this.status = status;
+        this.oAuthProvider = oAuthProvider;
+        this.oAuthProviderId = oAuthProviderId;
     }
 
     // 기술스택 목록 등록

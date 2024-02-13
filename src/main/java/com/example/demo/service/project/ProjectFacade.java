@@ -56,7 +56,7 @@ public class ProjectFacade {
             throw PageNationCustomException.INVALID_PAGE_NUMBER;
         }
 
-        if(itemCount > 6) {
+        if(itemCount > 8) {
             throw PageNationCustomException.INVALID_PAGE_ITEM_COUNT;
         }
 

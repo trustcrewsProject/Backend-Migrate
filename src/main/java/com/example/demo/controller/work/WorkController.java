@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 public class WorkController {
@@ -27,7 +29,7 @@ public class WorkController {
             @AuthenticationPrincipal PrincipalDetails user,
             @PathVariable("projectId") Long projectId,
             @PathVariable("milestoneId") Long milestoneId,
-            @RequestBody WorkCreateRequestDto workCreateRequestDto) {
+            @Valid @RequestBody WorkCreateRequestDto workCreateRequestDto) {
         workFacade.create(user.getId(), projectId, milestoneId, workCreateRequestDto);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }

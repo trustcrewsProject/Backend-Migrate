@@ -20,4 +20,7 @@ public interface UserRepository extends JpaRepository<User, Long>, UserRepositor
     // provider, provider_id로 회원조회
     @Query(value = "select u from User u where u.oAuthProvider = :provider and u.oAuthProviderId = :providerId")
     Optional<User> findByProviderAndProviderId(OAuthProvider provider, String providerId);
+
+    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM User u WHERE u.oAuthProvider = :oAuthProvider AND u.oAuthProviderId = :oAuthProviderId")
+    boolean existsByOAuthProviderAndOAuthProviderId(OAuthProvider oAuthProvider, String oAuthProviderId);
 }

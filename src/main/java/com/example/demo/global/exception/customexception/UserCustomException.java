@@ -19,6 +19,9 @@ public class UserCustomException extends CustomException {
     public static final UserCustomException INVALID_AUTHENTICATION =
             new UserCustomException(UserErrorCode.INVALID_AUTHENTICATION);
 
+    public static final UserCustomException ALREADY_OAUTH_USER =
+            new UserCustomException(UserErrorCode.ALREADY_OAUTH_USER);
+
     public UserCustomException(UserErrorCode userErrorCode) {
         super(userErrorCode);
     }

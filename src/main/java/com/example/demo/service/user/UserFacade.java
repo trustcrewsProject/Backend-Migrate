@@ -1,10 +1,12 @@
 package com.example.demo.service.user;
 
+import com.example.demo.constant.OAuthProvider;
 import com.example.demo.constant.Role;
 import com.example.demo.constant.TrustScoreTypeIdentifier;
 import com.example.demo.constant.UserStatus;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.common.ResponseDto;
+import com.example.demo.dto.oauth2.request.OAuth2UserCreateRequestDto;
 import com.example.demo.dto.position.response.PositionInfoResponseDto;
 import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
 import com.example.demo.dto.trust_grade.response.TrustGradeInfoResponseDto;
@@ -100,6 +102,57 @@ public class UserFacade {
 
         return ResponseDto.success("회원등록이 완료되었습니다.", saveUser.getId());
     }
+
+    /**
+     * 소셜 회원가입
+     * @param oAuthUserCreateRequest
+     * @return user.id
+     */
+    @Transactional
+    public ResponseDto<?> createOAuthUser(OAuth2UserCreateRequestDto oAuthUserCreateRequest) {
+        OAuthProvider oAuthProvider = OAuthProvider.findOAuthProvider(oAuthUserCreateRequest.getOAuthProvider());
+        if(userService.existUserByOAuthProviderAndOAuthProviderId(oAuthProvider, oAuthUserCreateRequest.getOAuthProviderId())) {
+            throw UserCustomException.ALREADY_OAUTH_USER;
+        }
+
+        // 회원 포지션 조회
+        Position position = positionService.findById(oAuthUserCreateRequest.getPositionId());
+
+        // 회원 엔티티 생성
+        User user =
+                User.builder()
+                        .nickname(oAuthUserCreateRequest.getNickname())
+                        .profileImgSrc("")
+                        .intro(oAuthUserCreateRequest.getIntro())
+                        .position(position)
+                        .role(Role.USER)
+                        .status(UserStatus.ACTIVE)
+                        .oAuthProvider(oAuthProvider)
+                        .oAuthProviderId(oAuthUserCreateRequest.getOAuthProviderId())
+                        .build();
+
+        // 회원 저장
+        User oAuthUser = userService.save(user);
+
+        // 신뢰점수 저장
+        TrustScore trustScore = addInitialTrustScoreReturnResponse(oAuthUser);
+
+        // 회원에 신뢰점수 세팅
+        oAuthUser.setTrustScore(trustScore);
+
+        // 회원 기술스택 목록 저장
+        List<UserTechnologyStack> userTechnologyStackList =
+                userTechnologyStackService.saveUserTechStacksAndReturnResponse(
+                        oAuthUser,
+                        technologyStackService.findTechnologyStackListByIds(
+                                oAuthUserCreateRequest.getTechStackIds()));
+
+        // 회원 기술스택 목록 세팅
+        oAuthUser.setTechStacks(userTechnologyStackList);
+
+        return ResponseDto.success("OAuth 회원등록이 완료되었습니다.", oAuthUser.getId());
+    }
+
 
     // 신뢰점수 저장 및 반환
     private TrustScore addInitialTrustScoreReturnResponse(User user) {

@@ -1,6 +1,7 @@
 package com.example.demo.controller.user;
 
 import com.example.demo.dto.common.ResponseDto;
+import com.example.demo.dto.oauth2.request.OAuth2UserCreateRequestDto;
 import com.example.demo.dto.user.request.UserCreateRequestDto;
 import com.example.demo.dto.user.request.UserUpdateRequestDto;
 import com.example.demo.security.custom.PrincipalDetails;
@@ -51,6 +52,14 @@ public class UserController {
             @Valid @RequestBody UserCreateRequestDto createRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userFacade.createUser(createRequest));
     }
+
+    // 소셜 회원가입
+    @PostMapping("/oauth2/public")
+    public ResponseEntity<ResponseDto<?>> oAuthSignup(
+            @Valid @RequestBody OAuth2UserCreateRequestDto oAuthUserCreateRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userFacade.createOAuthUser(oAuthUserCreateRequest));
+    }
+
 
     // 회원수정
     @PutMapping()

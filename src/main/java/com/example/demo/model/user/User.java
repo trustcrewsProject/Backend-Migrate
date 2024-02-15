@@ -36,7 +36,7 @@ public class User extends BaseTimeEntity {
     @JoinColumn(name = "position_id")
     private Position position;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.PERSIST)
     private List<UserTechnologyStack> techStacks = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)

@@ -50,7 +50,6 @@ public class UserFacade {
     private final PositionService positionService;
     private final TechnologyStackService technologyStackService;
     private final TrustScoreService trustScoreService;
-    private final UserTechnologyStackService userTechnologyStackService;
     private final UserProjectHistoryService userProjectHistoryService;
     private final AwsS3FileService awsS3FileService;
 
@@ -88,17 +87,16 @@ public class UserFacade {
         TrustScore trustScore = addInitialTrustScoreReturnResponse(saveUser);
 
         // 회원에 신뢰점수 세팅
-        saveUser.setTrustScore(trustScore);
+        user.setTrustScore(trustScore);
 
-        // 회원 기술스택 목록 저장
-        List<UserTechnologyStack> userTechnologyStackList =
-                userTechnologyStackService.saveUserTechStacksAndReturnResponse(
-                        saveUser,
-                        technologyStackService.findTechnologyStackListByIds(
-                                createRequest.getTechStackIds()));
-
-        // 회원 기술스택 목록 세팅
-        saveUser.setTechStacks(userTechnologyStackList);
+        // 회원 기술스택 목록 추가
+        for(Long technologyStackId : createRequest.getTechStackIds()) {
+            UserTechnologyStack userTechnologyStack = UserTechnologyStack.builder()
+                    .user(saveUser)
+                    .technologyStack(technologyStackService.findById(technologyStackId))
+                    .build();
+            saveUser.addTechStack(userTechnologyStack);
+        }
 
         return ResponseDto.success("회원등록이 완료되었습니다.", saveUser.getId());
     }
@@ -140,15 +138,14 @@ public class UserFacade {
         // 회원에 신뢰점수 세팅
         oAuthUser.setTrustScore(trustScore);
 
-        // 회원 기술스택 목록 저장
-        List<UserTechnologyStack> userTechnologyStackList =
-                userTechnologyStackService.saveUserTechStacksAndReturnResponse(
-                        oAuthUser,
-                        technologyStackService.findTechnologyStackListByIds(
-                                oAuthUserCreateRequest.getTechStackIds()));
-
-        // 회원 기술스택 목록 세팅
-        oAuthUser.setTechStacks(userTechnologyStackList);
+        // 회원 기술스택 목록 추가
+        for(Long technologyStackId : oAuthUserCreateRequest.getTechStackIds()) {
+            UserTechnologyStack userTechnologyStack = UserTechnologyStack.builder()
+                    .user(oAuthUser)
+                    .technologyStack(technologyStackService.findById(technologyStackId))
+                    .build();
+            oAuthUser.addTechStack(userTechnologyStack);
+        }
 
         return ResponseDto.success("OAuth 회원등록이 완료되었습니다.", oAuthUser.getId());
     }
@@ -207,8 +204,6 @@ public class UserFacade {
         List<UserTechnologyStack> deleteList =
                 hasTechStackToRemove(currentUser.getTechStacks(), updateRequest.getTechStackIds());
         if (!deleteList.isEmpty()) {
-            // 저장된 UserTechnologyStack 삭제
-            userTechnologyStackService.deleteUserTechStacks(deleteList);
             // 회원 기술스택 목록에서 삭제
             deleteList.forEach(currentUser::removeTechStack);
         }
@@ -217,10 +212,13 @@ public class UserFacade {
         List<TechnologyStack> addTechStacks =
                 hasTechStackToAdd(currentUser.getTechStacks(), updateRequest.getTechStackIds());
         if (Objects.nonNull(addTechStacks)) {
-            // 새로운 UserTechnologyStack 저장
-            List<UserTechnologyStack> addList =
-                    userTechnologyStackService.saveUserTechStacksAndReturnResponse(
-                            currentUser, addTechStacks);
+            List<UserTechnologyStack> addList = addTechStacks.stream()
+                    .map(technologyStack -> UserTechnologyStack.builder()
+                            .user(currentUser)
+                            .technologyStack(technologyStack)
+                            .build())
+                    .collect(Collectors.toList());
+
             // 회원 기술스택 목록에 추가
             addList.forEach(currentUser::addTechStack);
         }
@@ -480,7 +478,7 @@ public class UserFacade {
         currentUser.deleteUser();
 
         // 회원 기술스택 목록 삭제
-        userTechnologyStackService.deleteUserTechStacks(currentUser.getTechStacks());
+        currentUser.removeAllTechStacks();
 
         return ResponseDto.success("회원 탈퇴가 완료되었습니다.");
     }

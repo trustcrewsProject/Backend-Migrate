@@ -36,7 +36,7 @@ public class User extends BaseTimeEntity {
     @JoinColumn(name = "position_id")
     private Position position;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.PERSIST)
     private List<UserTechnologyStack> techStacks = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
@@ -94,6 +94,9 @@ public class User extends BaseTimeEntity {
     public void addTechStack(UserTechnologyStack userTechnologyStack) {
         this.techStacks.add(userTechnologyStack);
     }
+
+    // 모든 기술스택 삭제
+    public void removeAllTechStacks() { this.techStacks.clear(); }
 
     // 신뢰점수 등록
     public void setTrustScore(TrustScore trustScore) {

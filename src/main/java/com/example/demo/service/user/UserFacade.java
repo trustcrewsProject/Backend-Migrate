@@ -479,6 +479,9 @@ public class UserFacade {
         // 회원 삭제(회원 엔티티의 status 필드에 UserStatus.DELETED 적용)
         currentUser.deleteUser();
 
+        // 회원 기술스택 목록 삭제
+        userTechnologyStackService.deleteUserTechStacks(currentUser.getTechStacks());
+
         return ResponseDto.success("회원 탈퇴가 완료되었습니다.");
     }
 }

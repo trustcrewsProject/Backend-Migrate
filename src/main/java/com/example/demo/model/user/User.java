@@ -95,6 +95,9 @@ public class User extends BaseTimeEntity {
         this.techStacks.add(userTechnologyStack);
     }
 
+    // 모든 기술스택 삭제
+    public void removeAllTechStacks() { this.techStacks.clear(); }
+
     // 신뢰점수 등록
     public void setTrustScore(TrustScore trustScore) {
         this.trustScore = trustScore;

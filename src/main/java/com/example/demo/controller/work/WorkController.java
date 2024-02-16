@@ -66,8 +66,10 @@ public class WorkController {
     }
 
     @DeleteMapping("/api/work/{workId}")
-    public ResponseEntity<ResponseDto<?>> delete(@PathVariable("workId") Long workId) {
-        workService.delete(workId);
+    public ResponseEntity<ResponseDto<?>> delete(
+            @AuthenticationPrincipal PrincipalDetails user,
+            @PathVariable("workId") Long workId) {
+        workFacade.deleteWork(user.getId(), workId);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 

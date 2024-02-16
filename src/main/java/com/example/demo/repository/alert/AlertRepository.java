@@ -4,6 +4,8 @@ import com.example.demo.model.alert.Alert;
 import com.example.demo.model.project.Project;
 import java.util.List;
 import java.util.Optional;
+
+import com.example.demo.model.work.Work;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -26,4 +28,6 @@ public interface AlertRepository extends JpaRepository<Alert, Long>, AlertReposi
     Optional<List<Alert>> findCrewAlertsByProject(@Param(value = "project") Project project);
 
     void deleteAllByProject(Project project);
+
+    void deleteAllByWork(Work work);
 }

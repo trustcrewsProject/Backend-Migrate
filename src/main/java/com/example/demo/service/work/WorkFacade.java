@@ -1,6 +1,7 @@
 package com.example.demo.service.work;
 
 import com.example.demo.constant.ProgressStatus;
+import com.example.demo.constant.ProjectMemberStatus;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.trust_score.AddPointDto;
 import com.example.demo.dto.work.request.*;
@@ -187,5 +188,25 @@ public class WorkFacade {
 
         // 신뢰점수 부여 및 신뢰점수 내역 추가
         trustScoreService.addPoint(addPoint);
+    }
+
+    @Transactional
+    public void deleteWork(Long userId, Long workId) {
+        User currentUser = userService.findById(userId);
+        Work work = workService.findById(workId);
+        Project project = work.getProject();
+
+        // 요청한 회원이 해당 프로젝트의 멤버인지 검증
+        ProjectMember projectMember = projectMemberService.findProjectMemberByProjectAndUser(project, currentUser);
+        if(projectMember.getStatus().equals(ProjectMemberStatus.WITHDRAW) ||
+                !project.getId().equals(projectMember.getProject().getId())) {
+            throw WorkCustomException.NO_PERMISSION_TO_TASK;
+        }
+
+        // 해당 업무와 관련된 알림목록 삭제
+        alertService.deleteAllByWork(work);
+
+        // 해당 업무 삭제
+        workService.delete(work);
     }
 }

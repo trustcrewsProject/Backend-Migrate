@@ -8,6 +8,7 @@ import com.example.demo.global.exception.customexception.AlertCustomException;
 import com.example.demo.model.alert.Alert;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.user.User;
+import com.example.demo.model.work.Work;
 import com.example.demo.repository.alert.AlertRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -61,4 +62,7 @@ public class AlertServiceImpl implements AlertService {
     public void deleteAllByProject(Project project) {
         alertRepository.deleteAllByProject(project);
     }
+
+    @Override
+    public void deleteAllByWork(Work work) { alertRepository.deleteAllByWork(work); }
 }

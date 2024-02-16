@@ -7,6 +7,7 @@ import com.example.demo.model.project.Project;
 import java.util.List;
 
 import com.example.demo.model.user.User;
+import com.example.demo.model.work.Work;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,4 +26,6 @@ public interface AlertService {
     PaginationResponseDto findAlertsBySendUserIdAndType(User user, int pageIndex, int itemCount);
 
     void deleteAllByProject(Project project);
+
+    void deleteAllByWork(Work work);
 }

@@ -44,10 +44,7 @@ public class WorkServiceImpl implements WorkService {
                 .findWorkByProjectIdAndMilestoneIdOrderByStartDateAsc(projectId, milestoneId, pageable);
     }
 
-    public void delete(Long workId) {
-        Work work = findById(workId);
-        workRepository.delete(work);
-    }
+    public void delete(Work work) { workRepository.delete(work); }
 
     @Override
     public PaginationResponseDto findWorksWithTrustScoreHistoryByProjectIdAndAssignedUserId(Long projectId, Long assignedUserId, Pageable pageable) {

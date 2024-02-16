@@ -22,7 +22,7 @@ public interface WorkService {
 
     public PaginationResponseDto findWorksByProjectAndMilestone(Long projectId, Long milestoneId, Pageable pageable);
 
-    public void delete(Long workId);
+    public void delete(Work work);
 
     // 특정 프로젝트에 할당된 특정 회원의 업무 내역 + 업무 신뢰점수 내역 조회
     PaginationResponseDto findWorksWithTrustScoreHistoryByProjectIdAndAssignedUserId(Long projectId, Long assignedUserId, Pageable pageable);

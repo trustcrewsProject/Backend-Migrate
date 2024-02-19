@@ -35,6 +35,8 @@ public class TrustScoreHistory extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "trust_score_history_id")
     Long id;
+    /** 신뢰점수 내용 */
+    private String content;
     /** 사용자 자동생성 식별자 */
     @Column private Long userId;
     /** 신뢰점수타입 자동생성 식별자 */
@@ -50,12 +52,14 @@ public class TrustScoreHistory extends BaseTimeEntity {
 
     @Builder
     public TrustScoreHistory(
+            String content,
             Long userId,
             Long trustScoreTypeId,
             Long projectId,
             Long milestoneId,
             int score,
             Long workId) {
+        this.content = content;
         this.userId = userId;
         this.trustScoreTypeId = trustScoreTypeId;
         this.projectId = projectId;

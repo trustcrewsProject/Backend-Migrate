@@ -8,6 +8,7 @@ import lombok.Data;
 @Data
 @ValidAddPointDto
 public class AddPointDto {
+    private String content;
     private Long userId;
     private Long projectId;
     private Long milestoneId;
@@ -24,7 +25,8 @@ public class AddPointDto {
 
     @Builder
     public AddPointDto(
-            Long userId, Long projectId, Long milestoneId, Long workId, Long scoreTypeId) {
+            String content, Long userId, Long projectId, Long milestoneId, Long workId, Long scoreTypeId) {
+        this.content = content;
         this.userId = userId;
         this.projectId = projectId;
         this.milestoneId = milestoneId;

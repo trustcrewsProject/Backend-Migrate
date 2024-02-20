@@ -77,6 +77,7 @@ public class TrustScoreServiceImpl implements TrustScoreService {
     private TrustScoreHistory createAndSaveHistory(AddPointDto addPointDto, int score) {
         TrustScoreHistory history =
                 TrustScoreHistory.builder()
+                        .content(addPointDto.getContent())
                         .userId(addPointDto.getUserId())
                         .trustScoreTypeId(addPointDto.getScoreTypeId())
                         .projectId(addPointDto.getProjectId())

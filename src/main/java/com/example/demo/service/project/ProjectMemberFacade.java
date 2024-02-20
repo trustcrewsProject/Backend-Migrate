@@ -240,7 +240,8 @@ public class ProjectMemberFacade {
         ProjectMember projectMember = projectMemberService.findById(projectMemberId);
 
         // 해당 프로젝트 멤버의 업무 + 업무 별 신뢰점수 내역 & 해당 프로젝트 멤버 업무 총 개수 조회
-        PaginationResponseDto result = workService.findWorksWithTrustScoreHistoryByProjectIdAndAssignedUserId(projectMember.getProject().getId(), projectMember.getUser().getId(), PageRequest.of(pageIndex, itemCount));
+        PaginationResponseDto result = trustScoreHistoryService
+                .getWorkTrustScoreHistories(projectMember.getProject(), projectMember.getUser(), pageIndex, itemCount);
 
         return result;
     }

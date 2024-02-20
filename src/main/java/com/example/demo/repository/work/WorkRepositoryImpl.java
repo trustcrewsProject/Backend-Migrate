@@ -82,40 +82,6 @@ public class WorkRepositoryImpl implements WorkRepositoryCustom{
         return PaginationResponseDto.of(content, totalPages);
     }
 
-    @Override
-    public PaginationResponseDto findWorksWithTrustScoreHistoryByProjectIdAndAssignedUserIdOrderByStartDateDesc(Long projectId, Long assignedUserId, Pageable pageable) {
-        // 프로젝트 멤버 업무 목록 + 업무 별 신뢰점수 내역 조회
-        List<ProjectMemberWorkWithTrustScoreResponseDto> content = jpaQueryFactory
-                .select(
-                        Projections.constructor(
-                                ProjectMemberWorkWithTrustScoreResponseDto.class,
-                                qWork.id,
-                                qWork.content,
-                                qWork.contentDetail,
-                                qWork.startDate,
-                                qWork.endDate,
-                                qWork.progressStatus,
-                                qTrustScoreHistory.id,
-                                qTrustScoreHistory.score
-                        )
-                )
-                .from(qWork)
-                .join(qTrustScoreHistory).on(qWork.id.eq(qTrustScoreHistory.workId))
-                .where(
-                        eqProjectId(projectId),
-                        eqAssignedUserId(assignedUserId)
-                )
-                .orderBy(qWork.startDate.desc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
-
-        // 업무 전체 갯수 조회
-        long totalPages = getTotalItemCount(projectId, null, assignedUserId);
-
-        return PaginationResponseDto.of(content, totalPages);
-    }
-
     // 조건에 맞는 업무의 총 개수 조회
     private Long getTotalItemCount(Long projectId, Long milestoneId, Long assignedUserId) {
         return jpaQueryFactory

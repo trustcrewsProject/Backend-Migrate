@@ -12,20 +12,17 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface WorkService {
 
-    public Work save(Work work);
+    Work save(Work work);
 
-    public Work findById(Long id);
+    Work findById(Long id);
 
-    public List<Work> findWorksByProject(Project project);
+    List<Work> findWorksByProject(Project project);
 
-    public Work findLastCompleteWork(Project project, User user);
+    Work findLastCompleteWork(Project project, User user);
 
-    public PaginationResponseDto findWorksByProjectAndMilestone(Long projectId, Long milestoneId, Pageable pageable);
+    PaginationResponseDto findWorksByProjectAndMilestone(Long projectId, Long milestoneId, Pageable pageable);
 
-    public void delete(Work work);
-
-    // 특정 프로젝트에 할당된 특정 회원의 업무 내역 + 업무 신뢰점수 내역 조회
-    PaginationResponseDto findWorksWithTrustScoreHistoryByProjectIdAndAssignedUserId(Long projectId, Long assignedUserId, Pageable pageable);
+    void delete(Work work);
 
     void deleteAllByProject(Project project);
 }

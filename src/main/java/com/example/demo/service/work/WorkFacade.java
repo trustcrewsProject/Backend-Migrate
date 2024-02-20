@@ -172,13 +172,17 @@ public class WorkFacade {
         projectMemberService.verifiedProjectManager(project, currentUser);
 
         Work work = alert.getWork();
+        ProgressStatus workStatus = work.getProgressStatus();
         // 업무가 기간만료된 상태라면
-        if(work.getProgressStatus().equals(ProgressStatus.EXPIRED)) {
+        if(workStatus.equals(ProgressStatus.EXPIRED)) {
             workConfirmRequest.updateScoreTypeId(22L);
         }
 
         // 신뢰점수 부여 DTO
         AddPointDto addPoint = AddPointDto.builder()
+                .content(work.getContent() + " " +
+                        (workStatus.equals(ProgressStatus.COMPLETION) ? (workConfirmRequest.getScoreTypeId().equals(1L) ? "완수" : "미흡") : "만료")
+                )
                 .userId(alert.getSendUser().getId())
                 .projectId(project.getId())
                 .milestoneId(alert.getMilestone().getId())

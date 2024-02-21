@@ -3,6 +3,7 @@ package com.example.demo.global.validation.validator;
 import static com.example.demo.constant.TrustScoreTypeIdentifier.*;
 
 import com.example.demo.constant.ProgressStatus;
+import com.example.demo.constant.ProjectMemberStatus;
 import com.example.demo.dto.trust_score.AddPointDto;
 import com.example.demo.global.exception.customexception.ProjectCustomException;
 import com.example.demo.global.exception.customexception.UserCustomException;
@@ -190,10 +191,13 @@ public class AddPointDtoValidator implements ConstraintValidator<ValidAddPointDt
         Optional<ProjectMember> findProjectMember =
                 projectMemberRepository.findProjectMemberByProjectAndUser(project, user);
 
-        if (findProjectMember.isPresent()) {
-            log.info(
-                    "잘못된 입력값. 프로젝트에 회원 정보 존재. findProjectMemberId : {}",
-                    findProjectMember.get().getId());
+        if (!findProjectMember.isPresent()) {
+            log.info("잘못된 입력값. 프로젝트에 해당 멤버가 존재하지 않음.");
+            return false;
+        }
+
+        if(!findProjectMember.get().getStatus().equals(ProjectMemberStatus.PARTICIPATING)) {
+            log.info("잘못된 입력값. 프로젝트 멤버의 상태가 이미 탈퇴했거나 참여중이 아닌 회원. projectMemberStatus : {}", findProjectMember.get().getStatus());
             return false;
         }
 

@@ -9,6 +9,7 @@ import com.example.demo.dto.project.request.ProjectWithdrawConfirmRequestDto;
 import com.example.demo.dto.projectmember.response.*;
 import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
 import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
+import com.example.demo.dto.trust_score.AddPointDto;
 import com.example.demo.dto.user.response.UserCrewDetailResponseDto;
 import com.example.demo.dto.user.response.UserReadProjectCrewResponseDto;
 import com.example.demo.global.exception.customexception.PageNationCustomException;
@@ -23,6 +24,7 @@ import com.example.demo.model.user.UserTechnologyStack;
 import com.example.demo.model.work.Work;
 import com.example.demo.service.alert.AlertService;
 import com.example.demo.service.trust_score.TrustScoreHistoryService;
+import com.example.demo.service.trust_score.TrustScoreService;
 import com.example.demo.service.user.UserProjectHistoryService;
 import com.example.demo.service.user.UserService;
 import com.example.demo.service.work.WorkService;
@@ -44,6 +46,7 @@ public class ProjectMemberFacade {
     private final ProjectService projectService;
     private final WorkService workService;
     private final UserProjectHistoryService userProjectHistoryService;
+    private final TrustScoreService trustScoreService;
     private final TrustScoreHistoryService trustScoreHistoryService;
 
     /**
@@ -133,13 +136,23 @@ public class ProjectMemberFacade {
         // 프로젝트 매니저 검증
         projectMemberService.verifiedProjectManager(project, currentUser);
 
+        User user = projectMember.getUser();
         // 사용자 프로젝트 이력에 강제탈퇴 이력 추가
         UserProjectHistory forcedWithdrawalHistory = UserProjectHistory.builder()
                 .project(project)
-                .user(projectMember.getUser())
+                .user(user)
                 .status(UserProjectHistoryStatus.FORCED_WITHDRAWAL)
                 .build();
         userProjectHistoryService.save(forcedWithdrawalHistory);
+
+        // 강제탈퇴에 따른 신뢰점수 차감
+        AddPointDto addPoint = AddPointDto.builder()
+                .content(user.getNickname() + "님 " + project.getName() + " 강제탈퇴")
+                .userId(user.getId())
+                .projectId(project.getId())
+                .scoreTypeId(5L)
+                .build();
+        trustScoreService.addPoint(addPoint);
 
         // 프로젝트 멤버 상태 탈퇴로 변경
         projectMember.updateStatus(ProjectMemberStatus.WITHDRAW);

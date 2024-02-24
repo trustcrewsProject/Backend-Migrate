@@ -48,6 +48,7 @@ public class Alert extends BaseTimeEntity {
 
     private String content;
 
+    @Enumerated(value = EnumType.STRING)
     private AlertType type;
 
     @Column(name = "checked_yn")

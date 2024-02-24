@@ -34,6 +34,7 @@ public class ProjectMember extends BaseTimeEntity {
     @JoinColumn(name = "project_member_auth_id")
     private ProjectMemberAuth projectMemberAuth;
 
+    @Enumerated(value = EnumType.STRING)
     @Column(name = "project_member_status")
     private ProjectMemberStatus status;
 

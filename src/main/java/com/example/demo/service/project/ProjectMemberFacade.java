@@ -154,6 +154,16 @@ public class ProjectMemberFacade {
                 .build();
         trustScoreService.addPoint(addPoint);
 
+        // 강제탈퇴 알림 생성
+        Alert forcedWithdrawalAlert = Alert.builder()
+                .project(project)
+                .sendUser(currentUser)
+                .content(user.getNickname() + "님이 " + project.getName() + "에서 강제탈퇴 처리됐습니다.")
+                .type(AlertType.FORCEDWITHDRAWL)
+                .checked_YN(false)
+                .build();
+        alertService.save(forcedWithdrawalAlert);
+
         // 프로젝트 멤버 상태 탈퇴로 변경
         projectMember.updateStatus(ProjectMemberStatus.WITHDRAW);
     }

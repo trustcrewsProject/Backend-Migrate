@@ -70,7 +70,7 @@ public class ProjectMemberFacade {
                         .sendUser(user)
                         .content(user.getNickname() + "님이 프로젝트 탈퇴 신청을 했습니다.")
                         .position(projectMember.getPosition())
-                        .type(AlertType.WITHDRAWL)
+                        .type(AlertType.WITHDRAWAL)
                         .checked_YN(false)
                         .build();
 
@@ -115,7 +115,7 @@ public class ProjectMemberFacade {
                     .project(project)
                     .sendUser(currentUser)
                     .content(user.getNickname() + "님이 프로젝트를 탈퇴했습니다.")
-                    .type(AlertType.WITHDRAWL)
+                    .type(AlertType.WITHDRAWAL)
                     .checked_YN(false)
                     .build();
             alertService.save(alert);
@@ -159,7 +159,7 @@ public class ProjectMemberFacade {
                 .project(project)
                 .sendUser(currentUser)
                 .content(user.getNickname() + "님이 " + project.getName() + "에서 강제탈퇴 처리됐습니다.")
-                .type(AlertType.FORCEDWITHDRAWL)
+                .type(AlertType.FORCED_WITHDRAWAL)
                 .checked_YN(false)
                 .build();
         alertService.save(forcedWithdrawalAlert);

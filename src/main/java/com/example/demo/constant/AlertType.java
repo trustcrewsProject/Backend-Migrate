@@ -4,6 +4,6 @@ public enum AlertType {
     RECRUIT,
     WORK,
     ADD,
-    WITHDRAWL,
-    FORCEDWITHDRAWL,
+    WITHDRAWAL,
+    FORCED_WITHDRAWAL,
 }

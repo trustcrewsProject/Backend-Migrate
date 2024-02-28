@@ -16,13 +16,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api/milestone")
 @RequiredArgsConstructor
 public class MileStoneController {
 
     private final MilestoneService milestoneService;
     private final MileStoneFacade mileStoneFacade;
 
-    @PostMapping("/api/milestone/project/{projectId}")
+    @PostMapping("/project/{projectId}")
     public ResponseEntity<ResponseDto<?>> create(
             @PathVariable("projectId") Long projectId,
             @RequestBody MilestoneCreateRequestDto milestoneCreateRequestDto) {
@@ -31,20 +32,20 @@ public class MileStoneController {
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 
-    @GetMapping("/api/milestone/project/{projectId}")
+    @GetMapping("/project/{projectId}")
     public ResponseEntity<ResponseDto<?>> getAllByProject(
             @PathVariable("projectId") Long projectId) {
         List<MilestoneReadResponseDto> result = mileStoneFacade.getAllByProject(projectId);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 
-    @GetMapping("/api/milestone/{milestoneId}")
+    @GetMapping("/{milestoneId}")
     public ResponseEntity<ResponseDto<?>> getOne(@PathVariable("milestoneId") Long mileStoneId) {
         MilestoneReadResponseDto result = milestoneService.getOne(mileStoneId);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 
-    @PatchMapping("/api/milestone/{milestoneId}")
+    @PatchMapping("/{milestoneId}")
     public ResponseEntity<ResponseDto<?>> update(
             @PathVariable("milestoneId") Long mileStoneId,
             @RequestBody MileStoneUpdateRequestDto mileStoneUpdateRequestDto) {
@@ -52,13 +53,13 @@ public class MileStoneController {
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 
-    @DeleteMapping("/api/milestone/{milestoneId}")
+    @DeleteMapping("/{milestoneId}")
     public ResponseEntity<ResponseDto<?>> delete(@PathVariable("milestoneId") Long mileStoneId) {
         milestoneService.delete(mileStoneId);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 
-    @PatchMapping("/api/milestone/{milestoneId}/content")
+    @PatchMapping("/{milestoneId}/content")
     public ResponseEntity<ResponseDto<?>> updateContent(
             @PathVariable("milestoneId") Long mileStoneId,
             @RequestBody MilestoneUpdateContentRequestDto milestoneUpdateContentRequestDto) {
@@ -66,7 +67,7 @@ public class MileStoneController {
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 
-    @PatchMapping("/api/milestone/{milestoneId}/date")
+    @PatchMapping("/{milestoneId}/date")
     public ResponseEntity<ResponseDto<?>> updateDate(
             @PathVariable("milestoneId") Long mileStoneId,
             @RequestBody MilestoneUpdateDateRequestDto milestoneUpdateDateRequestDto) {

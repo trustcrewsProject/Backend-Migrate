@@ -23,18 +23,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/api/trust-score-type")
 @RequiredArgsConstructor
 public class TrustScoreTypeController {
     private final TrustScoreTypeService trustScoreTypeService;
     // TODO : 코드 리팩토링, 두 메서드 통합
     /** 신뢰점수타입 관리자 초기 화면 */
-    @GetMapping("/api/trust-score-type")
+    @GetMapping()
     public ResponseEntity<ResponseDto<?>> getAll() {
         List<TrustScoreTypeReadResponseDto> dto = trustScoreTypeService.getAllAndReturnDto();
         return new ResponseEntity<>(ResponseDto.success("success", dto), HttpStatus.OK);
     }
     /** 신규 신뢰점수타입 생성 */
-    @GetMapping("/api/trust-score-type/search")
+    @GetMapping("/search")
     public ResponseEntity<ResponseDto<?>> getSearchResults(
             @RequestParam(name = "isDeleted", required = false) Boolean isDeleted,
             @RequestParam(name = "isParentType", required = false) Boolean isParentType,
@@ -58,7 +59,7 @@ public class TrustScoreTypeController {
     }
 
     /** 개별 신뢰점수타입 상세 조회 */
-    @GetMapping("/api/trust-score-type/{trustScoreTypeId}")
+    @GetMapping("/{trustScoreTypeId}")
     public ResponseEntity<ResponseDto<?>> getSearchResults(
             @PathVariable(name = "trustScoreTypeId") Long trustScoreTypeId) {
         TrustScoreTypeReadResponseDto responseDto =
@@ -67,7 +68,7 @@ public class TrustScoreTypeController {
     }
 
     /** 신규 신뢰점수타입 생성 */
-    @PostMapping("/api/trust-score-type")
+    @PostMapping()
     public ResponseEntity<ResponseDto<?>> createTrustScoreType(
             @RequestBody @Valid TrustScoreTypeCreateRequestDto requestDto) {
         TrustScoreTypeCreateResponseDto responseDto =
@@ -76,7 +77,7 @@ public class TrustScoreTypeController {
         return new ResponseEntity<>(ResponseDto.success("success", responseDto), HttpStatus.OK);
     }
     /** 개별 신뢰점수타입 수정 TODO : 상위신뢰점수타입을 수정한다면? */
-    @PutMapping("/api/trust-score-type/{trustScoreTypeId}")
+    @PutMapping("/{trustScoreTypeId}")
     public ResponseEntity<ResponseDto<?>> updateTrustScoreType(
             @PathVariable(name = "trustScoreTypeId") Long trustScoreTypeId,
             @RequestBody @Valid TrustScoreTypeUpdateRequestDto requestDto) {
@@ -84,7 +85,7 @@ public class TrustScoreTypeController {
         return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.OK);
     }
     /** 신뢰점수타입 논리적 삭제 */
-    @DeleteMapping("/api/trust-score-type/{trustScoreTypeId}/disable")
+    @DeleteMapping("/{trustScoreTypeId}/disable")
     public ResponseEntity<ResponseDto<?>> disableTrustSCoreType(
             @PathVariable(name = "trustScoreTypeId") Long trustScoreTypeId) {
         trustScoreTypeService.disableTrustScoreType(trustScoreTypeId);

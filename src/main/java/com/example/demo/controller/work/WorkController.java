@@ -18,13 +18,14 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
+@RequestMapping("/api/work")
 @RequiredArgsConstructor
 public class WorkController {
 
     private final WorkService workService;
     private final WorkFacade workFacade;
 
-    @PostMapping("/api/work/project/{projectId}/milestone/{milestoneId}")
+    @PostMapping("/project/{projectId}/milestone/{milestoneId}")
     public ResponseEntity<ResponseDto<?>> create(
             @AuthenticationPrincipal PrincipalDetails user,
             @PathVariable("projectId") Long projectId,
@@ -34,14 +35,14 @@ public class WorkController {
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 
-    @GetMapping("/api/work/project/{projectId}")
+    @GetMapping("/project/{projectId}")
     public ResponseEntity<ResponseDto<?>> getAllByProject(
             @PathVariable("projectId") Long projectId) {
         List<WorkReadResponseDto> result = workFacade.getAllByProject(projectId);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 
-    @GetMapping("/api/work/project/{projectId}/milestone/{milestoneId}")
+    @GetMapping("/project/{projectId}/milestone/{milestoneId}")
     public ResponseEntity<ResponseDto<?>> getAllByMilestone(
             @PathVariable("projectId") Long projectId,
             @PathVariable("milestoneId") Long milestoneId,
@@ -50,13 +51,13 @@ public class WorkController {
         return new ResponseEntity<>(ResponseDto.success("success", workFacade.getAllByMilestone(projectId, milestoneId, pageIndex.orElse(0), itemCount.orElse(6))), HttpStatus.OK);
     }
 
-    @GetMapping("/api/work/{workId}")
+    @GetMapping("/{workId}")
     public ResponseEntity<ResponseDto<?>> getOne(@PathVariable("workId") Long workId) {
         WorkReadResponseDto result = workFacade.getOne(workId);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 
-    @PatchMapping("/api/work/{workId}")
+    @PatchMapping("/{workId}")
     public ResponseEntity<ResponseDto<?>> update(
             @AuthenticationPrincipal PrincipalDetails user,
             @PathVariable("workId") Long workId,
@@ -65,7 +66,7 @@ public class WorkController {
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 
-    @DeleteMapping("/api/work/{workId}")
+    @DeleteMapping("/{workId}")
     public ResponseEntity<ResponseDto<?>> delete(
             @AuthenticationPrincipal PrincipalDetails user,
             @PathVariable("workId") Long workId) {
@@ -73,7 +74,7 @@ public class WorkController {
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 
-    @PatchMapping("/api/work/{workId}/content")
+    @PatchMapping("/{workId}/content")
     public ResponseEntity<ResponseDto<?>> updateContent(
             @PathVariable("workId") Long workId,
             @RequestBody WorkUpdateContentRequestDto workUpdateContentRequestDto) {
@@ -81,7 +82,7 @@ public class WorkController {
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 
-    @PatchMapping("/api/work/{workId}/complete")
+    @PatchMapping("/{workId}/complete")
     public ResponseEntity<ResponseDto<?>> updateCompleteStatus(
             @PathVariable("workId") Long workId,
             @RequestBody WorkUpdateCompleteStatusRequestDto workUpdateCompleteStatusRequestDto) {
@@ -89,7 +90,7 @@ public class WorkController {
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 
-    @PatchMapping("/api/work/{workId}/assign")
+    @PatchMapping("/{workId}/assign")
     public ResponseEntity<ResponseDto<?>> updateAssign(
             @PathVariable("workId") Long workId,
             @RequestBody WorkUpdateAssignUserRequestDto workUpdateAssignUserRequestDto) {
@@ -97,7 +98,7 @@ public class WorkController {
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 
-    @PostMapping("/api/work/confirm")
+    @PostMapping("/confirm")
     public ResponseEntity<ResponseDto<?>> workConfirm(
             @AuthenticationPrincipal PrincipalDetails user,
             @RequestBody WorkConfirmRequestDto workConfirmRequest) {

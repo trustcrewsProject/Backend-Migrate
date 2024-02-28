@@ -18,20 +18,21 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.criteria.CriteriaBuilder;
 
 @RestController
+@RequestMapping("/api/alert")
 @RequiredArgsConstructor
 public class AlertController {
 
     private final AlertFacade alertFacade;
     private final AlertService alertService;
 
-    @PostMapping("/api/alert")
+    @PostMapping()
     public ResponseEntity<ResponseDto<?>> send(
             @RequestBody AlertCreateRequestDto alertCreateRequestDto) {
         alertFacade.send(alertCreateRequestDto);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 
-    @GetMapping("/api/alert/project/{projectId}")
+    @GetMapping("/project/{projectId}")
     public ResponseEntity<ResponseDto<?>> getAllByProject(
             @PathVariable("projectId") Long projectId,
             @RequestParam("pageIndex") Optional<Integer> pageIndex,
@@ -40,7 +41,7 @@ public class AlertController {
                 alertFacade.getAllByProject(projectId, pageIndex.orElse(0), itemCount.orElse(6))), HttpStatus.OK);
     }
 
-    @GetMapping("/api/alert/project/{projectId}/recruits")
+    @GetMapping("/project/{projectId}/recruits")
     public ResponseEntity<ResponseDto<?>> getRecruitsByProject(
             @PathVariable("projectId") Long projectId,
             @RequestParam("pageIndex") Optional<Integer> pageIndex,
@@ -49,7 +50,7 @@ public class AlertController {
                 alertFacade.getRecruitsByProject(projectId, pageIndex.orElse(0), itemCount.orElse(6))), HttpStatus.OK);
     }
 
-    @GetMapping("/api/alert/project/{projectId}/works")
+    @GetMapping("/project/{projectId}/works")
     public ResponseEntity<ResponseDto<?>> getWorksByProject(
             @PathVariable("projectId") Long projectId,
             @RequestParam("pageIndex") Optional<Integer> pageIndex,
@@ -58,7 +59,7 @@ public class AlertController {
                 alertFacade.getWorksByProject(projectId, pageIndex.orElse(0), itemCount.orElse(6))), HttpStatus.OK);
     }
 
-    @GetMapping("/api/alert/project/{projectId}/crews")
+    @GetMapping("/project/{projectId}/crews")
     public ResponseEntity<ResponseDto<?>> getCrewsByProject(
             @PathVariable("projectId") Long projectId,
             @RequestParam("pageIndex") Optional<Integer> pageIndex,
@@ -67,13 +68,13 @@ public class AlertController {
                 alertFacade.getCrewsByProject(projectId, pageIndex.orElse(0), itemCount.orElse(6))), HttpStatus.OK);
     }
 
-    @PatchMapping("/api/alert/{alertId}/status")
+    @PatchMapping("/{alertId}/status")
     public ResponseEntity<ResponseDto<?>> updateAlertStatus(@PathVariable Long alertId) {
         alertService.updateAlertStatus(alertId);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 
-    @GetMapping("/api/alert/supported-projects")
+    @GetMapping("/supported-projects")
     public ResponseEntity<ResponseDto<?>> getSupportedProjects(
             @AuthenticationPrincipal PrincipalDetails user,
             @RequestParam Optional<Integer> pageIndex,

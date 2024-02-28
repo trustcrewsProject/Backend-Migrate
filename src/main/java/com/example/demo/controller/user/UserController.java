@@ -29,7 +29,7 @@ public class UserController {
      * @param userId
      * @return
      */
-    @GetMapping("/user/{userId}")
+    @GetMapping("/{userId}")
     public ResponseEntity<ResponseDto<?>> getUserInfoById(@PathVariable String userId){
         return ResponseEntity.status(HttpStatus.OK).body(userFacade.getUserInfoById(Long.parseLong(userId)));
     }

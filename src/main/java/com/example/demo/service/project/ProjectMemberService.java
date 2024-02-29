@@ -26,8 +26,6 @@ public interface ProjectMemberService {
 
     void delete(ProjectMember projectMember);
 
-    List<ProjectMember> findProjectsMemberByProject(Project project);
-
     // 프로젝트 정보, 프로젝트 멤버 상태로 멤버 목록 조회
     List<ProjectMember> getProjectMembersByProjectAndStatus(Project project, ProjectMemberStatus status);
 

@@ -18,7 +18,7 @@ public class ProjectMemberAuthServiceImpl implements ProjectMemberAuthService {
 
     public ProjectMemberAuth findProjectMemberAuthById(Long id) {
         return projectMemberAuthRepository
-                .findById(1L)
+                .findById(id)
                 .orElseThrow(() -> ProjectMemberAuthCustomException.NOT_FOUND_PROJECT_MEMBER_AUTH);
     }
 

@@ -11,35 +11,4 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserTechnologyStackServiceImpl implements UserTechnologyStackService {
-
-    private final UserTechnologyStackRepository userTechnologyStackRepository;
-
-    @Override
-    public List<UserTechnologyStack> saveUserTechStacksAndReturnResponse(
-            User user, List<TechnologyStack> technologyStackList) {
-        List<UserTechnologyStack> userTechnologyStackList =
-                createUserTechnologyStackList(user, technologyStackList);
-
-        return userTechnologyStackRepository.saveAll(userTechnologyStackList);
-    }
-
-    // 회원 기술스택 목록 생성
-    private List<UserTechnologyStack> createUserTechnologyStackList(
-            User user, List<TechnologyStack> techStackList) {
-        return techStackList.stream()
-                .map(tech -> createUserTechnologyStack(user, tech))
-                .collect(Collectors.toList());
-    }
-
-    // 회원 기술스택 엔티티 생성
-    private UserTechnologyStack createUserTechnologyStack(
-            User user, TechnologyStack technologyStack) {
-        return UserTechnologyStack.builder().user(user).technologyStack(technologyStack).build();
-    }
-
-    @Override
-    public void deleteUserTechStacks(List<UserTechnologyStack> technologyStackList) {
-        userTechnologyStackRepository.deleteAll(technologyStackList);
-    }
-}
+public class UserTechnologyStackServiceImpl implements UserTechnologyStackService { }

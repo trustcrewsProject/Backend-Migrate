@@ -37,13 +37,6 @@ public class UserProjectHistoryServiceImpl implements UserProjectHistoryService 
     }
 
     @Override
-    public UserProjectHistory getUserProjectHistoryByProjectAndUser(Project project, User user) {
-        return userProjectHistoryRepository
-                .findUserProjectHistoryByProjectAndUser(project, user)
-                .orElseThrow(() -> UserProjectHistoryCustomException.NOT_FOUND_USER_PROJECT_HISTORY);
-    }
-
-    @Override
     public Long getUserProjectHistoryTotalCount(Long userId, UserProjectHistoryStatus status) {
         return userProjectHistoryRepository.countUserProjectHistory(userId, status);
     }
@@ -53,11 +46,5 @@ public class UserProjectHistoryServiceImpl implements UserProjectHistoryService 
             Long userId, int pageNumber) {
         return userProjectHistoryRepository.findAllByUserIdOrderByUpdateDateDesc(
                 userId, PageRequest.of(pageNumber, 5));
-    }
-
-    @Override
-    public List<UserProjectHistory> getUserProjectHistoryListParticipates(Long userId, int pageIndex, int itemCount) {
-        Pageable pageable = PageRequest.of(pageIndex, itemCount);
-        return userProjectHistoryRepository.findAllUserParticipates(userId, pageable);
     }
 }

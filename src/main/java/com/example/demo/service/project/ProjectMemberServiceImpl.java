@@ -48,12 +48,6 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
                 .orElseThrow(() -> ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER);
     }
 
-    public List<ProjectMember> findProjectsMemberByProject(Project project) {
-        return projectMemberRepository
-                .findProjectsMemberByProject(project)
-                .orElseThrow(() -> ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER);
-    }
-
     @Override
     public List<ProjectMember> getProjectMembersByProjectAndStatus(Project project, ProjectMemberStatus status) {
         return projectMemberRepository

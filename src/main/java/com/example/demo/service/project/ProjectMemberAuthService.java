@@ -5,9 +5,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public interface ProjectMemberAuthService {
-    public ProjectMemberAuth save(ProjectMemberAuth projectMemberAuth);
+    ProjectMemberAuth save(ProjectMemberAuth projectMemberAuth);
 
-    public ProjectMemberAuth findProjectMemberAuthById(Long id);
+    ProjectMemberAuth findProjectMemberAuthById(Long id);
 
-    public ProjectMemberAuth findTopByOrderByIdDesc();
+    ProjectMemberAuth findTopByOrderByIdDesc();
 }

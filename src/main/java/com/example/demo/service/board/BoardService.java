@@ -11,16 +11,15 @@ import org.springframework.transaction.annotation.Transactional;
 public interface BoardService {
 
     @Transactional(readOnly = true)
-    public PaginationResponseDto search(
-            Long positionId, String keyword, List<Long> technologyIds, Pageable pageable);
+    PaginationResponseDto search(Long positionId, String keyword, List<Long> technologyIds, Pageable pageable);
 
-    public Board findById(Long boardId);
+    Board findById(Long boardId);
 
-    public Board save(Board board);
+    Board save(Board board);
 
-    public BoardTotalDetailResponseDto getDetail(Long boardId);
+    BoardTotalDetailResponseDto getDetail(Long boardId);
 
-    public void delete(Board board);
+    void delete(Board board);
 
     @Transactional
     void updateRecruitmentStatus(Long boardId, Long userId);

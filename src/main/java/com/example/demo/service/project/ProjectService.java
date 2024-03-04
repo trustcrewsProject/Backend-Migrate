@@ -8,11 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface ProjectService {
 
-    public Project save(Project project);
+    Project save(Project project);
 
-    public Project findById(Long id);
+    Project findById(Long id);
 
-    public List<Project> findProjectsByUser(User user);
+    List<Project> findProjectsByUser(User user);
 
-    public int countProjectsByUser(User user);
+    int countProjectsByUser(User user);
 }

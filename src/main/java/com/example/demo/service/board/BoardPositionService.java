@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface BoardPositionService {
 
-    public BoardPosition getBoardPositionEntity(Board board, Position position);
+    BoardPosition getBoardPositionEntity(Board board, Position position);
 
-    public BoardPosition save(BoardPosition boardPosition);
+    BoardPosition save(BoardPosition boardPosition);
 }

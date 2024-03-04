@@ -11,7 +11,7 @@ public interface PositionService {
     @Transactional(readOnly = true)
     ResponseDto<?> getPositionList();
 
-    public Position save(Position position);
+    Position save(Position position);
 
-    public Position findById(Long id);
+    Position findById(Long id);
 }

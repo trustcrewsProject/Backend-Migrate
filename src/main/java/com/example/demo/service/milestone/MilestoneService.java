@@ -12,23 +12,21 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface MilestoneService {
 
-    public Milestone findById(Long id);
+    Milestone findById(Long id);
 
-    public Milestone save(Milestone milestone);
+    Milestone save(Milestone milestone);
 
-    public List<Milestone> findMilestonesByProject(Project project);
+    List<Milestone> findMilestonesByProject(Project project);
 
-    public MilestoneReadResponseDto getOne(Long milestoneId);
+    MilestoneReadResponseDto getOne(Long milestoneId);
 
-    public void update(Long milestoneId, MileStoneUpdateRequestDto mileStoneUpdateRequestDto);
+    void update(Long milestoneId, MileStoneUpdateRequestDto mileStoneUpdateRequestDto);
 
-    public void delete(Long milestoneId);
+    void delete(Long milestoneId);
 
-    public void updateContent(
-            Long milestoneId, MilestoneUpdateContentRequestDto milestoneUpdateContentRequestDto);
+    void updateContent(Long milestoneId, MilestoneUpdateContentRequestDto milestoneUpdateContentRequestDto);
 
-    public void updateDate(
-            Long milestoneId, MilestoneUpdateDateRequestDto milestoneUpdateDateRequestDto);
+    void updateDate(Long milestoneId, MilestoneUpdateDateRequestDto milestoneUpdateDateRequestDto);
 
     void deleteAllByProject(Project project);
 }

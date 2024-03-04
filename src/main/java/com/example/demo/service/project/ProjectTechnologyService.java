@@ -8,8 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface ProjectTechnologyService {
 
-    public ProjectTechnology save(ProjectTechnology projectTechnology);
+    ProjectTechnology save(ProjectTechnology projectTechnology);
 
-    public ProjectTechnology getProjectTechnologyEntity(
-            Project project, TechnologyStack technologyStack);
+    ProjectTechnology getProjectTechnologyEntity(Project project, TechnologyStack technologyStack);
 }

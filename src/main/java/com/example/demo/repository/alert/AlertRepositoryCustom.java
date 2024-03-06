@@ -17,5 +17,5 @@ public interface AlertRepositoryCustom {
     List<AlertSupportedProjectInfoResponseDto> findAlertsBySendUserIdAndTypeOrderByCreateDateDesc(Long sendUserId, Pageable pageable);
 
     // 조건별 알림 목록 개수 조회
-    long countAlertsTotalItem(Long projectId, Long sendUserId, AlertType type);
+    Long countAlertsTotalItem(Long projectId, Long sendUserId, AlertType type);
 }

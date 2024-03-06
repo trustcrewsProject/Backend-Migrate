@@ -112,7 +112,7 @@ public class AlertRepositoryImpl implements AlertRepositoryCustom{
 
     @Override
     // 알람 전체 개수 조회 (조건)
-    public long countAlertsTotalItem(Long projectId, Long sendUserId, AlertType alertType) {
+    public Long countAlertsTotalItem(Long projectId, Long sendUserId, AlertType alertType) {
         return jpaQueryFactory
                 .select(qAlert.count())
                 .from(qAlert)

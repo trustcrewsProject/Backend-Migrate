@@ -208,7 +208,7 @@ public class ProjectFacade {
                     .project(project)
                     .sendUser(currentUser)
                     .content(sendUser.getNickname() + "님이 " + project.getName() + "에 합류했습니다.")
-                    .type(AlertType.ADD)
+                    .type(AlertType.CREW_UPDATE)
                     .build();
             alertService.save(participationAlert);
             return;

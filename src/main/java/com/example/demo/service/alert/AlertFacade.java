@@ -112,7 +112,7 @@ public class AlertFacade {
 
         Project project = projectService.findById(projectId);
         PaginationResponseDto alerts = alertService
-                .findAlertsByProjectIdAndType(project, AlertType.ADD, pageIndex, itemCount);
+                .findAlertsByProjectIdAndType(project, AlertType.CREW_UPDATE, pageIndex, itemCount);
 
         return alerts;
     }

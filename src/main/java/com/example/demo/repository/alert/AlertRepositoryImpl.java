@@ -141,7 +141,7 @@ public class AlertRepositoryImpl implements AlertRepositoryCustom{
     private BooleanExpression eqAlertType(AlertType alertType) {
         if(alertType != null) {
             if (!alertType.equals(AlertType.RECRUIT) && !alertType.equals(AlertType.WORK)) {
-                return qAlert.type.eq(AlertType.ADD)
+                return qAlert.type.eq(AlertType.CREW_UPDATE)
                         .or(qAlert.type.eq(AlertType.WITHDRAWAL))
                         .or(qAlert.type.eq(AlertType.FORCED_WITHDRAWAL));
             } else {

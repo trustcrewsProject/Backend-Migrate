@@ -78,6 +78,34 @@ public class ProjectMemberFacade {
     }
 
     /**
+     * 프로젝트 멤버 강제 탈퇴 알림 보내기
+     *
+     * @param projectMemberId
+     */
+    public void sendForceWithdrawAlert(Long userId, Long projectMemberId) {
+        ProjectMember projectMember = projectMemberService.findById(projectMemberId);
+        User user = projectMember.getUser();
+
+        if(!user.getId().equals(userId)) {
+            throw ProjectCustomException.NO_PERMISSION_TO_TASK;
+        }
+
+        Project project = projectMember.getProject();
+        Alert alert =
+                Alert.builder()
+                        .project(project)
+                        .checkUser(project.getUser())
+                        .sendUser(user)
+                        .content(user.getNickname() + "님의 프로젝트 강제 탈퇴가 요청되었습니다.")
+                        .position(projectMember.getPosition())
+                        .type(AlertType.FORCED_WITHDRAWAL)
+                        .checked_YN(false)
+                        .build();
+
+        alertService.save(alert);
+    }
+
+    /**
      * 프로젝트 탈퇴 컨펌 (수락 / 거절)
      *
      * @param userId

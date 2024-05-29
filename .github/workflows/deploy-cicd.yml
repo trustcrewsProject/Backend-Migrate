@@ -2,7 +2,7 @@ name: ProjectMatch CI_CD
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "develop" ]
 
 permissions:
   contents: read
@@ -42,14 +42,10 @@ jobs:
     - name: Deploy
       uses: appleboy/ssh-action@master
       with:
-        host: ${{ secrets.EC2_HOST }} # EC2 인스턴스 퍼블릭 DNS
+        host: ${{ secrets.EC2_HOST }}
         username: ubuntu
-        key: ${{ secrets.PRIVATE_KEY }} # EC2 pem 키
-        # 도커 작업
+        key: ${{ secrets.PRIVATE_KEY }}
         script: |
-          docker pull ${{ secrets.DOCKER_USERNAME }}/projectmatch:latest
-          docker stop $(docker ps -a -q)
-          docker run -d --log-driver=syslog -p 8080:8080 -e SPRING_PROFILES_ACTIVE=prod ${{ secrets.DOCKER_USERNAME }}/projectmatch:latest
-          docker rm $(docker ps --filter 'status=exited' -a -q)
-          docker image prune -a -f
+          docker-compose -f /home/ubuntu/compose/docker-compose.yml down --rmi all
+          docker-compose -f /home/ubuntu/compose/docker-compose.yml up -d
 

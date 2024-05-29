@@ -86,10 +86,6 @@ public class ProjectMemberFacade {
         ProjectMember projectMember = projectMemberService.findById(projectMemberId);
         User user = projectMember.getUser();
 
-        if(!user.getId().equals(userId)) {
-            throw ProjectCustomException.NO_PERMISSION_TO_TASK;
-        }
-
         Project project = projectMember.getProject();
         Alert alert =
                 Alert.builder()

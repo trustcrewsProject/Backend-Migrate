@@ -43,7 +43,7 @@ public class ProjectMemberController {
     public ResponseEntity<ResponseDto<?>> forceWithdraw(
             @AuthenticationPrincipal PrincipalDetails user,
             @PathVariable("projectMemberId") Long projectMemberId) {
-        projectMemberFacade.sendForceWithdrawAlert(user.getId(), projectMemberId);
+        projectMemberFacade.sendForceWithdrawAlert(projectMemberId);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 

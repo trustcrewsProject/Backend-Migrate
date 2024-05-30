@@ -16,7 +16,7 @@
 
 <!-- 30초마다 설정 파일 변경 확인. 파일이 변경되면 다시 로딩 -->
 <configuration scan="true" scanPeriod="30 seconds">
-    <property name="LOGDIR" value="logs" />
+    <property name="LOGDIR" value="/var/logs" />
 
     <appender name="PROJECT_MATCH" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">

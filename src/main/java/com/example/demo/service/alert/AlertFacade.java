@@ -5,6 +5,7 @@ import com.example.demo.dto.alert.AlertCreateRequestDto;
 import com.example.demo.dto.alert.response.AlertInfoResponseDto;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.global.exception.customexception.PageNationCustomException;
+import com.example.demo.global.log.PMLog;
 import com.example.demo.model.alert.Alert;
 import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.position.Position;
@@ -22,6 +23,8 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.example.demo.global.log.PMLog.PROJECT_ALERT;
 
 @Service
 @RequiredArgsConstructor
@@ -75,13 +78,20 @@ public class AlertFacade {
     }
 
     public PaginationResponseDto getAllByProject(Long projectId, int pageIndex, int itemCount) {
-        verifiedPageIndex(pageIndex);
-        verifiedItemCount(itemCount);
 
-        Project project = projectService.findById(projectId);
-        PaginationResponseDto alerts = alertService.findAlertsByProjectIdAndType(project, null, pageIndex, itemCount);
+        try{
+            verifiedPageIndex(pageIndex);
+            verifiedItemCount(itemCount);
 
-        return alerts;
+            Project project = projectService.findById(projectId);
+            PaginationResponseDto alerts = alertService.findAlertsByProjectIdAndType(project, null, pageIndex, itemCount);
+
+            return alerts;
+        }catch (Exception e){
+            PMLog.e(PROJECT_ALERT, e.getStackTrace());
+            throw e;
+        }
+
     }
 
     public PaginationResponseDto getRecruitsByProject(Long projectId, int pageIndex, int itemCount) {

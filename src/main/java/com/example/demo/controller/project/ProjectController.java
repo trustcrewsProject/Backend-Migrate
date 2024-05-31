@@ -45,12 +45,12 @@ public class ProjectController {
     }
     // TODO : 하드코딩 리팩토링 (setter 보단 다른 방법 강구)
 
-    @GetMapping("/{projectId}")
+    @GetMapping("/{projectId}/{userId}")
     public ResponseEntity<ResponseDto<?>> getDetail(
             @PathVariable("projectId") Long projectId,
-            @AuthenticationPrincipal PrincipalDetails user) {
+            @PathVariable("userId") Long userId) {
         Map<String, Boolean> userAuthMap =
-                projectMemberService.getUserAuthMap(projectId, user.getId());
+                projectMemberService.getUserAuthMap(projectId, userId);
         ProjectSpecificDetailResponseDto result = projectFacade.getDetail(projectId);
         result.setAuthMap(userAuthMap);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);

@@ -142,6 +142,7 @@ public class AlertRepositoryImpl implements AlertRepositoryCustom{
         if(alertType != null) {
             if (!alertType.equals(AlertType.RECRUIT) && !alertType.equals(AlertType.WORK)) {
                 return qAlert.type.eq(AlertType.CREW_UPDATE)
+                        .or(qAlert.type.eq(AlertType.ADD))
                         .or(qAlert.type.eq(AlertType.WITHDRAWAL))
                         .or(qAlert.type.eq(AlertType.FORCED_WITHDRAWAL));
             } else {

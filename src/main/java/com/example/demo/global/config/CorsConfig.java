@@ -21,7 +21,7 @@ public class CorsConfig {
     private static final String LOCAL_BACKEND_SERVER_ORIGIN = "http://localhost:8080";
 
     // 배포 서버 주소
-    private static final String DEPLOYED_SERVER_ORIGIN = "http://3.35.111.141";
+    private static final String DEPLOYED_SERVER_ORIGIN = "http://3.35.111.141:3000";
 
     // 허용 HttpMethod 리스트
     private static final List<String> PERMIT_HTTP_METHOD =

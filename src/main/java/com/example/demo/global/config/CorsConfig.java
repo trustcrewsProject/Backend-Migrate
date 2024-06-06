@@ -35,13 +35,11 @@ public class CorsConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOrigin(LOCAL_SERVER_ORIGIN);
         configuration.addAllowedOrigin(LOCAL_BACKEND_SERVER_ORIGIN);
-        configuration.addAllowedOrigin("http://3.35.111.141");
         configuration.addAllowedOrigin(DEPLOYED_SERVER_ORIGIN);
         configuration.setAllowedMethods(PERMIT_HTTP_METHOD);
         configuration.addExposedHeader(AUTHORIZATION_HEADER);
         configuration.addExposedHeader(SET_COOKIE_HEADER);
-        configuration.addAllowedHeader("Content-Type");
-        configuration.addAllowedHeader("content-type");
+        configuration.addAllowedHeader("*");
         configuration.setMaxAge(3600L);
         configuration.setAllowCredentials(true);
 

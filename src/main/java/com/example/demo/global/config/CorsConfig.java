@@ -35,6 +35,7 @@ public class CorsConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOrigin(LOCAL_SERVER_ORIGIN);
         configuration.addAllowedOrigin(LOCAL_BACKEND_SERVER_ORIGIN);
+        configuration.addAllowedOrigin("http://3.35.111.141");
         configuration.addAllowedOrigin(DEPLOYED_SERVER_ORIGIN);
         configuration.setAllowedMethods(PERMIT_HTTP_METHOD);
         configuration.addExposedHeader(AUTHORIZATION_HEADER);

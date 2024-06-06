@@ -39,7 +39,8 @@ public class CorsConfig {
         configuration.setAllowedMethods(PERMIT_HTTP_METHOD);
         configuration.addExposedHeader(AUTHORIZATION_HEADER);
         configuration.addExposedHeader(SET_COOKIE_HEADER);
-        configuration.addAllowedHeader("*");
+        configuration.addAllowedHeader("Content-Type");
+        configuration.addAllowedHeader("content-type");
         configuration.setMaxAge(3600L);
         configuration.setAllowCredentials(true);
 

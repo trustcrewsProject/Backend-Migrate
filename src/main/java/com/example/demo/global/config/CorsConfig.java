@@ -23,7 +23,7 @@ public class CorsConfig {
     // 배포 서버 주소
     private static final String DEPLOYED_SERVER_ORIGIN = "http://3.35.111.141:3000";
 
-    // 허용 HttpMethod 리스트
+    // 허용 HttpMethod 리
     private static final List<String> PERMIT_HTTP_METHOD =
             List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS");
 
@@ -39,7 +39,8 @@ public class CorsConfig {
         configuration.setAllowedMethods(PERMIT_HTTP_METHOD);
         configuration.addExposedHeader(AUTHORIZATION_HEADER);
         configuration.addExposedHeader(SET_COOKIE_HEADER);
-        configuration.addAllowedHeader("*");
+        configuration.addAllowedHeader("content-type");
+        configuration.addAllowedHeader("Content-Type");
         configuration.setMaxAge(3600L);
         configuration.setAllowCredentials(true);
 

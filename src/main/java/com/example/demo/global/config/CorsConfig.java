@@ -1,13 +1,16 @@
 package com.example.demo.global.config;
 
 import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-/** CORS 설정 파일 */
+/**
+ * CORS 설정 파일
+ */
 @Configuration
 public class CorsConfig {
 
@@ -22,7 +25,7 @@ public class CorsConfig {
 
     // 허용 HttpMethod 리스트
     private static final List<String> PERMIT_HTTP_METHOD =
-            List.of("GET", "POST", "PUT", "PATCH", "DELETE");
+            List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS");
 
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String SET_COOKIE_HEADER = "Set-Cookie";

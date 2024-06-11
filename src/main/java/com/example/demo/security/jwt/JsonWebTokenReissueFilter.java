@@ -129,6 +129,7 @@ public class JsonWebTokenReissueFilter extends OncePerRequestFilter {
     // RefreshToken 검증
     private void validationRefreshToken(Long userId, String requestRefreshToken) {
         // 회원 RefreshToken 조회
+        PMLog.i(TOKEN_REISSUE, "Validate RefreshToken For {}", userId);
         String storedRefreshToken = refreshTokenRedisService.get(userId);
 
         // 회원의 RefreshToken 정보가 존재하지 않는 경우, 예외 처리

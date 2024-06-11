@@ -32,7 +32,7 @@ public class RefreshTokenRedisService {
     // Refresh Token 조회
     public String get(final Long userId) {
         String key = KEY_PREFIX + userId;
-        PMLog.i("get RefToken::: {}", redisTemplate.opsForValue().get(key));
+        PMLog.i("get RefToken::: {}, userId: {}", redisTemplate.opsForValue().get(key), userId);
         return Optional.ofNullable(redisTemplate.opsForValue().get(key)).orElse(null);
     }
 

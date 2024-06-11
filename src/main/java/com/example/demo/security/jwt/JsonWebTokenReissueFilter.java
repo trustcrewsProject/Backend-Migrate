@@ -6,6 +6,7 @@ import com.example.demo.global.exception.customexception.CommonCustomException;
 import com.example.demo.global.exception.customexception.CustomException;
 import com.example.demo.global.exception.customexception.TokenCustomException;
 import com.example.demo.global.exception.errorcode.ErrorCode;
+import com.example.demo.global.log.PMLog;
 import com.example.demo.security.SecurityResponseHandler;
 import com.example.demo.security.custom.PrincipalDetails;
 import com.example.demo.service.token.RefreshTokenRedisService;
@@ -25,6 +26,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import static com.example.demo.global.log.PMLog.TOKEN_REISSUE;
 
 /** AccessToken 만료 시, RefreshToken 값으로 AccessToken 재발급 로직을 담당하는 필터 */
 @RequiredArgsConstructor
@@ -83,8 +86,10 @@ public class JsonWebTokenReissueFilter extends OncePerRequestFilter {
 
             // 성공 응답
             successTokenReissueResponse(response);
+            PMLog.i(TOKEN_REISSUE, "Token Reissue Success");
         } catch (CustomException customException) {
             // 실패 응답
+            PMLog.e(TOKEN_REISSUE, customException.getErrorCode());
             failTokenReissueResponse(response, customException.getErrorCode());
         }
     }

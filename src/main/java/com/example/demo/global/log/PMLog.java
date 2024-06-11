@@ -12,6 +12,7 @@ public class PMLog {
     public static final Marker PROJECT_WORK = MarkerFactory.getMarker("PROJECT_WORK");
     public static final Marker PROJECT_CREW = MarkerFactory.getMarker("PROJECT_CREW");
     public static final Marker TRUST_POINT = MarkerFactory.getMarker("TRUST_POINT");
+    public static final Marker TOKEN_REISSUE = MarkerFactory.getMarker("TOKEN_REISSUE");
 
     public static void d(Object msg) {
         L.debug(msg == null ? "null" : msg.toString());

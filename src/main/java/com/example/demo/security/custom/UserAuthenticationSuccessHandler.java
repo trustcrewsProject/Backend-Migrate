@@ -51,6 +51,7 @@ public class UserAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
         // Redis RefreshToken 저장
         refreshTokenRedisService.save(principalDetails.getId(), tokens.getRefreshToken());
         PMLog.i(TOKEN_ISSUE, "Issued R&A Tokens And Saved R For {}", principalDetails.getId());
+        PMLog.i(TOKEN_ISSUE, "RefreshToken:: {}", refreshTokenRedisService.get(principalDetails.getId()));
 
         // 클라이언트로 응답 전송
         securityResponseHandler.sendResponse(

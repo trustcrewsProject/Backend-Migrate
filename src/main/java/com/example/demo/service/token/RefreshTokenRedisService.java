@@ -18,7 +18,8 @@ public class RefreshTokenRedisService {
 
     private final RedisTemplate<String, String> redisTemplate;
 
-    @Value("${jwt.refresh.token.expiration.millis}")
+//    @Value("${jwt.refresh.token.expiration.millis}")
+    @Value("10000")
     private long refreshTokenExpiresMillis;
 
     // Refresh Token 저장 (만료시간도 함께 설정)

@@ -18,8 +18,8 @@ public class RefreshTokenRedisService {
 
     private final RedisTemplate<String, String> redisTemplate;
 
-//    @Value("${jwt.refresh.token.expiration.millis}")
-    private final long refreshTokenExpiresMillis = 10000;
+    @Value("${jwt.refresh.token.expiration.millis}")
+    private long refreshTokenExpiresMillis;
 
     // Refresh Token 저장 (만료시간도 함께 설정)
     public void save(final Long userId, final String refreshToken) {
@@ -32,7 +32,6 @@ public class RefreshTokenRedisService {
     // Refresh Token 조회
     public String get(final Long userId) {
         String key = KEY_PREFIX + userId;
-        PMLog.i("get RefToken::: {}, userId: {}", redisTemplate.opsForValue().get(key), userId);
         return Optional.ofNullable(redisTemplate.opsForValue().get(key)).orElse(null);
     }
 

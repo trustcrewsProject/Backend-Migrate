@@ -13,6 +13,7 @@ public class PMLog {
     public static final Marker PROJECT_CREW = MarkerFactory.getMarker("PROJECT_CREW");
     public static final Marker TRUST_POINT = MarkerFactory.getMarker("TRUST_POINT");
     public static final Marker TOKEN_REISSUE = MarkerFactory.getMarker("TOKEN_REISSUE");
+    public static final Marker TOKEN_ISSUE = MarkerFactory.getMarker("TOKEN_ISSUE");
 
     public static void d(Object msg) {
         L.debug(msg == null ? "null" : msg.toString());
@@ -81,6 +82,9 @@ public class PMLog {
 
     public static void i(Marker marker, String format, Object... arg) {
         L.info(marker, format, arg);
+    }
+    public static void i(String format, Object... arg) {
+        L.info(format, arg);
     }
 
     public static void i(Marker marker, Object msg, Throwable thrown) {

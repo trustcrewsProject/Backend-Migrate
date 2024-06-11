@@ -2,6 +2,8 @@ package com.example.demo.service.token;
 
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+
+import com.example.demo.global.log.PMLog;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -30,6 +32,7 @@ public class RefreshTokenRedisService {
     // Refresh Token 조회
     public String get(final Long userId) {
         String key = KEY_PREFIX + userId;
+        PMLog.i("get RefToken::: {}", redisTemplate.opsForValue().get(key));
         return Optional.ofNullable(redisTemplate.opsForValue().get(key)).orElse(null);
     }
 

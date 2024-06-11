@@ -1,19 +1,24 @@
 package com.example.demo.security.custom;
 
 import com.example.demo.dto.common.ResponseDto;
+import com.example.demo.global.log.PMLog;
 import com.example.demo.security.SecurityResponseHandler;
 import com.example.demo.security.jwt.JsonWebTokenDto;
 import com.example.demo.security.jwt.JsonWebTokenProvider;
 import com.example.demo.service.token.RefreshTokenRedisService;
+
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+
+import static com.example.demo.global.log.PMLog.TOKEN_ISSUE;
 
 /**
  * UserAuthenticationFilter 에서 사용자 인증 성공 시 실행되는 핸들러 인증 성공 시, AccessToken 을 응답 헤더의 Authorization 헤더에
@@ -45,6 +50,7 @@ public class UserAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
 
         // Redis RefreshToken 저장
         refreshTokenRedisService.save(principalDetails.getId(), tokens.getRefreshToken());
+        PMLog.i(TOKEN_ISSUE, "Issued R&A Tokens And Saved R For {}", principalDetails.getId());
 
         // 클라이언트로 응답 전송
         securityResponseHandler.sendResponse(

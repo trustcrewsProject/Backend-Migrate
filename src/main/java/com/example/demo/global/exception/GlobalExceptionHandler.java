@@ -60,7 +60,7 @@ public class GlobalExceptionHandler {
                 .collect(Collectors.joining(", "));
 
         String message = String.format("Unsupported media type: %s. Supported media types are: %s.", unsupported, supported);
-        PMLog.e("HTTP_CLIENT_ERR", message, e.getStackTrace());
+        PMLog.e(message, e);
         final ResponseDto response = ResponseDto.fail(message);
         return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(response);
     }

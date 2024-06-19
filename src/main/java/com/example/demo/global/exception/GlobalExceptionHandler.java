@@ -6,6 +6,7 @@ import com.example.demo.global.exception.errorcode.ErrorCode;
 import com.example.demo.global.exception.errorcode.FileErrorCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -60,6 +61,15 @@ public class GlobalExceptionHandler {
         String message = String.format("Unsupported media type: %s. Supported media types are: %s.", unsupported, supported);
         final ResponseDto response = ResponseDto.fail(message);
         return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(response);
+    }
+
+
+    // HttpMessageNotReadableException for JSON parse errors and other similar issues
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ResponseDto<?>> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+        String message = "Request body is not readable. " + (e.getCause() != null ? e.getCause().getMessage() : "Invalid JSON format.");
+        final ResponseDto response = ResponseDto.fail(message);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
 }

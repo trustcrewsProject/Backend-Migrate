@@ -4,6 +4,7 @@ import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.global.exception.customexception.CustomException;
 import com.example.demo.global.exception.errorcode.ErrorCode;
 import com.example.demo.global.exception.errorcode.FileErrorCode;
+import com.example.demo.global.log.PMLog;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -59,6 +60,7 @@ public class GlobalExceptionHandler {
                 .collect(Collectors.joining(", "));
 
         String message = String.format("Unsupported media type: %s. Supported media types are: %s.", unsupported, supported);
+        PMLog.e("HTTP_CLIENT_ERR", message, e.getStackTrace());
         final ResponseDto response = ResponseDto.fail(message);
         return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(response);
     }

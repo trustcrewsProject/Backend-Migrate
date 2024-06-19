@@ -2,18 +2,18 @@ package com.example.demo.global.exception;
 
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.global.exception.customexception.CustomException;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import com.example.demo.global.exception.customexception.FileCustomException;
 import com.example.demo.global.exception.errorcode.ErrorCode;
 import com.example.demo.global.exception.errorcode.FileErrorCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -48,4 +48,18 @@ public class GlobalExceptionHandler {
         final ResponseDto response = ResponseDto.fail(e.getErrorCode().getMessage());
         return ResponseEntity.status(e.getErrorCode().getStatus()).body(response);
     }
+
+    // Unsupported Media Type Exception
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    public ResponseEntity<ResponseDto<?>> handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException e) {
+        String unsupported = e.getContentType() != null ? e.getContentType().toString() : "unknown";
+        String supported = e.getSupportedMediaTypes().stream()
+                .map(Object::toString)
+                .collect(Collectors.joining(", "));
+
+        String message = String.format("Unsupported media type: %s. Supported media types are: %s.", unsupported, supported);
+        final ResponseDto response = ResponseDto.fail(message);
+        return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(response);
+    }
+
 }

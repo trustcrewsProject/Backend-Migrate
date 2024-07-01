@@ -80,8 +80,8 @@ public class JsonWebTokenProvider {
                         .compact();
 
         // Refresh Token 생성
-//        Date refreshTokenExpiresIn = getTokenExpiration(refreshTokenExpirationMillis);
-        Date refreshTokenExpiresIn = getTokenExpiration(15000);
+        Date refreshTokenExpiresIn = getTokenExpiration(refreshTokenExpirationMillis);
+//        Date refreshTokenExpiresIn = getTokenExpiration(15000);
 
         String refreshToken =
                 Jwts.builder()

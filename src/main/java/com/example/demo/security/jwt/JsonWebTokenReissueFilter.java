@@ -142,7 +142,7 @@ public class JsonWebTokenReissueFilter extends OncePerRequestFilter {
             throw TokenCustomException.INVALID_REFRESH_TOKEN;
         }
 
-        jsonWebTokenProvider.validateToken(requestRefreshToken);
+//        jsonWebTokenProvider.validateToken(requestRefreshToken);
     }
 
     // 회원 정보를 커스텀 회원 정보 객체로 조회

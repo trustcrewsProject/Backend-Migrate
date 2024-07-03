@@ -4,6 +4,7 @@ import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.dto.oauth2.request.OAuth2UserCreateRequestDto;
 import com.example.demo.dto.user.request.UserCreateRequestDto;
 import com.example.demo.dto.user.request.UserUpdateRequestDto;
+import com.example.demo.global.log.PMLog;
 import com.example.demo.security.custom.PrincipalDetails;
 import com.example.demo.service.user.UserFacade;
 import com.example.demo.service.user.UserService;
@@ -67,8 +68,16 @@ public class UserController {
             @AuthenticationPrincipal PrincipalDetails user,
             @RequestPart(required = false) MultipartFile file,
             @Valid @RequestPart UserUpdateRequestDto updateRequest) {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(userFacade.updateUser(user, file, updateRequest));
+        try{
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(userFacade.updateUser(user, file, updateRequest));
+        }catch (Exception e){
+            PMLog.e(PMLog.USER_PROFILE, e.getMessage(), e);
+            final ResponseDto response = ResponseDto.fail(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(response);
+        }
+
     }
 
     // 간단한 내 정보 조회

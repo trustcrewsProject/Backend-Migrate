@@ -72,7 +72,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(userFacade.updateUser(user, file, updateRequest));
         }catch (Exception e){
-            PMLog.e(PMLog.USER_PROFILE, e.getMessage(), e);
+            PMLog.e(PMLog.USER_PROFILE, e.getStackTrace(), e);
             final ResponseDto response = ResponseDto.fail(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(response);

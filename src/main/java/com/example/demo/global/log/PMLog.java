@@ -15,6 +15,8 @@ public class PMLog {
     public static final Marker TOKEN_REISSUE = MarkerFactory.getMarker("TOKEN_REISSUE");
     public static final Marker TOKEN_ISSUE = MarkerFactory.getMarker("TOKEN_ISSUE");
 
+    public static final Marker USER_PROFILE = MarkerFactory.getMarker("USER_PROFILE");
+
     public static void d(Object msg) {
         L.debug(msg == null ? "null" : msg.toString());
     }

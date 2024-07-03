@@ -18,6 +18,7 @@ import com.example.demo.dto.user.response.*;
 import com.example.demo.global.exception.customexception.CommonCustomException;
 import com.example.demo.global.exception.customexception.PageNationCustomException;
 import com.example.demo.global.exception.customexception.UserCustomException;
+import com.example.demo.global.log.PMLog;
 import com.example.demo.model.position.Position;
 import com.example.demo.model.technology_stack.TechnologyStack;
 import com.example.demo.model.trust_grade.TrustGrade;
@@ -40,6 +41,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import static com.example.demo.global.log.PMLog.USER_PROFILE;
 
 @Service
 @RequiredArgsConstructor
@@ -188,7 +191,7 @@ public class UserFacade {
             try {
                 currentUser.updateProfileImgSrc(awsS3FileService.uploadImage(file));
             } catch (IOException e) {
-                e.printStackTrace();
+                PMLog.e(USER_PROFILE, e.getMessage(), e);
                 throw CommonCustomException.INTERNAL_SERVER_ERROR;
             }
         }

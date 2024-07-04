@@ -191,7 +191,7 @@ public class UserFacade {
             try {
                 currentUser.updateProfileImgSrc(awsS3FileService.uploadImage(file));
             } catch (IOException e) {
-                PMLog.e(USER_PROFILE, e.getMessage(), e);
+                PMLog.e(USER_PROFILE, e.getStackTrace(), e);
                 throw CommonCustomException.INTERNAL_SERVER_ERROR;
             }
         }

@@ -2,7 +2,7 @@
 FROM openjdk:11-jdk
 
 # 작업 디렉토리 설정
-#WORKDIR /app
+WORKDIR /app
 
 # .env 복사
 #COPY $ENV_FILE_PATH .env

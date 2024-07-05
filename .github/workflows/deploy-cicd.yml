@@ -57,6 +57,7 @@ jobs:
           aws ec2 authorize-security-group-ingress --group-id ${{ secrets.SECURITY_GROUP_ID }} --protocol tcp --port 22 --cidr ${{ env.RUNNER_IP }}/32
 
       - name: Deploy
+        needs: Docker build
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}

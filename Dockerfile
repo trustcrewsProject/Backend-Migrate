@@ -2,7 +2,7 @@
 FROM openjdk:11-jdk
 
 # 작업 디렉토리 설정
-#WORKDIR /app
+WORKDIR /app
 
 # .env 복사
 #COPY $ENV_FILE_PATH .env
@@ -10,6 +10,9 @@ FROM openjdk:11-jdk
 # JAR 파일 복사
 ARG JAR_FILE=build/libs/*.jar
 COPY ${JAR_FILE} /app.jar
+
+# JAR 파일에 실행 권한 추가
+RUN chmod +x /app.jar
 
 # 애플리케이션 실행 (스프링 부트 JAR 실행)
 ENTRYPOINT ["java","-jar","/app.jar"]

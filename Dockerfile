@@ -11,8 +11,7 @@ WORKDIR /app
 ARG JAR_FILE=build/libs/*.jar
 COPY ${JAR_FILE} /app.jar
 
-# JAR 파일에 실행 권한 추가
-RUN chmod +x /app.jar
+RUN ls -al /app.jar
 
 # 애플리케이션 실행 (스프링 부트 JAR 실행)
 ENTRYPOINT ["java","-jar","/app.jar"]

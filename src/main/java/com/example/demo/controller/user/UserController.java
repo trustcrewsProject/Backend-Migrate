@@ -8,14 +8,20 @@ import com.example.demo.global.log.PMLog;
 import com.example.demo.security.custom.PrincipalDetails;
 import com.example.demo.service.user.UserFacade;
 import com.example.demo.service.user.UserService;
+
+import java.io.IOException;
 import java.util.Optional;
 import javax.validation.Valid;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import static com.example.demo.global.log.PMLog.USER_PROFILE;
 
 @RestController
 @RequestMapping("/api/user")
@@ -27,11 +33,12 @@ public class UserController {
 
     /**
      * 사용자 정보 조회
+     *
      * @param userId
      * @return
      */
     @GetMapping("/{userId}")
-    public ResponseEntity<ResponseDto<?>> getUserInfoById(@PathVariable String userId){
+    public ResponseEntity<ResponseDto<?>> getUserInfoById(@PathVariable String userId) {
         return ResponseEntity.status(HttpStatus.OK).body(userFacade.getUserInfoById(Long.parseLong(userId)));
     }
 
@@ -63,22 +70,18 @@ public class UserController {
 
 
     // 회원수정
-    @PutMapping()
+    @PutMapping(consumes = {"multipart/form-data"})
     public ResponseEntity<ResponseDto<?>> update(
             @AuthenticationPrincipal PrincipalDetails user,
-            @RequestPart(required = false) MultipartFile file,
-            @Valid @RequestPart UserUpdateRequestDto updateRequest) {
-        PMLog.i("updateRequest: {} \r\n file: {} \r\n user: {}", updateRequest, file, user);
-        try{
+            @RequestPart(value = "file", required = false) MultipartFile file,
+            @Valid @RequestPart(value = "updateRequestDto") UserUpdateRequestDto updateRequestDto) {
+        try {
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(userFacade.updateUser(user, file, updateRequest));
-        }catch (Exception e){
-            PMLog.e(PMLog.USER_PROFILE, e.getStackTrace());
+                    .body(userFacade.updateUser(user, file, updateRequestDto));
+        } catch (IOException e) {
             final ResponseDto response = ResponseDto.fail(e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(response);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
-
     }
 
     // 간단한 내 정보 조회

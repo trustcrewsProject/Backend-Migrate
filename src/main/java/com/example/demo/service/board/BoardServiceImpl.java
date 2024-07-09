@@ -1,8 +1,8 @@
 package com.example.demo.service.board;
 
 import com.example.demo.constant.ProjectStatus;
-import com.example.demo.dto.board.response.BoardDetailResponseDto;
-import com.example.demo.dto.board.response.BoardTotalDetailResponseDto;
+import com.example.demo.dto.board.Response.BoardDetailResponseDto;
+import com.example.demo.dto.board.Response.BoardTotalDetailResponseDto;
 import com.example.demo.dto.boardposition.BoardPositionDetailResponseDto;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.position.response.PositionResponseDto;

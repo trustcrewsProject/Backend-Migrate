@@ -1,8 +1,8 @@
 package com.example.demo.service.board;
 
 import com.example.demo.constant.ProjectMemberStatus;
-import com.example.demo.dto.board.response.BoardCreateResponseDto;
-import com.example.demo.dto.board.response.BoardUpdateResponseDto;
+import com.example.demo.dto.board.Response.BoardCreateResponseDto;
+import com.example.demo.dto.board.Response.BoardUpdateResponseDto;
 import com.example.demo.dto.board_project.request.BoardProjectCreateRequestDto;
 import com.example.demo.dto.board_project.request.BoardProjectUpdateRequestDto;
 import com.example.demo.dto.board_project.response.BoardProjectCreateResponseDto;

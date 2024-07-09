@@ -1,4 +1,4 @@
-package com.example.demo.dto.board.response;
+package com.example.demo.dto.board.Response;
 
 import com.example.demo.global.util.LocalDateTimeFormatSerializer;
 import com.example.demo.model.board.Board;

@@ -1,7 +1,7 @@
 package com.example.demo.repository.board;
 
 import com.example.demo.constant.ProjectStatus;
-import com.example.demo.dto.board.response.BoardSearchResponseDto;
+import com.example.demo.dto.board.Response.BoardSearchResponseDto;
 import com.example.demo.dto.boardposition.BoardPositionDetailResponseDto;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.position.response.PositionResponseDto;
@@ -25,7 +25,6 @@ import com.example.demo.model.user.QUser;
 import com.example.demo.model.user.User;
 import com.example.demo.repository.position.PositionRepository;
 import com.example.demo.repository.technology_stack.TechnologyStackRepository;
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.ArrayList;

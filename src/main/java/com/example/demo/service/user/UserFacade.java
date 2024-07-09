@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -93,7 +94,7 @@ public class UserFacade {
         user.setTrustScore(trustScore);
 
         // 회원 기술스택 목록 추가
-        for(Long technologyStackId : createRequest.getTechStackIds()) {
+        for (Long technologyStackId : createRequest.getTechStackIds()) {
             UserTechnologyStack userTechnologyStack = UserTechnologyStack.builder()
                     .user(saveUser)
                     .technologyStack(technologyStackService.findById(technologyStackId))
@@ -106,13 +107,14 @@ public class UserFacade {
 
     /**
      * 소셜 회원가입
+     *
      * @param oAuthUserCreateRequest
      * @return user.id
      */
     @Transactional
     public ResponseDto<?> createOAuthUser(OAuth2UserCreateRequestDto oAuthUserCreateRequest) {
         OAuthProvider oAuthProvider = OAuthProvider.findOAuthProvider(oAuthUserCreateRequest.getOAuthProvider());
-        if(userService.existUserByOAuthProviderAndOAuthProviderId(oAuthProvider, oAuthUserCreateRequest.getOAuthProviderId())) {
+        if (userService.existUserByOAuthProviderAndOAuthProviderId(oAuthProvider, oAuthUserCreateRequest.getOAuthProviderId())) {
             throw UserCustomException.ALREADY_OAUTH_USER;
         }
 
@@ -142,7 +144,7 @@ public class UserFacade {
         oAuthUser.setTrustScore(trustScore);
 
         // 회원 기술스택 목록 추가
-        for(Long technologyStackId : oAuthUserCreateRequest.getTechStackIds()) {
+        for (Long technologyStackId : oAuthUserCreateRequest.getTechStackIds()) {
             UserTechnologyStack userTechnologyStack = UserTechnologyStack.builder()
                     .user(oAuthUser)
                     .technologyStack(technologyStackService.findById(technologyStackId))
@@ -176,24 +178,19 @@ public class UserFacade {
      * @return updateResponse
      */
     @Transactional
-    public ResponseDto<?> updateUser(PrincipalDetails user, MultipartFile file, UserUpdateRequestDto updateRequest) {
+    public ResponseDto<?> updateUser(PrincipalDetails user, MultipartFile file, UserUpdateRequestDto updateRequest) throws IOException {
         User currentUser = userService.getUserForUpdate(user.getId());
 
         // 이미지 파일이 존재할 경우, 이미지 변경 수행
-        if(Objects.nonNull(file) && !file.isEmpty()) {
+        if (Objects.nonNull(file) && !file.isEmpty()) {
             String profileImgSrc = currentUser.getProfileImgSrc();
 
             // 기존 회원의 프로필 이미지가 존재할 경우 삭제
-            if(Objects.nonNull(profileImgSrc) && !profileImgSrc.isEmpty()) {
+            if (Objects.nonNull(profileImgSrc) && !profileImgSrc.isEmpty()) {
                 awsS3FileService.deleteImage(profileImgSrc);
             }
 
-            try {
-                currentUser.updateProfileImgSrc(awsS3FileService.uploadImage(file));
-            } catch (IOException e) {
-                PMLog.e(USER_PROFILE, e.getStackTrace(), e);
-                throw CommonCustomException.INTERNAL_SERVER_ERROR;
-            }
+            currentUser.updateProfileImgSrc(awsS3FileService.uploadImage(file));
         }
 
         // 기존 포지션과 수정 요청한 포지션 비교
@@ -446,6 +443,7 @@ public class UserFacade {
 
     /**
      * 내 프로필 이미지 삭제 (aws s3에 저장된 이미지 파일 삭제)
+     *
      * @param userId
      * @return
      */
@@ -454,7 +452,7 @@ public class UserFacade {
         User currentUser = userService.findById(userId);
 
         // 요청한 회원의 프로필 이미지가 존재하지 않는 경우 예외처리
-        if(Objects.isNull(currentUser.getProfileImgSrc())
+        if (Objects.isNull(currentUser.getProfileImgSrc())
                 || currentUser.getProfileImgSrc().equals("")) {
             throw UserCustomException.DOES_NOT_EXIST_PROFILE_IMG;
         }
@@ -470,6 +468,7 @@ public class UserFacade {
 
     /**
      * 회원 탈퇴
+     *
      * @param userId
      * @return
      */

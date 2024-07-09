@@ -1,6 +1,6 @@
 package com.example.demo.controller.board;
 
-import com.example.demo.dto.board.response.BoardTotalDetailResponseDto;
+import com.example.demo.dto.board.Response.BoardTotalDetailResponseDto;
 import com.example.demo.dto.board_project.request.BoardProjectCreateRequestDto;
 import com.example.demo.dto.board_project.request.BoardProjectUpdateRequestDto;
 import com.example.demo.dto.board_project.response.BoardProjectCreateResponseDto;

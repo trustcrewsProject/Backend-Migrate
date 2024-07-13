@@ -56,7 +56,7 @@ public class UserAuthenticationFilter extends AbstractAuthenticationProcessingFi
         try {
             return this.getAuthenticationManager().authenticate(token);
         } catch(AuthenticationException e) {
-            throw AuthenticationCustomException.INVALID_AUTHENTICATION;
+            throw AuthenticationCustomException.AUTHENTICATION_FAIL;
         }
     }
 }

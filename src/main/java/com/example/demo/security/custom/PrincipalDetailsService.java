@@ -2,7 +2,6 @@ package com.example.demo.security.custom;
 
 import com.example.demo.constant.UserStatus;
 import com.example.demo.global.exception.customexception.AuthenticationCustomException;
-import com.example.demo.global.exception.customexception.UserCustomException;
 import com.example.demo.model.user.User;
 import com.example.demo.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +26,7 @@ public class PrincipalDetailsService implements UserDetailsService {
                         .orElse(null);
 
         if(user == null || user.getStatus().equals(UserStatus.DELETED)) {
-            throw AuthenticationCustomException.INVALID_AUTHENTICATION;
+            throw AuthenticationCustomException.AUTHENTICATION_FAIL;
         }
 
         return new PrincipalDetails(user);

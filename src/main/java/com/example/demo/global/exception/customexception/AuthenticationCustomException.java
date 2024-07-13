@@ -5,8 +5,8 @@ import org.springframework.security.core.AuthenticationException;
 
 public class AuthenticationCustomException extends AuthenticationException {
 
-    public static final AuthenticationCustomException INVALID_AUTHENTICATION =
-            new AuthenticationCustomException(UserErrorCode.INVALID_AUTHENTICATION.getMessage());
+    public static final AuthenticationCustomException AUTHENTICATION_FAIL =
+            new AuthenticationCustomException(UserErrorCode.AUTHENTICATION_FAIL.getMessage());
 
     public AuthenticationCustomException(String msg) {
         super(msg);

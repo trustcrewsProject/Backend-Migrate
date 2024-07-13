@@ -153,12 +153,12 @@ public class JsonWebTokenProvider {
     public Cookie resolveRefreshCookie(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if (cookies == null) {
-            throw TokenCustomException.DOES_NOT_REFRESH_TOKEN;
+            throw TokenCustomException.NO_REFRESH_TOKEN;
         }
 
         return Arrays.stream(cookies)
                 .filter(cookie -> cookie.getName().equals(REFRESH_HEADER))
                 .findFirst()
-                .orElseThrow(() -> TokenCustomException.DOES_NOT_REFRESH_TOKEN);
+                .orElseThrow(() -> TokenCustomException.NO_REFRESH_TOKEN);
     }
 }

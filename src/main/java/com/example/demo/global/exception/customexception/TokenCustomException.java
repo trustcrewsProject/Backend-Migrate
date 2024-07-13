@@ -19,8 +19,8 @@ public class TokenCustomException extends CustomException {
     public static final TokenCustomException MALFORMED_TOKEN =
             new TokenCustomException(TokenErrorCode.MALFORMED_TOKEN);
 
-    public static final TokenCustomException DOES_NOT_REFRESH_TOKEN =
-            new TokenCustomException(TokenErrorCode.DOES_NOT_REFRESH_TOKEN);
+    public static final TokenCustomException NO_REFRESH_TOKEN =
+            new TokenCustomException(TokenErrorCode.NO_REFRESH_TOKEN);
 
     public static final TokenCustomException INSUFFICIENT_USER_IDENTIFICATION_FOR_TOKEN_REISSUE =
             new TokenCustomException(

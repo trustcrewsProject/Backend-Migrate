@@ -60,10 +60,7 @@ public class BoardFacade {
     @Transactional
     public BoardProjectCreateResponseDto create(Long userId, BoardProjectCreateRequestDto dto) {
         User tempUser = userService.findById(userId);
-
-        // 신뢰등급 설정
-        TrustGrade trustGrade =
-                trustGradeService.getTrustGradeById(dto.getProject().getTrustGradeId());
+        TrustGrade trustGrade = tempUser.getTrustScore().getTrustGrade();
 
         // project 생성
         Project project = dto.getProject().toProjectEntity(trustGrade, tempUser);

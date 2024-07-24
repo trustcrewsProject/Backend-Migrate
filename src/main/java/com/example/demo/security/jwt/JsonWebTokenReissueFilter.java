@@ -141,8 +141,6 @@ public class JsonWebTokenReissueFilter extends OncePerRequestFilter {
         if (!requestRefreshToken.equals(storedRefreshToken)) {
             throw TokenCustomException.INVALID_REFRESH_TOKEN;
         }
-
-//        jsonWebTokenProvider.validateToken(requestRefreshToken);
     }
 
     // 회원 정보를 커스텀 회원 정보 객체로 조회

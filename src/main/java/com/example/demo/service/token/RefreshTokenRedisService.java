@@ -27,6 +27,7 @@ public class RefreshTokenRedisService {
 
         ValueOperations<String, String> values = redisTemplate.opsForValue();
         values.set(key, refreshToken, refreshTokenExpiresMillis, TimeUnit.MILLISECONDS);
+//        values.set(key, refreshToken, 15000, TimeUnit.MILLISECONDS);
     }
 
     // Refresh Token 조회

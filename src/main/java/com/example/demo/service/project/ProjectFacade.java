@@ -25,6 +25,7 @@ import com.example.demo.service.trust_grade.TrustGradeService;
 import com.example.demo.service.user.UserProjectHistoryService;
 import com.example.demo.service.user.UserService;
 import com.example.demo.service.work.WorkService;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -52,11 +53,11 @@ public class ProjectFacade {
 
     @Transactional(readOnly = true)
     public PaginationResponseDto getMyParticipatingProjects(Long userId, int pageIndex, int itemCount) {
-        if(pageIndex < 0) {
+        if (pageIndex < 0) {
             throw PageNationCustomException.INVALID_PAGE_NUMBER;
         }
 
-        if(itemCount > 8) {
+        if (itemCount > 8) {
             throw PageNationCustomException.INVALID_PAGE_ITEM_COUNT;
         }
 
@@ -165,6 +166,7 @@ public class ProjectFacade {
 
     /**
      * 프로젝트 참여 수락/거절
+     *
      * @param userId
      * @param projectConfirmRequestDto
      */
@@ -181,7 +183,7 @@ public class ProjectFacade {
         projectMemberService.verifiedProjectManager(project, currentUser);
 
         // 프로젝트 참여 수락
-        if(projectConfirmRequestDto.isConfirmResult()) {
+        if (projectConfirmRequestDto.isConfirmResult()) {
             // 지원 알림의 confirm 필드 수락으로 변경
             supportedAlert.updateProjectConfirmResult(projectConfirmRequestDto.isConfirmResult());
 
@@ -222,6 +224,7 @@ public class ProjectFacade {
      * 프로젝트 종료
      * 해당 프로젝트 멤버의 새로운 사용자 프로젝트 이력 추가(프로젝트 완주 이력)
      * 해당 프로젝트와 관련된 업무, 마일스톤, 알림, 멤버, 기술스택 정보 삭제
+     *
      * @param userId
      * @param projectId
      */
@@ -272,7 +275,7 @@ public class ProjectFacade {
 
         // 프로젝트 정보 수정
         project.updateProject(updateRequest.getProjectName(), updateRequest.getSubject(),
-                trustGradeService.getTrustGradeById(updateRequest.getTrustGradeId()), updateRequest.getStartDate(),
+                updateRequest.getStartDate(),
                 updateRequest.getEndDate());
     }
 }

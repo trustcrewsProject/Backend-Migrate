@@ -14,7 +14,6 @@ public class ProjectInfoUpdateRequestDto {
     private Long projectId;
     private String projectName;
     private String subject;
-    private Long trustGradeId;
     private LocalDate startDate;
     private LocalDate endDate;
 }

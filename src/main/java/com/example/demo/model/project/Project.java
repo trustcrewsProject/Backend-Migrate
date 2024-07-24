@@ -79,10 +79,9 @@ public class Project extends BaseTimeEntity {
         this.endDate = dto.getEndDate();
     }
 
-    public void updateProject(String name, String subject, TrustGrade trustGrade, LocalDate startDate, LocalDate endDate) {
+    public void updateProject(String name, String subject, LocalDate startDate, LocalDate endDate) {
         this.name = name;
         this.subject = subject;
-        this.trustGrade = trustGrade;
         this.startDate = startDate;
         this.endDate = endDate;
     }

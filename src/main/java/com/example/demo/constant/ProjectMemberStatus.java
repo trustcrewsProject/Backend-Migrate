@@ -2,5 +2,6 @@ package com.example.demo.constant;
 
 public enum ProjectMemberStatus {
     PARTICIPATING,
-    WITHDRAW
+    WITHDRAW,
+    FORCE_WITHDRAW
 }

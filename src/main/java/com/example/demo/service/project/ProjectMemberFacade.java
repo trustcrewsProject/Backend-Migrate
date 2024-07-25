@@ -208,7 +208,7 @@ public class ProjectMemberFacade {
                 forcedWithdrawalAlert.getType(), forcedWithdrawalAlert.getContent());
 
         // 프로젝트 멤버 상태 탈퇴로 변경
-        projectMember.updateStatus(ProjectMemberStatus.WITHDRAW);
+        projectMember.updateStatus(ProjectMemberStatus.FORCE_WITHDRAW);
         PMLog.i(PROJECT_CREW, "[FORCED_WITHDRAW] project: {} crew: {}", project.getName(), projectMember.getUser().getNickname());
 
     }

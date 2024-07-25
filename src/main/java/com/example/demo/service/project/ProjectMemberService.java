@@ -8,6 +8,8 @@ import com.example.demo.model.project.ProjectMemberAuth;
 import com.example.demo.model.user.User;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -29,7 +31,7 @@ public interface ProjectMemberService {
     // 프로젝트 정보, 프로젝트 멤버 상태로 멤버 목록 조회
     List<ProjectMember> getProjectMembersByProjectAndStatus(Project project, ProjectMemberStatus status);
 
-    ProjectMember findProjectMemberByProjectAndUser(Project project, User user);
+    Optional<ProjectMember> findProjectMemberByProjectAndUser(Project project, User user);
 
     Map<String, Boolean> getUserAuthMap(Long projectId, Long userId);
 

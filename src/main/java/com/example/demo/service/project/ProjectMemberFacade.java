@@ -15,6 +15,7 @@ import com.example.demo.dto.user.response.UserCrewDetailResponseDto;
 import com.example.demo.dto.user.response.UserReadProjectCrewResponseDto;
 import com.example.demo.global.exception.customexception.PageNationCustomException;
 import com.example.demo.global.exception.customexception.ProjectCustomException;
+import com.example.demo.global.exception.customexception.ProjectMemberCustomException;
 import com.example.demo.global.log.PMLog;
 import com.example.demo.model.alert.Alert;
 import com.example.demo.model.project.Project;
@@ -33,6 +34,7 @@ import com.example.demo.service.work.WorkService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -129,11 +131,13 @@ public class ProjectMemberFacade {
         // 탈퇴 수락인 경우
         if (withdrawConfirmRequest.isWithdrawConfirm()) {
             // 프로젝트 멤버 상태 탈퇴로 변경
-            ProjectMember projectMember = projectMemberService.findProjectMemberByProjectAndUser(project, withdrawAlert.getSendUser());
-            projectMember.updateStatus(ProjectMemberStatus.WITHDRAW);
-            PMLog.i(PROJECT_CREW, "[WITHDRAW] project: {} crew: {}", project.getName(), projectMember.getUser().getNickname());
+            Optional<ProjectMember> projectMember = projectMemberService.findProjectMemberByProjectAndUser(project, withdrawAlert.getSendUser());
+            if(projectMember.isEmpty()) throw ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER;
 
-            User user = projectMember.getUser();
+            projectMember.get().updateStatus(ProjectMemberStatus.WITHDRAW);
+            PMLog.i(PROJECT_CREW, "[WITHDRAW] project: {} crew: {}", project.getName(), projectMember.get().getUser().getNickname());
+
+            User user = projectMember.get().getUser();
 
             // 프로젝트 탈퇴 이력 생성
             UserProjectHistory userWithdrawalProjectHistory = UserProjectHistory.builder()

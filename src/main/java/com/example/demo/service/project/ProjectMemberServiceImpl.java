@@ -14,8 +14,9 @@ import com.example.demo.service.user.UserService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -54,10 +55,8 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
                 .findAllByProjectAndStatus(project, status);
     }
 
-    public ProjectMember findProjectMemberByProjectAndUser(Project project, User user) {
-        return projectMemberRepository
-                .findProjectMemberByProjectAndUser(project, user)
-                .orElseThrow(() -> ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER);
+    public Optional<ProjectMember> findProjectMemberByProjectAndUser(Project project, User user) {
+        return projectMemberRepository.findProjectMemberByProjectAndUser(project, user);
     }
 
     @Override
@@ -105,7 +104,9 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     private ProjectMemberAuth getProjectMemberAuth(Long projectId, Long userId) {
         User findUser = userService.findById(userId);
         Project findProject = projectService.findById(projectId);
-        return findProjectMemberByProjectAndUser(findProject, findUser).getProjectMemberAuth();
+        return findProjectMemberByProjectAndUser(findProject, findUser)
+                .map(ProjectMember::getProjectMemberAuth)
+                .orElseThrow(() -> ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER);
     }
 
     @Override

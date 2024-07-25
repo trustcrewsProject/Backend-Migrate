@@ -7,12 +7,12 @@ import com.example.demo.dto.trust_score.AddPointDto;
 import com.example.demo.dto.work.request.*;
 import com.example.demo.dto.work.response.WorkReadResponseDto;
 import com.example.demo.global.exception.customexception.PageNationCustomException;
+import com.example.demo.global.exception.customexception.ProjectMemberCustomException;
 import com.example.demo.global.exception.customexception.WorkCustomException;
 import com.example.demo.model.alert.Alert;
 import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
-import com.example.demo.model.project.ProjectMemberAuth;
 import com.example.demo.model.user.User;
 import com.example.demo.model.work.Work;
 import com.example.demo.service.alert.AlertService;
@@ -21,12 +21,14 @@ import com.example.demo.service.project.ProjectMemberService;
 import com.example.demo.service.project.ProjectService;
 import com.example.demo.service.trust_score.TrustScoreService;
 import com.example.demo.service.user.UserService;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -45,12 +47,14 @@ public class WorkFacade {
         Project project = projectService.findById(projectId);
         Milestone milestone = milestoneService.findById(milestoneId);
         User user = userService.findById(userId);
-        ProjectMember projectMember =
+        Optional<ProjectMember> projectMember =
                 projectMemberService.findProjectMemberByProjectAndUser(project, user);
+
+        if(projectMember.isEmpty()) throw ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER;
 
         ProjectMember assignedProjectMember = projectMemberService.findById(workCreateRequestDto.getAssignedUserId());
 
-        Work work = workCreateRequestDto.toWorkEntity(project, milestone, assignedProjectMember.getUser(), projectMember);
+        Work work = workCreateRequestDto.toWorkEntity(project, milestone, assignedProjectMember.getUser(), projectMember.get());
 
         workService.save(work);
     }
@@ -59,9 +63,10 @@ public class WorkFacade {
     public WorkReadResponseDto getOne(Long workId) {
         Work work = workService.findById(workId);
         User assignedUser = work.getAssignedUserId();
-        ProjectMember projectMember = projectMemberService.findProjectMemberByProjectAndUser(work.getProject(), assignedUser);
+        Optional<ProjectMember> projectMember = projectMemberService.findProjectMemberByProjectAndUser(work.getProject(), assignedUser);
+        if(projectMember.isEmpty()) throw ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER;
 
-        return WorkReadResponseDto.of(work, projectMember, assignedUser);
+        return WorkReadResponseDto.of(work, projectMember.get(), assignedUser);
     }
 
     @Transactional(readOnly = true)
@@ -72,9 +77,10 @@ public class WorkFacade {
         List<WorkReadResponseDto> workReadResponseDtos = new ArrayList<>();
         for (Work work : works) {
             User assignedUser = work.getAssignedUserId();
-            ProjectMember projectMember = projectMemberService.findProjectMemberByProjectAndUser(project, assignedUser);
+            Optional<ProjectMember> projectMember = projectMemberService.findProjectMemberByProjectAndUser(project, assignedUser);
+            if(projectMember.isEmpty()) throw ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER;
 
-            WorkReadResponseDto workReadResponseDto = WorkReadResponseDto.of(work, projectMember, assignedUser);
+            WorkReadResponseDto workReadResponseDto = WorkReadResponseDto.of(work, projectMember.get(), assignedUser);
             workReadResponseDtos.add(workReadResponseDto);
         }
 
@@ -108,13 +114,14 @@ public class WorkFacade {
     public void update(Long userId, Long workId, WorkUpdateRequestDto workUpdateRequestDto) {
         Work work = workService.findById(workId);
         User user = userService.findById(userId);
-        ProjectMember projectMember =
+        Optional<ProjectMember> projectMember =
                 projectMemberService.findProjectMemberByProjectAndUser(work.getProject(), user);
+        if(projectMember.isEmpty()) throw ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER;
 
         // 할당된 회원 정보
         ProjectMember assignedUser = projectMemberService.findById(workUpdateRequestDto.getAssignedUserId());
 
-        work.update(workUpdateRequestDto, projectMember, assignedUser.getUser());
+        work.update(workUpdateRequestDto, projectMember.get(), assignedUser.getUser());
     }
 
     /**
@@ -127,9 +134,11 @@ public class WorkFacade {
             Long workId, WorkUpdateContentRequestDto workUpdateContentRequestDto) {
         Work work = workService.findById(workId);
         User user = userService.findById(1L);
-        ProjectMember projectMember =
+        Optional<ProjectMember> projectMember =
                 projectMemberService.findProjectMemberByProjectAndUser(work.getProject(), user);
-        work.updateContent(workUpdateContentRequestDto, projectMember);
+        if(projectMember.isEmpty()) throw ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER;
+
+        work.updateContent(workUpdateContentRequestDto, projectMember.get());
     }
 
     /**
@@ -142,19 +151,22 @@ public class WorkFacade {
             Long workId, WorkUpdateCompleteStatusRequestDto workUpdateCompleteStatusRequestDto) {
         Work work = workService.findById(workId);
         User user = userService.findById(1L);
-        ProjectMember projectMember =
+        Optional<ProjectMember> projectMember =
                 projectMemberService.findProjectMemberByProjectAndUser(work.getProject(), user);
-        work.updateCompleteStatus(workUpdateCompleteStatusRequestDto, projectMember);
+        if(projectMember.isEmpty()) throw ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER;
+
+        work.updateCompleteStatus(workUpdateCompleteStatusRequestDto, projectMember.get());
     }
 
     public void updateAssignUser(
             Long workId, WorkUpdateAssignUserRequestDto workUpdateAssignUserRequestDto) {
         Work work = workService.findById(workId);
         User user = userService.findById(workUpdateAssignUserRequestDto.getAssignUserId());
-        ProjectMember projectMember =
+        Optional<ProjectMember> projectMember =
                 projectMemberService.findProjectMemberByProjectAndUser(work.getProject(), user);
+        if(projectMember.isEmpty()) throw ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER;
 
-        work.updateAssignedUserId(user, projectMember);
+        work.updateAssignedUserId(user, projectMember.get());
     }
 
     /**
@@ -201,9 +213,11 @@ public class WorkFacade {
         Project project = work.getProject();
 
         // 요청한 회원이 해당 프로젝트의 멤버인지 검증
-        ProjectMember projectMember = projectMemberService.findProjectMemberByProjectAndUser(project, currentUser);
-        if(projectMember.getStatus().equals(ProjectMemberStatus.WITHDRAW) ||
-                !project.getId().equals(projectMember.getProject().getId())) {
+        Optional<ProjectMember> projectMember = projectMemberService.findProjectMemberByProjectAndUser(project, currentUser);
+        if(projectMember.isEmpty()) throw ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER;
+
+        if(!projectMember.get().getStatus().equals(ProjectMemberStatus.PARTICIPATING) ||
+                !project.getId().equals(projectMember.get().getProject().getId())) {
             throw WorkCustomException.NO_PERMISSION_TO_TASK;
         }
 

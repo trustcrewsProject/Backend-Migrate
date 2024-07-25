@@ -29,6 +29,7 @@ import com.example.demo.service.work.WorkService;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
@@ -147,8 +148,19 @@ public class ProjectFacade {
             Long userId,
             Long projectId,
             ProjectParticipateRequestDto projectParticipateRequestDto) {
+
         Project project = projectService.findById(projectId);
         User user = userService.findById(userId);
+
+        Optional<ProjectMember> projectMember = projectMemberService.findProjectMemberByProjectAndUser(project, user);
+        if (projectMember.isPresent()) {
+            ProjectMemberStatus memberStatus = projectMember.get().getStatus();
+            if (memberStatus.equals(ProjectMemberStatus.PARTICIPATING))
+                throw ProjectPartiCustomException.PARTICIPATE_DUPLICATE;
+            if (memberStatus.equals(ProjectMemberStatus.FORCE_WITHDRAW))
+                throw ProjectPartiCustomException.PARTICIPATE_NOT_ALLOWED;
+        }
+
         Position position = positionService.findById(projectParticipateRequestDto.getPositionId());
         Alert alert =
                 Alert.builder()

@@ -188,7 +188,7 @@ public class ProjectFacade {
             supportedAlert.updateProjectConfirmResult(projectConfirmRequestDto.isConfirmResult());
 
             User sendUser = supportedAlert.getSendUser();
-            ProjectMemberAuth projectMemberAuth = projectMemberAuthService.findTopByOrderByIdDesc();
+            ProjectMemberAuth projectMemberAuth = projectMemberAuthService.findProjectMemberAuthById(3L);
 
             // 프로젝트 멤버 등록
             ProjectMember projectMember =

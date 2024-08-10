@@ -2,6 +2,7 @@ package com.example.demo.service.project;
 
 import com.example.demo.constant.ProjectMemberStatus;
 import com.example.demo.constant.ProjectRole;
+import com.example.demo.dto.project.ProjectDetailAuthDto;
 import com.example.demo.global.exception.customexception.ProjectMemberAuthCustomException;
 import com.example.demo.global.exception.customexception.ProjectMemberCustomException;
 import com.example.demo.model.position.Position;
@@ -77,7 +78,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
      * @return
      */
     @Override
-    public Map<String, Boolean> getUserAuthMap(Long projectId, Long userId) {
+    public ProjectDetailAuthDto getUserAuthMap(Long projectId, Long userId) {
         return getAuthMap(getProjectMemberAuth(projectId, userId));
     }
 
@@ -94,11 +95,8 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
         }
     }
 
-    private static Map<String, Boolean> getAuthMap(ProjectMemberAuth projectMemberAuth) {
-        Map<String, Boolean> authMap = new HashMap<>();
-        authMap.put("milestoneAuth", projectMemberAuth.isMilestoneChangeYN());
-        authMap.put("workAuth", projectMemberAuth.isWorkChangeYN());
-        return authMap;
+    private static ProjectDetailAuthDto getAuthMap(ProjectMemberAuth projectMemberAuth) {
+        return new ProjectDetailAuthDto(projectMemberAuth);
     }
 
     private ProjectMemberAuth getProjectMemberAuth(Long projectId, Long userId) {

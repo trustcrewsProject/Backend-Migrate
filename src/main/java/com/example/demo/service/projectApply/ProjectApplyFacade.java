@@ -4,11 +4,11 @@ import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.projectApply.ProjectApplyRequestDto;
 import com.example.demo.dto.projectApply.ProjectApplyResponseDto;
 import com.example.demo.global.exception.customexception.PageNationCustomException;
-import com.example.demo.model.project.alert.recruit.ProjectRecruitAlert;
+import com.example.demo.model.project.alert.vote.VAlertRecruit;
 import com.example.demo.model.projectApply.ProjectApply;
-import com.example.demo.model.projectVote.ProjectVoteRecruit;
-import com.example.demo.service.projectAlert.recruit.ProjectAlertRecruitService;
-import com.example.demo.service.projectVote.recruit.ProjectVoteServiceRecruit;
+import com.example.demo.model.projectVote.recruit.VoteRecruit;
+import com.example.demo.service.projectAlert.vote.recruit.VAlertRecruitService;
+import com.example.demo.service.projectVote.recruit.VoteRecruitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,9 +25,9 @@ public class ProjectApplyFacade {
 
     private final ProjectApplyService projectApplyService;
 
-    private final ProjectVoteServiceRecruit projectVoteServiceRecruit;
+    private final VoteRecruitService projectVoteServiceRecruit;
 
-    private final ProjectAlertRecruitService projectAlertRecruitService;
+    private final VAlertRecruitService vAlertRecruitService;
 
     public void projectApply(long userId, ProjectApplyRequestDto requestDto) {
         try{
@@ -38,11 +38,14 @@ public class ProjectApplyFacade {
                     requestDto.getApply_message()
             );
 
-            ProjectVoteRecruit projectVoteRecruit = projectVoteServiceRecruit.createProjectVoteRecruit(projectApply);
+            VoteRecruit voteRecruit = projectVoteServiceRecruit.createProjectVoteRecruit(projectApply);
+            String positionName = voteRecruit.getProjectApply().getPosition().getName();
+            String applierNickname = voteRecruit.getProjectApply().getUser().getNickname();
+            String alertContents =  applierNickname + " 님이 " + positionName + " 포지션에 지원했습니다.";
 
-            ProjectRecruitAlert projectRecruitAlert = projectAlertRecruitService.toProjectRecruitAlertEntity(requestDto.getProjectId(), projectVoteRecruit);
+            VAlertRecruit vAlertRecruit = vAlertRecruitService.toProjectRecruitAlertEntity(requestDto.getProjectId(), voteRecruit, alertContents);
 
-            System.out.println("projectRecruitAlert:: "+ projectRecruitAlert.getId());
+            System.out.println("projectRecruitAlert:: "+ vAlertRecruit.getId());
         }catch(Exception e){
            e.printStackTrace();
         }

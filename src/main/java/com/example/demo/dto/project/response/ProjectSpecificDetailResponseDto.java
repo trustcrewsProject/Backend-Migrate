@@ -1,6 +1,7 @@
 package com.example.demo.dto.project.response;
 
 import com.example.demo.constant.ProjectStatus;
+import com.example.demo.dto.project.ProjectDetailAuthDto;
 import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
 import com.example.demo.global.util.LocalDateTimeFormatSerializer;
 import com.example.demo.model.project.Project;
@@ -24,7 +25,7 @@ public class ProjectSpecificDetailResponseDto {
     private int crewNumber;
     private LocalDate startDate;
     private LocalDate endDate;
-    private Map<String, Boolean> authMap;
+    private ProjectDetailAuthDto authMap;
 
     @JsonSerialize(using = LocalDateTimeFormatSerializer.class)
     private LocalDateTime createDate;

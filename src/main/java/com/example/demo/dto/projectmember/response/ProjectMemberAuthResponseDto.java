@@ -11,6 +11,7 @@ public class ProjectMemberAuthResponseDto {
     private String projectMemberAuthName;
     private boolean milestone_change_YN;
     private boolean work_change_YN;
+    private boolean vote_YN;
 
     public static ProjectMemberAuthResponseDto of(ProjectMemberAuth projectMemberAuth) {
         return ProjectMemberAuthResponseDto.builder()
@@ -18,6 +19,7 @@ public class ProjectMemberAuthResponseDto {
                 .projectMemberAuthName(projectMemberAuth.getName())
                 .milestone_change_YN(projectMemberAuth.isMilestoneChangeYN())
                 .work_change_YN(projectMemberAuth.isWorkChangeYN())
+                .vote_YN(projectMemberAuth.isVoteYn())
                 .build();
     }
 }

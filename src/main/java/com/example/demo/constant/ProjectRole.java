@@ -12,7 +12,9 @@ public enum ProjectRole {
 
     MANAGER(1L, "매니저"),
     SUB_MANAGER(2L, "부매니저"),
-    MEMBER(3L, "구성원");
+    MEMBER(3L, "구성원"),
+
+    BEING_VOTED(4L, "강제탈퇴투표대상");
 
     private Long id;
     private String name;

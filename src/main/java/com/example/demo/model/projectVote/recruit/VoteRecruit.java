@@ -1,4 +1,4 @@
-package com.example.demo.model.projectVote;
+package com.example.demo.model.projectVote.recruit;
 
 import com.example.demo.constant.VoteResult;
 import com.example.demo.constant.VoteStatus;
@@ -13,10 +13,10 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "projectVote")
+@Table(name = "projectVoteRecruit")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class ProjectVoteRecruit extends BaseTimeEntity {
+public class VoteRecruit extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "project_vote_recruit_id")
@@ -40,14 +40,15 @@ public class ProjectVoteRecruit extends BaseTimeEntity {
 
     private int max_vote_count;
 
+
     @Builder
-    public ProjectVoteRecruit(Project project, ProjectApply projectApply, int max_vote_count) {
+    public VoteRecruit(Project project, ProjectApply projectApply, int max_vote_count) {
         this.project = project;
         this.projectApply = projectApply;
         this.agrees = 0;
         this.disagrees = 0;
         this.max_vote_count = max_vote_count;
-        this.voteStatus = VoteStatus.PROCESSING;
+        this.voteStatus = VoteStatus.VSTAT1001;
     }
 
     public void updateProjectVoteAgrees() {
@@ -59,7 +60,7 @@ public class ProjectVoteRecruit extends BaseTimeEntity {
     }
 
     public void endProjectVote() {
-        this.voteStatus = VoteStatus.FINISHED;
+        this.voteStatus = VoteStatus.VSTAT1002;
     }
 
     public VoteResult getProjectVoteResult() {

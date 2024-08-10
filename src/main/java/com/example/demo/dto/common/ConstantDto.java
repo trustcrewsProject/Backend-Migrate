@@ -1,5 +1,6 @@
-package com.example.demo.global.common;
+package com.example.demo.dto.common;
 
+import com.example.demo.global.common.Constant;
 import lombok.Getter;
 
 @Getter

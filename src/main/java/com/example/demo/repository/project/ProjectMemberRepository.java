@@ -4,10 +4,11 @@ import com.example.demo.constant.ProjectMemberStatus;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
 import com.example.demo.model.user.User;
-import java.util.List;
-import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
+import java.util.Optional;
 
 public interface ProjectMemberRepository extends JpaRepository<ProjectMember, Long> {
     Optional<List<ProjectMember>> findProjectsMemberByProject(Project project);
@@ -19,4 +20,8 @@ public interface ProjectMemberRepository extends JpaRepository<ProjectMember, Lo
 
     @Query("select pm from ProjectMember pm where pm.user = :user and pm.status = :status")
     List<ProjectMember> findAllByUserAndStatus(User user, ProjectMemberStatus status);
+
+    @Query("SELECT COUNT(pm) from ProjectMember pm WHERE pm.projectMemberAuth.id != 4L AND pm.project = :project")
+    int countVotableProjectMember(Project project);
+
 }

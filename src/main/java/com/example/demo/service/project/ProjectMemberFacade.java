@@ -163,47 +163,52 @@ public class ProjectMemberFacade {
     /**
      * 프로젝트 멤버 강제탈퇴
      * 사용자 프로젝트 이력에 해당 회원의 강제탈퇴 이력 추가
-     *
-     * @param projectMemberId
+     * @param userId
+     * @param targetUserId
+     * @param projectId
      */
     @Transactional
-    public void forcedWithdrawal(Long userId, Long projectMemberId) {
+    public void forcedWithdrawal(Long userId, Long targetUserId, Long projectId) {
+        Project findProject = projectService.findById(projectId);
+        User findUser = userService.findById(targetUserId);
+        Optional<ProjectMember> findProjectMember =
+                projectMemberService.findProjectMemberByProjectAndUser(findProject, findUser);
+
+        if(findProjectMember.isEmpty()) throw ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER;
+
         User currentUser = userService.findById(userId);
-        ProjectMember projectMember = projectMemberService.findById(projectMemberId);
-        Project project = projectMember.getProject();
 
         // 프로젝트 매니저 검증
-        projectMemberService.verifiedProjectManager(project, currentUser);
+        projectMemberService.verifiedProjectManager(findProject, currentUser);
 
-        User user = projectMember.getUser();
         // 사용자 프로젝트 이력에 강제탈퇴 이력 추가
         UserProjectHistory forcedWithdrawalHistory = UserProjectHistory.builder()
-                .project(project)
-                .user(user)
+                .project(findProject)
+                .user(findUser)
                 .status(UserProjectHistoryStatus.FORCED_WITHDRAWAL)
                 .build();
         userProjectHistoryService.save(forcedWithdrawalHistory);
 
         // 강제탈퇴에 따른 신뢰점수 차감
         AddPointDto addPoint = AddPointDto.builder()
-                .content(user.getNickname() + "님 " + project.getName() + " 강제탈퇴")
-                .userId(user.getId())
-                .projectId(project.getId())
+                .content(findUser.getNickname() + "님 " + findProject.getName() + " 강제탈퇴")
+                .userId(findUser.getId())
+                .projectId(findProject.getId())
                 .scoreTypeId(5L)
                 .build();
 
         TrustScoreUpdateResponseDto result = trustScoreService.addPoint(addPoint);
         PMLog.i(
                 TRUST_POINT, "[MINUS] user:{}, score:{}, result:{}, content:{}",
-                800, user.getNickname(), result.getScoreChange(),
+                800, findUser.getNickname(), result.getScoreChange(),
                 result.getTotalScore(), addPoint.getContent()
         );
 
         // 강제탈퇴 알림 생성
         Alert forcedWithdrawalAlert = Alert.builder()
-                .project(project)
+                .project(findProject)
                 .sendUser(currentUser)
-                .content(user.getNickname() + "님이 " + project.getName() + "에서 강제탈퇴 처리됐습니다.")
+                .content(findUser.getNickname() + "님이 " + findProject.getName() + "에서 강제탈퇴 처리됐습니다.")
                 .type(AlertType.CREW_UPDATE)
                 .checked_YN(false)
                 .build();
@@ -212,8 +217,8 @@ public class ProjectMemberFacade {
                 forcedWithdrawalAlert.getType(), forcedWithdrawalAlert.getContent());
 
         // 프로젝트 멤버 상태 탈퇴로 변경
-        projectMember.updateStatus(ProjectMemberStatus.FORCE_WITHDRAW);
-        PMLog.i(PROJECT_CREW, "[FORCED_WITHDRAW] project: {} crew: {}", project.getName(), projectMember.getUser().getNickname());
+        findProjectMember.get().updateStatus(ProjectMemberStatus.FORCE_WITHDRAW);
+        PMLog.i(PROJECT_CREW, "[FORCED_WITHDRAW] project: {} crew: {}", findProject.getName(), findProjectMember.get().getUser().getNickname());
 
     }
 

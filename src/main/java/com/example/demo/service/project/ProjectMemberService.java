@@ -1,6 +1,7 @@
 package com.example.demo.service.project;
 
 import com.example.demo.constant.ProjectMemberStatus;
+import com.example.demo.dto.project.ProjectDetailAuthDto;
 import com.example.demo.model.position.Position;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
@@ -33,7 +34,7 @@ public interface ProjectMemberService {
 
     Optional<ProjectMember> findProjectMemberByProjectAndUser(Project project, User user);
 
-    Map<String, Boolean> getUserAuthMap(Long projectId, Long userId);
+    ProjectDetailAuthDto getUserAuthMap(Long projectId, Long userId);
 
     void verifiedProjectManager(Project project, User user);
 

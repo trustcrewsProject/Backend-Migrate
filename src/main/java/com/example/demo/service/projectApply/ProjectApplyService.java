@@ -1,5 +1,6 @@
 package com.example.demo.service.projectApply;
 
+import com.example.demo.constant.ProjectApplyStatus;
 import com.example.demo.dto.projectApply.ProjectApplyResponseDto;
 import com.example.demo.model.projectApply.ProjectApply;
 import org.springframework.data.domain.Page;
@@ -17,4 +18,6 @@ public interface ProjectApplyService {
     List<ProjectApplyResponseDto> findProjectAppliesByUserId(Long userId, Pageable pageable);
 
     Long countProjectAppliesByUserId(Long userId);
+
+    public void udpateProjectApplyStatus(Long applyId, ProjectApplyStatus projectApplyStatus);
 }

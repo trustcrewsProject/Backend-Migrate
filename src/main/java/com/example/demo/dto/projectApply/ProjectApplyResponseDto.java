@@ -1,7 +1,7 @@
 package com.example.demo.dto.projectApply;
 
 import com.example.demo.constant.ProjectApplyStatus;
-import com.example.demo.global.common.ConstantDto;
+import com.example.demo.dto.common.ConstantDto;
 import com.example.demo.global.util.LocalDateTimeFormatSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Builder;

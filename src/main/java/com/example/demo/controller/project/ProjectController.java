@@ -1,6 +1,7 @@
 package com.example.demo.controller.project;
 
 import com.example.demo.dto.common.ResponseDto;
+import com.example.demo.dto.project.ProjectDetailAuthDto;
 import com.example.demo.dto.project.request.ProjectConfirmRequestDto;
 import com.example.demo.dto.project.request.ProjectInfoUpdateRequestDto;
 import com.example.demo.dto.project.request.ProjectParticipateRequestDto;
@@ -49,7 +50,7 @@ public class ProjectController {
     public ResponseEntity<ResponseDto<?>> getDetail(
             @PathVariable("projectId") Long projectId,
             @PathVariable("userId") Long userId) {
-        Map<String, Boolean> userAuthMap =
+        ProjectDetailAuthDto userAuthMap =
                 projectMemberService.getUserAuthMap(projectId, userId);
         ProjectSpecificDetailResponseDto result = projectFacade.getDetail(projectId);
         result.setAuthMap(userAuthMap);

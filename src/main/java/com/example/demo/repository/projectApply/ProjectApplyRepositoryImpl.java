@@ -1,7 +1,8 @@
 package com.example.demo.repository.projectApply;
 
+import com.example.demo.constant.ProjectApplyStatus;
 import com.example.demo.dto.projectApply.ProjectApplyResponseDto;
-import com.example.demo.global.common.ConstantDto;
+import com.example.demo.dto.common.ConstantDto;
 import com.example.demo.model.position.QPosition;
 import com.example.demo.model.project.QProject;
 import com.example.demo.model.projectApply.QProjectApply;
@@ -62,5 +63,14 @@ public class ProjectApplyRepositoryImpl implements ProjectApplyRepositoryCustom 
                 .from(qProjectApply)
                 .where(qProjectApply.user.id.eq(userId))
                 .fetchOne();
+    }
+
+    @Override
+    public void udpateProjectApplyStatus(Long applyId, ProjectApplyStatus projectApplyStatus) {
+        jpaQueryFactory
+                .update(qProjectApply)
+                .set(qProjectApply.status, projectApplyStatus)
+                .where(qProjectApply.id.eq(applyId))
+                .execute();
     }
 }

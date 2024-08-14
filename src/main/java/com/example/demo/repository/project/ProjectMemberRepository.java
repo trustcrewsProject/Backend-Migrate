@@ -24,4 +24,9 @@ public interface ProjectMemberRepository extends JpaRepository<ProjectMember, Lo
     @Query("SELECT COUNT(pm) from ProjectMember pm WHERE pm.projectMemberAuth.id != 4L AND pm.project = :project")
     int countVotableProjectMember(Project project);
 
+    @Query("SELECT COUNT(pm) from ProjectMember pm WHERE pm.id != :fwMemberId AND pm.project.id = :projectId")
+    int countFWVotableProjectMember(Long fwMemberId, Long projectId);
+
+    @Query("SELECT pm from ProjectMember pm WHERE pm.project.id = :projectId AND pm.user.id = :userId")
+    ProjectMember findProjectMemberByPrIdAndUserId(Long projectId, Long userId);
 }

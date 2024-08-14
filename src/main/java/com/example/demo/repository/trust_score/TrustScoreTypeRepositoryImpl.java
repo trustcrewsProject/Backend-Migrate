@@ -6,6 +6,7 @@ import com.example.demo.dto.trust_score_type.TrustScoreTypeSearchCriteria;
 import com.example.demo.dto.trust_score_type.response.TrustScoreTypeReadResponseDto;
 import com.example.demo.model.project.QProject;
 import com.example.demo.model.trust_grade.QTrustGrade;
+import com.example.demo.model.trust_score.QTrustScore;
 import com.example.demo.model.trust_score.QTrustScoreType;
 import com.example.demo.model.trust_score.TrustScoreType;
 import com.querydsl.core.BooleanBuilder;
@@ -75,6 +76,49 @@ public class TrustScoreTypeRepositoryImpl implements TrustScoreTypeRepositoryCus
                 .where(project.id.eq(projectId))
                 .fetchFirst();
     }
+
+//    @Override
+//    public int getScoreByTrustScoreId(Long trustScoreId, Long trustScoreTypeId) {
+//        QTrustScoreType trustScoreType = QTrustScoreType.trustScoreType;
+//        QTrustGrade trustGrade = QTrustGrade.trustGrade;
+//        QTrustScore trustScore = QTrustScore.trustScore;
+//        return jpaQueryFactory
+//                .select(
+//                        new CaseBuilder()
+//                                .when(trustScoreType.gubunCode.eq("M"))
+//                                .then(trustScoreType.score.multiply(-1))
+//                                .otherwise(trustScoreType.score))
+//                .from(trustScore)
+//                .join(trustGrade)
+//                .on(trustGrade.id.eq(trustScore.trustGrade.id))
+//                .join(trustScoreType)
+//                .on(
+//                        trustScoreType
+//                                .upTrustScoreType
+//                                .id
+//                                .eq(trustScoreTypeId)
+//                                .and(trustScoreType.trustGradeName.eq(trustGrade.name)))
+//                .where(trustScore.id.eq(trustScoreId))
+//                .fetchFirst();
+//    }
+
+    @Override
+    public int getScoreByTrustGradeName(String trustGradeName, Long trustScoreTypeId) {
+        QTrustScoreType trustScoreType = QTrustScoreType.trustScoreType;
+
+        return jpaQueryFactory
+                .select(
+                        new CaseBuilder()
+                                .when(trustScoreType.gubunCode.eq("M"))
+                                .then(trustScoreType.score.multiply(-1))
+                                .otherwise(trustScoreType.score))
+                .from(trustScoreType)
+                .where(
+                        trustScoreType.upTrustScoreType.id.eq(trustScoreTypeId)
+                                .and(trustScoreType.trustGradeName.eq(trustGradeName)))
+                .fetchFirst();
+    }
+
     // TODO : 두 메서드 통합
     @Override
     public List<Long> findAllUpScoreTypeId() {

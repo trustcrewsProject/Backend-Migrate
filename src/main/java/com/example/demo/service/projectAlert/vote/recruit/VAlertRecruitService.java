@@ -1,7 +1,6 @@
 package com.example.demo.service.projectAlert.vote.recruit;
 
-import com.example.demo.dto.projectAlert.recruit.ProjectRecruitAlertDetailResponseDto;
-import com.example.demo.dto.projectAlert.recruit.ProjectRecruitAlertResponseDto;
+import com.example.demo.dto.projectAlert.vote.recruit.ProjectRecruitAlertResponseDto;
 import com.example.demo.model.project.alert.vote.VAlertRecruit;
 import com.example.demo.model.projectVote.recruit.VoteRecruit;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +16,4 @@ public interface VAlertRecruitService {
     Long countProjectRecruitAlerts(Long projectId);
 
     List<ProjectRecruitAlertResponseDto> findProjectRecruitAlertLists(Long projectId, Pageable pageable);
-
-//    ProjectRecruitAlertDetailResponseDto findProjectRecruitAlertDetail(Long alertId);
-
 }

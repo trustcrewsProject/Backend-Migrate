@@ -23,6 +23,8 @@ public interface TrustScoreTypeRepositoryCustom {
      */
     int getScoreByProject(Long projectId, Long trueScoreTypeId);
 
+//    int getScoreByTrustScoreId(Long trustScoreId, Long trustScoreTypeId);
+
     /**
      * 신뢰점수타입 대분류 아이디 조회
      *
@@ -34,4 +36,6 @@ public interface TrustScoreTypeRepositoryCustom {
             TrustScoreTypeSearchCriteria criteria, Pageable pageable);
     /** 신뢰점수타입 비활성화 */
     void disableTrustScoreType(Long trustScoreTypeId);
+
+    int getScoreByTrustGradeName(String trustGradeName, Long trustScoreTypeId);
 }

@@ -2,7 +2,7 @@ package com.example.demo.service.projectVote.recruit.history;
 
 import com.example.demo.dto.projectVote.recruit.ProjectVoteRecruitRequestDto;
 import com.example.demo.model.projectVote.recruit.history.VoteRecruitHistory;
-import com.example.demo.repository.projectVote.history.VoteRecruitHistoryRepository;
+import com.example.demo.repository.projectVote.recruit.history.VoteRecruitHistoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

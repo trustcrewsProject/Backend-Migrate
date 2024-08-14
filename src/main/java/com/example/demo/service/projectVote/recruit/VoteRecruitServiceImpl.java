@@ -7,7 +7,7 @@ import com.example.demo.model.project.Project;
 import com.example.demo.model.projectApply.ProjectApply;
 import com.example.demo.model.projectVote.recruit.VoteRecruit;
 import com.example.demo.repository.project.ProjectMemberRepository;
-import com.example.demo.repository.projectVote.VoteRecruitRepository;
+import com.example.demo.repository.projectVote.recruit.VoteRecruitRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

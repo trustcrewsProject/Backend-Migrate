@@ -64,7 +64,7 @@ public class VoteRecruit extends BaseTimeEntity {
     }
 
     public VoteResult getProjectVoteResult() {
-        int maxCountForOne = Math.round(this.max_vote_count / 2);
+        int maxCountForOne = this.max_vote_count == 2 ? 2 : Math.round(this.max_vote_count / 2);
         boolean isFulfilled =
                 this.agrees + this.disagrees == this.max_vote_count ||
                         this.agrees > maxCountForOne ||

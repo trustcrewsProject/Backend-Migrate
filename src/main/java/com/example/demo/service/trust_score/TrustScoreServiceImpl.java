@@ -3,8 +3,10 @@ package com.example.demo.service.trust_score;
 import com.example.demo.dto.trust_score.AddPointDto;
 import com.example.demo.dto.trust_score.response.TrustScoreUpdateResponseDto;
 import com.example.demo.global.exception.customexception.TrustScoreCustomException;
+import com.example.demo.model.trust_grade.TrustGrade;
 import com.example.demo.model.trust_score.TrustScore;
 import com.example.demo.model.trust_score.TrustScoreHistory;
+import com.example.demo.model.user.User;
 import com.example.demo.repository.trust_score.TrustScoreHistoryRepository;
 import com.example.demo.repository.trust_score.TrustScoreRepository;
 import com.example.demo.repository.trust_score.TrustScoreTypeRepository;
@@ -40,6 +42,37 @@ public class TrustScoreServiceImpl implements TrustScoreService {
         createAndSaveHistory(addPointDto, scoreChange);
 
         // 신뢰점수내역 합산
+        int calculatedScore = trustScoreHistoryRepository.calculateCurrentScore(userId);
+
+        // 기존의 신뢰점수 테이블에 해당 유저에 대한 레코드가 없으면 생성, 있으면 업데이트
+        if (!trustScoreRepository.existsByUserId(userId)) {
+            trustScoreRepository.save(
+                    TrustScore.builder().userId(userId).score(calculatedScore).build());
+        } else {
+            trustScoreRepository.updateUserTrustScore(userId, calculatedScore);
+        }
+
+        // 신뢰등급 변경
+        trustScoreRepository.updateUserTrustGrade(userId);
+
+        // 응답 DTO 생성 및 반환
+        return TrustScoreUpdateResponseDto.builder()
+                .userId(userId)
+                .totalScore(calculatedScore)
+                .scoreChange(scoreChange)
+                .build();
+    }
+
+    @Override
+    public TrustScoreUpdateResponseDto addPointOnUserTrustGrade(TrustGrade trustGrade, AddPointDto addPointDto) {
+        // 요청에 맞는 신뢰점수 증감 조회
+        int scoreChange = getScoreByUser(trustGrade, addPointDto.getScoreTypeId());
+
+        // 신뢰점수내역 추가
+        createAndSaveHistory(addPointDto, scoreChange);
+
+        // 신뢰점수내역 합산
+        Long userId = addPointDto.getUserId();
         int calculatedScore = trustScoreHistoryRepository.calculateCurrentScore(userId);
 
         // 기존의 신뢰점수 테이블에 해당 유저에 대한 레코드가 없으면 생성, 있으면 업데이트
@@ -99,5 +132,11 @@ public class TrustScoreServiceImpl implements TrustScoreService {
         }
         return trustScoreTypeRepository.getScoreByProject(
                 addPointDto.getProjectId(), addPointDto.getScoreTypeId());
+    }
+
+    private int getScoreByUser(TrustGrade trustGrade, Long scoreTypeId){
+        String trustGradeName = trustGrade.getName();
+        System.out.println("trustGradeName::: "+ trustGradeName);
+        return trustScoreTypeRepository.getScoreByTrustGradeName(trustGradeName, scoreTypeId);
     }
 }

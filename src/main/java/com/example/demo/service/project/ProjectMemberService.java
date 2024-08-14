@@ -36,6 +36,8 @@ public interface ProjectMemberService {
 
     ProjectDetailAuthDto getUserAuthMap(Long projectId, Long userId);
 
+    ProjectMember getProjectMemberByPrIdAndUserId(Long projectId, Long userId);
+
     void verifiedProjectManager(Project project, User user);
 
     List<ProjectMember> getProjectMembersByUserAndStatus(User user, ProjectMemberStatus status);

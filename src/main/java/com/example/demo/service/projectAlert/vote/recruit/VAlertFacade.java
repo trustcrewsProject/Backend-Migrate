@@ -2,8 +2,7 @@ package com.example.demo.service.projectAlert.vote.recruit;
 
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.position.response.PositionInfoResponseDto;
-import com.example.demo.dto.projectAlert.recruit.ProjectRecruitAlertDetailResponseDto;
-import com.example.demo.dto.projectAlert.recruit.ProjectRecruitAlertResponseDto;
+import com.example.demo.dto.projectAlert.vote.recruit.ProjectRecruitAlertResponseDto;
 import com.example.demo.dto.projectVote.recruit.ProjectVoteRecruitResponseDto;
 import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
 import com.example.demo.dto.trust_grade.response.TrustGradeInfoResponseDto;
@@ -11,14 +10,13 @@ import com.example.demo.dto.user.response.UserMyInfoResponseDto;
 import com.example.demo.global.exception.customexception.PageNationCustomException;
 import com.example.demo.model.position.Position;
 import com.example.demo.model.projectApply.ProjectApply;
-import com.example.demo.model.projectVote.recruit.VoteRecruit;
 import com.example.demo.model.technology_stack.TechnologyStack;
 import com.example.demo.model.trust_grade.TrustGrade;
 import com.example.demo.model.trust_score.TrustScore;
 import com.example.demo.model.user.User;
 import com.example.demo.model.user.UserTechnologyStack;
 import com.example.demo.repository.projectApply.ProjectApplyRepository;
-import com.example.demo.repository.projectVote.VoteRecruitRepository;
+import com.example.demo.repository.projectVote.recruit.VoteRecruitRepository;
 import com.example.demo.service.user.UserProjectHistoryService;
 import com.example.demo.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +25,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service

@@ -1,10 +1,8 @@
-package com.example.demo.repository.projectVote;
+package com.example.demo.repository.projectVote.recruit;
 
 import com.example.demo.constant.VoteOptionDA;
 import com.example.demo.constant.VoteStatus;
 import com.example.demo.dto.projectVote.recruit.ProjectVoteRecruitResponseDto;
-import com.example.demo.dto.common.ConstantDto;
-import com.example.demo.model.projectApply.QProjectApply;
 import com.example.demo.model.projectVote.recruit.QVoteRecruit;
 import com.example.demo.model.projectVote.recruit.VoteRecruit;
 import com.querydsl.core.types.Projections;

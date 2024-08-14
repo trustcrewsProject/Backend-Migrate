@@ -1,8 +1,8 @@
-package com.example.demo.dto.projectAlert.recruit;
+package com.example.demo.dto.projectAlert.vote.recruit;
 
 import com.example.demo.constant.ProjectAlertType;
 import com.example.demo.constant.VoteStatus;
-import com.example.demo.dto.common.ConstantDto;
+import com.example.demo.dto.common.ConstantDepthDto;
 import com.example.demo.global.util.LocalDateTimeFormatSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Builder;
@@ -16,7 +16,7 @@ public class ProjectRecruitAlertResponseDto {
     private Long alertId;
     private Long voteId;
     private Long applyId;
-    private ProjectAlertType alertType;
+    private ConstantDepthDto<ProjectAlertType> alertType;
     private String contents;
     private VoteStatus voteStatus;
     @JsonSerialize(using = LocalDateTimeFormatSerializer.class)
@@ -26,7 +26,7 @@ public class ProjectRecruitAlertResponseDto {
             Long project_recruit_alert_id,
             Long project_vote_recruit_id,
             Long applyId,
-            ProjectAlertType alertType,
+            ConstantDepthDto<ProjectAlertType> alertType,
             String alertContents,
             VoteStatus voteStatus,
             LocalDateTime createDate

@@ -83,6 +83,11 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     }
 
     @Override
+    public ProjectMember getProjectMemberByPrIdAndUserId(Long projectId, Long userId) {
+        return projectMemberRepository.findProjectMemberByPrIdAndUserId(projectId, userId);
+    }
+
+    @Override
     public void verifiedProjectManager(Project project, User user) {
         ProjectMember member = projectMemberRepository
                 .findProjectMemberByProjectAndUser(project, user)

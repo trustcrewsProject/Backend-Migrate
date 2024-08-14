@@ -1,11 +1,7 @@
-package com.example.demo.dto.projectAlert.recruit;
+package com.example.demo.dto.projectAlert.vote.recruit;
 
 import com.example.demo.constant.ProjectAlertType;
 import com.example.demo.constant.VoteStatus;
-import com.example.demo.dto.common.ConstantDto;
-import com.example.demo.dto.common.UserIdNicknameDto;
-import com.example.demo.model.position.Position;
-import com.example.demo.model.projectApply.ProjectApply;
 import lombok.Builder;
 import lombok.Getter;
 

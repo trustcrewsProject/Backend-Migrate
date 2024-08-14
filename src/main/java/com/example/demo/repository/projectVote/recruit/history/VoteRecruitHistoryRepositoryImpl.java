@@ -1,4 +1,4 @@
-package com.example.demo.repository.projectVote.history;
+package com.example.demo.repository.projectVote.recruit.history;
 
 import com.example.demo.model.projectVote.recruit.history.QVoteRecruitHistory;
 import com.example.demo.model.projectVote.recruit.history.VoteRecruitHistory;

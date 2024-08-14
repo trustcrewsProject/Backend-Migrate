@@ -1,4 +1,4 @@
-package com.example.demo.repository.projectVote;
+package com.example.demo.repository.projectVote.recruit;
 
 import com.example.demo.constant.VoteOptionDA;
 import com.example.demo.constant.VoteStatus;

@@ -1,7 +1,6 @@
 package com.example.demo.service.projectAlert.vote.recruit;
 
-import com.example.demo.dto.projectAlert.recruit.ProjectRecruitAlertDetailResponseDto;
-import com.example.demo.dto.projectAlert.recruit.ProjectRecruitAlertResponseDto;
+import com.example.demo.dto.projectAlert.vote.recruit.ProjectRecruitAlertResponseDto;
 import com.example.demo.model.project.alert.vote.VAlertRecruit;
 import com.example.demo.model.projectVote.recruit.VoteRecruit;
 import com.example.demo.repository.projectAlert.vote.recruit.VAlertRecruitRepository;
@@ -40,8 +39,4 @@ public class VAlertRecruitServiceImpl implements VAlertRecruitService {
         return alertVoteRecruitRepository.findProjectRecruitAlertList(projectId, pageable);
     }
 
-//    @Override
-//    public ProjectRecruitAlertDetailResponseDto findProjectRecruitAlertDetail(Long alertId) {
-//        return alertVoteRecruitRepository.findProjectRecruitAlertDetail(alertId);
-//    }
 }

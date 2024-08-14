@@ -4,7 +4,7 @@ import com.example.demo.global.common.ConstantDepth;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum ProjectAlertType implements ConstantDepth<ProjectAlertType> {
+public enum ProjectAlertType implements ConstantDepth {
     PRA1001("PRA1001", "투표", null),
     PRA1002("PRA1002", "모집", PRA1001),
     PRA1003("PRA1003", "강제탈퇴", PRA1001),

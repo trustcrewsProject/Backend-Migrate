@@ -1,226 +1,92 @@
 package com.example.demo.service.project;
 
-import com.example.demo.constant.AlertType;
 import com.example.demo.constant.ProjectMemberStatus;
 import com.example.demo.constant.UserProjectHistoryStatus;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.position.response.PositionResponseDto;
-import com.example.demo.dto.project.request.ProjectWithdrawConfirmRequestDto;
-import com.example.demo.dto.projectmember.response.*;
+import com.example.demo.dto.project.request.WithdrawRequestDto;
+import com.example.demo.dto.projectmember.response.ProjectMemberAuthResponseDto;
+import com.example.demo.dto.projectmember.response.ProjectMemberReadCrewDetailResponseDto;
+import com.example.demo.dto.projectmember.response.ProjectMemberReadProjectCrewsResponseDto;
+import com.example.demo.dto.projectmember.response.ProjectMemberReadTotalProjectCrewsResponseDto;
 import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
 import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
-import com.example.demo.dto.trust_score.AddPointDto;
-import com.example.demo.dto.trust_score.response.TrustScoreUpdateResponseDto;
 import com.example.demo.dto.user.response.UserCrewDetailResponseDto;
 import com.example.demo.dto.user.response.UserReadProjectCrewResponseDto;
 import com.example.demo.global.exception.customexception.PageNationCustomException;
-import com.example.demo.global.exception.customexception.ProjectCustomException;
 import com.example.demo.global.exception.customexception.ProjectMemberCustomException;
 import com.example.demo.global.log.PMLog;
-import com.example.demo.model.alert.Alert;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
+import com.example.demo.model.project.alert.crew.AlertCrew;
 import com.example.demo.model.technology_stack.TechnologyStack;
 import com.example.demo.model.user.User;
 import com.example.demo.model.user.UserProjectHistory;
 import com.example.demo.model.user.UserTechnologyStack;
 import com.example.demo.model.work.Work;
-import com.example.demo.service.alert.AlertService;
+import com.example.demo.service.projectAlert.crew.AlertCrewService;
 import com.example.demo.service.trust_score.TrustScoreHistoryService;
-import com.example.demo.service.trust_score.TrustScoreService;
 import com.example.demo.service.user.UserProjectHistoryService;
-import com.example.demo.service.user.UserService;
 import com.example.demo.service.work.WorkService;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.example.demo.global.log.PMLog.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.example.demo.global.log.PMLog.PROJECT_ALERT;
+import static com.example.demo.global.log.PMLog.PROJECT_CREW;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class ProjectMemberFacade {
 
-    private final UserService userService;
     private final ProjectMemberService projectMemberService;
-    private final AlertService alertService;
     private final ProjectService projectService;
     private final WorkService workService;
     private final UserProjectHistoryService userProjectHistoryService;
-    private final TrustScoreService trustScoreService;
     private final TrustScoreHistoryService trustScoreHistoryService;
+    private final AlertCrewService alertCrewService;
+
+
 
     /**
-     * 프로젝트 멤버 탈퇴 알림 보내기
+     * 프로젝트 탈퇴
      *
-     * @param projectMemberId
-     */
-    public void sendWithdrawAlert(Long userId, Long projectMemberId) {
-        ProjectMember projectMember = projectMemberService.findById(projectMemberId);
-        User user = projectMember.getUser();
-
-        if (!user.getId().equals(userId)) {
-            throw ProjectCustomException.NO_PERMISSION_TO_TASK;
-        }
-
-        Project project = projectMember.getProject();
-        Alert alert =
-                Alert.builder()
-                        .project(project)
-                        .checkUser(project.getUser())
-                        .sendUser(user)
-                        .content(user.getNickname() + "님이 프로젝트 탈퇴 신청을 했습니다.")
-                        .position(projectMember.getPosition())
-                        .type(AlertType.WITHDRAWAL)
-                        .checked_YN(false)
-                        .build();
-
-        alertService.save(alert);
-        PMLog.i(PROJECT_ALERT, "[{}] Alert saved : {}", alert.getType(), alert.getContent());
-    }
-
-    /**
-     * 프로젝트 멤버 강제 탈퇴 알림 보내기
-     *
-     * @param projectMemberId
-     */
-    public void sendForceWithdrawAlert(Long projectMemberId) {
-        ProjectMember projectMember = projectMemberService.findById(projectMemberId);
-        User user = projectMember.getUser();
-
-        Project project = projectMember.getProject();
-        Alert alert =
-                Alert.builder()
-                        .project(project)
-                        .checkUser(project.getUser())
-                        .sendUser(user)
-                        .content(user.getNickname() + "님의 프로젝트 강제 탈퇴가 요청되었습니다.")
-                        .position(projectMember.getPosition())
-                        .type(AlertType.FORCED_WITHDRAWAL)
-                        .checked_YN(false)
-                        .build();
-
-        alertService.save(alert);
-        PMLog.i(PROJECT_ALERT, "[{}] Alert saved : {}", alert.getType(), alert.getContent());
-    }
-
-    /**
-     * 프로젝트 탈퇴 컨펌 (수락 / 거절)
-     *
-     * @param userId
-     * @param withdrawConfirmRequest
+     * @param withdrawRequestDto
      */
     @Transactional
-    public void withdrawConfirm(Long userId, ProjectWithdrawConfirmRequestDto withdrawConfirmRequest) {
-        // 탈퇴신청 알림 정보
-        Alert withdrawAlert = alertService.findById(withdrawConfirmRequest.getAlertId());
-
-        User currentUser = userService.findById(userId);
-        Project project = withdrawAlert.getProject();
-
-        // 프로젝트 매니저 검증
-        projectMemberService.verifiedProjectManager(project, currentUser);
-
-        // 탈퇴 수락인 경우
-        if (withdrawConfirmRequest.isWithdrawConfirm()) {
-            // 프로젝트 멤버 상태 탈퇴로 변경
-            Optional<ProjectMember> projectMember = projectMemberService.findProjectMemberByProjectAndUser(project, withdrawAlert.getSendUser());
-            if(projectMember.isEmpty()) throw ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER;
-
-            projectMember.get().updateStatus(ProjectMemberStatus.WITHDRAW);
-            PMLog.i(PROJECT_CREW, "[WITHDRAW] project: {} crew: {}", project.getName(), projectMember.get().getUser().getNickname());
-
-            User user = projectMember.get().getUser();
-
-            // 프로젝트 탈퇴 이력 생성
-            UserProjectHistory userWithdrawalProjectHistory = UserProjectHistory.builder()
-                    .project(project)
-                    .user(user)
-                    .status(UserProjectHistoryStatus.WITHDRAWAL)
-                    .build();
-            userProjectHistoryService.save(userWithdrawalProjectHistory);
-
-            // 프로젝트 탈퇴 알림 생성
-            Alert alert = Alert.builder()
-                    .project(project)
-                    .sendUser(currentUser)
-                    .content(user.getNickname() + "님이 프로젝트를 탈퇴했습니다.")
-                    .type(AlertType.CREW_UPDATE)
-                    .checked_YN(false)
-                    .build();
-            alertService.save(alert);
-            PMLog.i(PROJECT_ALERT, "[{}] Alert saved : {}", alert.getType(), alert.getContent());
-        }
-    }
-
-    /**
-     * 프로젝트 멤버 강제탈퇴
-     * 사용자 프로젝트 이력에 해당 회원의 강제탈퇴 이력 추가
-     * @param userId
-     * @param targetUserId
-     * @param projectId
-     */
-    @Transactional
-    public void forcedWithdrawal(Long userId, Long targetUserId, Long projectId) {
-        Project findProject = projectService.findById(projectId);
-        User findUser = userService.findById(targetUserId);
-        Optional<ProjectMember> findProjectMember =
-                projectMemberService.findProjectMemberByProjectAndUser(findProject, findUser);
-
-        if(findProjectMember.isEmpty()) throw ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER;
-
-        User currentUser = userService.findById(userId);
-
-        // 프로젝트 매니저 검증
-        projectMemberService.verifiedProjectManager(findProject, currentUser);
-
-        // 사용자 프로젝트 이력에 강제탈퇴 이력 추가
-        UserProjectHistory forcedWithdrawalHistory = UserProjectHistory.builder()
-                .project(findProject)
-                .user(findUser)
-                .status(UserProjectHistoryStatus.FORCED_WITHDRAWAL)
-                .build();
-        userProjectHistoryService.save(forcedWithdrawalHistory);
-
-        // 강제탈퇴에 따른 신뢰점수 차감
-        AddPointDto addPoint = AddPointDto.builder()
-                .content(findUser.getNickname() + "님 " + findProject.getName() + " 강제탈퇴")
-                .userId(findUser.getId())
-                .projectId(findProject.getId())
-                .scoreTypeId(5L)
-                .build();
-
-        TrustScoreUpdateResponseDto result = trustScoreService.addPoint(addPoint);
-        PMLog.i(
-                TRUST_POINT, "[MINUS] user:{}, score:{}, result:{}, content:{}",
-                800, findUser.getNickname(), result.getScoreChange(),
-                result.getTotalScore(), addPoint.getContent()
-        );
-
-        // 강제탈퇴 알림 생성
-        Alert forcedWithdrawalAlert = Alert.builder()
-                .project(findProject)
-                .sendUser(currentUser)
-                .content(findUser.getNickname() + "님이 " + findProject.getName() + "에서 강제탈퇴 처리됐습니다.")
-                .type(AlertType.CREW_UPDATE)
-                .checked_YN(false)
-                .build();
-        alertService.save(forcedWithdrawalAlert);
-        PMLog.i(PROJECT_ALERT, "[{}] Alert saved: {}",
-                forcedWithdrawalAlert.getType(), forcedWithdrawalAlert.getContent());
+    public void withdraw(WithdrawRequestDto withdrawRequestDto) {
+        Project project = projectService.findById(withdrawRequestDto.getProjectId());
 
         // 프로젝트 멤버 상태 탈퇴로 변경
-        findProjectMember.get().updateStatus(ProjectMemberStatus.FORCE_WITHDRAW);
-        PMLog.i(PROJECT_CREW, "[FORCED_WITHDRAW] project: {} crew: {}", findProject.getName(), findProjectMember.get().getUser().getNickname());
+        ProjectMember projectMember = projectMemberService.findById(withdrawRequestDto.getWMemberId());
+        if (projectMember == null) throw ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER;
 
+        projectMember.updateStatus(ProjectMemberStatus.WITHDRAW);
+        PMLog.i(PROJECT_CREW, "[WITHDRAW] project: {} crew: {}", project.getName(), projectMember.getUser().getNickname());
+
+        // 프로젝트 탈퇴 이력 생성
+        User wProjectMemberUserInfo = projectMember.getUser();
+        UserProjectHistory userWithdrawalProjectHistory = UserProjectHistory.builder()
+                .project(project)
+                .user(wProjectMemberUserInfo)
+                .status(UserProjectHistoryStatus.WITHDRAWAL)
+                .build();
+        userProjectHistoryService.save(userWithdrawalProjectHistory);
+
+
+        String alertContents = wProjectMemberUserInfo.getNickname() + "님이 프로젝트를 탈퇴했습니다.";
+        AlertCrew alertCrew = alertCrewService.toAlertCrewEntity(
+                withdrawRequestDto.getProjectId(),
+                alertContents
+        );
+
+        PMLog.i(PROJECT_ALERT, "[{}] Alert saved : {}", alertCrew.getProjectAlertType().getName(), alertCrew.getAlertContents());
     }
+
 
     /**
      * 크루정보 상세 페이지 TODO : 프로젝트 신뢰 이력 추가 해야함 유저 정보들, 유저 기술들, 프로젝트 개수, 신뢰점수 이력들

@@ -1,12 +1,11 @@
 package com.example.demo.controller.project;
 
 import com.example.demo.dto.common.ResponseDto;
-import com.example.demo.dto.project.request.ProjectWithdrawConfirmRequestDto;
+import com.example.demo.dto.project.request.WithdrawRequestDto;
 import com.example.demo.dto.projectmember.response.ProjectMemberReadCrewDetailResponseDto;
 import com.example.demo.dto.projectmember.response.ProjectMemberReadTotalProjectCrewsResponseDto;
 import com.example.demo.security.custom.PrincipalDetails;
 import com.example.demo.service.project.ProjectMemberFacade;
-import com.example.demo.service.project.ProjectMemberService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,39 +19,14 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ProjectMemberController {
 
-    private final ProjectMemberService projectMemberService;
     private final ProjectMemberFacade projectMemberFacade;
 
-    @PostMapping("/{projectMemberId}/withdraw")
+
+    @PostMapping("/withdraw")
     public ResponseEntity<ResponseDto<?>> withdraw(
             @AuthenticationPrincipal PrincipalDetails user,
-            @PathVariable("projectMemberId") Long projectMemberId) {
-        projectMemberFacade.sendWithdrawAlert(user.getId(), projectMemberId);
-        return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
-    }
-
-    @PostMapping("/withdraw/confirm")
-    public ResponseEntity<ResponseDto<?>> withdrawConfirm(
-            @AuthenticationPrincipal PrincipalDetails user,
-            @RequestBody ProjectWithdrawConfirmRequestDto withdrawConfirmRequest) {
-        projectMemberFacade.withdrawConfirm(user.getId(), withdrawConfirmRequest);
-        return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
-    }
-
-    @PostMapping("/{projectMemberId}/force-withdrawal")
-    public ResponseEntity<ResponseDto<?>> forceWithdraw(
-            @PathVariable("projectMemberId") Long projectMemberId) {
-        projectMemberFacade.sendForceWithdrawAlert(projectMemberId);
-        return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
-    }
-
-    @PostMapping("/{projectId}/{targetUserId}/force-withdrawal/confirm")
-    public ResponseEntity<ResponseDto<?>> forceWithdrawConfirm(
-            @AuthenticationPrincipal PrincipalDetails user,
-            @PathVariable("projectId") Long projectId,
-            @PathVariable("targetUserId") Long targetUserId
-            ) {
-        projectMemberFacade.forcedWithdrawal(user.getId(), targetUserId, projectId);
+            @RequestBody WithdrawRequestDto withdrawRequestDto) {
+        projectMemberFacade.withdraw(withdrawRequestDto);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 

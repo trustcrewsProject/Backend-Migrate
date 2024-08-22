@@ -7,6 +7,7 @@ import com.example.demo.dto.trust_score.AddPointDto;
 import com.example.demo.dto.work.request.*;
 import com.example.demo.dto.work.response.WorkReadResponseDto;
 import com.example.demo.global.exception.customexception.PageNationCustomException;
+import com.example.demo.global.exception.customexception.ProjectCustomException;
 import com.example.demo.global.exception.customexception.ProjectMemberCustomException;
 import com.example.demo.global.exception.customexception.WorkCustomException;
 import com.example.demo.model.alert.Alert;
@@ -70,7 +71,9 @@ public class WorkFacade {
     }
 
     @Transactional(readOnly = true)
-    public List<WorkReadResponseDto> getAllByProject(Long projectId) {
+    public List<WorkReadResponseDto> getAllByProject(Long userId, Long projectId) {
+        validateProjectMember(userId, projectId);
+
         Project project = projectService.findById(projectId);
         List<Work> works = workService.findWorksByProject(project);
 
@@ -122,51 +125,6 @@ public class WorkFacade {
         ProjectMember assignedUser = projectMemberService.findById(workUpdateRequestDto.getAssignedUserId());
 
         work.update(workUpdateRequestDto, projectMember.get(), assignedUser.getUser());
-    }
-
-    /**
-     * 업무 내용 수정 TODO : 마지막 변경자 바꿔줘야 함.
-     *
-     * @param workId
-     * @param workUpdateContentRequestDto
-     */
-    public void updateContent(
-            Long workId, WorkUpdateContentRequestDto workUpdateContentRequestDto) {
-        Work work = workService.findById(workId);
-        User user = userService.findById(1L);
-        Optional<ProjectMember> projectMember =
-                projectMemberService.findProjectMemberByProjectAndUser(work.getProject(), user);
-        if(projectMember.isEmpty()) throw ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER;
-
-        work.updateContent(workUpdateContentRequestDto, projectMember.get());
-    }
-
-    /**
-     * 업무 완료 여부 수정 TODO : 마지막 변경자 바꿔줘야 함.
-     *
-     * @param workId
-     * @param workUpdateCompleteStatusRequestDto
-     */
-    public void updateCompleteStatus(
-            Long workId, WorkUpdateCompleteStatusRequestDto workUpdateCompleteStatusRequestDto) {
-        Work work = workService.findById(workId);
-        User user = userService.findById(1L);
-        Optional<ProjectMember> projectMember =
-                projectMemberService.findProjectMemberByProjectAndUser(work.getProject(), user);
-        if(projectMember.isEmpty()) throw ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER;
-
-        work.updateCompleteStatus(workUpdateCompleteStatusRequestDto, projectMember.get());
-    }
-
-    public void updateAssignUser(
-            Long workId, WorkUpdateAssignUserRequestDto workUpdateAssignUserRequestDto) {
-        Work work = workService.findById(workId);
-        User user = userService.findById(workUpdateAssignUserRequestDto.getAssignUserId());
-        Optional<ProjectMember> projectMember =
-                projectMemberService.findProjectMemberByProjectAndUser(work.getProject(), user);
-        if(projectMember.isEmpty()) throw ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER;
-
-        work.updateAssignedUserId(user, projectMember.get());
     }
 
     /**
@@ -226,5 +184,12 @@ public class WorkFacade {
 
         // 해당 업무 삭제
         workService.delete(work);
+    }
+
+    public void validateProjectMember(Long userId, Long projectId) {
+        ProjectMember projectMember = projectMemberService.findProjectMemberByPrIdAndUserId(projectId, userId);
+        if(projectMember == null){
+            throw ProjectCustomException.ACCESS_NOT_ALLOWED;
+        }
     }
 }

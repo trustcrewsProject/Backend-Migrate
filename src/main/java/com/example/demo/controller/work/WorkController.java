@@ -22,7 +22,6 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class WorkController {
 
-    private final WorkService workService;
     private final WorkFacade workFacade;
 
     @PostMapping("/project/{projectId}/milestone/{milestoneId}")
@@ -37,8 +36,9 @@ public class WorkController {
 
     @GetMapping("/project/{projectId}")
     public ResponseEntity<ResponseDto<?>> getAllByProject(
+            @AuthenticationPrincipal PrincipalDetails user,
             @PathVariable("projectId") Long projectId) {
-        List<WorkReadResponseDto> result = workFacade.getAllByProject(projectId);
+        List<WorkReadResponseDto> result = workFacade.getAllByProject(user.getId(),projectId);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 
@@ -71,30 +71,6 @@ public class WorkController {
             @AuthenticationPrincipal PrincipalDetails user,
             @PathVariable("workId") Long workId) {
         workFacade.deleteWork(user.getId(), workId);
-        return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
-    }
-
-    @PatchMapping("/{workId}/content")
-    public ResponseEntity<ResponseDto<?>> updateContent(
-            @PathVariable("workId") Long workId,
-            @RequestBody WorkUpdateContentRequestDto workUpdateContentRequestDto) {
-        workFacade.updateContent(workId, workUpdateContentRequestDto);
-        return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
-    }
-
-    @PatchMapping("/{workId}/complete")
-    public ResponseEntity<ResponseDto<?>> updateCompleteStatus(
-            @PathVariable("workId") Long workId,
-            @RequestBody WorkUpdateCompleteStatusRequestDto workUpdateCompleteStatusRequestDto) {
-        workFacade.updateCompleteStatus(workId, workUpdateCompleteStatusRequestDto);
-        return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
-    }
-
-    @PatchMapping("/{workId}/assign")
-    public ResponseEntity<ResponseDto<?>> updateAssign(
-            @PathVariable("workId") Long workId,
-            @RequestBody WorkUpdateAssignUserRequestDto workUpdateAssignUserRequestDto) {
-        workFacade.updateAssignUser(workId, workUpdateAssignUserRequestDto);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 

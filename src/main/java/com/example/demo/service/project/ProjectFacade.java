@@ -2,6 +2,7 @@ package com.example.demo.service.project;
 
 import com.example.demo.constant.*;
 import com.example.demo.dto.common.PaginationResponseDto;
+import com.example.demo.dto.project.ProjectDetailAuthDto;
 import com.example.demo.dto.project.request.ProjectConfirmRequestDto;
 import com.example.demo.dto.project.request.ProjectInfoUpdateRequestDto;
 import com.example.demo.dto.project.request.ProjectParticipateRequestDto;
@@ -130,11 +131,20 @@ public class ProjectFacade {
      * @return
      */
     @Transactional(readOnly = true)
-    public ProjectSpecificDetailResponseDto getDetail(Long projectId) {
+    public ProjectSpecificDetailResponseDto getDetail(Long userId, Long projectId) {
+
+        validateProjectMember(userId, projectId);
+
         Project project = projectService.findById(projectId);
         TrustGradeResponseDto trustGradeDto = TrustGradeResponseDto.of(project.getTrustGrade());
 
-        return ProjectSpecificDetailResponseDto.of(project, trustGradeDto);
+        ProjectSpecificDetailResponseDto responseDto = ProjectSpecificDetailResponseDto.of(project, trustGradeDto);
+
+        ProjectDetailAuthDto userAuthMap =
+                projectMemberService.getUserAuthMap(projectId, userId);
+        responseDto.setAuthMap(userAuthMap);
+
+        return responseDto;
     }
 
     /**
@@ -167,7 +177,7 @@ public class ProjectFacade {
                         .project(project)
                         .checkUser(project.getUser())
                         .sendUser(user)
-                        .content(user.getNickname() + "님이 프로젝트의 " + position.getName() + " 포지션에 지원하셨습니다.")
+                        .content(user.getNickname() + "님이 프로젝트의 " + position.getName() + " 포지션에 지원했습니다.")
                         .position(position)
                         .type(AlertType.RECRUIT)
                         .checked_YN(false)
@@ -289,5 +299,12 @@ public class ProjectFacade {
         project.updateProject(updateRequest.getProjectName(), updateRequest.getSubject(),
                 updateRequest.getStartDate(),
                 updateRequest.getEndDate());
+    }
+
+    public void validateProjectMember(Long userId, Long projectId) {
+        ProjectMember projectMember = projectMemberService.findProjectMemberByPrIdAndUserId(projectId, userId);
+        if(projectMember == null){
+            throw ProjectCustomException.ACCESS_NOT_ALLOWED;
+        }
     }
 }

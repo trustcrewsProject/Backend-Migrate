@@ -1,7 +1,6 @@
 package com.example.demo.controller.project;
 
 import com.example.demo.dto.common.ResponseDto;
-import com.example.demo.dto.project.ProjectDetailAuthDto;
 import com.example.demo.dto.project.request.ProjectConfirmRequestDto;
 import com.example.demo.dto.project.request.ProjectInfoUpdateRequestDto;
 import com.example.demo.dto.project.request.ProjectParticipateRequestDto;
@@ -11,15 +10,15 @@ import com.example.demo.security.custom.PrincipalDetails;
 import com.example.demo.service.project.ProjectFacade;
 import com.example.demo.service.project.ProjectMemberService;
 import com.example.demo.service.project.ProjectService;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/project")
@@ -50,10 +49,7 @@ public class ProjectController {
     public ResponseEntity<ResponseDto<?>> getDetail(
             @PathVariable("projectId") Long projectId,
             @PathVariable("userId") Long userId) {
-        ProjectDetailAuthDto userAuthMap =
-                projectMemberService.getUserAuthMap(projectId, userId);
-        ProjectSpecificDetailResponseDto result = projectFacade.getDetail(projectId);
-        result.setAuthMap(userAuthMap);
+        ProjectSpecificDetailResponseDto result = projectFacade.getDetail(userId, projectId);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 

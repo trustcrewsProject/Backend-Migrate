@@ -10,6 +10,9 @@ public class ProjectCustomException extends CustomException {
     public static final ProjectCustomException NO_PERMISSION_TO_TASK =
             new ProjectCustomException(ProjectErrorCode.NO_PERMISSION_TO_TASK);
 
+    public static final ProjectCustomException ACCESS_NOT_ALLOWED =
+            new ProjectCustomException(ProjectErrorCode.ACCESS_NOT_ALLOWED);
+
     public ProjectCustomException(ProjectErrorCode projectErrorCode) {
         super(projectErrorCode);
     }

@@ -7,12 +7,14 @@ import com.example.demo.dto.milestone.request.MilestoneCreateRequestDto;
 import com.example.demo.dto.milestone.request.MilestoneUpdateContentRequestDto;
 import com.example.demo.dto.milestone.request.MilestoneUpdateDateRequestDto;
 import com.example.demo.dto.milestone.response.MilestoneReadResponseDto;
+import com.example.demo.security.custom.PrincipalDetails;
 import com.example.demo.service.milestone.MileStoneFacade;
 import com.example.demo.service.milestone.MilestoneService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -34,8 +36,9 @@ public class MileStoneController {
 
     @GetMapping("/project/{projectId}")
     public ResponseEntity<ResponseDto<?>> getAllByProject(
+            @AuthenticationPrincipal PrincipalDetails user,
             @PathVariable("projectId") Long projectId) {
-        List<MilestoneReadResponseDto> result = mileStoneFacade.getAllByProject(projectId);
+        List<MilestoneReadResponseDto> result = mileStoneFacade.getAllByProject(projectId, user.getId());
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 

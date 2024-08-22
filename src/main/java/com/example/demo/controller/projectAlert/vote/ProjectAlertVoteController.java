@@ -33,7 +33,7 @@ public class ProjectAlertVoteController {
                 vAlertFacade.getProjectAlertRecruitList(
                         projectId,
                         pageIndex.orElse(0),
-                        itemCount.orElse(6)
+                        itemCount.orElse(5)
                 )),
                 HttpStatus.OK
         );
@@ -62,7 +62,7 @@ public class ProjectAlertVoteController {
                 vAlertFWithdrawFacade.getVAlertFWithdrawList(
                         projectId,
                         pageIndex.orElse(0),
-                        itemCount.orElse(6)
+                        itemCount.orElse(5)
                 )),
                 HttpStatus.OK
         );

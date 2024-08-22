@@ -30,7 +30,7 @@ public class AlertCrewController {
                         alertCrewService.getProjectAlertCrewList(
                                 projectId,
                                 pageIndex.orElse(0),
-                                itemCount.orElse(6))),
+                                itemCount.orElse(5))),
                 HttpStatus.OK
         );
     }

@@ -1,8 +1,9 @@
 package com.example.demo.repository.projectAlert.crew;
 
-import com.example.demo.model.project.alert.crew.AlertCrew;
+import com.example.demo.dto.common.ConstantDepthDto;
+import com.example.demo.dto.projectAlert.crew.AlertCrewResponseDto;
 import com.example.demo.model.project.alert.crew.QAlertCrew;
-import com.example.demo.service.projectAlert.crew.AlertCrewService;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -17,9 +18,22 @@ public class AlertCrewRepositoryImpl implements AlertCrewRepositoryCustom {
     private final QAlertCrew qAlertCrew = QAlertCrew.alertCrew;
 
     @Override
-    public List<AlertCrew> findAlertCrewsByProject_id(Long projectId, Pageable pageable) {
+    public List<AlertCrewResponseDto> findAlertCrewsByProject_id(Long projectId, Pageable pageable) {
         return jpaQueryFactory
-                .selectFrom(qAlertCrew)
+                .select(
+                        Projections.constructor(
+                                AlertCrewResponseDto.class,
+                                qAlertCrew.id,
+                                qAlertCrew.project_id,
+                                Projections.constructor(
+                                        ConstantDepthDto.class,
+                                        qAlertCrew.projectAlertType
+                                ),
+                                qAlertCrew.alertContents,
+                                qAlertCrew.createDate
+                        )
+                )
+                .from(qAlertCrew)
                 .where(qAlertCrew.project_id.eq(projectId))
                 .orderBy(qAlertCrew.createDate.desc())
                 .offset(pageable.getOffset())

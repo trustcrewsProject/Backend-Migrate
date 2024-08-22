@@ -1,6 +1,7 @@
 package com.example.demo.service.projectAlert.crew;
 
 import com.example.demo.dto.common.PaginationResponseDto;
+import com.example.demo.dto.projectAlert.crew.AlertCrewResponseDto;
 import com.example.demo.global.exception.customexception.PageNationCustomException;
 import com.example.demo.model.project.alert.crew.AlertCrew;
 import com.example.demo.repository.projectAlert.crew.AlertCrewRepository;
@@ -33,7 +34,7 @@ public class AlertCrewServiceImpl implements AlertCrewService {
         if (pageIndex < 0) {
             throw PageNationCustomException.INVALID_PAGE_NUMBER;
         }
-        List<AlertCrew> alertCrewList = new ArrayList<>();
+        List<AlertCrewResponseDto> alertCrewList = new ArrayList<>();
         long totalItems = 0;
 
         try{

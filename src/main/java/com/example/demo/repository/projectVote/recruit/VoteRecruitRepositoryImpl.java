@@ -2,6 +2,7 @@ package com.example.demo.repository.projectVote.recruit;
 
 import com.example.demo.constant.VoteOptionDA;
 import com.example.demo.constant.VoteStatus;
+import com.example.demo.dto.common.ConstantDto;
 import com.example.demo.dto.projectVote.recruit.ProjectVoteRecruitResponseDto;
 import com.example.demo.model.projectVote.recruit.QVoteRecruit;
 import com.example.demo.model.projectVote.recruit.VoteRecruit;
@@ -27,7 +28,10 @@ public class VoteRecruitRepositoryImpl implements VoteRecruitRepositoryCustom {
                                 ProjectVoteRecruitResponseDto.class,
                                 qVoteRecruit.id,
                                 qVoteRecruit.projectApply.id,
-                                qVoteRecruit.voteStatus,
+                                Projections.constructor(
+                                        ConstantDto.class,
+                                        qVoteRecruit.voteStatus
+                                ),
                                 qVoteRecruit.agrees,
                                 qVoteRecruit.disagrees,
                                 qVoteRecruit.max_vote_count

@@ -11,7 +11,8 @@ public enum VoteErrorCode implements ErrorCode{
     VOTE_EARLY_FW(HttpStatus.INTERNAL_SERVER_ERROR, "VOTE_EARLY_FW"),
     VOTE_EXIST_FW(HttpStatus.INTERNAL_SERVER_ERROR, "VOTE_EXIST_FW"),
     VOTE_NOT_ALLOWED(HttpStatus.FORBIDDEN, "VOTE_NOT_ALLOWED"),
-    VOTE_NOT_ALLOWED_YET(HttpStatus.FORBIDDEN, "VOTE_NOT_ALLOWED_YET");
+    VOTE_NOT_ALLOWED_YET(HttpStatus.FORBIDDEN, "VOTE_NOT_ALLOWED_YET"),
+    VOTE_TARGET_NOT_ALLOWED(HttpStatus.FORBIDDEN, "VOTE_TARGET_NOT_ALLOWED");
 
     private final HttpStatus status;
     private final String message;

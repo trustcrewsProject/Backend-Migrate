@@ -11,6 +11,9 @@ public class VoteCustomException extends CustomException {
     public static final VoteCustomException VOTE_NOT_ALLOWED =
             new VoteCustomException(VoteErrorCode.VOTE_NOT_ALLOWED);
 
+    public static final VoteCustomException VOTE_TARGET_NOT_ALLOWED =
+            new VoteCustomException(VoteErrorCode.VOTE_TARGET_NOT_ALLOWED);
+
     public static final VoteCustomException VOTE_NOT_ALLOWED_YET =
             new VoteCustomException(VoteErrorCode.VOTE_NOT_ALLOWED_YET);
 

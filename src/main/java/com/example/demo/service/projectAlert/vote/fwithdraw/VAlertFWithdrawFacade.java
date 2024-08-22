@@ -35,7 +35,7 @@ public class VAlertFWithdrawFacade {
         VoteFWithdraw voteFWithdraw = vfWithdrawService.toVoteFWithdrawEntity(userId, fwMember, requestDto.getReason(), requestDto.getProject_id());
 
         // 알림 생성
-        String alertContents = fwMember.getUser().getNickname() + " 님에 대한 강제탈퇴가 요청되었습니다.";
+        String alertContents = fwMember.getUser().getNickname() + "님에 대한 강제탈퇴 투표 알림";
         vAlertFWithdrawService.toVAlertFWithdrawEntity(requestDto.getProject_id(), voteFWithdraw, alertContents);
     }
 

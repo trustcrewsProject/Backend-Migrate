@@ -2,6 +2,7 @@ package com.example.demo.service.projectVote.recruit;
 
 import com.example.demo.constant.ProjectApplyStatus;
 import com.example.demo.constant.ProjectMemberStatus;
+import com.example.demo.constant.UserProjectHistoryStatus;
 import com.example.demo.constant.VoteResult;
 import com.example.demo.dto.projectVote.recruit.ProjectVoteRecruitRequestDto;
 import com.example.demo.global.exception.customexception.VoteCustomException;
@@ -13,12 +14,14 @@ import com.example.demo.model.projectApply.ProjectApply;
 import com.example.demo.model.projectVote.recruit.VoteRecruit;
 import com.example.demo.model.projectVote.recruit.history.VoteRecruitHistory;
 import com.example.demo.model.user.User;
+import com.example.demo.model.user.UserProjectHistory;
 import com.example.demo.repository.projectApply.ProjectApplyRepository;
 import com.example.demo.service.project.ProjectMemberAuthService;
 import com.example.demo.service.project.ProjectMemberService;
 import com.example.demo.service.projectAlert.crew.AlertCrewService;
 import com.example.demo.service.projectApply.ProjectApplyService;
 import com.example.demo.service.projectVote.recruit.history.VoteRecruitHistoryService;
+import com.example.demo.service.user.UserProjectHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +37,7 @@ public class VoteRecruitFacade {
     private final ProjectApplyService projectApplyService;
     private final ProjectApplyRepository projectApplyRepository;
     private final AlertCrewService alertCrewService;
+    private final UserProjectHistoryService userProjectHistoryService;
 
     public void voteForProjectRecruit(Long userId, ProjectVoteRecruitRequestDto requestDto) {
 
@@ -74,6 +78,14 @@ public class VoteRecruitFacade {
                         );
                 projectMemberService.save(projectMember);
 
+                // 사용자 프로젝트 이력 저장
+                UserProjectHistory userProjectHistory =UserProjectHistory.builder()
+                        .project(project)
+                        .user(projectApplyUser)
+                        .status(UserProjectHistoryStatus.PARTICIPATING)
+                        .build();
+                userProjectHistoryService.save(userProjectHistory);
+
                 projectApplyService.udpateProjectApplyStatus( // 프로젝트 지원 상태 '수락'으로 변경
                         projectApply.getId(), ProjectApplyStatus.PAS1002
                 );
@@ -103,7 +115,7 @@ public class VoteRecruitFacade {
         }
 
         // 투표 권한 검사
-        if(!requestDto.getAuthMap().isVoteAuth()){
+        if (!requestDto.getAuthMap().isVoteAuth()) {
             throw VoteCustomException.VOTE_NOT_ALLOWED;
         }
     }

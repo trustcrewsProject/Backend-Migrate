@@ -8,7 +8,6 @@ import com.example.demo.model.project.ProjectMember;
 import com.example.demo.model.project.ProjectMemberAuth;
 import com.example.demo.model.user.User;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +35,7 @@ public interface ProjectMemberService {
 
     ProjectDetailAuthDto getUserAuthMap(Long projectId, Long userId);
 
-    ProjectMember getProjectMemberByPrIdAndUserId(Long projectId, Long userId);
+    ProjectMember findProjectMemberByPrIdAndUserId(Long projectId, Long userId);
 
     void verifiedProjectManager(Project project, User user);
 

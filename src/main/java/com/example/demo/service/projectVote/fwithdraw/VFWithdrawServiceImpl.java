@@ -33,17 +33,9 @@ public class VFWithdrawServiceImpl implements VFWithdrawService {
 
         int max_vote_count = projectMemberRepository.countFWVotableProjectMember(fwMember.getId(), projectId);
         // 투표가능인원 2명 이하일경우 예외 발생
-//        if(max_vote_count < 2) {
-//            throw VoteCustomException.VOTE_INSUFF_VOTERS;
-//        }
-
-        // 멤버추가 3일 이하 경과시 예외 발생
-//        LocalDateTime memberCreateDate = fwMember.getCreateDate();
-//        LocalDateTime now = LocalDateTime.now();
-//        long daysAfterMemberCreated = ChronoUnit.DAYS.between(memberCreateDate, now);
-//        if(daysAfterMemberCreated <= 3){
-//            throw VoteCustomException.VOTE_EARLY_FW;
-//        }
+        if(max_vote_count < 2) {
+            throw VoteCustomException.VOTE_INSUFF_VOTERS;
+        }
 
         // 진행중인 강제탈퇴 투표가 있으면 예외 발생
         VoteFWithdraw processingVote = vfWithdrawRepository.findProcessingVFWByProjectId(fwMember.getProject().getId());

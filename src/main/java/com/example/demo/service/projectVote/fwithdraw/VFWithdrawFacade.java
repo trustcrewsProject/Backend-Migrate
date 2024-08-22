@@ -92,32 +92,24 @@ public class VFWithdrawFacade {
     }
 
     public void validateVoter(Long userId, VoteFWithdrawRequestDto requestDto) {
-        // 투표자 멤버 추가일자 검사
-//        ProjectMember currentProjectMember = projectMemberService.getProjectMemberByPrIdAndUserId(requestDto.getProjectId(), userId);
-//        LocalDateTime currentPMCreatedDate = currentProjectMember.getCreateDate();
-//        LocalDateTime now = LocalDateTime.now();
-//        long daysAfterCurrentMemberCreated = ChronoUnit.DAYS.between(currentPMCreatedDate, now);
-//        if (daysAfterCurrentMemberCreated <= 3) {
-//            throw VoteCustomException.VOTE_NOT_ALLOWED_YET;
-//        }
-//        if(userId.equals(requestDto.))
+            // 투표대상자의 투표금지
+            Long fwMemberId = requestDto.getFw_member_id();
+            ProjectMember fwMember = projectMemberService.findById(fwMemberId);
+            if (fwMember.getUser().getId().equals(userId)) {
+                throw VoteCustomException.VOTE_TARGET_NOT_ALLOWED;
+            }
 
-        // 투표대상자의 투표금지
-        Long fwMemberId = requestDto.getFw_member_id();
-        ProjectMember fwMember = projectMemberService.findById(fwMemberId);
-        if (fwMember.getUser().getId().equals(userId)) {
-            throw VoteCustomException.VOTE_NOT_ALLOWED;
-        }
+            // 투표 중복 검사
+            VoteFWithdrawHistory voteFWithdrawHistory = vfWithdrawHistoryService.findVFWHistoryByVoter(requestDto.getVoteId(), userId);
+            if (voteFWithdrawHistory != null) {
+                throw VoteCustomException.VOTE_DUPLICATE;
+            }
 
-        // 투표 중복 검사
-        VoteFWithdrawHistory voteFWithdrawHistory = vfWithdrawHistoryService.findVFWHistoryByVoter(requestDto.getVoteId(), userId);
-        if (voteFWithdrawHistory != null) {
-            throw VoteCustomException.VOTE_DUPLICATE;
-        }
+            // 투표 권한 검사
+            if (!requestDto.getAuthMap().isVoteAuth()) {
+                throw VoteCustomException.VOTE_NOT_ALLOWED;
+            }
 
-        // 투표 권한 검사
-        if (!requestDto.getAuthMap().isVoteAuth()) {
-            throw VoteCustomException.VOTE_NOT_ALLOWED;
-        }
+
     }
 }

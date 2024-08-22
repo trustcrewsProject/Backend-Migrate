@@ -19,5 +19,7 @@ public interface ProjectApplyService {
 
     Long countProjectAppliesByUserId(Long userId);
 
-    public void udpateProjectApplyStatus(Long applyId, ProjectApplyStatus projectApplyStatus);
+    Long countUserProjectApplying(Long projectId, Long userId);
+
+    void udpateProjectApplyStatus(Long applyId, ProjectApplyStatus projectApplyStatus);
 }

@@ -6,8 +6,8 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum ProjectPartiErrorCode  implements ErrorCode {
     PARTICIPATE_NOT_ALLOWED(HttpStatus.FORBIDDEN, "PARTICIPATE_NOT_ALLOWED"),
-
-    PARTICIPATE_DUPLICATE(HttpStatus.CONFLICT, "PARTICIPATE_DUPLICATE");
+    PARTICIPATE_DUPLICATE(HttpStatus.CONFLICT, "PARTICIPATE_DUPLICATE"),
+    PARTICIPATE_EXIST(HttpStatus.CONFLICT, "PARTICIPATE_EXIST" );
 
     private HttpStatus status;
     private String message;

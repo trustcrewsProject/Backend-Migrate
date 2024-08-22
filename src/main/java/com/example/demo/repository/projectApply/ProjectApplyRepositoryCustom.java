@@ -13,6 +13,8 @@ public interface ProjectApplyRepositoryCustom {
 
     Long countProjectAppliesByUserId(Long userId);
 
+    Long countUserProjectApplying(Long projectId, Long userId);
+
     void udpateProjectApplyStatus(Long applyId, ProjectApplyStatus projectApplyStatus);
 
 }

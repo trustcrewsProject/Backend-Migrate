@@ -1,8 +1,8 @@
 package com.example.demo.repository.projectApply;
 
 import com.example.demo.constant.ProjectApplyStatus;
-import com.example.demo.dto.projectApply.ProjectApplyResponseDto;
 import com.example.demo.dto.common.ConstantDto;
+import com.example.demo.dto.projectApply.ProjectApplyResponseDto;
 import com.example.demo.model.position.QPosition;
 import com.example.demo.model.project.QProject;
 import com.example.demo.model.projectApply.QProjectApply;
@@ -62,6 +62,17 @@ public class ProjectApplyRepositoryImpl implements ProjectApplyRepositoryCustom 
                 .select(qProjectApply.count())
                 .from(qProjectApply)
                 .where(qProjectApply.user.id.eq(userId))
+                .fetchOne();
+    }
+
+    @Override
+    public Long countUserProjectApplying(Long projectId, Long userId) {
+        return jpaQueryFactory
+                .select(qProjectApply.count())
+                .from(qProjectApply)
+                .where(qProjectApply.project.id.eq(projectId),
+                        qProjectApply.user.id.eq(userId),
+                        qProjectApply.status.eq(ProjectApplyStatus.PAS1001))
                 .fetchOne();
     }
 

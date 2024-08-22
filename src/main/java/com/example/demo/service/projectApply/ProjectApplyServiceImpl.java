@@ -55,6 +55,11 @@ public class ProjectApplyServiceImpl implements ProjectApplyService{
     }
 
     @Override
+    public Long countUserProjectApplying(Long projectId, Long userId) {
+        return projectApplyRepository.countUserProjectApplying(projectId, userId);
+    }
+
+    @Override
     public void udpateProjectApplyStatus(Long applyId, ProjectApplyStatus projectApplyStatus) {
         projectApplyRepository.udpateProjectApplyStatus(applyId, projectApplyStatus);
     }

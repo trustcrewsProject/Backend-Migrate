@@ -10,6 +10,9 @@ public class ProjectPartiCustomException extends CustomException {
     public static final ProjectPartiCustomException PARTICIPATE_DUPLICATE =
             new ProjectPartiCustomException(ProjectPartiErrorCode.PARTICIPATE_DUPLICATE);
 
+    public static final ProjectPartiCustomException PARTICIPATE_EXIST =
+            new ProjectPartiCustomException(ProjectPartiErrorCode.PARTICIPATE_EXIST);
+
     public ProjectPartiCustomException(ProjectPartiErrorCode errorCode){
         super(errorCode);
     }

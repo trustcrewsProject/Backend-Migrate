@@ -1,6 +1,7 @@
 package com.example.demo.repository.projectAlert.vote.recruit;
 
 import com.example.demo.dto.common.ConstantDepthDto;
+import com.example.demo.dto.common.ConstantDto;
 import com.example.demo.dto.projectAlert.vote.recruit.ProjectRecruitAlertResponseDto;
 import com.example.demo.model.project.alert.vote.QVAlertRecruit;
 import com.querydsl.core.types.Projections;
@@ -32,7 +33,10 @@ public class VAlertRecruitRepositoryImpl implements VAlertRecruitRepositoryCusto
                                         qvAlertRecruit.alertType
                                 ),
                                 qvAlertRecruit.alertContents,
-                                qvAlertRecruit.voteRecruit.voteStatus,
+                                Projections.constructor(
+                                        ConstantDto.class,
+                                        qvAlertRecruit.voteRecruit.voteStatus
+                                ),
                                 qvAlertRecruit.createDate
                         )
                 )

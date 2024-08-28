@@ -88,7 +88,7 @@ public class UserFacade {
         User saveUser = userService.save(user);
 
         // 신뢰점수 저장
-        TrustScore trustScore = addInitialTrustScoreReturnResponse(saveUser);
+        TrustScore trustScore = trustScoreService.addPoint(saveUser.getId());;
 
         // 회원에 신뢰점수 세팅
         user.setTrustScore(trustScore);
@@ -138,7 +138,7 @@ public class UserFacade {
         User oAuthUser = userService.save(user);
 
         // 신뢰점수 저장
-        TrustScore trustScore = addInitialTrustScoreReturnResponse(oAuthUser);
+        TrustScore trustScore = trustScoreService.addPoint(oAuthUser.getId());
 
         // 회원에 신뢰점수 세팅
         oAuthUser.setTrustScore(trustScore);
@@ -157,18 +157,18 @@ public class UserFacade {
 
 
     // 신뢰점수 저장 및 반환
-    private TrustScore addInitialTrustScoreReturnResponse(User user) {
-        TrustScoreUpdateRequestDto trustScoreUpdateRequest = new TrustScoreUpdateRequestDto();
-        trustScoreUpdateRequest.setUserId(user.getId());
-        trustScoreUpdateRequest.setScoreTypeId(TrustScoreTypeIdentifier.NEW_MEMBER);
-
-        // 회원의 신뢰점수 저장
-        AddPointDto addPoint = new AddPointDto(trustScoreUpdateRequest);
-        trustScoreService.addPoint(addPoint);
-
-        // 해당 회원의 신뢰점수 반환
-        return trustScoreService.findTrustScoreByUserId(user.getId());
-    }
+//    private TrustScore addInitialTrustScoreReturnResponse(User user) {
+//        TrustScoreUpdateRequestDto trustScoreUpdateRequest = new TrustScoreUpdateRequestDto();
+//        trustScoreUpdateRequest.setUserId(user.getId());
+//        trustScoreUpdateRequest.setScoreTypeId(TrustScoreTypeIdentifier.NEW_MEMBER);
+//
+//        // 회원의 신뢰점수 저장
+//        AddPointDto addPoint = new AddPointDto(trustScoreUpdateRequest);
+//        trustScoreService.addPoint(addPoint);
+//
+//        // 해당 회원의 신뢰점수 반환
+//        return trustScoreService.findTrustScoreByUserId(user.getId());
+//    }
 
     /**
      * 회원수정 로직

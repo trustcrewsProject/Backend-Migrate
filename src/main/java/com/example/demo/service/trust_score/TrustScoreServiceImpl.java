@@ -1,16 +1,18 @@
 package com.example.demo.service.trust_score;
 
+import com.example.demo.constant.TrustScoreTypeIdentifier;
 import com.example.demo.dto.trust_score.AddPointDto;
 import com.example.demo.dto.trust_score.response.TrustScoreUpdateResponseDto;
 import com.example.demo.global.exception.customexception.TrustScoreCustomException;
 import com.example.demo.model.trust_grade.TrustGrade;
 import com.example.demo.model.trust_score.TrustScore;
 import com.example.demo.model.trust_score.TrustScoreHistory;
-import com.example.demo.model.user.User;
 import com.example.demo.repository.trust_score.TrustScoreHistoryRepository;
 import com.example.demo.repository.trust_score.TrustScoreRepository;
 import com.example.demo.repository.trust_score.TrustScoreTypeRepository;
+
 import javax.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,48 +27,33 @@ public class TrustScoreServiceImpl implements TrustScoreService {
     private final TrustScoreTypeRepository trustScoreTypeRepository;
 
     /**
-     * DTO를 통한 신뢰점수 조회 및 포인트 부여
+     * 새 사용자에게 기본 신뢰점수 부여
      *
-     * @param addPointDto
-     * @return TrustScoreUpdateResponseDto
+     * @param userId
+     * @return TrustScore
      */
     @Override
     @Transactional
-    public TrustScoreUpdateResponseDto addPoint(@Valid AddPointDto addPointDto) {
-        Long userId = addPointDto.getUserId();
+    public TrustScore addPoint(Long userId) {
 
         // 요청에 맞는 신뢰점수 증감 조회
-        int scoreChange = getScore(addPointDto);
+        int scoreChange = getScore(TrustScoreTypeIdentifier.NEW_MEMBER);
 
         // 신뢰점수내역 추가
-        createAndSaveHistory(addPointDto, scoreChange);
+        createAndSaveHistory(userId, TrustScoreTypeIdentifier.NEW_MEMBER, scoreChange);
 
         // 신뢰점수내역 합산
         int calculatedScore = trustScoreHistoryRepository.calculateCurrentScore(userId);
 
-        // 기존의 신뢰점수 테이블에 해당 유저에 대한 레코드가 없으면 생성, 있으면 업데이트
-        if (!trustScoreRepository.existsByUserId(userId)) {
-            trustScoreRepository.save(
-                    TrustScore.builder().userId(userId).score(calculatedScore).build());
-        } else {
-            trustScoreRepository.updateUserTrustScore(userId, calculatedScore);
-        }
-
-        // 신뢰등급 변경
-        trustScoreRepository.updateUserTrustGrade(userId);
-
-        // 응답 DTO 생성 및 반환
-        return TrustScoreUpdateResponseDto.builder()
-                .userId(userId)
-                .totalScore(calculatedScore)
-                .scoreChange(scoreChange)
-                .build();
+        // 신뢰점수 테이블에 해당 유저에 대한 레코드 생성
+        return trustScoreRepository.save(
+                TrustScore.builder().userId(userId).score(calculatedScore).build());
     }
 
     @Override
-    public TrustScoreUpdateResponseDto addPointOnUserTrustGrade(TrustGrade trustGrade, AddPointDto addPointDto) {
+    public void addPoint(TrustGrade trustGrade, AddPointDto addPointDto) {
         // 요청에 맞는 신뢰점수 증감 조회
-        int scoreChange = getScoreByUser(trustGrade, addPointDto.getScoreTypeId());
+        int scoreChange = getScore(trustGrade, addPointDto.getScoreTypeId());
 
         // 신뢰점수내역 추가
         createAndSaveHistory(addPointDto, scoreChange);
@@ -87,7 +74,7 @@ public class TrustScoreServiceImpl implements TrustScoreService {
         trustScoreRepository.updateUserTrustGrade(userId);
 
         // 응답 DTO 생성 및 반환
-        return TrustScoreUpdateResponseDto.builder()
+        TrustScoreUpdateResponseDto.builder()
                 .userId(userId)
                 .totalScore(calculatedScore)
                 .scoreChange(scoreChange)
@@ -120,23 +107,51 @@ public class TrustScoreServiceImpl implements TrustScoreService {
                         .build();
         return trustScoreHistoryRepository.save(history);
     }
+
     /**
-     * 신뢰점수 조회
-     *
+     * 새 사용자 신뢰점수 history 추가
+     * @param userId
+     * @param scoreTypeId
+     * @param score
+     * @return
+     */
+    private TrustScoreHistory createAndSaveHistory(Long userId, Long scoreTypeId, int score) {
+        TrustScoreHistory history =
+                TrustScoreHistory.builder()
+                        .userId(userId)
+                        .trustScoreTypeId(scoreTypeId)
+                        .score(score)
+                        .build();
+        return trustScoreHistoryRepository.save(history);
+    }
+
+    /**
+     * 신뢰점수 DTO로 신뢰점수 조회
      * @param addPointDto
      * @return int
      */
     private int getScore(AddPointDto addPointDto) {
-        if (addPointDto.getProjectId() == null) {
-            return trustScoreTypeRepository.getScore(addPointDto.getScoreTypeId());
-        }
         return trustScoreTypeRepository.getScoreByProject(
                 addPointDto.getProjectId(), addPointDto.getScoreTypeId());
     }
 
-    private int getScoreByUser(TrustGrade trustGrade, Long scoreTypeId){
+    /**
+     * 신뢰level, 신뢰점수 타입으로 신뢰점수 조회
+     * @param trustGrade
+     * @param scoreTypeId
+     * @return
+     */
+    private int getScore(TrustGrade trustGrade, Long scoreTypeId) {
         String trustGradeName = trustGrade.getName();
-        System.out.println("trustGradeName::: "+ trustGradeName);
         return trustScoreTypeRepository.getScoreByTrustGradeName(trustGradeName, scoreTypeId);
+    }
+
+    /**
+     * 신뢰점수 타입으로 신뢰점수 조회
+     * @param scoreTypeId
+     * @return
+     */
+    private int getScore(Long scoreTypeId) {
+        return trustScoreTypeRepository.getScore(scoreTypeId);
     }
 }

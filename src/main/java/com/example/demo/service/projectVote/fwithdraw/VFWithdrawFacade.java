@@ -79,7 +79,7 @@ public class VFWithdrawFacade {
                         .projectId(project.getId())
                         .scoreTypeId(5L)
                         .build();
-                trustScoreService.addPointOnUserTrustGrade(fwMemberTrustGrade, addPoint);
+                trustScoreService.addPoint(fwMemberTrustGrade, addPoint);
 
                 // 멤버 탈퇴상태로 변경
                 fwMember.updateStatus(ProjectMemberStatus.FORCE_WITHDRAW);

@@ -16,6 +16,10 @@ import javax.validation.constraints.NotNull;
 @Getter
 @AllArgsConstructor
 public class WorkCreateRequestDto {
+    @NotNull(message = "프로젝트 아이디는 필수 요청 값입니다.")
+    private Long projectId;
+    @NotNull(message = "마일스톤 아이디는 필수 요청 값입니다.")
+    private Long milestoneId;
     @NotBlank(message = "업무 내용은 필수 요청 값입니다.")
     private String content;
 
@@ -33,6 +37,14 @@ public class WorkCreateRequestDto {
 
     public Work toWorkEntity(
             Project project, Milestone milestone, User user, ProjectMember projectMember) {
+
+        ProgressStatus progressStatus = ProgressStatus.ON_GOING;
+
+        LocalDate today = LocalDate.now();
+        if(this.getStartDate().isAfter(today)){
+            progressStatus = ProgressStatus.BEFORE_START;
+        }
+
         return Work.builder()
                 .project(project)
                 .milestone(milestone)
@@ -40,7 +52,7 @@ public class WorkCreateRequestDto {
                 .lastModifiedMember(projectMember)
                 .content(this.getContent())
                 .contentDetail(this.getContentDetail())
-                .progressStatus(ProgressStatus.BEFORE_START)
+                .progressStatus(progressStatus)
                 .startDate(this.getStartDate())
                 .endDate(this.getEndDate())
                 .build();

@@ -47,9 +47,9 @@ public class WorkFacade {
     private final ProjectMemberService projectMemberService;
 
     public void create(
-            Long userId, Long projectId, Long milestoneId, WorkCreateRequestDto workCreateRequestDto) {
-        Project project = projectService.findById(projectId);
-        Milestone milestone = milestoneService.findById(milestoneId);
+            Long userId, WorkCreateRequestDto workCreateRequestDto) {
+        Project project = projectService.findById(workCreateRequestDto.getProjectId());
+        Milestone milestone = milestoneService.findById(workCreateRequestDto.getMilestoneId());
         User user = userService.findById(userId);
         Optional<ProjectMember> projectMember =
                 projectMemberService.findProjectMemberByProjectAndUser(project, user);

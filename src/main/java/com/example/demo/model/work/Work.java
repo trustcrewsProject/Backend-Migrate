@@ -90,9 +90,28 @@ public class Work extends BaseTimeEntity {
     public void update(WorkUpdateRequestDto dto, ProjectMember projectMember, User assignedUser) {
         this.content = dto.getContent();
         this.contentDetail = dto.getContentDetail();
+
+        String currentProgressStatusCode = this.progressStatus.getCode();
+        LocalDate changeStartDate = dto.getStartDate();
+        LocalDate today = LocalDate.now();
+
+        if ( // ‘시작전’인데 && 날짜 바꾸는 경우 && 바꾸는 날짜가 오늘 이전이거나 같은 경우(:진행중)
+                currentProgressStatusCode.equals(ProgressStatus.BEFORE_START.getCode())
+                        && !this.getStartDate().isEqual(changeStartDate)
+                        && (changeStartDate.isBefore(today) || changeStartDate.isEqual(today))
+        ) {
+            this.progressStatus = ProgressStatus.ON_GOING;
+        } else if ( // ‘진행중’ 인데 && 상태 안 바꾸는 경우 && 바꾸는 날짜가 오늘 이후인 경우 (: 시작전)
+                currentProgressStatusCode.equals(ProgressStatus.ON_GOING.getCode())
+                        && this.progressStatus.getCode().equals(dto.getProgressStatusCode())
+                        && changeStartDate.isAfter(today)
+        ) {
+            this.progressStatus = ProgressStatus.BEFORE_START;
+        }else{
+            this.progressStatus = ProgressStatus.getProgressStatusByCode(dto.getProgressStatusCode());
+        }
         this.startDate = dto.getStartDate();
         this.endDate = dto.getEndDate();
-        this.progressStatus = ProgressStatus.getProgressStatusByCode(dto.getProgressStatusCode());
         this.lastModifiedMember = projectMember;
         this.assignedUserId = assignedUser;
     }

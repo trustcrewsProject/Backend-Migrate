@@ -24,28 +24,18 @@ public class WorkController {
 
     private final WorkFacade workFacade;
 
-    @PostMapping("/project/{projectId}/milestone/{milestoneId}")
+    @PostMapping("")
     public ResponseEntity<ResponseDto<?>> create(
             @AuthenticationPrincipal PrincipalDetails user,
-            @PathVariable("projectId") Long projectId,
-            @PathVariable("milestoneId") Long milestoneId,
             @Valid @RequestBody WorkCreateRequestDto workCreateRequestDto) {
-        workFacade.create(user.getId(), projectId, milestoneId, workCreateRequestDto);
+        workFacade.create(user.getId(), workCreateRequestDto);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 
-    @GetMapping("/project/{projectId}")
-    public ResponseEntity<ResponseDto<?>> getAllByProject(
-            @AuthenticationPrincipal PrincipalDetails user,
-            @PathVariable("projectId") Long projectId) {
-        List<WorkReadResponseDto> result = workFacade.getAllByProject(user.getId(),projectId);
-        return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
-    }
-
-    @GetMapping("/project/{projectId}/milestone/{milestoneId}")
+    @GetMapping("")
     public ResponseEntity<ResponseDto<?>> getAllByMilestone(
-            @PathVariable("projectId") Long projectId,
-            @PathVariable("milestoneId") Long milestoneId,
+            @RequestParam("projectId") Long projectId,
+            @RequestParam("milestoneId") Long milestoneId,
             @RequestParam("pageIndex") Optional<Integer> pageIndex,
             @RequestParam("itemCount") Optional<Integer> itemCount) {
         return new ResponseEntity<>(ResponseDto.success("success", workFacade.getAllByMilestone(projectId, milestoneId, pageIndex.orElse(0), itemCount.orElse(6))), HttpStatus.OK);
@@ -74,11 +64,10 @@ public class WorkController {
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 
-    @PostMapping("/confirm")
-    public ResponseEntity<ResponseDto<?>> workConfirm(
-            @AuthenticationPrincipal PrincipalDetails user,
-            @RequestBody WorkConfirmRequestDto workConfirmRequest) {
-        workFacade.workConfirm(user.getId(), workConfirmRequest);
-        return new ResponseEntity<>(ResponseDto.success("업무 컨펌이 완료되었습니다."), HttpStatus.OK);
+    @PostMapping("/complete")
+    public ResponseEntity<ResponseDto<?>> workComplete(
+            @RequestBody WorkCompleteRequestDto requestDto) {
+        workFacade.workComplete(requestDto);
+        return new ResponseEntity<>(ResponseDto.success("업무를 완료했습니다."), HttpStatus.OK);
     }
 }

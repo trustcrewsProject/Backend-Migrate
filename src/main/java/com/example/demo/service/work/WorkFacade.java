@@ -1,7 +1,7 @@
 package com.example.demo.service.work;
 
-import com.example.demo.constant.ProgressStatus;
 import com.example.demo.constant.ProjectMemberStatus;
+import com.example.demo.constant.TrustScoreTypeIdentifier;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.trust_score.AddPointDto;
 import com.example.demo.dto.work.request.*;
@@ -10,16 +10,18 @@ import com.example.demo.global.exception.customexception.PageNationCustomExcepti
 import com.example.demo.global.exception.customexception.ProjectCustomException;
 import com.example.demo.global.exception.customexception.ProjectMemberCustomException;
 import com.example.demo.global.exception.customexception.WorkCustomException;
-import com.example.demo.model.alert.Alert;
 import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
+import com.example.demo.model.trust_grade.TrustGrade;
+import com.example.demo.model.trust_score.TrustScore;
 import com.example.demo.model.user.User;
 import com.example.demo.model.work.Work;
 import com.example.demo.service.alert.AlertService;
 import com.example.demo.service.milestone.MilestoneService;
 import com.example.demo.service.project.ProjectMemberService;
 import com.example.demo.service.project.ProjectService;
+import com.example.demo.service.trust_grade.TrustGradeService;
 import com.example.demo.service.trust_score.TrustScoreService;
 import com.example.demo.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +43,7 @@ public class WorkFacade {
     private final UserService userService;
     private final AlertService alertService;
     private final TrustScoreService trustScoreService;
+    private final TrustGradeService trustGradeService;
     private final ProjectMemberService projectMemberService;
 
     public void create(
@@ -128,40 +131,25 @@ public class WorkFacade {
     }
 
     /**
-     * 업무 컨펌 (프로젝트 등급과 업무 상태에 따른 신뢰점수 부여 및 신뢰점수 내역 추가)
-     *
-     * @param userId
-     * @param workConfirmRequest
+     * 업무 완료 (신뢰점수 부여 및 신뢰점수 내역 추가)
+     * @param requestDto
      */
-    public void workConfirm(Long userId, WorkConfirmRequestDto workConfirmRequest) {
-        User currentUser = userService.findById(userId);
-        Alert alert = alertService.findById(workConfirmRequest.getAlertId());
-        Project project = alert.getProject();
-
-        // 프로젝트 매니저 확인
-        projectMemberService.verifiedProjectManager(project, currentUser);
-
-        Work work = alert.getWork();
-        ProgressStatus workStatus = work.getProgressStatus();
-        // 업무가 기간만료된 상태라면
-        if(workStatus.equals(ProgressStatus.EXPIRED)) {
-            workConfirmRequest.updateScoreTypeId(22L);
-        }
-
+    public void workComplete(WorkCompleteRequestDto requestDto) {
         // 신뢰점수 부여 DTO
         AddPointDto addPoint = AddPointDto.builder()
-                .content(work.getContent() + " " +
-                        (workStatus.equals(ProgressStatus.COMPLETION) ? (workConfirmRequest.getScoreTypeId().equals(1L) ? "완수" : "미흡") : "만료")
-                )
-                .userId(alert.getSendUser().getId())
-                .projectId(project.getId())
-                .milestoneId(alert.getMilestone().getId())
-                .workId(work.getId())
-                .scoreTypeId(workConfirmRequest.getScoreTypeId())
+                .content(requestDto.getContent())
+                .userId(requestDto.getUserId())
+                .projectId(requestDto.getProjectId())
+                .milestoneId(requestDto.getMilestoneId())
+                .workId(requestDto.getWorkId())
+                .scoreTypeId(TrustScoreTypeIdentifier.WORK_COMPLETE)
                 .build();
 
+        TrustScore trustScore = trustScoreService.findTrustScoreByUserId(requestDto.getUserId());
+        TrustGrade trustGrade = trustGradeService.getTrustGradeById(trustScore.getTrustGrade().getId());
+
         // 신뢰점수 부여 및 신뢰점수 내역 추가
-        trustScoreService.addPoint(addPoint);
+        trustScoreService.addPoint(trustGrade, addPoint);
     }
 
     @Transactional

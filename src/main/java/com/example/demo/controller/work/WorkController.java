@@ -65,8 +65,9 @@ public class WorkController {
 
     @PostMapping("/complete")
     public ResponseEntity<ResponseDto<?>> workComplete(
+            @AuthenticationPrincipal PrincipalDetails user,
             @RequestBody WorkCompleteRequestDto requestDto) {
-        workFacade.workComplete(requestDto);
-        return new ResponseEntity<>(ResponseDto.success("업무를 완료했습니다."), HttpStatus.OK);
+        workFacade.workComplete(user.getId(), requestDto);
+        return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 }

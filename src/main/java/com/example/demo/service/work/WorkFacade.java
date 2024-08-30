@@ -1,5 +1,6 @@
 package com.example.demo.service.work;
 
+import com.example.demo.constant.ProgressStatus;
 import com.example.demo.constant.ProjectMemberStatus;
 import com.example.demo.constant.TrustScoreTypeIdentifier;
 import com.example.demo.dto.common.PaginationResponseDto;
@@ -134,19 +135,25 @@ public class WorkFacade {
      * 업무 완료 (신뢰점수 부여 및 신뢰점수 내역 추가)
      * @param requestDto
      */
-    public void workComplete(WorkCompleteRequestDto requestDto) {
+    public void workComplete(Long currentUserId, WorkCompleteRequestDto requestDto) {
+        ProjectMember projectMember = projectMemberService.findById(requestDto.getUserId());
+        User user = projectMember.getUser();
+        if(!currentUserId.equals(user.getId())){
+            throw WorkCustomException.NO_PERMISSION_TO_TASK;
+        }
+
         // 신뢰점수 부여 DTO
         AddPointDto addPoint = AddPointDto.builder()
                 .content(requestDto.getContent())
-                .userId(requestDto.getUserId())
+                .userId(user.getId())
                 .projectId(requestDto.getProjectId())
                 .milestoneId(requestDto.getMilestoneId())
                 .workId(requestDto.getWorkId())
                 .scoreTypeId(TrustScoreTypeIdentifier.WORK_COMPLETE)
                 .build();
 
-        TrustScore trustScore = trustScoreService.findTrustScoreByUserId(requestDto.getUserId());
-        TrustGrade trustGrade = trustGradeService.getTrustGradeById(trustScore.getTrustGrade().getId());
+        TrustScore trustScore = trustScoreService.findTrustScoreByUserId(user.getId());
+        TrustGrade trustGrade = trustScore.getTrustGrade();
 
         // 신뢰점수 부여 및 신뢰점수 내역 추가
         trustScoreService.addPoint(trustGrade, addPoint);

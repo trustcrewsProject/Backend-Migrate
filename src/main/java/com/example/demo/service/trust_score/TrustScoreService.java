@@ -8,7 +8,7 @@ import javax.validation.Valid;
 
 public interface TrustScoreService {
     TrustScore addPoint(Long userId);
-    void addPoint(TrustGrade trustGrade, @Valid AddPointDto addPointDto);
+    void addPoint(TrustGrade trustGrade, AddPointDto addPointDto);
 
     TrustScore findTrustScoreByUserId(Long userId);
 }

@@ -2,20 +2,18 @@ package com.example.demo.controller.milestone;
 
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.dto.milestone.MilestoneCreateResponseDto;
-import com.example.demo.dto.milestone.request.MileStoneUpdateRequestDto;
-import com.example.demo.dto.milestone.request.MilestoneCreateRequestDto;
-import com.example.demo.dto.milestone.request.MilestoneUpdateContentRequestDto;
-import com.example.demo.dto.milestone.request.MilestoneUpdateDateRequestDto;
+import com.example.demo.dto.milestone.request.*;
 import com.example.demo.dto.milestone.response.MilestoneReadResponseDto;
 import com.example.demo.security.custom.PrincipalDetails;
 import com.example.demo.service.milestone.MileStoneFacade;
 import com.example.demo.service.milestone.MilestoneService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/milestone")
@@ -25,12 +23,10 @@ public class MileStoneController {
     private final MilestoneService milestoneService;
     private final MileStoneFacade mileStoneFacade;
 
-    @PostMapping("/project/{projectId}")
+    @PostMapping("")
     public ResponseEntity<ResponseDto<?>> create(
-            @PathVariable("projectId") Long projectId,
             @RequestBody MilestoneCreateRequestDto milestoneCreateRequestDto) {
-        MilestoneCreateResponseDto result =
-                mileStoneFacade.create(projectId, milestoneCreateRequestDto);
+        MilestoneCreateResponseDto result = mileStoneFacade.create(milestoneCreateRequestDto);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 
@@ -56,10 +52,13 @@ public class MileStoneController {
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{milestoneId}")
-    public ResponseEntity<ResponseDto<?>> delete(@PathVariable("milestoneId") Long mileStoneId) {
-        milestoneService.delete(mileStoneId);
-        return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
+    @DeleteMapping("")
+    public ResponseEntity<ResponseDto<?>> delete(
+            @AuthenticationPrincipal PrincipalDetails user,
+            @RequestBody DeleteMilestoneReqDto reqDto
+    ) {
+        mileStoneFacade.deleteMilestone(user.getId(), reqDto);
+        return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.OK);
     }
 
     @PatchMapping("/{milestoneId}/content")

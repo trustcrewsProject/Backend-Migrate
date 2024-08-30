@@ -11,6 +11,7 @@ import com.example.demo.model.trust_score.QTrustScoreHistory;
 import com.example.demo.model.trust_score.QTrustScoreType;
 import com.example.demo.model.user.QUser;
 import com.example.demo.model.work.QWork;
+import com.example.demo.model.work.Work;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -80,6 +81,14 @@ public class WorkRepositoryImpl implements WorkRepositoryCustom{
         long totalPages = getTotalItemCount(projectId, milestoneId, null);
 
         return PaginationResponseDto.of(content, totalPages);
+    }
+
+    @Override
+    public void deleteAllByMilestoneId(Long milestoneId) {
+        jpaQueryFactory
+                .delete(qWork)
+                .where(qWork.milestone.id.eq(milestoneId))
+                .execute();
     }
 
     // 조건에 맞는 업무의 총 개수 조회

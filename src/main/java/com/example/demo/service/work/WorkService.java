@@ -25,4 +25,6 @@ public interface WorkService {
     void delete(Work work);
 
     void deleteAllByProject(Project project);
+
+    void deleteAllByMilestoneId(Long milestoneId);
 }

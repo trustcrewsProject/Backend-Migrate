@@ -32,6 +32,7 @@ public class WorkServiceImpl implements WorkService {
                 .orElseThrow(() -> WorkCustomException.NOT_FOUND_WORK);
     }
 
+
     public Work findLastCompleteWork(Project project, User user) {
         return workRepository
                 .findFirstByProjectAndAssignedUserIdAndProgressStatusOrderByIdDesc(
@@ -49,5 +50,10 @@ public class WorkServiceImpl implements WorkService {
     @Override
     public void deleteAllByProject(Project project) {
         workRepository.deleteAllByProject(project);
+    }
+
+    @Override
+    public void deleteAllByMilestoneId(Long milestoneId) {
+        workRepository.deleteAllByMilestoneId(milestoneId);
     }
 }

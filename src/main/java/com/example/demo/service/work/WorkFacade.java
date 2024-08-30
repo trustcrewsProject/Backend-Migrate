@@ -157,6 +157,10 @@ public class WorkFacade {
 
         // 신뢰점수 부여 및 신뢰점수 내역 추가
         trustScoreService.addPoint(trustGrade, addPoint);
+
+        // 업무상태 '완료'로 변경
+        Work work = workService.findById(requestDto.getWorkId());
+        work.updateCompleteStatus(ProgressStatus.COMPLETION);
     }
 
     @Transactional

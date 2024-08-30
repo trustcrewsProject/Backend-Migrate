@@ -53,23 +53,6 @@ public class ProjectController {
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 
-    @PostMapping("/{projectId}/participate")
-    public ResponseEntity<ResponseDto<?>> participate(
-            @AuthenticationPrincipal PrincipalDetails user,
-            @PathVariable("projectId") Long projectId,
-            @RequestBody @Valid ProjectParticipateRequestDto projectParticipateRequestDto) {
-        projectFacade.sendParticipateAlert(user.getId(), projectId, projectParticipateRequestDto);
-        return new ResponseEntity<>(ResponseDto.success("참여 요청이 완료되었습니다.", null), HttpStatus.OK);
-    }
-
-    @PostMapping("/participate/confirm")
-    public ResponseEntity<ResponseDto<?>> confirm(
-            @AuthenticationPrincipal PrincipalDetails user,
-            @RequestBody ProjectConfirmRequestDto projectConfirmRequestDto) {
-        projectFacade.confirm(user.getId(), projectConfirmRequestDto);
-        return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.OK);
-    }
-
     @PostMapping("/{projectId}/end")
     public ResponseEntity<ResponseDto<?>> end(
             @PathVariable("projectId") Long projectId,

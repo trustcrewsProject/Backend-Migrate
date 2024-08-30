@@ -1,41 +1,33 @@
 package com.example.demo.service.project;
 
-import com.example.demo.constant.*;
+import com.example.demo.constant.ProjectMemberStatus;
+import com.example.demo.constant.UserProjectHistoryStatus;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.project.ProjectDetailAuthDto;
-import com.example.demo.dto.project.request.ProjectConfirmRequestDto;
 import com.example.demo.dto.project.request.ProjectInfoUpdateRequestDto;
-import com.example.demo.dto.project.request.ProjectParticipateRequestDto;
 import com.example.demo.dto.project.response.ProjectMeResponseDto;
 import com.example.demo.dto.project.response.ProjectSpecificDetailResponseDto;
 import com.example.demo.dto.projectmember.response.MyProjectMemberResponseDto;
 import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
 import com.example.demo.dto.user.response.UserMyProjectResponseDto;
-import com.example.demo.global.exception.customexception.*;
-import com.example.demo.model.alert.Alert;
-import com.example.demo.model.position.Position;
+import com.example.demo.global.exception.customexception.PageNationCustomException;
+import com.example.demo.global.exception.customexception.ProjectCustomException;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
-import com.example.demo.model.project.ProjectMemberAuth;
 import com.example.demo.model.user.User;
 import com.example.demo.model.user.UserProjectHistory;
-import com.example.demo.service.alert.AlertService;
 import com.example.demo.service.milestone.MilestoneService;
-import com.example.demo.service.position.PositionService;
-import com.example.demo.service.trust_grade.TrustGradeService;
 import com.example.demo.service.user.UserProjectHistoryService;
 import com.example.demo.service.user.UserService;
 import com.example.demo.service.work.WorkService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -46,12 +38,9 @@ public class ProjectFacade {
     private final ProjectService projectService;
     private final ProjectMemberService projectMemberService;
     private final WorkService workService;
-    private final PositionService positionService;
-    private final AlertService alertService;
-    private final ProjectMemberAuthService projectMemberAuthService;
     private final MilestoneService milestoneService;
     private final UserProjectHistoryService userProjectHistoryService;
-    private final TrustGradeService trustGradeService;
+
 
     @Transactional(readOnly = true)
     public PaginationResponseDto getMyParticipatingProjects(Long userId, int pageIndex, int itemCount) {
@@ -148,101 +137,6 @@ public class ProjectFacade {
     }
 
     /**
-     * 참여하기 참여하는 경우 알림보내기
-     *
-     * @param projectId
-     * @param projectParticipateRequestDto
-     */
-    @Transactional
-    public void sendParticipateAlert(
-            Long userId,
-            Long projectId,
-            ProjectParticipateRequestDto projectParticipateRequestDto) {
-
-        Project project = projectService.findById(projectId);
-        User user = userService.findById(userId);
-
-        Optional<ProjectMember> projectMember = projectMemberService.findProjectMemberByProjectAndUser(project, user);
-        if (projectMember.isPresent()) {
-            ProjectMemberStatus memberStatus = projectMember.get().getStatus();
-            if (memberStatus.equals(ProjectMemberStatus.PARTICIPATING))
-                throw ProjectPartiCustomException.PARTICIPATE_DUPLICATE;
-            if (memberStatus.equals(ProjectMemberStatus.FORCE_WITHDRAW))
-                throw ProjectPartiCustomException.PARTICIPATE_NOT_ALLOWED;
-        }
-
-        Position position = positionService.findById(projectParticipateRequestDto.getPositionId());
-        Alert alert =
-                Alert.builder()
-                        .project(project)
-                        .checkUser(project.getUser())
-                        .sendUser(user)
-                        .content(user.getNickname() + "님이 프로젝트의 " + position.getName() + " 포지션에 지원했습니다.")
-                        .position(position)
-                        .type(AlertType.RECRUIT)
-                        .checked_YN(false)
-                        .build();
-
-        alertService.save(alert);
-    }
-
-    /**
-     * 프로젝트 참여 수락/거절
-     *
-     * @param userId
-     * @param projectConfirmRequestDto
-     */
-    @Transactional
-    public void confirm(
-            Long userId, ProjectConfirmRequestDto projectConfirmRequestDto) {
-        User currentUser = userService.findById(userId);
-
-        // 참여지원 알림
-        Alert supportedAlert = alertService.findById(projectConfirmRequestDto.getAlertId());
-        Project project = supportedAlert.getProject();
-
-        // 프로젝트 매니저 확인
-        projectMemberService.verifiedProjectManager(project, currentUser);
-
-        // 프로젝트 참여 수락
-        if (projectConfirmRequestDto.isConfirmResult()) {
-            // 지원 알림의 confirm 필드 수락으로 변경
-            supportedAlert.updateProjectConfirmResult(projectConfirmRequestDto.isConfirmResult());
-
-            User sendUser = supportedAlert.getSendUser();
-            ProjectMemberAuth projectMemberAuth = projectMemberAuthService.findProjectMemberAuthById(3L);
-
-            // 프로젝트 멤버 등록
-            ProjectMember projectMember =
-                    projectMemberService.toProjectMemberEntity(
-                            project,
-                            sendUser,
-                            projectMemberAuth,
-                            ProjectMemberStatus.PARTICIPATING,
-                            supportedAlert.getPosition());
-            projectMemberService.save(projectMember);
-
-            // 회원 프로젝트 이력 등록
-            UserProjectHistory userProjectHistory =
-                    userProjectHistoryService.toUserProjectHistoryEntity(sendUser, project);
-            userProjectHistoryService.save(userProjectHistory);
-
-            // 프로젝트 합류 알림 생성
-            Alert participationAlert = Alert.builder()
-                    .project(project)
-                    .sendUser(currentUser)
-                    .content(sendUser.getNickname() + "님이 " + project.getName() + "에 합류했습니다.")
-                    .type(AlertType.CREW_UPDATE)
-                    .build();
-            alertService.save(participationAlert);
-            return;
-        }
-
-        // 프로젝트 참여 거절
-        supportedAlert.updateProjectConfirmResult(false);
-    }
-
-    /**
      * 프로젝트 종료
      * 해당 프로젝트 멤버의 새로운 사용자 프로젝트 이력 추가(프로젝트 완주 이력)
      * 해당 프로젝트와 관련된 업무, 마일스톤, 알림, 멤버, 기술스택 정보 삭제
@@ -279,9 +173,6 @@ public class ProjectFacade {
 
         // 프로젝트 모든 마일스톤 삭제
         milestoneService.deleteAllByProject(project);
-
-        // 프로젝트 관련 모든 알림 삭제
-        alertService.deleteAllByProject(project);
 
         // 프로젝트 status 종료로 변경
         project.endProject();

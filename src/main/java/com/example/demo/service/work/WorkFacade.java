@@ -5,7 +5,9 @@ import com.example.demo.constant.ProjectMemberStatus;
 import com.example.demo.constant.TrustScoreTypeIdentifier;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.trust_score.AddPointDto;
-import com.example.demo.dto.work.request.*;
+import com.example.demo.dto.work.request.WorkCompleteRequestDto;
+import com.example.demo.dto.work.request.WorkCreateRequestDto;
+import com.example.demo.dto.work.request.WorkUpdateRequestDto;
 import com.example.demo.dto.work.response.WorkReadResponseDto;
 import com.example.demo.global.exception.customexception.PageNationCustomException;
 import com.example.demo.global.exception.customexception.ProjectCustomException;
@@ -18,11 +20,9 @@ import com.example.demo.model.trust_grade.TrustGrade;
 import com.example.demo.model.trust_score.TrustScore;
 import com.example.demo.model.user.User;
 import com.example.demo.model.work.Work;
-import com.example.demo.service.alert.AlertService;
 import com.example.demo.service.milestone.MilestoneService;
 import com.example.demo.service.project.ProjectMemberService;
 import com.example.demo.service.project.ProjectService;
-import com.example.demo.service.trust_grade.TrustGradeService;
 import com.example.demo.service.trust_score.TrustScoreService;
 import com.example.demo.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -42,9 +42,7 @@ public class WorkFacade {
     private final ProjectService projectService;
     private final MilestoneService milestoneService;
     private final UserService userService;
-    private final AlertService alertService;
     private final TrustScoreService trustScoreService;
-    private final TrustGradeService trustGradeService;
     private final ProjectMemberService projectMemberService;
 
     public void create(
@@ -177,9 +175,6 @@ public class WorkFacade {
                 !project.getId().equals(projectMember.get().getProject().getId())) {
             throw WorkCustomException.NO_PERMISSION_TO_TASK;
         }
-
-        // 해당 업무와 관련된 알림목록 삭제
-        alertService.deleteAllByWork(work);
 
         // 해당 업무 삭제
         workService.delete(work);

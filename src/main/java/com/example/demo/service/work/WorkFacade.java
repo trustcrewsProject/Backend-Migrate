@@ -1,5 +1,6 @@
 package com.example.demo.service.work;
 
+import com.example.demo.constant.CreateLimitCnt;
 import com.example.demo.constant.ProgressStatus;
 import com.example.demo.constant.ProjectMemberStatus;
 import com.example.demo.constant.TrustScoreTypeIdentifier;
@@ -47,6 +48,12 @@ public class WorkFacade {
 
     public void create(
             Long userId, WorkCreateRequestDto workCreateRequestDto) {
+
+        int count = workService.countWorksByMilestoneId(workCreateRequestDto.getMilestoneId());
+        if(count >= CreateLimitCnt.TASK.getCount()){
+            throw WorkCustomException.CREATE_EXCEEDED_WORK;
+        }
+
         Project project = projectService.findById(workCreateRequestDto.getProjectId());
         Milestone milestone = milestoneService.findById(workCreateRequestDto.getMilestoneId());
         User user = userService.findById(userId);

@@ -29,4 +29,6 @@ public interface MilestoneService {
     void updateDate(Long milestoneId, MilestoneUpdateDateRequestDto milestoneUpdateDateRequestDto);
 
     void deleteAllByProject(Project project);
+
+    int countByProjectId(Long projectId);
 }

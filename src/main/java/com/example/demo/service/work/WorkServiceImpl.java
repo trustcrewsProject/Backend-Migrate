@@ -56,4 +56,9 @@ public class WorkServiceImpl implements WorkService {
     public void deleteAllByMilestoneId(Long milestoneId) {
         workRepository.deleteAllByMilestoneId(milestoneId);
     }
+
+    @Override
+    public int countWorksByMilestoneId(Long milestoneId) {
+        return workRepository.countWorksByMilestoneId(milestoneId);
+    }
 }

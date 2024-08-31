@@ -72,4 +72,9 @@ public class MilestoneServiceImpl implements MilestoneService {
     public void deleteAllByProject(Project project) {
         mileStoneRepository.deleteAllByProject(project);
     }
+
+    @Override
+    public int countByProjectId(Long projectId) {
+        return mileStoneRepository.countByProjectId(projectId);
+    }
 }

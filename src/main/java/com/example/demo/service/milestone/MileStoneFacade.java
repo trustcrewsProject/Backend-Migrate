@@ -1,5 +1,6 @@
 package com.example.demo.service.milestone;
 
+import com.example.demo.constant.CreateLimitCnt;
 import com.example.demo.dto.milestone.MilestoneCreateResponseDto;
 import com.example.demo.dto.milestone.request.DeleteMilestoneReqDto;
 import com.example.demo.dto.milestone.request.MilestoneCreateRequestDto;
@@ -37,6 +38,12 @@ public class MileStoneFacade {
      * @return
      */
     public MilestoneCreateResponseDto create(MilestoneCreateRequestDto requestDto) {
+
+        int count = mileStoneService.countByProjectId(requestDto.getProjectId());
+        if(count >= CreateLimitCnt.MILESTONE.getCount()){
+            throw MilestoneCustomException.CREATE_EXCEEDED_MS;
+        }
+
         validateMilestoneAuth(requestDto.getAuthMap());
         Project project = projectService.findById(requestDto.getProjectId());
         Milestone milestone = requestDto.toMileStoneEntity(project);

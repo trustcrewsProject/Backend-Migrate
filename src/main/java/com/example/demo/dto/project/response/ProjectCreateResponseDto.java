@@ -17,7 +17,6 @@ public class ProjectCreateResponseDto {
     private long trustGradeId;
     private long userId;
     private ProjectStatus status;
-    private int crewNumber;
     private LocalDate startDate;
     private LocalDate endDate;
 
@@ -34,7 +33,6 @@ public class ProjectCreateResponseDto {
                 .trustGradeId(project.getTrustGrade().getId())
                 .userId(project.getUser().getId())
                 .status(project.getStatus())
-                .crewNumber(project.getCrewNumber())
                 .startDate(project.getStartDate())
                 .endDate(project.getEndDate())
                 .createDate(project.getCreateDate())

@@ -21,7 +21,6 @@ public class ProjectMeResponseDto {
     private TrustGradeResponseDto trustGrade;
     private List<MyProjectMemberResponseDto> members;
     private ProjectStatus status;
-    private int crewNumber;
     private LocalDate startDate;
     private LocalDate endDate;
 
@@ -42,7 +41,6 @@ public class ProjectMeResponseDto {
                 .trustGrade(trustGradeDto)
                 .members(myProjectMemberResponseDtos)
                 .status(project.getStatus())
-                .crewNumber(project.getCrewNumber())
                 .startDate(project.getStartDate())
                 .endDate(project.getEndDate())
                 .createDate(project.getCreateDate())

@@ -22,7 +22,6 @@ public class ProjectSpecificDetailResponseDto {
     private String subject;
     private TrustGradeResponseDto trustGrade;
     private ProjectStatus status;
-    private int crewNumber;
     private LocalDate startDate;
     private LocalDate endDate;
     private ProjectDetailAuthDto authMap;
@@ -41,7 +40,6 @@ public class ProjectSpecificDetailResponseDto {
                 .subject(project.getSubject())
                 .trustGrade(trustGradeDto)
                 .status(project.getStatus())
-                .crewNumber(project.getCrewNumber())
                 .startDate(project.getStartDate())
                 .endDate(project.getEndDate())
                 .createDate(project.getCreateDate())

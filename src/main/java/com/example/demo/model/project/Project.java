@@ -1,15 +1,18 @@
 package com.example.demo.model.project;
 
 import com.example.demo.constant.ProjectStatus;
-import com.example.demo.dto.project.request.ProjectUpdateRequestDto;
 import com.example.demo.global.common.BaseTimeEntity;
 import com.example.demo.model.trust_grade.TrustGrade;
 import com.example.demo.model.user.User;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.*;
-import lombok.*;
 
 // 프로젝트 엔티티
 @Entity
@@ -38,9 +41,6 @@ public class Project extends BaseTimeEntity {
     @Enumerated(value = EnumType.STRING)
     private ProjectStatus status;
 
-    @Column(nullable = true)
-    private int crewNumber;
-
     private LocalDate startDate;
     private LocalDate endDate;
 
@@ -57,7 +57,6 @@ public class Project extends BaseTimeEntity {
             TrustGrade trustGrade,
             User user,
             ProjectStatus status,
-            int crewNumber,
             LocalDate startDate,
             LocalDate endDate) {
         this.name = name;
@@ -65,18 +64,8 @@ public class Project extends BaseTimeEntity {
         this.trustGrade = trustGrade;
         this.user = user;
         this.status = status;
-        this.crewNumber = crewNumber;
         this.startDate = startDate;
         this.endDate = endDate;
-    }
-
-    public void updateProject(ProjectUpdateRequestDto dto, TrustGrade trustGrade) {
-        this.name = dto.getName();
-        this.subject = dto.getSubject();
-        this.trustGrade = trustGrade;
-        this.crewNumber = dto.getCrewNumber();
-        this.startDate = dto.getStartDate();
-        this.endDate = dto.getEndDate();
     }
 
     public void updateProject(String name, String subject, LocalDate startDate, LocalDate endDate) {

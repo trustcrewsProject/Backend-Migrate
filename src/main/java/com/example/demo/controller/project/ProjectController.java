@@ -37,14 +37,6 @@ public class ProjectController {
         return new ResponseEntity<>(ResponseDto.success("success", projectFacade.getMyParticipatingProjects(user.getId(), pageIndex.orElse(0), itemCount.orElse(6))), HttpStatus.OK);
     }
 
-    @GetMapping("/me")
-    public ResponseEntity<ResponseDto<?>> getMyProjects(
-            @AuthenticationPrincipal PrincipalDetails user) {
-        List<ProjectMeResponseDto> result = projectFacade.getMyProjects(user.getId());
-        return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
-    }
-    // TODO : 하드코딩 리팩토링 (setter 보단 다른 방법 강구)
-
     @GetMapping("/{projectId}/{userId}")
     public ResponseEntity<ResponseDto<?>> getDetail(
             @PathVariable("projectId") Long projectId,
@@ -61,11 +53,4 @@ public class ProjectController {
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 
-    @PutMapping("")
-    public ResponseEntity<ResponseDto<?>> updateProject(
-            @AuthenticationPrincipal PrincipalDetails user,
-            @RequestBody ProjectInfoUpdateRequestDto updateRequest) {
-        projectFacade.updateProject(user.getId(), updateRequest);
-        return new ResponseEntity<>(ResponseDto.success("프로젝트 정보 수정이 완료되었습니다."), HttpStatus.OK);
-    }
 }

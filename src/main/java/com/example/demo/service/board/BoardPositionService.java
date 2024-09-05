@@ -11,4 +11,6 @@ public interface BoardPositionService {
     BoardPosition getBoardPositionEntity(Board board, Position position);
 
     BoardPosition save(BoardPosition boardPosition);
+
+    void deleteBoardPositionsByBoardId(Long boardId);
 }

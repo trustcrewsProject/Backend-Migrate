@@ -116,6 +116,7 @@ public class BoardServiceImpl implements BoardService {
 
     /**
      * 게시글 모집상태 변경, 모집중 -> 모집완료 or 모집완료 -> 모집중
+     *
      * @param boardId
      * @param userId
      */
@@ -125,12 +126,12 @@ public class BoardServiceImpl implements BoardService {
                 .orElseThrow(() -> BoardCustomException.NOT_FOUND_BOARD);
 
         // 요청한 사용자와 게시글의 작성자가 다른 경우, 예외처리
-        if(!userId.equals(board.getUser().getId())) {
+        if (!userId.equals(board.getUser().getId())) {
             throw BoardCustomException.NO_PERMISSION_TO_EDIT_OR_DELETE;
         }
 
         // 게시글 모집상태가 모집중(false)인 경우, 모집완료(true)로 수정
-        if(!board.isRecruitmentStatus()) {
+        if (!board.isRecruitmentStatus()) {
             board.updateRecruitmentStatus(true);
             return;
         }
@@ -138,4 +139,10 @@ public class BoardServiceImpl implements BoardService {
         // 게시글 모집상태가 완료(true)인 경우, 모집중(false)으로 수정
         board.updateRecruitmentStatus(false);
     }
+
+    @Override
+    public Board findByProjectId(Long projectId) {
+      return  boardRepository.findByProjectId(projectId);
+    }
+
 }

@@ -21,4 +21,11 @@ public class BoardPositionServiceImpl implements BoardPositionService {
     public BoardPosition save(BoardPosition boardPosition) {
         return boardPositionRepository.save(boardPosition);
     }
+
+    @Override
+    public void deleteBoardPositionsByBoardId(Long boardId) {
+        boardPositionRepository.deleteBoardPositionByBoard_Id(boardId);
+    }
+
+
 }

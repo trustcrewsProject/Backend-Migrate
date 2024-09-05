@@ -68,10 +68,15 @@ public class Board extends BaseTimeEntity {
         }
     }
 
-    public void updateBoard(BoardUpdateRequestDto dto) {
-        this.title = dto.getTitle();
-        this.content = dto.getContent();
-        this.contact = dto.getContact();
+    public void updateProjectBoard(String title, String content, String contact, boolean recruitmentStatus) {
+        this.title = title;
+        this.content = content;
+        this.contact = contact;
+        this.recruitmentStatus = recruitmentStatus;
+    }
+
+    public void updateProjectBoardUser(User user){
+        this.user = user;
     }
 
     public void setPositions(List<BoardPosition> list) {

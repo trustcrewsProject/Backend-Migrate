@@ -2,21 +2,37 @@ package com.example.demo.service.project;
 
 import com.example.demo.constant.ProjectMemberStatus;
 import com.example.demo.constant.UserProjectHistoryStatus;
+import com.example.demo.dto.boardposition.BoardPositionDetailResponseDto;
 import com.example.demo.dto.common.PaginationResponseDto;
+import com.example.demo.dto.position.response.PositionResponseDto;
 import com.example.demo.dto.project.ProjectDetailAuthDto;
-import com.example.demo.dto.project.request.ProjectInfoUpdateRequestDto;
 import com.example.demo.dto.project.response.ProjectMeResponseDto;
 import com.example.demo.dto.project.response.ProjectSpecificDetailResponseDto;
+import com.example.demo.dto.project.setting.request.ProjectSettingBoardUpdRequestDto;
+import com.example.demo.dto.project.setting.request.ProjectSettingInfoUpdRequestDto;
+import com.example.demo.dto.project.setting.response.ProjectSettingBoardResponseDto;
+import com.example.demo.dto.project.setting.response.ProjectSettingInfoResponseDto;
 import com.example.demo.dto.projectmember.response.MyProjectMemberResponseDto;
+import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
 import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
 import com.example.demo.dto.user.response.UserMyProjectResponseDto;
 import com.example.demo.global.exception.customexception.PageNationCustomException;
 import com.example.demo.global.exception.customexception.ProjectCustomException;
+import com.example.demo.model.board.Board;
+import com.example.demo.model.board.BoardPosition;
+import com.example.demo.model.position.Position;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
+import com.example.demo.model.project.ProjectMemberAuth;
+import com.example.demo.model.project.ProjectTechnology;
+import com.example.demo.model.technology_stack.TechnologyStack;
 import com.example.demo.model.user.User;
 import com.example.demo.model.user.UserProjectHistory;
+import com.example.demo.service.board.BoardPositionService;
+import com.example.demo.service.board.BoardService;
 import com.example.demo.service.milestone.MilestoneService;
+import com.example.demo.service.position.PositionService;
+import com.example.demo.service.technology_stack.TechnologyStackService;
 import com.example.demo.service.user.UserProjectHistoryService;
 import com.example.demo.service.user.UserService;
 import com.example.demo.service.work.WorkService;
@@ -40,6 +56,11 @@ public class ProjectFacade {
     private final WorkService workService;
     private final MilestoneService milestoneService;
     private final UserProjectHistoryService userProjectHistoryService;
+    private final BoardService boardService;
+    private final BoardPositionService boardPositionService;
+    private final PositionService positionService;
+    private final TechnologyStackService technologyStackService;
+    private final ProjectTechnologyService projectTechnologyService;
 
 
     @Transactional(readOnly = true)
@@ -178,23 +199,147 @@ public class ProjectFacade {
         project.endProject();
     }
 
-    @Transactional
-    public void updateProject(Long userId, ProjectInfoUpdateRequestDto updateRequest) {
-        User currentUser = userService.findById(userId);
-        Project project = projectService.findById(updateRequest.getProjectId());
+    public void updateProjectSettingInfo(Long userId, ProjectSettingInfoUpdRequestDto requestDto) {
+        // validation
+        validateProjectMemberAuth(userId, requestDto.getProjectId());
 
-        // 프로젝트 매니저 검증
-        projectMemberService.verifiedProjectManager(project, currentUser);
+        if (requestDto.getAuthMap() == null || !requestDto.getAuthMap().isMilestoneAuth()) {
+            throw ProjectCustomException.ACCESS_NOT_ALLOWED;
+        }
 
-        // 프로젝트 정보 수정
-        project.updateProject(updateRequest.getProjectName(), updateRequest.getSubject(),
-                updateRequest.getStartDate(),
-                updateRequest.getEndDate());
+        Project project = projectService.findById(requestDto.getProjectId());
+
+        // projectName, projectSubject, startDate, endDate 업데이트
+        project.updateProject(
+                requestDto.getProjectName(),
+                requestDto.getProjectSubject(),
+                requestDto.getStartDate(),
+                requestDto.getEndDate()
+        );
+
+        // 프로젝트 기술 업데이트
+        List<ProjectTechnology> projectTechnologyList = new ArrayList<>();
+        for (Long technologyId : requestDto.getTechnologyIds()) {
+            TechnologyStack technologyStack = technologyStackService.findById(technologyId);
+            ProjectTechnology projectTechnology =
+                    projectTechnologyService.getProjectTechnologyEntity(project, technologyStack);
+            projectTechnologyList.add(projectTechnology);
+        }
+        project.changeProjectTechnologys(projectTechnologyList);
+    }
+
+    /**
+     * 프로젝트 게시글 정보 수정 (매니저 권한만 가능)
+     *
+     * @param dto
+     */
+    public void updateProjectSettingBoard(Long userId, ProjectSettingBoardUpdRequestDto dto) {
+        // 프로젝트 멤버인지 확인
+        validateProjectMember(userId, dto.getProjectId());
+
+        // 매니저 권한인지 확인
+        if (dto.getAuthMap() == null || !dto.getAuthMap().isMilestoneAuth()) {
+            throw ProjectCustomException.NO_PERMISSION_TO_TASK;
+        }
+
+        Board board = boardService.findById(dto.getBoardId());
+
+        // 게시글 정보 - 제목, 소개, 모집상태 수정
+        board.updateProjectBoard(dto.getTitle(), dto.getContent(), dto.getContact(), dto.isRecruitmentStatus());
+
+        // 게시글 정보 - 작성자 수정
+        if (!userId.equals(board.getUser().getId())) {
+            User user = userService.findById(userId);
+            board.updateProjectBoardUser(user);
+        }
+
+        // 게시글 정보 - 포지션 수정
+        List<BoardPosition> boardPositions = board.getPositions();
+        String positionIdStr = boardPositions.stream()
+                .map(bp -> bp.getPosition().getId().toString())
+                .collect(Collectors.joining(","));
+
+        String dtoPostionIdStr = dto.getPositionIds().stream()
+                .map(Object::toString)
+                .collect(Collectors.joining(","));
+
+        System.out.println("positionIdStr: " + positionIdStr);
+        System.out.println("dtoPostionIdStr: " + dtoPostionIdStr);
+
+        if (!positionIdStr.equals(dtoPostionIdStr)) {
+            boardPositionService.deleteBoardPositionsByBoardId(dto.getBoardId());
+
+            // 새 boardPosition 생성
+            List<BoardPosition> boardPositionList = new ArrayList<>();
+            for (Long positionId : dto.getPositionIds()) {
+                Position position = positionService.findById(positionId);
+                BoardPosition boardPosition =
+                        boardPositionService.getBoardPositionEntity(board, position);
+                boardPositionService.save(boardPosition);
+            }
+            board.setPositions(boardPositionList);
+        }
+
+    }
+
+    /**
+     * 프로젝트 세팅 - 프로젝트 정보 조회(이름,주제,시작/종료날짜,모집상태,기술스택)
+     *
+     * @param userId
+     * @param projectId
+     * @return
+     */
+    public ProjectSettingInfoResponseDto getProjectSettingInfo(Long userId, Long projectId) {
+        validateProjectMemberAuth(userId, projectId);
+
+        Project project = projectService.findById(projectId);
+
+        List<TechnologyStackInfoResponseDto> technologyStackInfoResponseDtos = new ArrayList<>();
+        for (ProjectTechnology projectTechnology : project.getProjectTechnologies()) {
+            TechnologyStack technologyStack = projectTechnology.getTechnologyStack();
+
+            TechnologyStackInfoResponseDto technologyStackInfoResponseDto =
+                    TechnologyStackInfoResponseDto.of(
+                            technologyStack.getId(), technologyStack.getName());
+            technologyStackInfoResponseDtos.add(technologyStackInfoResponseDto);
+        }
+
+        return ProjectSettingInfoResponseDto.of(project, technologyStackInfoResponseDtos);
+    }
+
+    public ProjectSettingBoardResponseDto getProjectSettingBoardInfo(Long userId, Long projectId) {
+        validateProjectMemberAuth(userId, projectId);
+
+        Board board = boardService.findByProjectId(projectId);
+
+        List<BoardPositionDetailResponseDto> boardPositionDetailResponseDtos = new ArrayList<>();
+        for (BoardPosition boardPosition : board.getPositions()) {
+            PositionResponseDto positionResponseDto =
+                    PositionResponseDto.of(boardPosition.getPosition());
+            BoardPositionDetailResponseDto boardPositionDetailResponseDto =
+                    BoardPositionDetailResponseDto.of(boardPosition, positionResponseDto);
+            boardPositionDetailResponseDtos.add(boardPositionDetailResponseDto);
+        }
+
+        return ProjectSettingBoardResponseDto.of(board, boardPositionDetailResponseDtos);
+    }
+
+
+    public void validateProjectMemberAuth(Long userId, Long projectId) {
+        ProjectMember projectMember = projectMemberService.findProjectMemberByPrIdAndUserId(projectId, userId);
+        if (projectMember == null) {
+            throw ProjectCustomException.ACCESS_NOT_ALLOWED;
+        }
+
+        ProjectMemberAuth projectMemberAuth = projectMember.getProjectMemberAuth();
+        if (!projectMemberAuth.isMilestoneChangeYN()) {
+            throw ProjectCustomException.ACCESS_NOT_ALLOWED;
+        }
     }
 
     public void validateProjectMember(Long userId, Long projectId) {
         ProjectMember projectMember = projectMemberService.findProjectMemberByPrIdAndUserId(projectId, userId);
-        if(projectMember == null){
+        if (projectMember == null) {
             throw ProjectCustomException.ACCESS_NOT_ALLOWED;
         }
     }

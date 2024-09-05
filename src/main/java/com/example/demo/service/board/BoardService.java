@@ -23,4 +23,7 @@ public interface BoardService {
 
     @Transactional
     void updateRecruitmentStatus(Long boardId, Long userId);
+
+    Board findByProjectId(Long projectId);
+
 }

@@ -118,6 +118,14 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
         return PaginationResponseDto.of(boardSearchResponseDtos, totalPages);
     }
 
+    @Override
+    public Board findByProjectId(Long projectId) {
+        return queryFactory
+                .selectFrom(qBoard)
+                .where(qBoard.project.id.eq(projectId))
+                .fetchOne();
+    }
+
     private Long countBoardBySearchCriteria(Long positionId, String keyword, List<Long> technologyIds, Boolean recruitmentStatus, ProjectStatus projectStatus) {
         return queryFactory
                 .select(qBoard.id.countDistinct())

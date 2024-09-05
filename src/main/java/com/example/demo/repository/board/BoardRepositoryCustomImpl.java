@@ -63,7 +63,7 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
                                 searchByLike(keyword),
                                 containsPosition(positionId),
                                 containsProjectTechnologyStack(technologyIds))
-                        .orderBy(qBoard.createDate.desc())
+                        .orderBy(qBoard.updateDate.desc())
                         .offset(pageable.getOffset())
                         .limit(pageable.getPageSize())
                         .fetch();

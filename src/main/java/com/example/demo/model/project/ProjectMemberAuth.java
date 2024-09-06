@@ -29,13 +29,23 @@ public class ProjectMemberAuth {
     @Column(name = "vote_yn")
     private boolean voteYn;
 
+    @Column(name = "config_yn")
+    private boolean configYn;
+
     @Builder
     public ProjectMemberAuth(
-            Long id, String name, boolean milestoneChangeYN, boolean workChangeYN, boolean voteYn) {
+            Long id,
+            String name,
+            boolean milestoneChangeYN,
+            boolean workChangeYN,
+            boolean voteYn,
+            boolean configYn
+    ) {
         this.id = id;
         this.name = name;
         this.milestoneChangeYN = milestoneChangeYN;
         this.workChangeYN = workChangeYN;
         this.voteYn = voteYn;
+        this.configYn = configYn;
     }
 }

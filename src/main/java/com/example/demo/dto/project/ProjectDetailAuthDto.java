@@ -11,11 +11,13 @@ public class ProjectDetailAuthDto {
     private final boolean milestoneAuth;
     private final boolean workAuth;
     private final boolean voteAuth;
+    private final boolean configAuth;
 
     public ProjectDetailAuthDto(ProjectMemberAuth projectMemberAuth){
         this.milestoneAuth = projectMemberAuth.isMilestoneChangeYN();
         this.workAuth = projectMemberAuth.isWorkChangeYN();
         this.voteAuth = projectMemberAuth.isVoteYn();
+        this.configAuth = projectMemberAuth.isConfigYn();
     }
 
 }

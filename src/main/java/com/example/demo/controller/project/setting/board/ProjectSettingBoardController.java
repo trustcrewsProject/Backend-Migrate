@@ -25,7 +25,7 @@ public class ProjectSettingBoardController {
      * @param projectId
      * @return
      */
-    @GetMapping("/board/{projectId}")
+    @GetMapping("/{projectId}")
     public ResponseEntity<ResponseDto<?>> getProjectSettingBoard(
             @AuthenticationPrincipal PrincipalDetails user,
             @PathVariable("projectId") Long projectId

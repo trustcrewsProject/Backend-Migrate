@@ -19,9 +19,11 @@ import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ProjectMemberServiceImpl implements ProjectMemberService {
     private final ProjectMemberRepository projectMemberRepository;
     private final UserService userService;
@@ -116,6 +118,11 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     public List<ProjectMember> getProjectMembersByUserAndStatus(User user, ProjectMemberStatus status) {
         return projectMemberRepository
                 .findAllByUserAndStatus(user, status);
+    }
+
+    @Override
+    public void updateProjectMemberAuth(Long projectMemberId, ProjectMemberAuth projectMemberAuth) {
+        projectMemberRepository.updateProjectMemberAuth(projectMemberId, projectMemberAuth);
     }
 
 }

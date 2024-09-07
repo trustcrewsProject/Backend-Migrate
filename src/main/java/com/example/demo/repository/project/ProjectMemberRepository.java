@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 import java.util.Optional;
 
-public interface ProjectMemberRepository extends JpaRepository<ProjectMember, Long> {
+public interface ProjectMemberRepository extends JpaRepository<ProjectMember, Long>, ProjectMemberRepositoryCustom {
     Optional<List<ProjectMember>> findProjectsMemberByProject(Project project);
 
     @Query("select pm from ProjectMember pm where pm.project = :project and pm.user = :user and pm.status = 'PARTICIPATING'")

@@ -10,8 +10,10 @@ import com.example.demo.model.user.User;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Service
 @Transactional
 public interface ProjectMemberService {
 
@@ -40,4 +42,6 @@ public interface ProjectMemberService {
     void verifiedProjectManager(Project project, User user);
 
     List<ProjectMember> getProjectMembersByUserAndStatus(User user, ProjectMemberStatus status);
+
+    void updateProjectMemberAuth(Long projectMemberId, ProjectMemberAuth projectMemberAuth);
 }

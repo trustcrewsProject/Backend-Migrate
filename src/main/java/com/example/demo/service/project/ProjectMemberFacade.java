@@ -5,6 +5,7 @@ import com.example.demo.constant.UserProjectHistoryStatus;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.position.response.PositionResponseDto;
 import com.example.demo.dto.project.request.WithdrawRequestDto;
+import com.example.demo.dto.project.setting.request.ProjectSettingCrewAuthUpdReqDto;
 import com.example.demo.dto.projectmember.response.ProjectMemberAuthResponseDto;
 import com.example.demo.dto.projectmember.response.ProjectMemberReadCrewDetailResponseDto;
 import com.example.demo.dto.projectmember.response.ProjectMemberReadProjectCrewsResponseDto;
@@ -14,10 +15,12 @@ import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
 import com.example.demo.dto.user.response.UserCrewDetailResponseDto;
 import com.example.demo.dto.user.response.UserReadProjectCrewResponseDto;
 import com.example.demo.global.exception.customexception.PageNationCustomException;
+import com.example.demo.global.exception.customexception.ProjectCustomException;
 import com.example.demo.global.exception.customexception.ProjectMemberCustomException;
 import com.example.demo.global.log.PMLog;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
+import com.example.demo.model.project.ProjectMemberAuth;
 import com.example.demo.model.project.alert.crew.AlertCrew;
 import com.example.demo.model.technology_stack.TechnologyStack;
 import com.example.demo.model.user.User;
@@ -49,8 +52,7 @@ public class ProjectMemberFacade {
     private final UserProjectHistoryService userProjectHistoryService;
     private final TrustScoreHistoryService trustScoreHistoryService;
     private final AlertCrewService alertCrewService;
-
-
+    private final ProjectMemberAuthService projectMemberAuthService;
 
     /**
      * 프로젝트 탈퇴
@@ -89,7 +91,7 @@ public class ProjectMemberFacade {
 
 
     /**
-     * 크루정보 상세 페이지 TODO : 프로젝트 신뢰 이력 추가 해야함 유저 정보들, 유저 기술들, 프로젝트 개수, 신뢰점수 이력들
+     * 크루정보 상세 페이지
      *
      * @param projectMemberId
      */
@@ -188,5 +190,26 @@ public class ProjectMemberFacade {
                 .getWorkTrustScoreHistories(projectMember.getProject(), projectMember.getUser(), pageIndex, itemCount);
 
         return result;
+    }
+
+
+    @Transactional
+    public void updateProjectMemberAuth(Long userId, ProjectSettingCrewAuthUpdReqDto dto) {
+        validateProjectMember(userId, dto.getProjectId());
+
+        if (dto.getAuthMap() == null || !dto.getAuthMap().isConfigAuth()) {
+            throw ProjectCustomException.NO_PERMISSION_TO_TASK;
+        }
+
+        ProjectMemberAuth projectMemberAuth = projectMemberAuthService.findProjectMemberAuthById(dto.getProjectMemberAuthId());
+
+        projectMemberService.updateProjectMemberAuth(dto.getProjectMemberId(), projectMemberAuth);
+    }
+
+    public void validateProjectMember(Long userId, Long projectId) {
+        ProjectMember projectMember = projectMemberService.findProjectMemberByPrIdAndUserId(projectId, userId);
+        if (projectMember == null) {
+            throw ProjectCustomException.ACCESS_NOT_ALLOWED;
+        }
     }
 }

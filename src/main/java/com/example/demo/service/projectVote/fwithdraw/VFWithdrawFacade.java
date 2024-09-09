@@ -1,13 +1,16 @@
 package com.example.demo.service.projectVote.fwithdraw;
 
 import com.example.demo.constant.ProjectMemberStatus;
+import com.example.demo.constant.ProjectRole;
 import com.example.demo.constant.UserProjectHistoryStatus;
 import com.example.demo.constant.VoteResult;
 import com.example.demo.dto.projectVote.fwithdraw.VoteFWithdrawRequestDto;
 import com.example.demo.dto.trust_score.AddPointDto;
+import com.example.demo.global.exception.customexception.ProjectCustomException;
 import com.example.demo.global.exception.customexception.VoteCustomException;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
+import com.example.demo.model.project.ProjectMemberAuth;
 import com.example.demo.model.projectVote.fwithdraw.VoteFWithdraw;
 import com.example.demo.model.projectVote.fwithdraw.history.VoteFWithdrawHistory;
 import com.example.demo.model.trust_grade.TrustGrade;
@@ -92,24 +95,37 @@ public class VFWithdrawFacade {
     }
 
     public void validateVoter(Long userId, VoteFWithdrawRequestDto requestDto) {
-            // 투표대상자의 투표금지
-            Long fwMemberId = requestDto.getFw_member_id();
-            ProjectMember fwMember = projectMemberService.findById(fwMemberId);
-            if (fwMember.getUser().getId().equals(userId)) {
-                throw VoteCustomException.VOTE_TARGET_NOT_ALLOWED;
-            }
+        validateProjectMember(userId, requestDto.getProjectId());
 
-            // 투표 중복 검사
-            VoteFWithdrawHistory voteFWithdrawHistory = vfWithdrawHistoryService.findVFWHistoryByVoter(requestDto.getVoteId(), userId);
-            if (voteFWithdrawHistory != null) {
-                throw VoteCustomException.VOTE_DUPLICATE;
-            }
+        if (
+                requestDto.getAuthMap() == null
+                        || (requestDto.getFw_member_auth_id().equals(ProjectRole.MANAGER.getId()) && !requestDto.getAuthMap().isConfigAuth())) {
+            throw ProjectCustomException.NO_PERMISSION_TO_TASK;
+        }
 
-            // 투표 권한 검사
-            if (!requestDto.getAuthMap().isVoteAuth()) {
-                throw VoteCustomException.VOTE_NOT_ALLOWED;
-            }
+        // 투표대상자의 투표금지
+        Long fwMemberId = requestDto.getFw_member_id();
+        ProjectMember fwMember = projectMemberService.findById(fwMemberId);
+        if (fwMember.getUser().getId().equals(userId)) {
+            throw VoteCustomException.VOTE_TARGET_NOT_ALLOWED;
+        }
 
+        // 투표 중복 검사
+        VoteFWithdrawHistory voteFWithdrawHistory = vfWithdrawHistoryService.findVFWHistoryByVoter(requestDto.getVoteId(), userId);
+        if (voteFWithdrawHistory != null) {
+            throw VoteCustomException.VOTE_DUPLICATE;
+        }
 
+        // 투표 권한 검사
+        if (!requestDto.getAuthMap().isVoteAuth()) {
+            throw VoteCustomException.VOTE_NOT_ALLOWED;
+        }
+    }
+
+    public void validateProjectMember(Long userId, Long projectId) {
+        ProjectMember projectMember = projectMemberService.findProjectMemberByPrIdAndUserId(projectId, userId);
+        if (projectMember == null) {
+            throw ProjectCustomException.ACCESS_NOT_ALLOWED;
+        }
     }
 }

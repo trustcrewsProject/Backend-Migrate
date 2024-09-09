@@ -5,6 +5,7 @@ import com.example.demo.dto.projectAlert.vote.fwithdraw.VAlertFWCreateRequestDto
 import com.example.demo.dto.projectAlert.vote.fwithdraw.VAlertFWDetailResponseDto;
 import com.example.demo.dto.projectAlert.vote.fwithdraw.VAlertFWResponseDto;
 import com.example.demo.global.exception.customexception.PageNationCustomException;
+import com.example.demo.global.exception.customexception.ProjectCustomException;
 import com.example.demo.model.project.ProjectMember;
 import com.example.demo.model.projectVote.fwithdraw.VoteFWithdraw;
 import com.example.demo.service.project.ProjectMemberService;
@@ -28,7 +29,14 @@ public class VAlertFWithdrawFacade {
 
     private final ProjectMemberService projectMemberService;
 
-    public void createFWithdrawAlert(Long userId, VAlertFWCreateRequestDto requestDto){
+    public void createFWithdrawAlert(Long userId, VAlertFWCreateRequestDto requestDto) {
+        validateProjectMember(userId, requestDto.getProject_id());
+
+        if (requestDto.getAuthMap() == null
+                || (requestDto.getFw_member_auth().isConfigYn() && !requestDto.getAuthMap().isConfigAuth())) {
+            throw ProjectCustomException.NO_PERMISSION_TO_TASK;
+        }
+
         ProjectMember fwMember = projectMemberService.findById(requestDto.getFw_member_id());
 
         // 투표 생성
@@ -39,9 +47,8 @@ public class VAlertFWithdrawFacade {
         vAlertFWithdrawService.toVAlertFWithdrawEntity(requestDto.getProject_id(), voteFWithdraw, alertContents);
     }
 
-    // todo - 강제탈퇴 알림 목록, 강제탈퇴 알림 상세조회 api
-    public PaginationResponseDto getVAlertFWithdrawList(Long projectId, int pageIndex, int itemCount){
-         if (pageIndex < 0) {
+    public PaginationResponseDto getVAlertFWithdrawList(Long projectId, int pageIndex, int itemCount) {
+        if (pageIndex < 0) {
             throw PageNationCustomException.INVALID_PAGE_NUMBER;
         }
 
@@ -61,7 +68,7 @@ public class VAlertFWithdrawFacade {
         return PaginationResponseDto.of(responseDtoList, totalItems);
     }
 
-    public VAlertFWDetailResponseDto getVAlertFWithdrawDetail(Long voteId, Long fwMemberId){
+    public VAlertFWDetailResponseDto getVAlertFWithdrawDetail(Long voteId, Long fwMemberId) {
         // vote
         VoteFWithdraw voteFWithdraw = vfWithdrawService.findVFWById(voteId);
 
@@ -80,6 +87,13 @@ public class VAlertFWithdrawFacade {
                 projectMember.getPosition(),
                 projectMember.getUser().getProfileImgSrc(),
                 projectMember.getUser().getNickname());
+    }
+
+    public void validateProjectMember(Long userId, Long projectId) {
+        ProjectMember projectMember = projectMemberService.findProjectMemberByPrIdAndUserId(projectId, userId);
+        if (projectMember == null) {
+            throw ProjectCustomException.ACCESS_NOT_ALLOWED;
+        }
     }
 
 }

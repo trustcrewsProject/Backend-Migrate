@@ -4,4 +4,6 @@ import com.example.demo.model.project.ProjectMemberAuth;
 
 public interface ProjectMemberRepositoryCustom {
     void updateProjectMemberAuth(Long projectMemberId, ProjectMemberAuth projectMemberAuth);
+
+    Long countOtherProjectManagers(Long projectId, Long projectMemberId);
 }

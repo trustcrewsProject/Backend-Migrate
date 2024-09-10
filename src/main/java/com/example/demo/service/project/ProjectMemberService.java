@@ -44,4 +44,6 @@ public interface ProjectMemberService {
     List<ProjectMember> getProjectMembersByUserAndStatus(User user, ProjectMemberStatus status);
 
     void updateProjectMemberAuth(Long projectMemberId, ProjectMemberAuth projectMemberAuth);
+
+    Long countOtherProjectManagers(Long projectId, Long projectMemberId);
 }

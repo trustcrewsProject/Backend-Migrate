@@ -125,4 +125,9 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
         projectMemberRepository.updateProjectMemberAuth(projectMemberId, projectMemberAuth);
     }
 
+    @Override
+    public Long countOtherProjectManagers(Long projectId, Long projectMemberId) {
+        return projectMemberRepository.countOtherProjectManagers(projectId, projectMemberId);
+    }
+
 }

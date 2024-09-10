@@ -5,7 +5,8 @@ import org.springframework.http.HttpStatus;
 
 @AllArgsConstructor
 public enum ProjectMemberErrorCode implements ErrorCode {
-    NOT_FOUND_PROJECT_MEMBER(HttpStatus.NOT_FOUND, "해당 프로젝트 멤버가 존재하지 않습니다.");
+    NOT_FOUND_PROJECT_MEMBER(HttpStatus.NOT_FOUND, "해당 프로젝트 멤버가 존재하지 않습니다."),
+    NO_OTHER_PROJECT_MANAGER(HttpStatus.INTERNAL_SERVER_ERROR, "NO_OTHER_PROJECT_MANAGER");
 
     private HttpStatus status;
     private String message;

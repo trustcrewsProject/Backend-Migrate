@@ -1,6 +1,7 @@
 package com.example.demo.service.project;
 
 import com.example.demo.constant.ProjectMemberStatus;
+import com.example.demo.constant.ProjectRole;
 import com.example.demo.constant.UserProjectHistoryStatus;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.position.response.PositionResponseDto;
@@ -61,6 +62,16 @@ public class ProjectMemberFacade {
      */
     @Transactional
     public void withdraw(WithdrawRequestDto withdrawRequestDto) {
+
+        // 매니저 탈퇴시 대체할 매니저 멤버 없으면 탈퇴 못하도록
+        if (withdrawRequestDto.getWMemberAuthId().equals(ProjectRole.MANAGER.getId())) {
+            long otherProjectManagersCount =projectMemberService.countOtherProjectManagers(
+                    withdrawRequestDto.getProjectId(),
+                    withdrawRequestDto.getWMemberId()
+            );
+            if(otherProjectManagersCount == 0) throw ProjectMemberCustomException.NO_OTHER_PROJECT_MANAGER;
+        }
+
         Project project = projectService.findById(withdrawRequestDto.getProjectId());
 
         // 프로젝트 멤버 상태 탈퇴로 변경

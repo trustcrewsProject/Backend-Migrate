@@ -7,6 +7,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class WithdrawRequestDto {
     private Long projectId;
-
     private Long wMemberId;
+    private Long wMemberAuthId;
 }

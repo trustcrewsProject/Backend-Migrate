@@ -1,7 +1,9 @@
 package com.example.demo.dto.projectmember.response;
 
+import com.example.demo.constant.ProjectMemberAuth;
 import com.example.demo.constant.ProjectMemberStatus;
 import com.example.demo.dto.position.response.PositionResponseDto;
+import com.example.demo.dto.projectmember.ProjectMemberAuthDto;
 import com.example.demo.dto.user.response.UserCrewDetailResponseDto;
 import com.example.demo.model.project.ProjectMember;
 import lombok.Builder;
@@ -14,7 +16,7 @@ public class ProjectMemberReadCrewDetailResponseDto {
     private Long projectId;
     private int projectCount;
     private UserCrewDetailResponseDto user;
-    private ProjectMemberAuthResponseDto projectMemberAuth;
+    private ProjectMemberAuthDto<ProjectMemberAuth> projectMemberAuth;
     private PositionResponseDto position;
     private ProjectMemberStatus status;
 
@@ -22,7 +24,7 @@ public class ProjectMemberReadCrewDetailResponseDto {
             ProjectMember projectMember,
             int projectCount,
             UserCrewDetailResponseDto user,
-            ProjectMemberAuthResponseDto projectMemberAuth,
+            ProjectMemberAuthDto<ProjectMemberAuth> projectMemberAuth,
             PositionResponseDto position) {
         return ProjectMemberReadCrewDetailResponseDto.builder()
                 .projectMemberId(projectMember.getId())

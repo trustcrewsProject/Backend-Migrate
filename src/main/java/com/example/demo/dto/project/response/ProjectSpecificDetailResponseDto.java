@@ -1,17 +1,16 @@
 package com.example.demo.dto.project.response;
 
 import com.example.demo.constant.ProjectStatus;
-import com.example.demo.dto.project.ProjectDetailAuthDto;
 import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
 import com.example.demo.global.util.LocalDateTimeFormatSerializer;
 import com.example.demo.model.project.Project;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Map;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -24,7 +23,6 @@ public class ProjectSpecificDetailResponseDto {
     private ProjectStatus status;
     private LocalDate startDate;
     private LocalDate endDate;
-    private ProjectDetailAuthDto authMap;
 
     @JsonSerialize(using = LocalDateTimeFormatSerializer.class)
     private LocalDateTime createDate;

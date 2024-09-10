@@ -1,7 +1,6 @@
 package com.example.demo.repository.project;
 
-import com.example.demo.constant.ProjectRole;
-import com.example.demo.model.project.ProjectMemberAuth;
+import com.example.demo.constant.ProjectMemberAuth;
 import com.example.demo.model.project.QProjectMember;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +30,7 @@ public class ProjectMemberRepositoryCustomImpl implements ProjectMemberRepositor
                 .where(
                         qProjectMember.project.id.eq(projectId),
                         qProjectMember.id.ne(projectMemberId),
-                        qProjectMember.projectMemberAuth.id.eq(ProjectRole.MANAGER.getId())
+                        qProjectMember.projectMemberAuth.eq(ProjectMemberAuth.PAUTH_1001)
                 )
                 .fetchOne();
     }

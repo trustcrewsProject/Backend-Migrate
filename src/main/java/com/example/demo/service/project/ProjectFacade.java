@@ -1,11 +1,11 @@
 package com.example.demo.service.project;
 
+import com.example.demo.constant.ProjectMemberAuth;
 import com.example.demo.constant.ProjectMemberStatus;
 import com.example.demo.constant.UserProjectHistoryStatus;
 import com.example.demo.dto.boardposition.BoardPositionDetailResponseDto;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.position.response.PositionResponseDto;
-import com.example.demo.dto.project.ProjectDetailAuthDto;
 import com.example.demo.dto.project.response.ProjectMeResponseDto;
 import com.example.demo.dto.project.response.ProjectSpecificDetailResponseDto;
 import com.example.demo.dto.project.setting.request.ProjectSettingBoardUpdRequestDto;
@@ -23,7 +23,6 @@ import com.example.demo.model.board.BoardPosition;
 import com.example.demo.model.position.Position;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
-import com.example.demo.model.project.ProjectMemberAuth;
 import com.example.demo.model.project.ProjectTechnology;
 import com.example.demo.model.technology_stack.TechnologyStack;
 import com.example.demo.model.user.User;
@@ -142,19 +141,12 @@ public class ProjectFacade {
      */
     @Transactional(readOnly = true)
     public ProjectSpecificDetailResponseDto getDetail(Long userId, Long projectId) {
-
         validateProjectMember(userId, projectId);
 
         Project project = projectService.findById(projectId);
         TrustGradeResponseDto trustGradeDto = TrustGradeResponseDto.of(project.getTrustGrade());
 
-        ProjectSpecificDetailResponseDto responseDto = ProjectSpecificDetailResponseDto.of(project, trustGradeDto);
-
-        ProjectDetailAuthDto userAuthMap =
-                projectMemberService.getUserAuthMap(projectId, userId);
-        responseDto.setAuthMap(userAuthMap);
-
-        return responseDto;
+        return ProjectSpecificDetailResponseDto.of(project, trustGradeDto);
     }
 
     /**
@@ -169,9 +161,6 @@ public class ProjectFacade {
     public void endProject(Long userId, Long projectId) {
         User currentUser = userService.findById(userId);
         Project project = projectService.findById(projectId);
-
-        // 프로젝트 매니저 검증
-        projectMemberService.verifiedProjectManager(project, currentUser);
 
         for (ProjectMember projectMember : project.getProjectMembers()) {
             // 프로젝트 멤버 프로젝트 완주 이력 추가
@@ -201,9 +190,9 @@ public class ProjectFacade {
 
     public void updateProjectSettingInfo(Long userId, ProjectSettingInfoUpdRequestDto requestDto) {
         // validation
-        validateProjectMemberAuth(userId, requestDto.getProjectId());
+        validateProjectConfigAuth(userId, requestDto.getProjectId());
 
-        if (requestDto.getAuthMap() == null || !requestDto.getAuthMap().isMilestoneAuth()) {
+        if (requestDto.getAuthMap() == null || !requestDto.getAuthMap().getConfigYn()) {
             throw ProjectCustomException.ACCESS_NOT_ALLOWED;
         }
 
@@ -229,7 +218,7 @@ public class ProjectFacade {
     }
 
     /**
-     * 프로젝트 게시글 정보 수정 (매니저 권한만 가능)
+     * 프로젝트 설정 - 게시글 정보 수정
      *
      * @param dto
      */
@@ -237,8 +226,8 @@ public class ProjectFacade {
         // 프로젝트 멤버인지 확인
         validateProjectMember(userId, dto.getProjectId());
 
-        // 매니저 권한인지 확인
-        if (dto.getAuthMap() == null || !dto.getAuthMap().isMilestoneAuth()) {
+        // 설정 수정 권한 확인
+        if (dto.getAuthMap() == null || !dto.getAuthMap().getConfigYn()) {
             throw ProjectCustomException.NO_PERMISSION_TO_TASK;
         }
 
@@ -290,7 +279,7 @@ public class ProjectFacade {
      * @return
      */
     public ProjectSettingInfoResponseDto getProjectSettingInfo(Long userId, Long projectId) {
-        validateProjectMemberAuth(userId, projectId);
+        validateProjectConfigAuth(userId, projectId);
 
         Project project = projectService.findById(projectId);
 
@@ -308,7 +297,7 @@ public class ProjectFacade {
     }
 
     public ProjectSettingBoardResponseDto getProjectSettingBoardInfo(Long userId, Long projectId) {
-        validateProjectMemberAuth(userId, projectId);
+        validateProjectConfigAuth(userId, projectId);
 
         Board board = boardService.findByProjectId(projectId);
 
@@ -325,16 +314,13 @@ public class ProjectFacade {
     }
 
 
-    public void validateProjectMemberAuth(Long userId, Long projectId) {
+    public void validateProjectConfigAuth(Long userId, Long projectId) {
         ProjectMember projectMember = projectMemberService.findProjectMemberByPrIdAndUserId(projectId, userId);
-        if (projectMember == null) {
-            throw ProjectCustomException.ACCESS_NOT_ALLOWED;
-        }
+        if (projectMember == null) throw ProjectCustomException.ACCESS_NOT_ALLOWED;
 
         ProjectMemberAuth projectMemberAuth = projectMember.getProjectMemberAuth();
-        if (!projectMemberAuth.isMilestoneChangeYN()) {
-            throw ProjectCustomException.ACCESS_NOT_ALLOWED;
-        }
+        if (!projectMemberAuth.getConfigYn()) throw ProjectCustomException.ACCESS_NOT_ALLOWED;
+
     }
 
     public void validateProjectMember(Long userId, Long projectId) {

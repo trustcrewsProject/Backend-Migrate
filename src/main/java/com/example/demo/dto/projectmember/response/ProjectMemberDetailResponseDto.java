@@ -1,7 +1,9 @@
 package com.example.demo.dto.projectmember.response;
 
+import com.example.demo.constant.ProjectMemberAuth;
 import com.example.demo.constant.ProjectMemberStatus;
 import com.example.demo.dto.position.response.PositionResponseDto;
+import com.example.demo.dto.projectmember.ProjectMemberAuthDto;
 import com.example.demo.dto.user.response.UserProjectDetailResponseDto;
 import com.example.demo.global.util.LocalDateTimeFormatSerializer;
 import com.example.demo.model.project.ProjectMember;
@@ -15,7 +17,7 @@ import lombok.Getter;
 public class ProjectMemberDetailResponseDto {
     private Long projectMemberId;
     private UserProjectDetailResponseDto user;
-    private ProjectMemberAuthResponseDto projectMemberAuth;
+    private ProjectMemberAuthDto<ProjectMemberAuth> projectMemberAuth;
     private PositionResponseDto position;
     private ProjectMemberStatus status;
 
@@ -28,7 +30,7 @@ public class ProjectMemberDetailResponseDto {
     public static ProjectMemberDetailResponseDto of(
             ProjectMember projectMember,
             UserProjectDetailResponseDto user,
-            ProjectMemberAuthResponseDto projectMemberAuth,
+            ProjectMemberAuthDto<ProjectMemberAuth> projectMemberAuth,
             PositionResponseDto position) {
         return ProjectMemberDetailResponseDto.builder()
                 .projectMemberId(projectMember.getId())

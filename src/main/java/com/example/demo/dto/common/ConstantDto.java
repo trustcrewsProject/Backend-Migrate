@@ -7,7 +7,6 @@ import lombok.Getter;
 @Getter
 @Builder
 public class ConstantDto<T extends Constant> {
-
     private final String code;
     private final String name;
 

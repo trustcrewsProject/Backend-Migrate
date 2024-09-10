@@ -1,6 +1,6 @@
 package com.example.demo.dto.milestone.request;
 
-import com.example.demo.dto.project.ProjectDetailAuthDto;
+import com.example.demo.constant.ProjectMemberAuth;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -9,5 +9,5 @@ import lombok.Getter;
 public class DeleteMilestoneReqDto {
     private Long milestoneId;
     private Long projectId;
-    private ProjectDetailAuthDto authMap;
+    private ProjectMemberAuth authMap;
 }

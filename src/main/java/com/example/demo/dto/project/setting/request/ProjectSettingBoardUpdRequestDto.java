@@ -1,6 +1,6 @@
 package com.example.demo.dto.project.setting.request;
 
-import com.example.demo.dto.project.ProjectDetailAuthDto;
+import com.example.demo.constant.ProjectMemberAuth;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -11,7 +11,7 @@ import java.util.List;
 public class ProjectSettingBoardUpdRequestDto {
     private Long projectId;
     private Long boardId;
-    private ProjectDetailAuthDto authMap;
+    private ProjectMemberAuth authMap;
     private String title;
     private String content;
     private boolean recruitmentStatus;

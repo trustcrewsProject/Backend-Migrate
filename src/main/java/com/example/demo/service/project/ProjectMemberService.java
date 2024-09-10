@@ -1,17 +1,16 @@
 package com.example.demo.service.project;
 
+import com.example.demo.constant.ProjectMemberAuth;
 import com.example.demo.constant.ProjectMemberStatus;
-import com.example.demo.dto.project.ProjectDetailAuthDto;
 import com.example.demo.model.position.Position;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
-import com.example.demo.model.project.ProjectMemberAuth;
 import com.example.demo.model.user.User;
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -35,11 +34,7 @@ public interface ProjectMemberService {
 
     Optional<ProjectMember> findProjectMemberByProjectAndUser(Project project, User user);
 
-    ProjectDetailAuthDto getUserAuthMap(Long projectId, Long userId);
-
     ProjectMember findProjectMemberByPrIdAndUserId(Long projectId, Long userId);
-
-    void verifiedProjectManager(Project project, User user);
 
     List<ProjectMember> getProjectMembersByUserAndStatus(User user, ProjectMemberStatus status);
 

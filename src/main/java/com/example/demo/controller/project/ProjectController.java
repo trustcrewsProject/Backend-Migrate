@@ -1,10 +1,6 @@
 package com.example.demo.controller.project;
 
 import com.example.demo.dto.common.ResponseDto;
-import com.example.demo.dto.project.request.ProjectConfirmRequestDto;
-import com.example.demo.dto.project.request.ProjectInfoUpdateRequestDto;
-import com.example.demo.dto.project.request.ProjectParticipateRequestDto;
-import com.example.demo.dto.project.response.ProjectMeResponseDto;
 import com.example.demo.dto.project.response.ProjectSpecificDetailResponseDto;
 import com.example.demo.security.custom.PrincipalDetails;
 import com.example.demo.service.project.ProjectFacade;
@@ -16,8 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.util.List;
 import java.util.Optional;
 
 @RestController

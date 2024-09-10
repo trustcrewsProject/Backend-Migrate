@@ -1,5 +1,6 @@
 package com.example.demo.service.board;
 
+import com.example.demo.constant.ProjectMemberAuth;
 import com.example.demo.constant.ProjectMemberStatus;
 import com.example.demo.dto.board.Response.BoardCreateResponseDto;
 import com.example.demo.dto.board_project.request.BoardProjectCreateRequestDto;
@@ -10,19 +11,16 @@ import com.example.demo.model.board.BoardPosition;
 import com.example.demo.model.position.Position;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
-import com.example.demo.model.project.ProjectMemberAuth;
 import com.example.demo.model.project.ProjectTechnology;
 import com.example.demo.model.technology_stack.TechnologyStack;
 import com.example.demo.model.trust_grade.TrustGrade;
 import com.example.demo.model.user.User;
 import com.example.demo.model.user.UserProjectHistory;
 import com.example.demo.service.position.PositionService;
-import com.example.demo.service.project.ProjectMemberAuthService;
 import com.example.demo.service.project.ProjectMemberService;
 import com.example.demo.service.project.ProjectServiceImpl;
 import com.example.demo.service.project.ProjectTechnologyService;
 import com.example.demo.service.technology_stack.TechnologyStackService;
-import com.example.demo.service.trust_grade.TrustGradeService;
 import com.example.demo.service.user.UserProjectHistoryService;
 import com.example.demo.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -38,13 +36,11 @@ import java.util.List;
 public class BoardFacade {
     private final BoardService boardService;
     private final UserService userService;
-    private final TrustGradeService trustGradeService;
     private final ProjectServiceImpl projectServiceImpl;
     private final TechnologyStackService technologyStackService;
     private final ProjectTechnologyService projectTechnologyService;
     private final PositionService positionService;
     private final BoardPositionService boardPositionService;
-    private final ProjectMemberAuthService projectMemberAuthService;
     private final ProjectMemberService projectMemberService;
     private final UserProjectHistoryService userProjectHistoryService;
 
@@ -87,15 +83,12 @@ public class BoardFacade {
         }
         savedBoard.setPositions(boardPositionList);
 
-        // 프로젝트 멤버 권한 일반인으로 설정
-        // 프로젝트 멤버 생성
-        ProjectMemberAuth projectMemberAuth =
-                projectMemberAuthService.findProjectMemberAuthById(1L);
+        // 프로젝트멤버 크루권한으로 초기화
         ProjectMember projectMember =
                 projectMemberService.toProjectMemberEntity(
                         project,
                         tempUser,
-                        projectMemberAuth,
+                        ProjectMemberAuth.PAUTH_2001,
                         ProjectMemberStatus.PARTICIPATING,
                         project.getUser().getPosition());
         projectMemberService.save(projectMember);

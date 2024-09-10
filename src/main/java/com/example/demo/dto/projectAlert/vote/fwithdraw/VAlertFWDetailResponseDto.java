@@ -1,10 +1,11 @@
 package com.example.demo.dto.projectAlert.vote.fwithdraw;
 
 import com.example.demo.constant.ProjectFWReason;
+import com.example.demo.constant.ProjectMemberAuth;
 import com.example.demo.constant.VoteStatus;
 import com.example.demo.dto.common.ConstantDto;
+import com.example.demo.dto.projectmember.ProjectMemberAuthDto;
 import com.example.demo.model.position.Position;
-import com.example.demo.model.project.ProjectMemberAuth;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -17,7 +18,7 @@ public class VAlertFWDetailResponseDto {
     private int disagrees;
     private int maxVoteCount;
     private ConstantDto<VoteStatus> voteStatus;
-    private ProjectMemberAuth fwMemberAuth;
+    private ProjectMemberAuthDto<ProjectMemberAuth> fwMemberAuth;
     private Position fwMemberPosition;
     private String fwUserProfile;
     private String fwUserNickname;
@@ -30,7 +31,7 @@ public class VAlertFWDetailResponseDto {
             int disagrees,
             int maxVoteCount,
             VoteStatus voteStatus,
-            ProjectMemberAuth fwMemberAuth,
+            ProjectMemberAuthDto<ProjectMemberAuth> fwMemberAuth,
             Position fwMemberPosition,
             String fwUserProfile,
             String fwUserNickname

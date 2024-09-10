@@ -1,12 +1,13 @@
 package com.example.demo.dto.milestone.request;
 
 import com.example.demo.constant.ProgressStatus;
-import com.example.demo.dto.project.ProjectDetailAuthDto;
+import com.example.demo.constant.ProjectMemberAuth;
 import com.example.demo.model.milestone.Milestone;
 import com.example.demo.model.project.Project;
-import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import java.time.LocalDate;
 
 @Getter
 @AllArgsConstructor
@@ -15,7 +16,7 @@ public class MilestoneCreateRequestDto {
     private String content;
     private LocalDate startDate;
     private LocalDate endDate;
-    private ProjectDetailAuthDto authMap;
+    private ProjectMemberAuth authMap;
 
     public Milestone toMileStoneEntity(Project project) {
         return Milestone.builder()

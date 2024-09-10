@@ -1,5 +1,6 @@
 package com.example.demo.model.project;
 
+import com.example.demo.constant.ProjectMemberAuth;
 import com.example.demo.constant.ProjectMemberStatus;
 import com.example.demo.global.common.BaseTimeEntity;
 import com.example.demo.model.position.Position;
@@ -30,8 +31,8 @@ public class ProjectMember extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne
-    @JoinColumn(name = "project_member_auth_id")
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "project_member_auth")
     private ProjectMemberAuth projectMemberAuth;
 
     @Enumerated(value = EnumType.STRING)

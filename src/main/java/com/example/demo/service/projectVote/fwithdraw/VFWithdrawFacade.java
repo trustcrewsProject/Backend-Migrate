@@ -1,7 +1,7 @@
 package com.example.demo.service.projectVote.fwithdraw;
 
 import com.example.demo.constant.ProjectMemberStatus;
-import com.example.demo.constant.ProjectRole;
+import com.example.demo.constant.ProjectMemberAuth;
 import com.example.demo.constant.UserProjectHistoryStatus;
 import com.example.demo.constant.VoteResult;
 import com.example.demo.dto.projectVote.fwithdraw.VoteFWithdrawRequestDto;
@@ -10,7 +10,6 @@ import com.example.demo.global.exception.customexception.ProjectCustomException;
 import com.example.demo.global.exception.customexception.VoteCustomException;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
-import com.example.demo.model.project.ProjectMemberAuth;
 import com.example.demo.model.projectVote.fwithdraw.VoteFWithdraw;
 import com.example.demo.model.projectVote.fwithdraw.history.VoteFWithdrawHistory;
 import com.example.demo.model.trust_grade.TrustGrade;
@@ -98,8 +97,10 @@ public class VFWithdrawFacade {
         validateProjectMember(userId, requestDto.getProjectId());
 
         if (
-                requestDto.getAuthMap() == null
-                        || (requestDto.getFw_member_auth_id().equals(ProjectRole.MANAGER.getId()) && !requestDto.getAuthMap().isConfigAuth())) {
+                requestDto.getAuthMap() == null ||
+                        (requestDto.getFw_member_auth().equals(ProjectMemberAuth.PAUTH_1001)
+                                && requestDto.getAuthMap().equals(ProjectMemberAuth.PAUTH_2001))
+        ) {
             throw ProjectCustomException.NO_PERMISSION_TO_TASK;
         }
 
@@ -116,10 +117,6 @@ public class VFWithdrawFacade {
             throw VoteCustomException.VOTE_DUPLICATE;
         }
 
-        // 투표 권한 검사
-        if (!requestDto.getAuthMap().isVoteAuth()) {
-            throw VoteCustomException.VOTE_NOT_ALLOWED;
-        }
     }
 
     public void validateProjectMember(Long userId, Long projectId) {

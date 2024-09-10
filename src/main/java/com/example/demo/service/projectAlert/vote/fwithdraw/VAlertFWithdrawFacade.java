@@ -1,9 +1,11 @@
 package com.example.demo.service.projectAlert.vote.fwithdraw;
 
+import com.example.demo.constant.ProjectMemberAuth;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.projectAlert.vote.fwithdraw.VAlertFWCreateRequestDto;
 import com.example.demo.dto.projectAlert.vote.fwithdraw.VAlertFWDetailResponseDto;
 import com.example.demo.dto.projectAlert.vote.fwithdraw.VAlertFWResponseDto;
+import com.example.demo.dto.projectmember.ProjectMemberAuthDto;
 import com.example.demo.global.exception.customexception.PageNationCustomException;
 import com.example.demo.global.exception.customexception.ProjectCustomException;
 import com.example.demo.model.project.ProjectMember;
@@ -32,8 +34,10 @@ public class VAlertFWithdrawFacade {
     public void createFWithdrawAlert(Long userId, VAlertFWCreateRequestDto requestDto) {
         validateProjectMember(userId, requestDto.getProject_id());
 
-        if (requestDto.getAuthMap() == null
-                || (requestDto.getFw_member_auth().isConfigYn() && !requestDto.getAuthMap().isConfigAuth())) {
+        if (requestDto.getAuthMap() == null ||
+                (requestDto.getFw_member_auth().equals(ProjectMemberAuth.PAUTH_1001)
+                        && requestDto.getAuthMap().equals(ProjectMemberAuth.PAUTH_2001))
+        ) {
             throw ProjectCustomException.NO_PERMISSION_TO_TASK;
         }
 
@@ -83,7 +87,7 @@ public class VAlertFWithdrawFacade {
                 voteFWithdraw.getDisagrees(),
                 voteFWithdraw.getMax_vote_count(),
                 voteFWithdraw.getVoteStatus(),
-                projectMember.getProjectMemberAuth(),
+                ProjectMemberAuthDto.of(projectMember.getProjectMemberAuth()),
                 projectMember.getPosition(),
                 projectMember.getUser().getProfileImgSrc(),
                 projectMember.getUser().getNickname());

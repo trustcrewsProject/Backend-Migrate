@@ -1,8 +1,7 @@
 package com.example.demo.dto.projectVote.fwithdraw;
 
+import com.example.demo.constant.ProjectMemberAuth;
 import com.example.demo.constant.VoteOptionDA;
-import com.example.demo.dto.project.ProjectDetailAuthDto;
-import com.example.demo.model.project.ProjectMemberAuth;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -12,8 +11,8 @@ public class VoteFWithdrawRequestDto {
     private Long projectId;
     private Long voteId;
     private Long fw_member_id;
-    private Long fw_member_auth_id;
-    private ProjectDetailAuthDto authMap;
+    private ProjectMemberAuth fw_member_auth;
+    private ProjectMemberAuth authMap;
     private VoteOptionDA answer;
 
 }

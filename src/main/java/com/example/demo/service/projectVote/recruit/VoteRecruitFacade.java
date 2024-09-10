@@ -1,22 +1,17 @@
 package com.example.demo.service.projectVote.recruit;
 
-import com.example.demo.constant.ProjectApplyStatus;
-import com.example.demo.constant.ProjectMemberStatus;
-import com.example.demo.constant.UserProjectHistoryStatus;
-import com.example.demo.constant.VoteResult;
+import com.example.demo.constant.*;
 import com.example.demo.dto.projectVote.recruit.ProjectVoteRecruitRequestDto;
 import com.example.demo.global.exception.customexception.VoteCustomException;
 import com.example.demo.model.position.Position;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.project.ProjectMember;
-import com.example.demo.model.project.ProjectMemberAuth;
 import com.example.demo.model.projectApply.ProjectApply;
 import com.example.demo.model.projectVote.recruit.VoteRecruit;
 import com.example.demo.model.projectVote.recruit.history.VoteRecruitHistory;
 import com.example.demo.model.user.User;
 import com.example.demo.model.user.UserProjectHistory;
 import com.example.demo.repository.projectApply.ProjectApplyRepository;
-import com.example.demo.service.project.ProjectMemberAuthService;
 import com.example.demo.service.project.ProjectMemberService;
 import com.example.demo.service.projectAlert.crew.AlertCrewService;
 import com.example.demo.service.projectApply.ProjectApplyService;
@@ -33,7 +28,6 @@ public class VoteRecruitFacade {
     private final VoteRecruitService voteRecruitService;
     private final VoteRecruitHistoryService voteRecruitHistoryService;
     private final ProjectMemberService projectMemberService;
-    private final ProjectMemberAuthService projectMemberAuthService;
     private final ProjectApplyService projectApplyService;
     private final ProjectApplyRepository projectApplyRepository;
     private final AlertCrewService alertCrewService;
@@ -66,13 +60,12 @@ public class VoteRecruitFacade {
                 User projectApplyUser = projectApply.getUser();
                 Position projectApplyPosition = projectApply.getPosition();
                 Project project = projectApply.getProject();
-                ProjectMemberAuth projectMemberAuth = projectMemberAuthService.findProjectMemberAuthById(3L);
 
-                ProjectMember projectMember = // 프로젝트 멤버 추가
+                ProjectMember projectMember = // 프로젝트 멤버 추가(크루권한)
                         projectMemberService.toProjectMemberEntity(
                                 project,
                                 projectApplyUser,
-                                projectMemberAuth,
+                                ProjectMemberAuth.PAUTH_2001,
                                 ProjectMemberStatus.PARTICIPATING,
                                 projectApplyPosition
                         );
@@ -112,11 +105,6 @@ public class VoteRecruitFacade {
 
         if (voteRecruitHistory != null) {
             throw VoteCustomException.VOTE_DUPLICATE;
-        }
-
-        // 투표 권한 검사
-        if (!requestDto.getAuthMap().isVoteAuth()) {
-            throw VoteCustomException.VOTE_NOT_ALLOWED;
         }
     }
 }

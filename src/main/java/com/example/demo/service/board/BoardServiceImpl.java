@@ -2,27 +2,21 @@ package com.example.demo.service.board;
 
 import com.example.demo.constant.ProjectStatus;
 import com.example.demo.dto.board.Response.BoardDetailResponseDto;
-import com.example.demo.dto.board.Response.BoardTotalDetailResponseDto;
 import com.example.demo.dto.boardposition.BoardPositionDetailResponseDto;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.position.response.PositionResponseDto;
-import com.example.demo.dto.project.response.ProjectDetailResponseDto;
-import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
-import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
 import com.example.demo.dto.user.response.UserBoardDetailResponseDto;
-import com.example.demo.dto.user.response.UserProjectResponseDto;
 import com.example.demo.global.exception.customexception.BoardCustomException;
 import com.example.demo.model.board.Board;
 import com.example.demo.model.board.BoardPosition;
-import com.example.demo.model.project.ProjectTechnology;
-import com.example.demo.model.technology_stack.TechnologyStack;
 import com.example.demo.repository.board.BoardRepository;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -57,13 +51,16 @@ public class BoardServiceImpl implements BoardService {
      * @param boardId
      * @return
      */
-    public BoardTotalDetailResponseDto getDetail(Long boardId) {
+    public BoardDetailResponseDto getDetail(Long boardId) {
         Board board = findById(boardId);
 
-        // boardDetailResponseDto 생성
-        UserBoardDetailResponseDto userBoardDetailResponseDto =
-                UserBoardDetailResponseDto.of(board.getUser());
+        // boardPageView 증가
+        board.updatePageView();
 
+        // * ============= 게시글 상세 정보 ============= *
+        UserBoardDetailResponseDto userBoardDetailResponseDto = UserBoardDetailResponseDto.of(board.getUser());
+
+        // 게시글 상세 - 모집 포지션
         List<BoardPositionDetailResponseDto> boardPositionDetailResponseDtos = new ArrayList<>();
         for (BoardPosition boardPosition : board.getPositions()) {
             PositionResponseDto positionResponseDto =
@@ -76,33 +73,7 @@ public class BoardServiceImpl implements BoardService {
                 BoardDetailResponseDto.of(
                         board, userBoardDetailResponseDto, boardPositionDetailResponseDtos);
 
-        // ProjectDetailResponseDto 부분
-        TrustGradeResponseDto trustGradeDto =
-                TrustGradeResponseDto.of(board.getProject().getTrustGrade());
-        UserProjectResponseDto userProjectResponseDto =
-                UserProjectResponseDto.of(board.getProject());
-
-        // 기술 스택 부분
-        List<TechnologyStackInfoResponseDto> technologyStackInfoResponseDtos = new ArrayList<>();
-        for (ProjectTechnology projectTechnology : board.getProject().getProjectTechnologies()) {
-            TechnologyStack technologyStack = projectTechnology.getTechnologyStack();
-
-            TechnologyStackInfoResponseDto technologyStackInfoResponseDto =
-                    TechnologyStackInfoResponseDto.of(
-                            technologyStack.getId(), technologyStack.getName());
-            technologyStackInfoResponseDtos.add(technologyStackInfoResponseDto);
-        }
-        ProjectDetailResponseDto projectDetailResponseDto =
-                ProjectDetailResponseDto.of(
-                        board.getProject(),
-                        trustGradeDto,
-                        userProjectResponseDto,
-                        technologyStackInfoResponseDtos);
-
-        // boardPageView 증가
-        board.updatePageView();
-
-        return BoardTotalDetailResponseDto.of(boardDetailResponseDto, projectDetailResponseDto);
+        return boardDetailResponseDto;
     }
 
     /**

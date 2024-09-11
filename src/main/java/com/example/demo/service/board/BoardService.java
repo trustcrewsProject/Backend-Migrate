@@ -1,11 +1,12 @@
 package com.example.demo.service.board;
 
-import com.example.demo.dto.board.Response.BoardTotalDetailResponseDto;
+import com.example.demo.dto.board.Response.BoardDetailResponseDto;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.model.board.Board;
-import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Transactional
 public interface BoardService {
@@ -17,7 +18,7 @@ public interface BoardService {
 
     Board save(Board board);
 
-    BoardTotalDetailResponseDto getDetail(Long boardId);
+    BoardDetailResponseDto getDetail(Long boardId);
 
     void delete(Board board);
 

@@ -6,8 +6,6 @@ import com.example.demo.constant.UserProjectHistoryStatus;
 import com.example.demo.dto.boardposition.BoardPositionDetailResponseDto;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.position.response.PositionResponseDto;
-import com.example.demo.dto.project.response.ProjectMeResponseDto;
-import com.example.demo.dto.project.response.ProjectSpecificDetailResponseDto;
 import com.example.demo.dto.project.setting.request.ProjectSettingBoardUpdRequestDto;
 import com.example.demo.dto.project.setting.request.ProjectSettingInfoUpdRequestDto;
 import com.example.demo.dto.project.setting.response.ProjectSettingBoardResponseDto;
@@ -62,6 +60,13 @@ public class ProjectFacade {
     private final ProjectTechnologyService projectTechnologyService;
 
 
+    /**
+     * 현재 사용자의 참여중인 프로젝트 조회
+     * @param userId
+     * @param pageIndex
+     * @param itemCount
+     * @return
+     */
     @Transactional(readOnly = true)
     public PaginationResponseDto getMyParticipatingProjects(Long userId, int pageIndex, int itemCount) {
         if (pageIndex < 0) {
@@ -74,7 +79,9 @@ public class ProjectFacade {
 
         User currentUser = userService.findById(userId);
 
-        List<ProjectMember> projects = projectMemberService.getProjectMembersByUserAndStatus(currentUser, ProjectMemberStatus.PARTICIPATING);
+        List<ProjectMember> projects =
+                projectMemberService.getProjectMembersByUserAndStatus(currentUser, ProjectMemberStatus.PARTICIPATING);
+
         long totalPages = projects.size();
 
         List<Project> sortedProjects = projects
@@ -87,67 +94,14 @@ public class ProjectFacade {
         int endIndex = Math.min(startIndex + itemCount, sortedProjects.size());
         List<Project> slicedProjects = new ArrayList<>(sortedProjects.subList(startIndex, endIndex));
 
-        List<ProjectMeResponseDto> content = new ArrayList<>();
+        List<ProjectSettingInfoResponseDto> content = new ArrayList<>();
         for (Project project : slicedProjects) {
-            List<MyProjectMemberResponseDto> myProjectMembers = project.getProjectMembers().stream()
-                    .filter(projectMember -> projectMember.getStatus().equals(ProjectMemberStatus.PARTICIPATING))
-                    .map(projectMember -> MyProjectMemberResponseDto.of(projectMember, UserMyProjectResponseDto.of(projectMember.getUser())))
-                    .collect(Collectors.toList());
-
-            content.add(ProjectMeResponseDto.of(project, TrustGradeResponseDto.of(project.getTrustGrade()), myProjectMembers));
+            content.add(getProjectSettingInfoResponseDto(project));
         }
-
 
         return PaginationResponseDto.of(content, totalPages);
     }
 
-    /**
-     * 내 프로젝트 목록 조회
-     *
-     * @return
-     */
-    @Transactional(readOnly = true)
-    public List<ProjectMeResponseDto> getMyProjects(Long userId) {
-        User user = userService.findById(userId);
-
-        List<Project> projects = projectService.findProjectsByUser(user);
-        List<ProjectMeResponseDto> result = new ArrayList<>();
-
-        for (Project project : projects) {
-            TrustGradeResponseDto trustGradeDto = TrustGradeResponseDto.of(project.getTrustGrade());
-
-            List<MyProjectMemberResponseDto> myProjectMemberResponseDtos = new ArrayList<>();
-            for (ProjectMember projectMember : project.getProjectMembers()) {
-                UserMyProjectResponseDto userMyProjectResponseDto =
-                        UserMyProjectResponseDto.of(projectMember.getUser());
-                MyProjectMemberResponseDto myProjectMemberResponseDto =
-                        MyProjectMemberResponseDto.of(projectMember, userMyProjectResponseDto);
-                myProjectMemberResponseDtos.add(myProjectMemberResponseDto);
-            }
-
-            ProjectMeResponseDto projectMeResponseDto =
-                    ProjectMeResponseDto.of(project, trustGradeDto, myProjectMemberResponseDtos);
-            result.add(projectMeResponseDto);
-        }
-
-        return result;
-    }
-
-    /**
-     * 프로젝트 상세 목록
-     *
-     * @param projectId
-     * @return
-     */
-    @Transactional(readOnly = true)
-    public ProjectSpecificDetailResponseDto getDetail(Long userId, Long projectId) {
-        validateProjectMember(userId, projectId);
-
-        Project project = projectService.findById(projectId);
-        TrustGradeResponseDto trustGradeDto = TrustGradeResponseDto.of(project.getTrustGrade());
-
-        return ProjectSpecificDetailResponseDto.of(project, trustGradeDto);
-    }
 
     /**
      * 프로젝트 종료
@@ -273,16 +227,15 @@ public class ProjectFacade {
 
     /**
      * 프로젝트 세팅 - 프로젝트 정보 조회(이름,주제,시작/종료날짜,모집상태,기술스택)
-     *
-     * @param userId
      * @param projectId
      * @return
      */
-    public ProjectSettingInfoResponseDto getProjectSettingInfo(Long userId, Long projectId) {
-        validateProjectConfigAuth(userId, projectId);
+    public ProjectSettingInfoResponseDto getProjectSettingInfo(Long projectId) {
+        return getProjectSettingInfoResponseDto(projectId);
+    }
 
+    public ProjectSettingInfoResponseDto getProjectSettingInfoResponseDto(Long projectId) {
         Project project = projectService.findById(projectId);
-
         List<TechnologyStackInfoResponseDto> technologyStackInfoResponseDtos = new ArrayList<>();
         for (ProjectTechnology projectTechnology : project.getProjectTechnologies()) {
             TechnologyStack technologyStack = projectTechnology.getTechnologyStack();
@@ -296,6 +249,26 @@ public class ProjectFacade {
         return ProjectSettingInfoResponseDto.of(project, technologyStackInfoResponseDtos);
     }
 
+    public ProjectSettingInfoResponseDto getProjectSettingInfoResponseDto(Project project) {
+        List<TechnologyStackInfoResponseDto> technologyStackInfoResponseDtos = new ArrayList<>();
+        for (ProjectTechnology projectTechnology : project.getProjectTechnologies()) {
+            TechnologyStack technologyStack = projectTechnology.getTechnologyStack();
+
+            TechnologyStackInfoResponseDto technologyStackInfoResponseDto =
+                    TechnologyStackInfoResponseDto.of(
+                            technologyStack.getId(), technologyStack.getName());
+            technologyStackInfoResponseDtos.add(technologyStackInfoResponseDto);
+        }
+
+        return ProjectSettingInfoResponseDto.of(project, technologyStackInfoResponseDtos);
+    }
+
+    /**
+     * 프로젝트 세팅 - 게시글 정보 조회
+     * @param userId
+     * @param projectId
+     * @return
+     */
     public ProjectSettingBoardResponseDto getProjectSettingBoardInfo(Long userId, Long projectId) {
         validateProjectConfigAuth(userId, projectId);
 

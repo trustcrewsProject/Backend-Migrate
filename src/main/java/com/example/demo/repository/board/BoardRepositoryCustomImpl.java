@@ -5,7 +5,7 @@ import com.example.demo.dto.board.Response.BoardSearchResponseDto;
 import com.example.demo.dto.boardposition.BoardPositionDetailResponseDto;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.position.response.PositionResponseDto;
-import com.example.demo.dto.project.response.ProjectSearchResponseDto;
+import com.example.demo.dto.project.setting.response.ProjectSettingInfoResponseDto;
 import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
 import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
 import com.example.demo.dto.user.response.UserSearchResponseDto;
@@ -27,11 +27,12 @@ import com.example.demo.repository.position.PositionRepository;
 import com.example.demo.repository.technology_stack.TechnologyStackRepository;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
@@ -71,6 +72,7 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
         List<BoardSearchResponseDto> boardSearchResponseDtos = new ArrayList<>();
 
         for (Board boardEntity : boards) {
+            // 게시글 정보 - 모집포지션
             List<BoardPositionDetailResponseDto> boardPositions = new ArrayList<>();
             for (BoardPosition boardPosition : boardEntity.getPositions()) {
                 BoardPositionDetailResponseDto boardPositionResponse =
@@ -80,10 +82,10 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
                 boardPositions.add(boardPositionResponse);
             }
 
-            Project project = boardEntity.getProject();
-            TrustGradeResponseDto projectTrustGradeResponseDto =
-                    TrustGradeResponseDto.of(project.getTrustGrade());
 
+            // 게시글 정보 - 프로젝트 정보
+            Project project = boardEntity.getProject();
+            // 프로젝트 정보 - 기술스택
             List<TechnologyStackInfoResponseDto> technologyStacks = new ArrayList<>();
             for (ProjectTechnology projectTechnology : project.getProjectTechnologies()) {
                 TechnologyStack technologyStack = projectTechnology.getTechnologyStack();
@@ -93,23 +95,19 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
                 technologyStacks.add(technologyStackInfoResponseDto);
             }
 
-            ProjectSearchResponseDto projectSearchResponseDto =
-                    ProjectSearchResponseDto.of(
-                            project, projectTrustGradeResponseDto, technologyStacks);
+            ProjectSettingInfoResponseDto projectDto = ProjectSettingInfoResponseDto.of(project, technologyStacks);
 
+            // 게시글 정보 - 게시글 작성자 정보
             User user = boardEntity.getUser();
 
-            // 임시수정
-            TrustGradeResponseDto userTrustGradeResponseDto =
-                    TrustGradeResponseDto.of(user.getTrustScore().getTrustGrade());
-            UserSearchResponseDto userSearchResponseDto =
-                    UserSearchResponseDto.of(user, userTrustGradeResponseDto);
+            TrustGradeResponseDto userTrustGradeResponseDto = TrustGradeResponseDto.of(user.getTrustScore().getTrustGrade());
+            UserSearchResponseDto userSearchResponseDto = UserSearchResponseDto.of(user, userTrustGradeResponseDto);
 
             boardSearchResponseDtos.add(
                     BoardSearchResponseDto.of(
                             boardEntity,
                             boardPositions,
-                            projectSearchResponseDto,
+                            projectDto,
                             userSearchResponseDto));
         }
 
@@ -186,7 +184,7 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
     }
 
     private BooleanExpression eqBoardStatus(Boolean recruitmentStatus) {
-        if(recruitmentStatus == null) {
+        if (recruitmentStatus == null) {
             return null;
         }
 
@@ -194,7 +192,7 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
     }
 
     private BooleanExpression neBoardProjectStatus(ProjectStatus projectStatus) {
-        if(projectStatus == null) {
+        if (projectStatus == null) {
             return null;
         }
 

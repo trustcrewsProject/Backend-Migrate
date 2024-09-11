@@ -1,31 +1,28 @@
 package com.example.demo.dto.board.Response;
 
 import com.example.demo.dto.boardposition.BoardPositionDetailResponseDto;
-import com.example.demo.dto.project.response.ProjectSearchResponseDto;
+import com.example.demo.dto.project.setting.response.ProjectSettingInfoResponseDto;
 import com.example.demo.dto.user.response.UserSearchResponseDto;
 import com.example.demo.global.util.LocalDateTimeFormatSerializer;
 import com.example.demo.model.board.Board;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.querydsl.core.annotations.QueryProjection;
-import java.time.LocalDateTime;
-import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Builder
 public class BoardSearchResponseDto {
     private Long boardId;
-    private String boardTitle;
-    private String boardContent;
+    private String title;
     private List<BoardPositionDetailResponseDto> boardPositions;
-    private ProjectSearchResponseDto project;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private ProjectSettingInfoResponseDto project;
     private int boardPageView;
     private boolean recruitmentStatus;
     private UserSearchResponseDto user;
-    private String boardContact;
 
     @JsonSerialize(using = LocalDateTimeFormatSerializer.class)
     private LocalDateTime createDate;
@@ -36,29 +33,21 @@ public class BoardSearchResponseDto {
     @QueryProjection
     public BoardSearchResponseDto(
             Long boardId,
-            String boardTitle,
-            String boardContent,
+            String title,
             List<BoardPositionDetailResponseDto> boardPositions,
-            ProjectSearchResponseDto project,
-            LocalDateTime startDate,
-            LocalDateTime endDate,
+            ProjectSettingInfoResponseDto projectDto,
             int boardPageView,
             boolean recruitmentStatus,
             UserSearchResponseDto user,
-            String boardContact,
             LocalDateTime createDate,
             LocalDateTime updateDate) {
         this.boardId = boardId;
-        this.boardTitle = boardTitle;
-        this.boardContent = boardContent;
+        this.title = title;
         this.boardPositions = boardPositions;
-        this.project = project;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.project = projectDto;
         this.boardPageView = boardPageView;
         this.recruitmentStatus = recruitmentStatus;
         this.user = user;
-        this.boardContact = boardContact;
         this.createDate = createDate;
         this.updateDate = updateDate;
     }
@@ -66,18 +55,16 @@ public class BoardSearchResponseDto {
     public static BoardSearchResponseDto of(
             Board board,
             List<BoardPositionDetailResponseDto> boardPositions,
-            ProjectSearchResponseDto boardProjectSearchResponseDto,
+            ProjectSettingInfoResponseDto projectDto,
             UserSearchResponseDto userSearchResponseDto) {
         return BoardSearchResponseDto.builder()
                 .boardId(board.getId())
-                .boardTitle(board.getTitle())
-                .boardContent(board.getContent())
+                .title(board.getTitle())
                 .boardPositions(boardPositions)
-                .project(boardProjectSearchResponseDto)
+                .project(projectDto)
                 .boardPageView(board.getPageView())
                 .recruitmentStatus(board.isRecruitmentStatus())
                 .user(userSearchResponseDto)
-                .boardContent(board.getContent())
                 .createDate(board.getCreateDate())
                 .updateDate(board.getUpdateDate())
                 .build();

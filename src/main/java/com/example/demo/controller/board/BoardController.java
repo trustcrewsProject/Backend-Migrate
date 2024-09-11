@@ -1,6 +1,6 @@
 package com.example.demo.controller.board;
 
-import com.example.demo.dto.board.Response.BoardTotalDetailResponseDto;
+import com.example.demo.dto.board.Response.BoardDetailResponseDto;
 import com.example.demo.dto.board_project.request.BoardProjectCreateRequestDto;
 import com.example.demo.dto.board_project.response.BoardProjectCreateResponseDto;
 import com.example.demo.dto.common.PaginationResponseDto;
@@ -41,7 +41,7 @@ public class BoardController {
 
     @GetMapping("/{boardId}/public")
     public ResponseEntity<ResponseDto<?>> getDetail(@PathVariable("boardId") Long boardId) {
-        BoardTotalDetailResponseDto result = boardService.getDetail(boardId);
+        BoardDetailResponseDto result = boardService.getDetail(boardId);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 

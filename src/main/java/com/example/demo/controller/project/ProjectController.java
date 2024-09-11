@@ -1,7 +1,7 @@
 package com.example.demo.controller.project;
 
 import com.example.demo.dto.common.ResponseDto;
-import com.example.demo.dto.project.response.ProjectSpecificDetailResponseDto;
+import com.example.demo.dto.project.setting.response.ProjectSettingInfoResponseDto;
 import com.example.demo.security.custom.PrincipalDetails;
 import com.example.demo.service.project.ProjectFacade;
 import com.example.demo.service.project.ProjectMemberService;
@@ -28,14 +28,21 @@ public class ProjectController {
             @AuthenticationPrincipal PrincipalDetails user,
             @RequestParam("pageIndex") Optional<Integer> pageIndex,
             @RequestParam("itemCount") Optional<Integer> itemCount) {
-        return new ResponseEntity<>(ResponseDto.success("success", projectFacade.getMyParticipatingProjects(user.getId(), pageIndex.orElse(0), itemCount.orElse(6))), HttpStatus.OK);
+        return new ResponseEntity<>(
+                ResponseDto.success
+                        ("success",
+                                projectFacade.getMyParticipatingProjects(
+                                        user.getId(),
+                                        pageIndex.orElse(0),
+                                        itemCount.orElse(6))
+                        ),
+                HttpStatus.OK
+        );
     }
 
-    @GetMapping("/{projectId}/{userId}")
-    public ResponseEntity<ResponseDto<?>> getDetail(
-            @PathVariable("projectId") Long projectId,
-            @PathVariable("userId") Long userId) {
-        ProjectSpecificDetailResponseDto result = projectFacade.getDetail(userId, projectId);
+    @GetMapping("/{projectId}")
+    public ResponseEntity<ResponseDto<?>> getDetail(@PathVariable("projectId") Long projectId) {
+        ProjectSettingInfoResponseDto result = projectFacade.getProjectSettingInfo(projectId);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 
@@ -45,6 +52,19 @@ public class ProjectController {
             @AuthenticationPrincipal PrincipalDetails user) {
         projectFacade.endProject(user.getId(), projectId);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
+    }
+
+    @GetMapping("{projectId}/currentUserAuth")
+    public ResponseEntity<ResponseDto<?>> updateProjectMemberAuth(
+            @AuthenticationPrincipal PrincipalDetails user,
+            @PathVariable("projectId") Long projectId
+    ) {
+        return new ResponseEntity<>(
+                ResponseDto.success(
+                        "success",
+                        projectFacade.getCurrentUserProjectMemberAuth(user.getId(), projectId)),
+                HttpStatus.OK
+        );
     }
 
 }

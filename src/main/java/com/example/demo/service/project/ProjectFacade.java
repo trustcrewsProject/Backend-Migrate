@@ -10,10 +10,11 @@ import com.example.demo.dto.project.setting.request.ProjectSettingBoardUpdReques
 import com.example.demo.dto.project.setting.request.ProjectSettingInfoUpdRequestDto;
 import com.example.demo.dto.project.setting.response.ProjectSettingBoardResponseDto;
 import com.example.demo.dto.project.setting.response.ProjectSettingInfoResponseDto;
-import com.example.demo.dto.projectmember.response.MyProjectMemberResponseDto;
+import com.example.demo.dto.projectmember.ProjectMemberAuthDto;
 import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
 import com.example.demo.global.exception.customexception.PageNationCustomException;
 import com.example.demo.global.exception.customexception.ProjectCustomException;
+import com.example.demo.global.exception.customexception.ProjectMemberCustomException;
 import com.example.demo.model.board.Board;
 import com.example.demo.model.board.BoardPosition;
 import com.example.demo.model.position.Position;
@@ -284,6 +285,20 @@ public class ProjectFacade {
         }
 
         return ProjectSettingBoardResponseDto.of(board, boardPositionDetailResponseDtos);
+    }
+
+    /**
+     * 현재 사용자의 프로젝트 멤버 권한 조회
+     * @param userId
+     * @param projectId
+     * @return
+     */
+    public ProjectMemberAuthDto<ProjectMemberAuth> getCurrentUserProjectMemberAuth(Long userId, Long projectId) {
+        ProjectMember projectMember = projectMemberService.findProjectMemberByPrIdAndUserId(projectId, userId);
+        if (projectMember == null) {
+            throw ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER;
+        }
+        return ProjectMemberAuthDto.of(projectMember.getProjectMemberAuth());
     }
 
 

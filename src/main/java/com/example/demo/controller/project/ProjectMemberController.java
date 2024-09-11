@@ -52,7 +52,15 @@ public class ProjectMemberController {
             @PathVariable("projectMemberId") Long projectMemberId,
             @RequestParam("pageIndex") Optional<Integer> pageIndex,
             @RequestParam("itemCount") Optional<Integer> itemCount) {
-        return new ResponseEntity<>(ResponseDto.success("success", projectMemberFacade.getCrewWorksWithTrustScoreHistory(projectMemberId, pageIndex.orElse(0), itemCount.orElse(5))), HttpStatus.OK);
+        return new ResponseEntity<>(
+                ResponseDto.success(
+                        "success",
+                        projectMemberFacade.getCrewWorksWithTrustScoreHistory(
+                                projectMemberId,
+                                pageIndex.orElse(0),
+                                itemCount.orElse(5))),
+                HttpStatus.OK);
     }
+
 
 }

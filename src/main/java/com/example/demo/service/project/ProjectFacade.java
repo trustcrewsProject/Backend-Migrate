@@ -12,8 +12,6 @@ import com.example.demo.dto.project.setting.response.ProjectSettingBoardResponse
 import com.example.demo.dto.project.setting.response.ProjectSettingInfoResponseDto;
 import com.example.demo.dto.projectmember.response.MyProjectMemberResponseDto;
 import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
-import com.example.demo.dto.trust_grade.response.TrustGradeResponseDto;
-import com.example.demo.dto.user.response.UserMyProjectResponseDto;
 import com.example.demo.global.exception.customexception.PageNationCustomException;
 import com.example.demo.global.exception.customexception.ProjectCustomException;
 import com.example.demo.model.board.Board;
@@ -142,6 +140,11 @@ public class ProjectFacade {
         project.endProject();
     }
 
+    /**
+     * 프로젝트 설정 - 프로젝트 정보 수정
+     * @param userId
+     * @param requestDto
+     */
     public void updateProjectSettingInfo(Long userId, ProjectSettingInfoUpdRequestDto requestDto) {
         // validation
         validateProjectConfigAuth(userId, requestDto.getProjectId());
@@ -205,9 +208,6 @@ public class ProjectFacade {
         String dtoPostionIdStr = dto.getPositionIds().stream()
                 .map(Object::toString)
                 .collect(Collectors.joining(","));
-
-        System.out.println("positionIdStr: " + positionIdStr);
-        System.out.println("dtoPostionIdStr: " + dtoPostionIdStr);
 
         if (!positionIdStr.equals(dtoPostionIdStr)) {
             boardPositionService.deleteBoardPositionsByBoardId(dto.getBoardId());

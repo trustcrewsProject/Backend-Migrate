@@ -20,17 +20,15 @@ public class ProjectSettingInfoController {
     /**
      * 프로젝트 세팅 - 프로젝트 정보 조회
      *
-     * @param user
      * @param projectId
      * @return
      */
     @GetMapping("/{projectId}")
     public ResponseEntity<ResponseDto<?>> getProjectSettinginfo(
-            @AuthenticationPrincipal PrincipalDetails user,
             @PathVariable("projectId") Long projectId
     ) {
         return new ResponseEntity<>(ResponseDto.success("success",
-                projectFacade.getProjectSettingInfo(user.getId(), projectId)), HttpStatus.OK);
+                projectFacade.getProjectSettingInfo(projectId)), HttpStatus.OK);
     }
 
     /**

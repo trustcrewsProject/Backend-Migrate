@@ -83,7 +83,7 @@ public class MileStoneFacade {
     }
 
     public void validateMilestoneAuth(ProjectMemberAuth authDto) {
-        if (authDto == null || !authDto.getMilestoneChangeYN()) {
+        if (authDto == null || !authDto.isMilestoneChangeYN()) {
             throw ProjectCustomException.NO_PERMISSION_TO_TASK;
         }
     }

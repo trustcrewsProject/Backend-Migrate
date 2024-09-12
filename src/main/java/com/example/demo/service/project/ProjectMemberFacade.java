@@ -217,7 +217,7 @@ public class ProjectMemberFacade {
         validateProjectMember(userId, dto.getProjectId());
 
         // 수정 권한(프로젝트 설정권한)확인
-        if (dto.getAuthMap() == null || !dto.getAuthMap().getConfigYn()) {
+        if (dto.getAuthMap() == null || !dto.getAuthMap().isConfigYn()) {
             throw ProjectCustomException.NO_PERMISSION_TO_TASK;
         }
 

@@ -150,7 +150,7 @@ public class ProjectFacade {
         // validation
         validateProjectConfigAuth(userId, requestDto.getProjectId());
 
-        if (requestDto.getAuthMap() == null || !requestDto.getAuthMap().getConfigYn()) {
+        if (requestDto.getAuthMap() == null || !requestDto.getAuthMap().isConfigYn()) {
             throw ProjectCustomException.ACCESS_NOT_ALLOWED;
         }
 
@@ -185,7 +185,7 @@ public class ProjectFacade {
         validateProjectMember(userId, dto.getProjectId());
 
         // 설정 수정 권한 확인
-        if (dto.getAuthMap() == null || !dto.getAuthMap().getConfigYn()) {
+        if (dto.getAuthMap() == null || !dto.getAuthMap().isConfigYn()) {
             throw ProjectCustomException.NO_PERMISSION_TO_TASK;
         }
 
@@ -307,7 +307,7 @@ public class ProjectFacade {
         if (projectMember == null) throw ProjectCustomException.ACCESS_NOT_ALLOWED;
 
         ProjectMemberAuth projectMemberAuth = projectMember.getProjectMemberAuth();
-        if (!projectMemberAuth.getConfigYn()) throw ProjectCustomException.ACCESS_NOT_ALLOWED;
+        if (!projectMemberAuth.isConfigYn()) throw ProjectCustomException.ACCESS_NOT_ALLOWED;
 
     }
 

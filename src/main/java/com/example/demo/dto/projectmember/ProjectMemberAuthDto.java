@@ -15,9 +15,9 @@ public class ProjectMemberAuthDto<T extends ProjectMemberAuthInterface> {
     public ProjectMemberAuthDto(T CONST) {
         this.code = CONST.getCode();
         this.name = CONST.getName();
-        this.workChangeYN = CONST.getWorkChangeYN();
-        this.milestoneChangeYN = CONST.getMilestoneChangeYN();
-        this.configYn = CONST.getConfigYn();
+        this.workChangeYN = CONST.isWorkChangeYN();
+        this.milestoneChangeYN = CONST.isMilestoneChangeYN();
+        this.configYn = CONST.isConfigYn();
     }
 
     public ProjectMemberAuthDto(String code, String name, boolean workChangeYN, boolean milestoneChangeYN, boolean configYn) {
@@ -32,9 +32,9 @@ public class ProjectMemberAuthDto<T extends ProjectMemberAuthInterface> {
         return ProjectMemberAuthDto.<T>builder()
                 .code(CONST.getCode())
                 .name(CONST.getName())
-                .workChangeYN(CONST.getWorkChangeYN())
-                .milestoneChangeYN(CONST.getMilestoneChangeYN())
-                .configYn(CONST.getConfigYn())
+                .workChangeYN(CONST.isWorkChangeYN())
+                .milestoneChangeYN(CONST.isMilestoneChangeYN())
+                .configYn(CONST.isConfigYn())
                 .build();
     }
 }

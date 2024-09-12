@@ -30,17 +30,17 @@ public enum ProjectMemberAuth implements ProjectMemberAuthInterface {
     }
 
     @Override
-    public boolean getMilestoneChangeYN() {
+    public boolean isMilestoneChangeYN() {
         return this.milestoneChangeYN;
     }
 
     @Override
-    public boolean getWorkChangeYN() {
+    public boolean isWorkChangeYN() {
         return this.workChangeYN;
     }
 
     @Override
-    public boolean getConfigYn() {
+    public boolean isConfigYn() {
         return this.configYn;
     }
 }

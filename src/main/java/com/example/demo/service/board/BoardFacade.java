@@ -88,7 +88,7 @@ public class BoardFacade {
                 projectMemberService.toProjectMemberEntity(
                         project,
                         tempUser,
-                        ProjectMemberAuth.PAUTH_2001,
+                        ProjectMemberAuth.PAUTH_1001,
                         ProjectMemberStatus.PARTICIPATING,
                         project.getUser().getPosition());
         projectMemberService.save(projectMember);

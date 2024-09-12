@@ -60,7 +60,6 @@ public class Milestone extends BaseTimeEntity {
         this.content = dto.getContent();
         this.startDate = dto.getStartDate();
         this.endDate = dto.getEndDate();
-        this.progressStatus = ProgressStatus.getProgressStatusByCode(dto.getProgressStatusCode());
     }
 
     public void updateContent(MilestoneUpdateContentRequestDto dto) {

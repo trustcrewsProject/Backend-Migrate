@@ -10,5 +10,4 @@ public class MileStoneUpdateRequestDto {
     private String content;
     private LocalDate startDate;
     private LocalDate endDate;
-    private String progressStatusCode;
 }

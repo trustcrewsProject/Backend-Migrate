@@ -83,8 +83,8 @@ public class MileStoneFacade {
     }
 
     public void validateMilestoneAuth(ProjectMemberAuth authDto) {
-        if (!authDto.getMilestoneChangeYN()) {
-            throw MilestoneCustomException.NOT_ALLOWED_CD;
+        if (authDto == null || !authDto.getMilestoneChangeYN()) {
+            throw ProjectCustomException.NO_PERMISSION_TO_TASK;
         }
     }
 

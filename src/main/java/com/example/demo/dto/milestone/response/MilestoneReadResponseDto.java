@@ -11,7 +11,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class MilestoneReadResponseDto {
-    private Long mileStoneId;
+    private Long milestoneId;
     private Long projectId;
     private String content;
     private LocalDate startDate;
@@ -26,7 +26,7 @@ public class MilestoneReadResponseDto {
 
     public static MilestoneReadResponseDto of(Milestone milestone) {
         return MilestoneReadResponseDto.builder()
-                .mileStoneId(milestone.getId())
+                .milestoneId(milestone.getId())
                 .projectId(milestone.getProject().getId())
                 .content(milestone.getContent())
                 .startDate(milestone.getStartDate())

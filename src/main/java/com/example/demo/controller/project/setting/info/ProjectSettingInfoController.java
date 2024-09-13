@@ -23,7 +23,7 @@ public class ProjectSettingInfoController {
      * @param projectId
      * @return
      */
-    @GetMapping("/{projectId}")
+    @GetMapping("/{projectId}/public")
     public ResponseEntity<ResponseDto<?>> getProjectSettinginfo(
             @PathVariable("projectId") Long projectId
     ) {

@@ -36,7 +36,7 @@ public class WorkServiceImpl implements WorkService {
     public Work findLastCompleteWork(Project project, User user) {
         return workRepository
                 .findFirstByProjectAndAssignedUserIdAndProgressStatusOrderByIdDesc(
-                        project, user, ProgressStatus.COMPLETION)
+                        project, user, ProgressStatus.PS003)
                 .orElse(null);
     }
 

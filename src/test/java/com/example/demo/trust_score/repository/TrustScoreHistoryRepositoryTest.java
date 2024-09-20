@@ -82,13 +82,13 @@ public class TrustScoreHistoryRepositoryTest {
         Work testWork1 =
                 Work.builder()
                         .content("테스트 업무입니다")
-                        .progressStatus(ProgressStatus.COMPLETION)
+                        .progressStatus(ProgressStatus.PS003)
                         .build();
 
         Work testWork2 =
                 Work.builder()
                         .content("테스트 업무입니다")
-                        .progressStatus(ProgressStatus.BEFORE_START)
+                        .progressStatus(ProgressStatus.PS001)
                         .build();
         Work saveWork1 = workRepository.save(testWork1);
         Work saveWork2 = workRepository.save(testWork2);

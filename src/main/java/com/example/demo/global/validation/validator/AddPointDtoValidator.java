@@ -86,7 +86,7 @@ public class AddPointDtoValidator implements ConstraintValidator<ValidAddPointDt
                         .findById(workId)
                         .orElseThrow(() -> WorkCustomException.NOT_FOUND_WORK);
 
-        if (work.getProgressStatus().equals(ProgressStatus.COMPLETION)) {
+        if (work.getProgressStatus().getCode().equals(ProgressStatus.PS003.getCode())) {
             log.info("데이터 무결성 위배. 업무 완료여부 불일치. workId : {}", workId);
             return false;
         }
@@ -262,7 +262,7 @@ public class AddPointDtoValidator implements ConstraintValidator<ValidAddPointDt
                         .findById(workId)
                         .orElseThrow(() -> WorkCustomException.NOT_FOUND_WORK);
 
-        if (work.getProgressStatus().equals(ProgressStatus.BEFORE_START) || work.getProgressStatus().equals(ProgressStatus.ON_GOING)) {
+        if (work.getProgressStatus().equals(ProgressStatus.PS001) || work.getProgressStatus().equals(ProgressStatus.PS002)) {
             log.info("데이터 무결성 위배. 업무 미완성. workId : {}", workId);
             return false;
         }

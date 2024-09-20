@@ -38,11 +38,11 @@ public class WorkCreateRequestDto {
     public Work toWorkEntity(
             Project project, Milestone milestone, User user, ProjectMember projectMember) {
 
-        ProgressStatus progressStatus = ProgressStatus.ON_GOING;
+        ProgressStatus progressStatus = ProgressStatus.PS002;
 
         LocalDate today = LocalDate.now();
         if(this.getStartDate().isAfter(today)){
-            progressStatus = ProgressStatus.BEFORE_START;
+            progressStatus = ProgressStatus.PS001;
         }
 
         return Work.builder()

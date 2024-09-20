@@ -1,6 +1,7 @@
 package com.example.demo.dto.work.response;
 
 import com.example.demo.constant.ProgressStatus;
+import com.example.demo.dto.common.ConstantDto;
 import com.example.demo.model.project.ProjectMember;
 import com.example.demo.model.user.User;
 import com.example.demo.model.work.Work;
@@ -12,7 +13,6 @@ import lombok.Getter;
 
 @Getter
 @Builder
-@AllArgsConstructor
 public class WorkReadResponseDto {
     private Long workId;
     private Long projectId;
@@ -23,10 +23,10 @@ public class WorkReadResponseDto {
     private String contentDetail;
     private LocalDate startDate;
     private LocalDate endDate;
-    private String progressStatus;
+    private ConstantDto<ProgressStatus> progressStatus;
 
     public WorkReadResponseDto(Long workId, Long projectId, Long milestoneId, WorkAssignedUserInfoResponseDto assignedUser, String lastModifiedMemberNickname,
-                               String content, String contentDetail, LocalDate startDate, LocalDate endDate, ProgressStatus progressStatus) {
+                               String content, String contentDetail, LocalDate startDate, LocalDate endDate, ConstantDto<ProgressStatus> progressStatus) {
         this.workId = workId;
         this.projectId = projectId;
         this.milestoneId = milestoneId;
@@ -36,7 +36,7 @@ public class WorkReadResponseDto {
         this.contentDetail = contentDetail;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.progressStatus = progressStatus.getDescription();
+        this.progressStatus = progressStatus;
     }
 
     public static WorkReadResponseDto of(Work work, ProjectMember projectMember, User assignedUser) {
@@ -50,7 +50,7 @@ public class WorkReadResponseDto {
                 .contentDetail(work.getContentDetail())
                 .startDate(work.getStartDate())
                 .endDate(work.getEndDate())
-                .progressStatus(work.getProgressStatus().getDescription())
+                .progressStatus(new ConstantDto<>(work.getProgressStatus()))
                 .build();
     }
 }

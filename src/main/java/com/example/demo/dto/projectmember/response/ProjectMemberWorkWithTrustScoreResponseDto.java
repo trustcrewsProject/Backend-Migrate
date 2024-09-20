@@ -1,13 +1,10 @@
 package com.example.demo.dto.projectmember.response;
 
-import com.example.demo.constant.ProgressStatus;
 import com.example.demo.global.util.LocalDateTimeFormatSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Getter
 public class ProjectMemberWorkWithTrustScoreResponseDto {

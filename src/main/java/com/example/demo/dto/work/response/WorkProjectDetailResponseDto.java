@@ -1,5 +1,7 @@
 package com.example.demo.dto.work.response;
 
+import com.example.demo.constant.ProgressStatus;
+import com.example.demo.dto.common.ConstantDto;
 import com.example.demo.dto.user.response.UserProjectDetailResponseDto;
 import com.example.demo.global.util.LocalDateTimeFormatSerializer;
 import com.example.demo.model.project.ProjectMember;
@@ -18,7 +20,7 @@ public class WorkProjectDetailResponseDto {
     private ProjectMember lastModifiedMember;
     private String workContent;
     private String workContentDetail;
-    private String progressStatus;
+    private ConstantDto<ProgressStatus> progressStatus;
     private LocalDate startDate;
     private LocalDate endDate;
 
@@ -36,7 +38,7 @@ public class WorkProjectDetailResponseDto {
                 .lastModifiedMember(work.getLastModifiedMember())
                 .workContent(work.getContent())
                 .workContentDetail(work.getContentDetail())
-                .progressStatus(work.getProgressStatus().getDescription())
+                .progressStatus(new ConstantDto(work.getProgressStatus()))
                 .startDate(work.getStartDate())
                 .endDate(work.getEndDate())
                 .createDate(work.getCreateDate())

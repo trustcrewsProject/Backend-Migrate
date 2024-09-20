@@ -1,5 +1,6 @@
 package com.example.demo.repository.trust_score;
 
+import com.example.demo.dto.common.ConstantDto;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.projectmember.response.ProjectMemberWorkWithTrustScoreResponseDto;
 import com.example.demo.dto.trust_score.ProjectUserHistoryDto;
@@ -7,7 +8,9 @@ import com.example.demo.model.trust_score.QTrustScoreHistory;
 import com.example.demo.model.work.QWork;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+
 import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +22,7 @@ import org.springframework.stereotype.Repository;
 public class TrustScoreHistoryRepositoryImpl implements TrustScoreHistoryRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
     private final QTrustScoreHistory qTrustScoreHistory = QTrustScoreHistory.trustScoreHistory;
+
     /**
      * 특정 프로젝트에 참여하는 사용자의, 해당 프로젝트 관련 발생한 신뢰점수이력을 DTO 형태로 반환
      *
@@ -36,7 +40,10 @@ public class TrustScoreHistoryRepositoryImpl implements TrustScoreHistoryReposit
                                 ProjectUserHistoryDto.class,
                                 trustScoreHistory.workId,
                                 trustScoreHistory.score,
-                                work.progressStatus,
+                                Projections.constructor(
+                                        ConstantDto.class,
+                                        work.progressStatus
+                                ),
                                 work.content,
                                 trustScoreHistory.createDate))
                 .from(trustScoreHistory)

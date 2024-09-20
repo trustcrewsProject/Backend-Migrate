@@ -1,6 +1,8 @@
 package com.example.demo.dto.work.request;
 
 import java.time.LocalDate;
+
+import com.example.demo.constant.ProgressStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -11,6 +13,6 @@ public class WorkUpdateRequestDto {
     private String contentDetail;
     private LocalDate startDate;
     private LocalDate endDate;
-    private String progressStatusCode;
+    private ProgressStatus progressStatus;
     private Long assignedUserId;
 }

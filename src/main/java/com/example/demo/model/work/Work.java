@@ -1,7 +1,6 @@
 package com.example.demo.model.work;
 
 import com.example.demo.constant.ProgressStatus;
-import com.example.demo.dto.work.request.WorkUpdateCompleteStatusRequestDto;
 import com.example.demo.dto.work.request.WorkUpdateContentRequestDto;
 import com.example.demo.dto.work.request.WorkUpdateRequestDto;
 import com.example.demo.global.common.BaseTimeEntity;
@@ -96,19 +95,19 @@ public class Work extends BaseTimeEntity {
         LocalDate today = LocalDate.now();
 
         if ( // ‘시작전’인데 && 날짜 바꾸는 경우 && 바꾸는 날짜가 오늘 이전이거나 같은 경우(:진행중)
-                currentProgressStatusCode.equals(ProgressStatus.BEFORE_START.getCode())
+                currentProgressStatusCode.equals(ProgressStatus.PS001.getCode())
                         && !this.getStartDate().isEqual(changeStartDate)
                         && (changeStartDate.isBefore(today) || changeStartDate.isEqual(today))
         ) {
-            this.progressStatus = ProgressStatus.ON_GOING;
+            this.progressStatus = ProgressStatus.PS002;
         } else if ( // ‘진행중’ 인데 && 상태 안 바꾸는 경우 && 바꾸는 날짜가 오늘 이후인 경우 (: 시작전)
-                currentProgressStatusCode.equals(ProgressStatus.ON_GOING.getCode())
-                        && this.progressStatus.getCode().equals(dto.getProgressStatusCode())
+                currentProgressStatusCode.equals(ProgressStatus.PS002.getCode())
+                        && this.progressStatus.getCode().equals(dto.getProgressStatus().getCode())
                         && changeStartDate.isAfter(today)
         ) {
-            this.progressStatus = ProgressStatus.BEFORE_START;
+            this.progressStatus = ProgressStatus.PS001;
         }else{
-            this.progressStatus = ProgressStatus.getProgressStatusByCode(dto.getProgressStatusCode());
+            this.progressStatus = ProgressStatus.getProgressStatusByCode(dto.getProgressStatus().getCode());
         }
         this.startDate = dto.getStartDate();
         this.endDate = dto.getEndDate();

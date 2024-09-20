@@ -1,5 +1,6 @@
 package com.example.demo.repository.work;
 
+import com.example.demo.dto.common.ConstantDto;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.projectmember.response.ProjectMemberWorkWithTrustScoreResponseDto;
 import com.example.demo.dto.work.response.WorkAssignedUserInfoResponseDto;
@@ -25,7 +26,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class WorkRepositoryImpl implements WorkRepositoryCustom{
+public class WorkRepositoryImpl implements WorkRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
     private final QProject qProject = QProject.project;
@@ -60,7 +61,10 @@ public class WorkRepositoryImpl implements WorkRepositoryCustom{
                                 qWork.contentDetail,
                                 qWork.startDate,
                                 qWork.endDate,
-                                qWork.progressStatus
+                                Projections.constructor(
+                                        ConstantDto.class,
+                                        qWork.progressStatus
+                                )
                         )
                 )
                 .from(qWork)
@@ -106,7 +110,7 @@ public class WorkRepositoryImpl implements WorkRepositoryCustom{
 
     // 프로젝트 ID 비교
     private BooleanExpression eqProjectId(Long projectId) {
-        if(projectId == null) {
+        if (projectId == null) {
             return null;
         }
 
@@ -115,7 +119,7 @@ public class WorkRepositoryImpl implements WorkRepositoryCustom{
 
     // 마일스톤 ID 비교
     private BooleanExpression eqMilestoneId(Long milestoneId) {
-        if(milestoneId == null) {
+        if (milestoneId == null) {
             return null;
         }
 
@@ -124,7 +128,7 @@ public class WorkRepositoryImpl implements WorkRepositoryCustom{
 
     // 할당자 ID 비교
     private BooleanExpression eqAssignedUserId(Long assignedUserId) {
-        if(assignedUserId == null) {
+        if (assignedUserId == null) {
             return null;
         }
 

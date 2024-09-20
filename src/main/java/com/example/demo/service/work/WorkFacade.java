@@ -101,8 +101,6 @@ public class WorkFacade {
 
     @Transactional(readOnly = true)
     public PaginationResponseDto getAllByMilestone(Long projectId, Long milestoneId, int pageIndex, int itemCount) {
-        Project project = projectService.findById(projectId);
-        Milestone milestone = milestoneService.findById(milestoneId);
 
         if(pageIndex < 0) {
             throw PageNationCustomException.INVALID_PAGE_NUMBER;
@@ -113,7 +111,7 @@ public class WorkFacade {
         }
 
         PaginationResponseDto workPaginationResponse = workService
-                .findWorksByProjectAndMilestone(project.getId(), milestone.getId(), PageRequest.of(pageIndex, itemCount));
+                .findWorksByProjectAndMilestone(projectId, milestoneId, PageRequest.of(pageIndex, itemCount));
 
         return workPaginationResponse;
     }
@@ -165,7 +163,7 @@ public class WorkFacade {
 
         // 업무상태 '완료'로 변경
         Work work = workService.findById(requestDto.getWorkId());
-        work.updateCompleteStatus(ProgressStatus.COMPLETION);
+        work.updateCompleteStatus(ProgressStatus.PS003);
     }
 
     @Transactional

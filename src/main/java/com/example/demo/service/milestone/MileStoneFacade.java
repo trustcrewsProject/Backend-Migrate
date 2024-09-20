@@ -2,9 +2,9 @@ package com.example.demo.service.milestone;
 
 import com.example.demo.constant.CreateLimitCnt;
 import com.example.demo.constant.ProjectMemberAuth;
-import com.example.demo.dto.milestone.MilestoneCreateResponseDto;
 import com.example.demo.dto.milestone.request.DeleteMilestoneReqDto;
 import com.example.demo.dto.milestone.request.MilestoneCreateRequestDto;
+import com.example.demo.dto.milestone.response.MilestoneCreateResponseDto;
 import com.example.demo.dto.milestone.response.MilestoneReadResponseDto;
 import com.example.demo.global.exception.customexception.MilestoneCustomException;
 import com.example.demo.global.exception.customexception.ProjectCustomException;

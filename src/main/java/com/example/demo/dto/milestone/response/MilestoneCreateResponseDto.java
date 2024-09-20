@@ -1,4 +1,4 @@
-package com.example.demo.dto.milestone;
+package com.example.demo.dto.milestone.response;
 
 import com.example.demo.global.util.LocalDateTimeFormatSerializer;
 import com.example.demo.model.milestone.Milestone;
@@ -16,7 +16,6 @@ public class MilestoneCreateResponseDto {
     private String content;
     private LocalDate startDate;
     private LocalDate endDate;
-    private String progressStatus;
 
     @JsonSerialize(using = LocalDateTimeFormatSerializer.class)
     private LocalDateTime createDate;
@@ -31,7 +30,6 @@ public class MilestoneCreateResponseDto {
                 .content(milestone.getContent())
                 .startDate(milestone.getStartDate())
                 .endDate(milestone.getEndDate())
-                .progressStatus(milestone.getProgressStatus().getDescription())
                 .createDate(milestone.getCreateDate())
                 .updateDate(milestone.getUpdateDate())
                 .build();

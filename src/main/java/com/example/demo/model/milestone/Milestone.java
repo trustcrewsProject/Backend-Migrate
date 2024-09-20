@@ -1,17 +1,17 @@
 package com.example.demo.model.milestone;
 
-import com.example.demo.constant.ProgressStatus;
 import com.example.demo.dto.milestone.request.MileStoneUpdateRequestDto;
 import com.example.demo.dto.milestone.request.MilestoneUpdateContentRequestDto;
 import com.example.demo.dto.milestone.request.MilestoneUpdateDateRequestDto;
 import com.example.demo.global.common.BaseTimeEntity;
 import com.example.demo.model.project.Project;
-import java.time.LocalDate;
-import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.time.LocalDate;
 
 // 프로젝트 마일스톤 엔티티
 @Entity
@@ -38,22 +38,17 @@ public class Milestone extends BaseTimeEntity {
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "progress_status")
-    private ProgressStatus progressStatus;
-
     @Builder
     public Milestone(
             Project project,
             String content,
             LocalDate startDate,
-            LocalDate endDate,
-            ProgressStatus progressStatus) {
+            LocalDate endDate
+       ) {
         this.project = project;
         this.content = content;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.progressStatus = progressStatus;
     }
 
     public void update(MileStoneUpdateRequestDto dto) {

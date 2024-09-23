@@ -1,13 +1,11 @@
 package com.example.demo.service.work;
 
-import com.example.demo.constant.CreateLimitCnt;
-import com.example.demo.constant.ProgressStatus;
-import com.example.demo.constant.ProjectMemberStatus;
-import com.example.demo.constant.TrustScoreTypeIdentifier;
+import com.example.demo.constant.*;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.trust_score.AddPointDto;
 import com.example.demo.dto.work.request.WorkCompleteRequestDto;
 import com.example.demo.dto.work.request.WorkCreateRequestDto;
+import com.example.demo.dto.work.request.WorkDeleteRequestDto;
 import com.example.demo.dto.work.request.WorkUpdateRequestDto;
 import com.example.demo.dto.work.response.WorkReadResponseDto;
 import com.example.demo.global.exception.customexception.PageNationCustomException;
@@ -47,10 +45,11 @@ public class WorkFacade {
     private final ProjectMemberService projectMemberService;
 
     public void create(
-            Long userId, WorkCreateRequestDto workCreateRequestDto) {
+            Long userId, WorkCreateRequestDto workCreateRequestDto
+    ) {
 
         int count = workService.countWorksByMilestoneId(workCreateRequestDto.getMilestoneId());
-        if(count >= CreateLimitCnt.TASK.getCount()){
+        if (count >= CreateLimitCnt.TASK.getCount()) {
             throw WorkCustomException.CREATE_EXCEEDED_WORK;
         }
 
@@ -60,7 +59,7 @@ public class WorkFacade {
         Optional<ProjectMember> projectMember =
                 projectMemberService.findProjectMemberByProjectAndUser(project, user);
 
-        if(projectMember.isEmpty()) throw ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER;
+        if (projectMember.isEmpty()) throw ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER;
 
         ProjectMember assignedProjectMember = projectMemberService.findById(workCreateRequestDto.getAssignedUserId());
 
@@ -74,7 +73,7 @@ public class WorkFacade {
         Work work = workService.findById(workId);
         User assignedUser = work.getAssignedUserId();
         Optional<ProjectMember> projectMember = projectMemberService.findProjectMemberByProjectAndUser(work.getProject(), assignedUser);
-        if(projectMember.isEmpty()) throw ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER;
+        if (projectMember.isEmpty()) throw ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER;
 
         return WorkReadResponseDto.of(work, projectMember.get(), assignedUser);
     }
@@ -90,7 +89,7 @@ public class WorkFacade {
         for (Work work : works) {
             User assignedUser = work.getAssignedUserId();
             Optional<ProjectMember> projectMember = projectMemberService.findProjectMemberByProjectAndUser(project, assignedUser);
-            if(projectMember.isEmpty()) throw ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER;
+            if (projectMember.isEmpty()) throw ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER;
 
             WorkReadResponseDto workReadResponseDto = WorkReadResponseDto.of(work, projectMember.get(), assignedUser);
             workReadResponseDtos.add(workReadResponseDto);
@@ -102,11 +101,11 @@ public class WorkFacade {
     @Transactional(readOnly = true)
     public PaginationResponseDto getAllByMilestone(Long projectId, Long milestoneId, int pageIndex, int itemCount) {
 
-        if(pageIndex < 0) {
+        if (pageIndex < 0) {
             throw PageNationCustomException.INVALID_PAGE_NUMBER;
         }
 
-        if(itemCount < 1 || itemCount > 6) {
+        if (itemCount < 1 || itemCount > 6) {
             throw PageNationCustomException.INVALID_PAGE_ITEM_COUNT;
         }
 
@@ -118,66 +117,79 @@ public class WorkFacade {
 
     /**
      * 업무 수정
-     *
-     * @param workId
      */
-    public void update(Long userId, Long workId, WorkUpdateRequestDto workUpdateRequestDto) {
-        Work work = workService.findById(workId);
-        User user = userService.findById(userId);
-        Optional<ProjectMember> projectMember =
-                projectMemberService.findProjectMemberByProjectAndUser(work.getProject(), user);
-        if(projectMember.isEmpty()) throw ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER;
+    public void update(Long currentUserId, WorkUpdateRequestDto workUpdateRequestDto) {
+        Work work = workService.findById(workUpdateRequestDto.getWorkId());
 
-        // 할당된 회원 정보
-        ProjectMember assignedUser = projectMemberService.findById(workUpdateRequestDto.getAssignedUserId());
+        // 사용자가 프로젝트 멤버인지 확인
+        validateProjectMember(currentUserId, work.getProject().getId());
 
-        work.update(workUpdateRequestDto, projectMember.get(), assignedUser.getUser());
+        // 사용자가 업무 담당 멤버 or 매니저 권한인지 확인
+        User currentAssignedUser = work.getAssignedUserId();
+        if (!currentUserId.equals(currentAssignedUser.getId())
+                && !workUpdateRequestDto.getAuthMap().getCode().equals(ProjectMemberAuth.PAUTH_1001.getCode())
+        ) {
+            throw WorkCustomException.NO_PERMISSION_TO_TASK;
+        }
+
+        ProjectMember updatedAssignedProjectMember =
+                projectMemberService.findById(workUpdateRequestDto.getAssignedUserId());
+
+        work.update(workUpdateRequestDto, updatedAssignedProjectMember.getUser());
     }
 
     /**
      * 업무 완료 (신뢰점수 부여 및 신뢰점수 내역 추가)
+     *
      * @param requestDto
      */
     public void workComplete(Long currentUserId, WorkCompleteRequestDto requestDto) {
-        ProjectMember projectMember = projectMemberService.findById(requestDto.getUserId());
-        User user = projectMember.getUser();
-        if(!currentUserId.equals(user.getId())){
+        Work work = workService.findById(requestDto.getWorkId());
+
+        // 사용자가 프로젝트 멤버인지 확인
+        validateProjectMember(currentUserId, work.getProject().getId());
+
+        // 사용자가 업무담당 멤버 or 매니저 권한인지 확인
+        User currentAssignedUser = work.getAssignedUserId();
+        if (!currentUserId.equals(currentAssignedUser.getId())
+                && !requestDto.getAuthMap().getCode().equals(ProjectMemberAuth.PAUTH_1001.getCode())
+        ) {
             throw WorkCustomException.NO_PERMISSION_TO_TASK;
         }
 
         // 신뢰점수 부여 DTO
         AddPointDto addPoint = AddPointDto.builder()
-                .content(requestDto.getContent())
-                .userId(user.getId())
-                .projectId(requestDto.getProjectId())
-                .milestoneId(requestDto.getMilestoneId())
-                .workId(requestDto.getWorkId())
+                .content(work.getContent())
+                .userId(currentAssignedUser.getId())
+                .projectId(work.getProject().getId())
+                .milestoneId(work.getMilestone().getId())
+                .workId(work.getId())
                 .scoreTypeId(TrustScoreTypeIdentifier.WORK_COMPLETE)
                 .build();
 
-        TrustScore trustScore = trustScoreService.findTrustScoreByUserId(user.getId());
+        TrustScore trustScore = trustScoreService.findTrustScoreByUserId(currentAssignedUser.getId());
         TrustGrade trustGrade = trustScore.getTrustGrade();
 
         // 신뢰점수 부여 및 신뢰점수 내역 추가
         trustScoreService.addPoint(trustGrade, addPoint);
 
         // 업무상태 '완료'로 변경
-        Work work = workService.findById(requestDto.getWorkId());
         work.updateCompleteStatus(ProgressStatus.PS003);
     }
 
     @Transactional
-    public void deleteWork(Long userId, Long workId) {
+    public void deleteWork(Long userId, WorkDeleteRequestDto requestDto) {
         User currentUser = userService.findById(userId);
-        Work work = workService.findById(workId);
+        Work work = workService.findById(requestDto.getWorkId());
         Project project = work.getProject();
 
         // 요청한 회원이 해당 프로젝트의 멤버인지 검증
         Optional<ProjectMember> projectMember = projectMemberService.findProjectMemberByProjectAndUser(project, currentUser);
-        if(projectMember.isEmpty()) throw ProjectMemberCustomException.NOT_FOUND_PROJECT_MEMBER;
+        if (projectMember.isEmpty()) throw WorkCustomException.NO_PERMISSION_TO_TASK;
 
-        if(!projectMember.get().getStatus().equals(ProjectMemberStatus.PARTICIPATING) ||
-                !project.getId().equals(projectMember.get().getProject().getId())) {
+        // 사용자가 프로젝트 담당 멤버 or 매니저 권한인지 확인
+        if (!userId.equals(work.getAssignedUserId().getId())
+                && !requestDto.getAuthMap().getCode().equals(ProjectMemberAuth.PAUTH_1001.getCode())) {
             throw WorkCustomException.NO_PERMISSION_TO_TASK;
         }
 
@@ -187,8 +199,10 @@ public class WorkFacade {
 
     public void validateProjectMember(Long userId, Long projectId) {
         ProjectMember projectMember = projectMemberService.findProjectMemberByPrIdAndUserId(projectId, userId);
-        if(projectMember == null){
+        if (projectMember == null) {
             throw ProjectCustomException.ACCESS_NOT_ALLOWED;
         }
     }
+
+
 }

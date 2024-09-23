@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class WorkCompleteRequestDto {
-    private Long workId;
+public class WorkDeleteRequestDto {
     private ProjectMemberAuth authMap;
+    private Long workId;
 }

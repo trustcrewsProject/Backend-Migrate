@@ -3,6 +3,7 @@ package com.example.demo.controller.work;
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.dto.work.request.WorkCompleteRequestDto;
 import com.example.demo.dto.work.request.WorkCreateRequestDto;
+import com.example.demo.dto.work.request.WorkDeleteRequestDto;
 import com.example.demo.dto.work.request.WorkUpdateRequestDto;
 import com.example.demo.dto.work.response.WorkReadResponseDto;
 import com.example.demo.security.custom.PrincipalDetails;
@@ -46,20 +47,21 @@ public class WorkController {
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 
-    @PatchMapping("/{workId}")
+    @PatchMapping("")
     public ResponseEntity<ResponseDto<?>> update(
             @AuthenticationPrincipal PrincipalDetails user,
-            @PathVariable("workId") Long workId,
-            @RequestBody WorkUpdateRequestDto workUpdateRequestDto) {
-        workFacade.update(user.getId(), workId, workUpdateRequestDto);
+            @RequestBody WorkUpdateRequestDto workUpdateRequestDto
+    ) {
+        workFacade.update(user.getId(), workUpdateRequestDto);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{workId}")
+    @DeleteMapping("")
     public ResponseEntity<ResponseDto<?>> delete(
             @AuthenticationPrincipal PrincipalDetails user,
-            @PathVariable("workId") Long workId) {
-        workFacade.deleteWork(user.getId(), workId);
+            @RequestBody WorkDeleteRequestDto workDeleteRequestDto
+    ) {
+        workFacade.deleteWork(user.getId(), workDeleteRequestDto);
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 

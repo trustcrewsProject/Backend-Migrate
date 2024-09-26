@@ -112,15 +112,19 @@ public class ProjectFacade {
      */
     @Transactional
     public void endProject(Long userId, Long projectId) {
-        User currentUser = userService.findById(userId);
-        Project project = projectService.findById(projectId);
+        // 프로젝트 멤버 확인
+        validateProjectMember(userId, projectId);
 
+        // 프로젝트 설정 권한 확인
+        validateProjectConfigAuth(userId, projectId);
+
+        Project project = projectService.findById(projectId);
         for (ProjectMember projectMember : project.getProjectMembers()) {
             // 프로젝트 멤버 프로젝트 완주 이력 추가
             UserProjectHistory projectFinishHistory = UserProjectHistory.builder()
                     .project(project)
                     .user(projectMember.getUser())
-                    .status(UserProjectHistoryStatus.FINISH)
+                    .status(UserProjectHistoryStatus.PHIST_STAT_003)
                     .build();
             userProjectHistoryService.save(projectFinishHistory);
         }

@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface UserProjectHistoryService {
 
-    UserProjectHistory toUserProjectHistoryEntity(User user, Project project);
+    UserProjectHistory toUserProjectHistoryEntity(User user, Project project, UserProjectHistoryStatus status);
 
     UserProjectHistory save(UserProjectHistory userProjectHistory);
 

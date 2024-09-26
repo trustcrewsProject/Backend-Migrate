@@ -75,7 +75,7 @@ public class VoteRecruitFacade {
                 UserProjectHistory userProjectHistory =UserProjectHistory.builder()
                         .project(project)
                         .user(projectApplyUser)
-                        .status(UserProjectHistoryStatus.PARTICIPATING)
+                        .status(UserProjectHistoryStatus.PHIST_STAT_002)
                         .build();
                 userProjectHistoryService.save(userProjectHistory);
 

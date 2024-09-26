@@ -2,6 +2,7 @@ package com.example.demo.service.board;
 
 import com.example.demo.constant.ProjectMemberAuth;
 import com.example.demo.constant.ProjectMemberStatus;
+import com.example.demo.constant.UserProjectHistoryStatus;
 import com.example.demo.dto.board.Response.BoardCreateResponseDto;
 import com.example.demo.dto.board_project.request.BoardProjectCreateRequestDto;
 import com.example.demo.dto.board_project.response.BoardProjectCreateResponseDto;
@@ -59,7 +60,7 @@ public class BoardFacade {
         Project project = dto.getProject().toProjectEntity(trustGrade, tempUser);
         Project savedProject = projectServiceImpl.save(project);
 
-        // 프로젝트 기술 생성
+        // project 생성 - 프로젝트 기술스택
         for (Long technolgoyId : dto.getProject().getTechnologyIds()) {
             TechnologyStack technologyStack = technologyStackService.findById(technolgoyId);
             ProjectTechnology projectTechnology =
@@ -72,7 +73,7 @@ public class BoardFacade {
         Board board = dto.getBoard().toBoardEntity(savedProject, tempUser);
         Board savedBoard = boardService.save(board);
 
-        // boardPosition 생성
+        // board 생성 - 모집 포지션
         List<BoardPosition> boardPositionList = new ArrayList<>();
         for (Long positionId : dto.getBoard().getPositionIds()) {
             Position position = positionService.findById(positionId);
@@ -95,7 +96,7 @@ public class BoardFacade {
 
         // 사용자 프로젝트 이력 생성
         UserProjectHistory userProjectHistory =
-                userProjectHistoryService.toUserProjectHistoryEntity(tempUser, savedProject);
+                userProjectHistoryService.toUserProjectHistoryEntity(tempUser, savedProject, UserProjectHistoryStatus.PHIST_STAT_001);
         userProjectHistoryService.save(userProjectHistory);
 
         // response값 생성

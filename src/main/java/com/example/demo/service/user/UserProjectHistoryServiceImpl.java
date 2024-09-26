@@ -20,14 +20,14 @@ public class UserProjectHistoryServiceImpl implements UserProjectHistoryService 
     private final UserProjectHistoryRepository userProjectHistoryRepository;
 
     @Override
-    public UserProjectHistory toUserProjectHistoryEntity(User user, Project project) {
+    public UserProjectHistory toUserProjectHistoryEntity(User user, Project project, UserProjectHistoryStatus status) {
         // 사용자 프로젝트 이력 생성
         return UserProjectHistory.builder()
                 .user(user)
                 .project(project)
                 .startDate(LocalDate.now())
                 .endDate(project.getEndDate())
-                .status(UserProjectHistoryStatus.PARTICIPATING)
+                .status(status)
                 .build();
     }
 

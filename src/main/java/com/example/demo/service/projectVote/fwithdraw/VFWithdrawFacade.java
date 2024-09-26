@@ -67,7 +67,7 @@ public class VFWithdrawFacade {
                 UserProjectHistory forcedWithdrawalHistory = UserProjectHistory.builder()
                         .project(project)
                         .user(fwMemberUserInfo)
-                        .status(UserProjectHistoryStatus.FORCED_WITHDRAWAL)
+                        .status(UserProjectHistoryStatus.PHIST_STAT_005)
                         .build();
                 userProjectHistoryService.save(forcedWithdrawalHistory);
 

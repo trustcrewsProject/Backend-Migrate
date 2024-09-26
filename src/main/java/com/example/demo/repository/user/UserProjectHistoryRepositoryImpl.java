@@ -1,20 +1,21 @@
 package com.example.demo.repository.user;
 
-import static com.example.demo.model.project.QProject.project;
-import static com.example.demo.model.user.QUser.user;
-import static com.example.demo.model.user.QUserProjectHistory.userProjectHistory;
-
 import com.example.demo.constant.UserProjectHistoryStatus;
+import com.example.demo.dto.common.ConstantDto;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.user.response.UserProjectHistoryInfoResponseDto;
-import com.example.demo.model.user.UserProjectHistory;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+import static com.example.demo.model.project.QProject.project;
+import static com.example.demo.model.user.QUser.user;
+import static com.example.demo.model.user.QUserProjectHistory.userProjectHistory;
 
 @Repository
 @RequiredArgsConstructor
@@ -33,7 +34,10 @@ public class UserProjectHistoryRepositoryImpl implements UserProjectHistoryRepos
                                         UserProjectHistoryInfoResponseDto.class,
                                         userProjectHistory.id,
                                         userProjectHistory.project.id,
-                                        userProjectHistory.status,
+                                        Projections.constructor(
+                                                ConstantDto.class,
+                                                userProjectHistory.status
+                                        ),
                                         userProjectHistory.project.name,
                                         userProjectHistory.updateDate))
                         .from(userProjectHistory)

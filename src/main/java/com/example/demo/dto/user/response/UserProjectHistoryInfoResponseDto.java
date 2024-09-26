@@ -1,6 +1,7 @@
 package com.example.demo.dto.user.response;
 
 import com.example.demo.constant.UserProjectHistoryStatus;
+import com.example.demo.dto.common.ConstantDto;
 import com.example.demo.global.util.LocalDateTimeFormatSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.time.LocalDateTime;
@@ -15,7 +16,7 @@ public class UserProjectHistoryInfoResponseDto {
 
     private Long projectId;
 
-    private UserProjectHistoryStatus status;
+    private ConstantDto<UserProjectHistoryStatus> status;
 
     private String projectName;
 

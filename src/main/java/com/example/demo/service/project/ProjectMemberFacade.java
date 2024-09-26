@@ -83,7 +83,7 @@ public class ProjectMemberFacade {
         UserProjectHistory userWithdrawalProjectHistory = UserProjectHistory.builder()
                 .project(project)
                 .user(wProjectMemberUserInfo)
-                .status(UserProjectHistoryStatus.WITHDRAWAL)
+                .status(UserProjectHistoryStatus.PHIST_STAT_004)
                 .build();
         userProjectHistoryService.save(userWithdrawalProjectHistory);
 

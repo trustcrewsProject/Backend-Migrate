@@ -27,6 +27,14 @@ public class BoardController {
     private final BoardService boardService;
     private final BoardFacade boardFacade;
 
+    /**
+     * 프로젝트 모집 게시글 조회
+     * @param positionId
+     * @param keyword
+     * @param technologyIds
+     * @param page
+     * @return
+     */
     @GetMapping("/search/public")
     public ResponseEntity<ResponseDto<?>> search(
             @RequestParam(value = "positionId", required = false) Long positionId,
@@ -45,6 +53,12 @@ public class BoardController {
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 
+    /**
+     * 프로젝트 & 프로젝트 모집 게시글 생성
+     * @param user
+     * @param requestDto
+     * @return
+     */
     @PostMapping("")
     public ResponseEntity<ResponseDto<?>> create(
             @AuthenticationPrincipal PrincipalDetails user,
@@ -53,6 +67,12 @@ public class BoardController {
         return new ResponseEntity<>(ResponseDto.success("프로젝트와 모집 게시글을 생성했습니다.", result), HttpStatus.OK);
     }
 
+    /**
+     * 프로젝트 모집 게시글 삭제
+     * @param user
+     * @param boardId
+     * @return
+     */
     @DeleteMapping("/{boardId}")
     public ResponseEntity<ResponseDto<?>> delete(
             @AuthenticationPrincipal PrincipalDetails user, @PathVariable("boardId") Long boardId) {

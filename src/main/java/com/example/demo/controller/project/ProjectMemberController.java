@@ -30,6 +30,11 @@ public class ProjectMemberController {
         return new ResponseEntity<>(ResponseDto.success("success"), HttpStatus.OK);
     }
 
+    /**
+     * 프로젝트 멤버 상세정보 조회 
+     * @param projectMemberId
+     * @return
+     */
     @GetMapping("/{projectMemberId}")
     public ResponseEntity<ResponseDto<?>> getDetail(
             @PathVariable("projectMemberId") Long projectMemberId) {

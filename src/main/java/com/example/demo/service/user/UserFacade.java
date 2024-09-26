@@ -430,7 +430,6 @@ public class UserFacade {
      */
     @Transactional(readOnly = true)
     public ResponseDto<?> getMyProjectHistoryList(PrincipalDetails user, int pageNumber) {
-        // 페이지 번호가 0번보다 작은 경우
         if (pageNumber < 0) {
             throw PageNationCustomException.INVALID_PAGE_NUMBER;
         }

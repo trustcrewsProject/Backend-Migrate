@@ -52,20 +52,6 @@ public class UserProjectHistoryRepositoryImpl implements UserProjectHistoryRepos
     }
 
     @Override
-    public List<UserProjectHistory> findAllUserParticipates(Long userId, Pageable pageable) {
-        List<UserProjectHistory> results = jpaQueryFactory
-                .selectFrom(userProjectHistory)
-                .where(userProjectHistory.user.id.eq(userId),
-                        userProjectHistory.status.eq(UserProjectHistoryStatus.PARTICIPATING))
-                .orderBy(userProjectHistory.startDate.asc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
-
-        return results;
-    }
-
-    @Override
     public Long countUserProjectHistory(Long userId, UserProjectHistoryStatus status) {
         return jpaQueryFactory
                 .select(userProjectHistory.count())

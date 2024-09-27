@@ -101,9 +101,25 @@ public class UserController {
     @GetMapping("/me/project-history")
     public ResponseEntity<ResponseDto<?>> myProjectHistoryList(
             @AuthenticationPrincipal PrincipalDetails user,
-            @RequestParam Optional<Integer> pageNumber) {
+            @RequestParam Optional<Integer> pageNumber
+    ) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(userFacade.getMyProjectHistoryList(user, pageNumber.orElse(0)));
+    }
+
+    /**
+     * 사용자 프로젝트 이력 조회
+     * @param userId
+     * @param pageNumber
+     * @return
+     */
+    @GetMapping("/project-history")
+    public ResponseEntity<ResponseDto<?>> userProjectHistoryList(
+            @RequestParam("userId") Long userId,
+            @RequestParam Optional<Integer> pageNumber
+    ){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(userFacade.getUserProjectHistoryList(userId, pageNumber.orElse(0)));
     }
 
     // 내 프로필 이미지 삭제

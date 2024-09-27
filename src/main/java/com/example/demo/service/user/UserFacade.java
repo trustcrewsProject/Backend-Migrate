@@ -441,6 +441,23 @@ public class UserFacade {
     }
 
     /**
+     * 사용자 프로젝트 이력 조회
+     * @param userId
+     * @param pageNumber
+     * @return
+     */
+    public ResponseDto<?> getUserProjectHistoryList(Long userId, int pageNumber) {
+        if (pageNumber < 0) {
+            throw PageNationCustomException.INVALID_PAGE_NUMBER;
+        }
+
+        PaginationResponseDto projectHistoryList =
+                userProjectHistoryService.getUserProjectHistoryList(userId, pageNumber);
+
+        return ResponseDto.success("프로젝트 이력 목록 조회가 완료되었습니다.", projectHistoryList);
+    }
+
+    /**
      * 내 프로필 이미지 삭제 (aws s3에 저장된 이미지 파일 삭제)
      *
      * @param userId

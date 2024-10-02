@@ -96,14 +96,6 @@ public class VFWithdrawFacade {
     public void validateVoter(Long userId, VoteFWithdrawRequestDto requestDto) {
         validateProjectMember(userId, requestDto.getProjectId());
 
-        if (
-                requestDto.getAuthMap() == null ||
-                        (requestDto.getFw_member_auth().equals(ProjectMemberAuth.PAUTH_1001)
-                                && requestDto.getAuthMap().equals(ProjectMemberAuth.PAUTH_2001))
-        ) {
-            throw ProjectCustomException.NO_PERMISSION_TO_TASK;
-        }
-
         // 투표대상자의 투표금지
         Long fwMemberId = requestDto.getFw_member_id();
         ProjectMember fwMember = projectMemberService.findById(fwMemberId);

@@ -10,8 +10,7 @@ public enum UserErrorCode implements ErrorCode {
     IN_USE_NICKNAME(HttpStatus.CONFLICT, "IN_USE_NICKNAME"),
     NO_PROFILE_IMG(HttpStatus.NOT_FOUND, "NO_PROFILE_IMG"),
     AUTHENTICATION_FAIL(HttpStatus.UNAUTHORIZED, "AUTHENTICATION_FAIL"),
-    ACCESS_DENIED(HttpStatus.FORBIDDEN, "ACCESS_DENIED"),
-    IN_USE_OAUTH_USER(HttpStatus.CONFLICT, "IN_USE_OAUTH_USER");
+    ACCESS_DENIED(HttpStatus.FORBIDDEN, "ACCESS_DENIED");
 
     private HttpStatus status;
     private String message;

@@ -1,24 +1,19 @@
 package com.example.demo.service.user;
 
-import com.example.demo.constant.OAuthProvider;
 import com.example.demo.constant.Role;
-import com.example.demo.constant.TrustScoreTypeIdentifier;
 import com.example.demo.constant.UserStatus;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.common.ResponseDto;
-import com.example.demo.dto.oauth2.request.OAuth2UserCreateRequestDto;
 import com.example.demo.dto.position.response.PositionInfoResponseDto;
 import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
 import com.example.demo.dto.trust_grade.response.TrustGradeInfoResponseDto;
-import com.example.demo.dto.trust_score.AddPointDto;
-import com.example.demo.dto.trust_score.request.TrustScoreUpdateRequestDto;
 import com.example.demo.dto.user.request.UserCreateRequestDto;
 import com.example.demo.dto.user.request.UserUpdateRequestDto;
-import com.example.demo.dto.user.response.*;
-import com.example.demo.global.exception.customexception.CommonCustomException;
+import com.example.demo.dto.user.response.UserMyInfoResponseDto;
+import com.example.demo.dto.user.response.UserSimpleInfoResponseDto;
+import com.example.demo.dto.user.response.UserUpdateResponseDto;
 import com.example.demo.global.exception.customexception.PageNationCustomException;
 import com.example.demo.global.exception.customexception.UserCustomException;
-import com.example.demo.global.log.PMLog;
 import com.example.demo.model.position.Position;
 import com.example.demo.model.technology_stack.TechnologyStack;
 import com.example.demo.model.trust_grade.TrustGrade;
@@ -30,20 +25,17 @@ import com.example.demo.service.file.AwsS3FileService;
 import com.example.demo.service.position.PositionService;
 import com.example.demo.service.technology_stack.TechnologyStackService;
 import com.example.demo.service.trust_score.TrustScoreService;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import static com.example.demo.global.log.PMLog.USER_PROFILE;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -103,56 +95,6 @@ public class UserFacade {
         }
 
         return ResponseDto.success("회원등록이 완료되었습니다.", saveUser.getId());
-    }
-
-    /**
-     * 소셜 회원가입
-     *
-     * @param oAuthUserCreateRequest
-     * @return user.id
-     */
-    @Transactional
-    public ResponseDto<?> createOAuthUser(OAuth2UserCreateRequestDto oAuthUserCreateRequest) {
-        OAuthProvider oAuthProvider = OAuthProvider.findOAuthProvider(oAuthUserCreateRequest.getOAuthProvider());
-        if (userService.existUserByOAuthProviderAndOAuthProviderId(oAuthProvider, oAuthUserCreateRequest.getOAuthProviderId())) {
-            throw UserCustomException.ALREADY_OAUTH_USER;
-        }
-
-        // 회원 포지션 조회
-        Position position = positionService.findById(oAuthUserCreateRequest.getPositionId());
-
-        // 회원 엔티티 생성
-        User user =
-                User.builder()
-                        .nickname(oAuthUserCreateRequest.getNickname())
-                        .profileImgSrc("")
-                        .intro(oAuthUserCreateRequest.getIntro())
-                        .position(position)
-                        .role(Role.USER)
-                        .status(UserStatus.ACTIVE)
-                        .oAuthProvider(oAuthProvider)
-                        .oAuthProviderId(oAuthUserCreateRequest.getOAuthProviderId())
-                        .build();
-
-        // 회원 저장
-        User oAuthUser = userService.save(user);
-
-        // 신뢰점수 저장
-        TrustScore trustScore = trustScoreService.addPoint(oAuthUser.getId());
-
-        // 회원에 신뢰점수 세팅
-        oAuthUser.setTrustScore(trustScore);
-
-        // 회원 기술스택 목록 추가
-        for (Long technologyStackId : oAuthUserCreateRequest.getTechStackIds()) {
-            UserTechnologyStack userTechnologyStack = UserTechnologyStack.builder()
-                    .user(oAuthUser)
-                    .technologyStack(technologyStackService.findById(technologyStackId))
-                    .build();
-            oAuthUser.addTechStack(userTechnologyStack);
-        }
-
-        return ResponseDto.success("OAuth 회원등록이 완료되었습니다.", oAuthUser.getId());
     }
 
 

@@ -16,8 +16,6 @@ public class UserCustomException extends CustomException {
     public static final UserCustomException DOES_NOT_EXIST_PROFILE_IMG =
             new UserCustomException(UserErrorCode.NO_PROFILE_IMG);
 
-    public static final UserCustomException ALREADY_OAUTH_USER =
-            new UserCustomException(UserErrorCode.IN_USE_OAUTH_USER);
 
     public UserCustomException(UserErrorCode userErrorCode) {
         super(userErrorCode);

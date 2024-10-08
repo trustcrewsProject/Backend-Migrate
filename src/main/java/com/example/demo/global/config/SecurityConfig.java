@@ -6,10 +6,6 @@ import com.example.demo.security.custom.UserAuthenticationFailureHandler;
 import com.example.demo.security.custom.UserAuthenticationFilter;
 import com.example.demo.security.custom.UserAuthenticationSuccessHandler;
 import com.example.demo.security.jwt.*;
-import com.example.demo.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
-import com.example.demo.security.oauth2.handler.OAuth2AuthenticationFailureHandler;
-import com.example.demo.security.oauth2.handler.OAuth2AuthenticationSuccessHandler;
-import com.example.demo.security.oauth2.service.OAuth2PrincipalService;
 import com.example.demo.service.token.RefreshTokenRedisService;
 import com.example.demo.service.user.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,10 +38,6 @@ public class SecurityConfig {
     private final SecurityResponseHandler securityResponseHandler;
     private final RefreshTokenRedisService refreshTokenRedisService;
     private final UserService userService;
-    private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
-    private final OAuth2PrincipalService OAuth2PrincipalService;
-    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
-    private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -95,7 +87,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/api/admin/**")
                 .hasRole("ADMIN")
-                .antMatchers("/**/public", "/oauth2/**")
+                .antMatchers("/**/public")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
@@ -121,12 +113,6 @@ public class SecurityConfig {
                         jsonWebTokenProvider,
                         securityResponseHandler),
                 JsonWebTokenExceptionFilter.class);
-
-        http.oauth2Login(configure ->
-                configure.authorizationEndpoint(config -> config.authorizationRequestRepository(httpCookieOAuth2AuthorizationRequestRepository))
-                        .userInfoEndpoint(config -> config.userService(OAuth2PrincipalService))
-                        .successHandler(oAuth2AuthenticationSuccessHandler)
-                        .failureHandler(oAuth2AuthenticationFailureHandler));
 
         return http.build();
     }

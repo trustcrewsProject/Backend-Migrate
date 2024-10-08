@@ -1,6 +1,5 @@
 package com.example.demo.service.user;
 
-import com.example.demo.constant.OAuthProvider;
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.global.exception.customexception.UserCustomException;
 import com.example.demo.model.user.User;
@@ -52,9 +51,4 @@ public class UserServiceImpl implements UserService {
         return userRepository.fetchUserByUserIdWithAllAttributes(userId);
     }
 
-    @Override
-    public boolean existUserByOAuthProviderAndOAuthProviderId(OAuthProvider oAuthProvider, String oAuthProviderId) {
-        return userRepository
-                .existsByOAuthProviderAndOAuthProviderId(oAuthProvider, oAuthProviderId);
-    }
 }

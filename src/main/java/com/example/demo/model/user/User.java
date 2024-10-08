@@ -1,15 +1,18 @@
 package com.example.demo.model.user;
 
-import com.example.demo.constant.OAuthProvider;
 import com.example.demo.constant.Role;
 import com.example.demo.constant.UserStatus;
 import com.example.demo.global.common.BaseTimeEntity;
 import com.example.demo.model.position.Position;
 import com.example.demo.model.trust_score.TrustScore;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.*;
-import lombok.*;
 
 @Entity
 @Table(name = "user")
@@ -49,13 +52,6 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
-    @Enumerated(value = EnumType.STRING)
-    @Column(name = "oauth_provider")
-    private OAuthProvider oAuthProvider;
-
-    @Column(name = "oauth_provider_id")
-    private String oAuthProviderId;
-
     @Builder
     private User(
             String email,
@@ -65,9 +61,8 @@ public class User extends BaseTimeEntity {
             String intro,
             Position position,
             Role role,
-            UserStatus status,
-            OAuthProvider oAuthProvider,
-            String oAuthProviderId) {
+            UserStatus status
+            ) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
@@ -76,8 +71,6 @@ public class User extends BaseTimeEntity {
         this.position = position;
         this.role = role;
         this.status = status;
-        this.oAuthProvider = oAuthProvider;
-        this.oAuthProviderId = oAuthProviderId;
     }
 
     // 기술스택 목록 등록

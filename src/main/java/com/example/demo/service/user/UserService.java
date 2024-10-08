@@ -1,6 +1,5 @@
 package com.example.demo.service.user;
 
-import com.example.demo.constant.OAuthProvider;
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.model.user.User;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,8 +23,4 @@ public interface UserService {
 
     // 회원의 모든 정보 조회
     User fetchUserDetails(Long userId);
-
-    // 소셜 회원 여부
-    boolean existUserByOAuthProviderAndOAuthProviderId(OAuthProvider oAuthProvider, String oAuthProviderId);
-
 }

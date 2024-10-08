@@ -1,19 +1,11 @@
 package com.example.demo.controller.user;
 
 import com.example.demo.dto.common.ResponseDto;
-import com.example.demo.dto.oauth2.request.OAuth2UserCreateRequestDto;
 import com.example.demo.dto.user.request.UserCreateRequestDto;
 import com.example.demo.dto.user.request.UserUpdateRequestDto;
-import com.example.demo.global.log.PMLog;
 import com.example.demo.security.custom.PrincipalDetails;
 import com.example.demo.service.user.UserFacade;
 import com.example.demo.service.user.UserService;
-
-import java.io.IOException;
-import java.util.Optional;
-import javax.validation.Valid;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +13,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import static com.example.demo.global.log.PMLog.USER_PROFILE;
+import javax.validation.Valid;
+import java.io.IOException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
@@ -60,14 +54,6 @@ public class UserController {
             @Valid @RequestBody UserCreateRequestDto createRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userFacade.createUser(createRequest));
     }
-
-    // 소셜 회원가입
-    @PostMapping("/oauth2/public")
-    public ResponseEntity<ResponseDto<?>> oAuthSignup(
-            @Valid @RequestBody OAuth2UserCreateRequestDto oAuthUserCreateRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userFacade.createOAuthUser(oAuthUserCreateRequest));
-    }
-
 
     // 회원수정
     @PutMapping(consumes = {"multipart/form-data"})

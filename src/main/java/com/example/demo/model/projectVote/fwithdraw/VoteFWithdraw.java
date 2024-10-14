@@ -23,8 +23,8 @@ public class VoteFWithdraw extends BaseTimeEntity {
 
     private Long project_id;
 
-    @OneToOne
-    @JoinColumn(name = "project_fwMember_id")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "project_fw_member_id")
     private ProjectMember fwMember;
 
     @Column(name = "vote_status")
@@ -38,12 +38,12 @@ public class VoteFWithdraw extends BaseTimeEntity {
     private int max_vote_count;
 
     @Column(name = "vote_reason")
-    @Enumerated(value=EnumType.STRING)
+    @Enumerated(value = EnumType.STRING)
     private ProjectFWReason reason;
 
     @Builder
-    public VoteFWithdraw(ProjectMember fwMember, int max_vote_count, Long project_id, ProjectFWReason reason){
-        this.fwMember =fwMember;
+    public VoteFWithdraw(ProjectMember fwMember, int max_vote_count, Long project_id, ProjectFWReason reason) {
+        this.fwMember = fwMember;
         this.voteStatus = VoteStatus.VSTAT1001;
         this.agrees = 0;
         this.disagrees = 0;

@@ -10,6 +10,7 @@ public class PMLog {
 
     public static final Marker PROJECT_ALERT = MarkerFactory.getMarker("PROJECT_ALERT");
     public static final Marker PROJECT_WORK = MarkerFactory.getMarker("PROJECT_WORK");
+    public static final Marker PROJECT_SETTING = MarkerFactory.getMarker("PROJECT_SETTING");
     public static final Marker PROJECT_CREW = MarkerFactory.getMarker("PROJECT_CREW");
     public static final Marker TRUST_POINT = MarkerFactory.getMarker("TRUST_POINT");
     public static final Marker TOKEN_REISSUE = MarkerFactory.getMarker("TOKEN_REISSUE");

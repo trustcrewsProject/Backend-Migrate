@@ -15,6 +15,7 @@ import com.example.demo.dto.technology_stack.response.TechnologyStackInfoRespons
 import com.example.demo.global.exception.customexception.PageNationCustomException;
 import com.example.demo.global.exception.customexception.ProjectCustomException;
 import com.example.demo.global.exception.customexception.ProjectMemberCustomException;
+import com.example.demo.global.log.PMLog;
 import com.example.demo.model.board.Board;
 import com.example.demo.model.board.BoardPosition;
 import com.example.demo.model.position.Position;
@@ -40,6 +41,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.example.demo.global.log.PMLog.PROJECT_SETTING;
 
 @Service
 @RequiredArgsConstructor
@@ -118,31 +121,39 @@ public class ProjectFacade {
         // 프로젝트 설정 권한 확인
         validateProjectConfigAuth(userId, projectId);
 
-        Project project = projectService.findById(projectId);
-        for (ProjectMember projectMember : project.getProjectMembers()) {
-            // 프로젝트 멤버 프로젝트 완주 이력 추가
-            UserProjectHistory projectFinishHistory = UserProjectHistory.builder()
-                    .project(project)
-                    .user(projectMember.getUser())
-                    .status(UserProjectHistoryStatus.PHIST_STAT_003)
-                    .build();
-            userProjectHistoryService.save(projectFinishHistory);
+        try{
+
+            Project project = projectService.findById(projectId);
+            for (ProjectMember projectMember : project.getProjectMembers()) {
+                // 프로젝트 멤버 프로젝트 완주 이력 추가
+                UserProjectHistory projectFinishHistory = UserProjectHistory.builder()
+                        .project(project)
+                        .user(projectMember.getUser())
+                        .status(UserProjectHistoryStatus.PHIST_STAT_003)
+                        .build();
+                userProjectHistoryService.save(projectFinishHistory);
+            }
+
+            // 프로젝트 멤버 삭제
+            project.removeProjectMembers();
+
+            // 프로젝트 기술목록 삭제
+            project.removeProjectTechnologies();
+
+            // 프로젝트 모든 업무 삭제
+            workService.deleteAllByProject(project);
+
+            // 프로젝트 모든 마일스톤 삭제
+            milestoneService.deleteAllByProject(project);
+
+            // 프로젝트 status 종료로 변경
+            project.endProject();
+
+        }catch(Exception e){
+            PMLog.e(PROJECT_SETTING, e.getMessage(), e);
+            throw e;
         }
 
-        // 프로젝트 멤버 삭제
-        project.removeProjectMembers();
-
-        // 프로젝트 기술목록 삭제
-        project.removeProjectTechnologies();
-
-        // 프로젝트 모든 업무 삭제
-        workService.deleteAllByProject(project);
-
-        // 프로젝트 모든 마일스톤 삭제
-        milestoneService.deleteAllByProject(project);
-
-        // 프로젝트 status 종료로 변경
-        project.endProject();
     }
 
     /**

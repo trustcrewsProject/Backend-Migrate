@@ -82,7 +82,9 @@ public class JsonWebTokenReissueFilter extends OncePerRequestFilter {
             renewRefreshToken(userId, newTokens.getRefreshToken());
 
             // ResponseHeader 토큰 셋팅
-            setTokensInResponseHeader(request, response, newTokens);
+            String latestRefreshToken = refreshTokenRedisService.get(userId);
+            JsonWebTokenDto latestTokens = JsonWebTokenDto.of(newTokens.getAccessToken(), latestRefreshToken);
+            setTokensInResponseHeader(request, response, latestTokens);
 
             // 성공 응답
             successTokenReissueResponse(response);

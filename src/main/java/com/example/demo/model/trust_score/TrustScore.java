@@ -3,6 +3,8 @@ package com.example.demo.model.trust_score;
 import com.example.demo.global.common.BaseTimeEntity;
 import com.example.demo.model.trust_grade.TrustGrade;
 import javax.persistence.*;
+
+import com.example.demo.repository.trust_grade.TrustGradeRepository;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -31,8 +33,9 @@ public class TrustScore extends BaseTimeEntity {
     private TrustGrade trustGrade;
 
     @Builder
-    public TrustScore(Long userId, int score) {
+    public TrustScore(Long userId, int score, TrustGrade trustGrade) {
         this.userId = userId;
         this.score = score;
+        this.trustGrade = trustGrade;
     }
 }

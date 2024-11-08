@@ -13,6 +13,7 @@ import com.example.demo.repository.trust_score.TrustScoreTypeRepository;
 
 import javax.validation.Valid;
 
+import com.example.demo.service.trust_grade.TrustGradeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,7 @@ public class TrustScoreServiceImpl implements TrustScoreService {
     private final TrustScoreRepository trustScoreRepository;
     private final TrustScoreHistoryRepository trustScoreHistoryRepository;
     private final TrustScoreTypeRepository trustScoreTypeRepository;
+    private final TrustGradeService trustGradeService;
 
     /**
      * 새 사용자에게 기본 신뢰점수 부여
@@ -44,9 +46,11 @@ public class TrustScoreServiceImpl implements TrustScoreService {
         // 신뢰점수내역 합산
         int calculatedScore = trustScoreHistoryRepository.calculateCurrentScore(userId);
 
+        TrustGrade defaultTrustGrade = trustGradeService.getTrustGradeById(1L);
+
         // 신뢰점수 테이블에 해당 유저에 대한 레코드 생성
         return trustScoreRepository.save(
-                TrustScore.builder().userId(userId).score(calculatedScore).build());
+                TrustScore.builder().userId(userId).score(calculatedScore).trustGrade(defaultTrustGrade).build());
     }
 
     @Override

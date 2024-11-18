@@ -29,6 +29,7 @@ public class CorsConfig {
 
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String SET_COOKIE_HEADER = "Set-Cookie";
+    private static final String X_ERROR_INSTRUCTION_HEADER = "X-Error-Instruction";
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -39,6 +40,7 @@ public class CorsConfig {
         configuration.setAllowedMethods(PERMIT_HTTP_METHOD);
         configuration.addExposedHeader(AUTHORIZATION_HEADER);
         configuration.addExposedHeader(SET_COOKIE_HEADER);
+        configuration.addExposedHeader(X_ERROR_INSTRUCTION_HEADER);
         configuration.addAllowedHeader("*");
         configuration.setMaxAge(3600L);
         configuration.setAllowCredentials(true);

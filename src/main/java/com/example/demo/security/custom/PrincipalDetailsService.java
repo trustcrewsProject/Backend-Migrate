@@ -26,7 +26,7 @@ public class PrincipalDetailsService implements UserDetailsService {
                         .orElse(null);
 
         if(user == null || user.getStatus().equals(UserStatus.DELETED)) {
-            throw new UserCustomException(UserErrorCode.NOT_FOUND_USER);
+            throw UserCustomException.NOT_FOUND_USER;
         }
 
         return new PrincipalDetails(user);

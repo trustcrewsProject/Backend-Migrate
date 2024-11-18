@@ -33,6 +33,7 @@ public class JsonWebTokenExceptionFilter extends OncePerRequestFilter {
             // CustomException ErrorCode
             ErrorCode errorCode = tokenCustomException.getErrorCode();
 
+            response.addHeader("X-Error-Instruction", tokenCustomException.getErrorInstruction().toString());
             // 클라이언트로 응답 전송
             securityResponseHandler.sendResponse(
                     response, errorCode.getStatus(), ResponseDto.fail(errorCode.getMessage()));

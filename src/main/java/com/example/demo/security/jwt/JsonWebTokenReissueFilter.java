@@ -1,9 +1,10 @@
 package com.example.demo.security.jwt;
 
+import com.example.demo.constant.ErrorInstruction;
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.dto.user.request.UserTokenReissueRequestDto;
 import com.example.demo.global.exception.customexception.CommonCustomException;
-import com.example.demo.global.exception.customexception.CustomException;
+import com.example.demo.global.exception.customexception.CustomExceptionWithInstruct;
 import com.example.demo.global.exception.customexception.TokenCustomException;
 import com.example.demo.global.exception.errorcode.ErrorCode;
 import com.example.demo.global.log.PMLog;
@@ -13,19 +14,20 @@ import com.example.demo.service.token.RefreshTokenRedisService;
 import com.example.demo.service.user.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-import java.io.IOException;
-import java.util.Objects;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Objects;
 
 import static com.example.demo.global.log.PMLog.TOKEN_REISSUE;
 
@@ -89,10 +91,10 @@ public class JsonWebTokenReissueFilter extends OncePerRequestFilter {
             // 성공 응답
             successTokenReissueResponse(response);
             PMLog.i(TOKEN_REISSUE, "Token Reissue Success");
-        } catch (CustomException customException) {
+        } catch (CustomExceptionWithInstruct customException) {
             // 실패 응답
             PMLog.e(TOKEN_REISSUE, customException.getErrorCode());
-            failTokenReissueResponse(response, customException.getErrorCode());
+            failTokenReissueResponse(response, customException.getErrorCode(), customException.getErrorInstruction());
         }
     }
 
@@ -187,8 +189,10 @@ public class JsonWebTokenReissueFilter extends OncePerRequestFilter {
     }
 
     // 토큰 재발급 실패 응답
-    private void failTokenReissueResponse(HttpServletResponse response, ErrorCode errorCode)
+    private void failTokenReissueResponse(HttpServletResponse response, ErrorCode errorCode, ErrorInstruction errorInstruction)
             throws IOException {
+
+        response.addHeader("X-Error-Instruction", errorInstruction.toString());
         securityResponseHandler.sendResponse(
                 response, errorCode.getStatus(), ResponseDto.fail(errorCode.getMessage()));
     }

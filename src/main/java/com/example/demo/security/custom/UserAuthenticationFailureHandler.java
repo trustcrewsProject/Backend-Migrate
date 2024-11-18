@@ -1,5 +1,6 @@
 package com.example.demo.security.custom;
 
+import com.example.demo.constant.ErrorInstruction;
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.global.exception.customexception.AuthenticationCustomException;
 import com.example.demo.global.exception.errorcode.UserErrorCode;
@@ -31,6 +32,7 @@ public class UserAuthenticationFailureHandler extends SimpleUrlAuthenticationFai
             throws IOException {
         if(exception instanceof AuthenticationCustomException) {
             // 클라이언트로 응답 전송
+            response.addHeader("X-Error-Instruction", ErrorInstruction.MESSAGE.toString());
             securityResponseHandler.sendResponse(
                     response,
                     HttpStatus.UNAUTHORIZED,

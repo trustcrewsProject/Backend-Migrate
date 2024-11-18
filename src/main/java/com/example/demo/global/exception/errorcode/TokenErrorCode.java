@@ -7,16 +7,16 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 public enum TokenErrorCode implements ErrorCode {
-    NON_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "NON_ACCESS_TOKEN"),
-    WRONG_TYPE_SIGNATURE(HttpStatus.UNAUTHORIZED, "WRONG_TYPE_SIGNATURE"),
-    WRONG_TYPE_TOKEN(HttpStatus.UNAUTHORIZED, "WRONG_TYPE_TOKEN"),
-    EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "EXPIRED_TOKEN"),
-    MALFORMED_TOKEN(HttpStatus.UNAUTHORIZED, "MALFORMED_TOKEN"),
-    NO_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "NO_REFRESH_TOKEN"),
+    NON_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 인증정보로 인해 사용자 인증에 실패했습니다."),
+    WRONG_TYPE_SIGNATURE(HttpStatus.UNAUTHORIZED, "유효하지 않은 인증정보로 인해 사용자 인증에 실패했습니다."),
+    WRONG_TYPE_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 인증정보로 인해 사용자 인증에 실패했습니다."),
+    EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "서비스 이용을 위해 로그인해주세요."),
+    MALFORMED_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 인증정보로 인해 사용자 인증에 실패했습니다."),
+    NO_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "서비스 이용을 위해 로그인해주세요."),
     INSUFFICIENT_USER_IDENTIFICATION_FOR_TOKEN_REISSUE(
-            HttpStatus.UNAUTHORIZED, "INSUFFICIENT_USER_IDENTIFICATION_FOR_TOKEN_REISSUE"),
-    INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "INVALID_REFRESH_TOKEN"),
-    REFRESH_TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED, "REFRESH_TOKEN_NOT_FOUND");
+            HttpStatus.UNAUTHORIZED, "유효하지 않은 인증정보로 인해 사용자 인증에 실패했습니다."),
+    INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 인증정보로 인해 사용자 인증에 실패했습니다."),
+    REFRESH_TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED, "서비스 이용을 위해 로그인해주세요.");
 
     private HttpStatus status;
     private String message;

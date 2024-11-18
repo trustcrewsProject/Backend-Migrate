@@ -1,8 +1,9 @@
 package com.example.demo.global.exception.customexception;
 
+import com.example.demo.constant.ErrorInstruction;
 import com.example.demo.global.exception.errorcode.CommonErrorCode;
 
-public class CommonCustomException extends CustomException {
+public class CommonCustomException extends CustomExceptionWithInstruct {
 
     public static final CommonCustomException INVALID_INPUT_VALUE =
             new CommonCustomException(CommonErrorCode.INVALID_INPUT_VALUE);
@@ -14,6 +15,6 @@ public class CommonCustomException extends CustomException {
             new CommonCustomException(CommonErrorCode.INTERNAL_SERVER_ERROR);
 
     public CommonCustomException(CommonErrorCode commonErrorCode) {
-        super(commonErrorCode);
+        super(commonErrorCode, ErrorInstruction.REDIRECT);
     }
 }

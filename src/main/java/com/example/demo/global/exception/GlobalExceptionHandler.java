@@ -2,6 +2,7 @@ package com.example.demo.global.exception;
 
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.global.exception.customexception.CustomException;
+import com.example.demo.global.exception.customexception.CustomExceptionWithInstruct;
 import com.example.demo.global.exception.errorcode.ErrorCode;
 import com.example.demo.global.exception.errorcode.FileErrorCode;
 import com.example.demo.global.log.PMLog;
@@ -50,6 +51,14 @@ public class GlobalExceptionHandler {
         final ResponseDto response = ResponseDto.fail(e.getErrorCode().getMessage());
         return ResponseEntity.status(e.getErrorCode().getStatus()).body(response);
     }
+
+    // CustomExceptionWithInstruct
+    @ExceptionHandler(CustomExceptionWithInstruct.class)
+    public ResponseEntity<ResponseDto<?>> exceptionHandler(CustomExceptionWithInstruct e) {
+        final ResponseDto response = ResponseDto.fail(e.getMessage());
+        return ResponseEntity.status(e.getErrorCode().getStatus()).header("X-Error-Instruction", e.getErrorInstruction().toString()).body(response);
+    }
+
 
     // Unsupported Media Type Exception
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)

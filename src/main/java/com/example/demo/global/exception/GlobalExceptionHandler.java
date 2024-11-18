@@ -55,7 +55,7 @@ public class GlobalExceptionHandler {
     // CustomExceptionWithInstruct
     @ExceptionHandler(CustomExceptionWithInstruct.class)
     public ResponseEntity<ResponseDto<?>> exceptionHandler(CustomExceptionWithInstruct e) {
-        final ResponseDto response = ResponseDto.fail(e.getMessage());
+        final ResponseDto response = ResponseDto.fail(e.getErrorCode().getMessage());
         return ResponseEntity.status(e.getErrorCode().getStatus()).header("X-Error-Instruction", e.getErrorInstruction().toString()).body(response);
     }
 

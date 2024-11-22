@@ -84,10 +84,6 @@ public class Board extends BaseTimeEntity {
         this.positions.addAll(list);
     }
 
-    public void updatePageView() {
-        this.pageView++;
-    }
-
     public void updateRecruitmentStatus(boolean completed) {
         this.recruitmentStatus = completed;
     }

@@ -207,7 +207,12 @@ public class ProjectFacade {
         Board board = boardService.findById(dto.getBoardId());
 
         // 게시글 정보 - 제목, 소개, 모집상태 수정
-        board.updateProjectBoard(dto.getTitle(), dto.getContent(), dto.getContact(), dto.isRecruitmentStatus());
+        if (!board.getTitle().equals(dto.getTitle())
+                || !board.getContent().equals(dto.getContent())
+                || !board.getContact().equals( dto.getContact())
+                || board.isRecruitmentStatus() != dto.isRecruitmentStatus()) {
+            board.updateProjectBoard(dto.getTitle(), dto.getContent(), dto.getContact(), dto.isRecruitmentStatus());
+        }
 
         // 게시글 정보 - 작성자 수정
         if (!userId.equals(board.getUser().getId())) {

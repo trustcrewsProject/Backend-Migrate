@@ -52,11 +52,10 @@ public class BoardServiceImpl implements BoardService {
      * @return
      */
     public BoardDetailResponseDto getDetail(Long boardId) {
+        // boardPageView 증가 - Hibernate가 pageView 필드 변경을 감지하지 못하도록 직접 db반영
+        boardRepository.increasePageView(boardId);
+
         Board board = findById(boardId);
-
-        // boardPageView 증가
-        board.updatePageView();
-
         // * ============= 게시글 상세 정보 ============= *
         UserBoardDetailResponseDto userBoardDetailResponseDto = UserBoardDetailResponseDto.of(board.getUser());
 

@@ -10,6 +10,7 @@ import com.example.demo.global.exception.customexception.PageNationCustomExcepti
 import com.example.demo.global.exception.customexception.ProjectCustomException;
 import com.example.demo.model.project.ProjectMember;
 import com.example.demo.model.projectVote.fwithdraw.VoteFWithdraw;
+import com.example.demo.service.file.AwsS3FileService;
 import com.example.demo.service.project.ProjectMemberService;
 import com.example.demo.service.projectVote.fwithdraw.VFWithdrawService;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class VAlertFWithdrawFacade {
     private final VAlertFWithdrawService vAlertFWithdrawService;
 
     private final ProjectMemberService projectMemberService;
+    private final AwsS3FileService awsS3FileService;
 
     public void createFWithdrawAlert(Long userId, VAlertFWCreateRequestDto requestDto) {
         validateProjectMember(userId, requestDto.getProject_id());
@@ -89,7 +91,7 @@ public class VAlertFWithdrawFacade {
                 voteFWithdraw.getVoteStatus(),
                 ProjectMemberAuthDto.of(projectMember.getProjectMemberAuth()),
                 projectMember.getPosition(),
-                projectMember.getUser().getProfileImgSrc(),
+                awsS3FileService.generatePreSignedUrl(projectMember.getUser().getProfileImgSrc()),
                 projectMember.getUser().getNickname());
     }
 

@@ -12,12 +12,12 @@ public class UserReadProjectCrewResponseDto {
     private String nickname;
     private String profileImgSrc;
 
-    public static UserReadProjectCrewResponseDto of(User user) {
+    public static UserReadProjectCrewResponseDto of(User user, String profileImgSrc) {
         return UserReadProjectCrewResponseDto.builder()
                 .userId(user.getId())
                 .email(user.getEmail())
                 .nickname(user.getNickname())
-                .profileImgSrc(user.getProfileImgSrc())
+                .profileImgSrc(profileImgSrc)
                 .build();
     }
 }

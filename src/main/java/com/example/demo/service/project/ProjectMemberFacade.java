@@ -27,6 +27,7 @@ import com.example.demo.model.user.User;
 import com.example.demo.model.user.UserProjectHistory;
 import com.example.demo.model.user.UserTechnologyStack;
 import com.example.demo.model.work.Work;
+import com.example.demo.service.file.AwsS3FileService;
 import com.example.demo.service.projectAlert.crew.AlertCrewService;
 import com.example.demo.service.trust_score.TrustScoreHistoryService;
 import com.example.demo.service.user.UserProjectHistoryService;
@@ -51,6 +52,7 @@ public class ProjectMemberFacade {
     private final UserProjectHistoryService userProjectHistoryService;
     private final TrustScoreHistoryService trustScoreHistoryService;
     private final AlertCrewService alertCrewService;
+    private final AwsS3FileService awsS3FileService;
 
     /**
      * 프로젝트 탈퇴
@@ -129,6 +131,7 @@ public class ProjectMemberFacade {
         UserCrewDetailResponseDto userCrewDetailResponseDto =
                 UserCrewDetailResponseDto.of(
                         projectMember.getUser(),
+                        awsS3FileService.generatePreSignedUrl(projectMember.getUser().getProfileImgSrc()),
                         projectMember.getUser().getTrustScore().getScore(),
                         positionResponseDto,
                         trustGradeResponseDto,
@@ -153,8 +156,9 @@ public class ProjectMemberFacade {
         List<ProjectMemberReadProjectCrewsResponseDto> projectMemberReadProjectCrewsResponseDtos = new ArrayList<>();
         for (ProjectMember projectMember : projectMembers) {
             // 프로젝트 멤버 '사용자' 정보 - 사용자아이디, 닉네임, 이메일, 프로필이미지
+            User user = projectMember.getUser();
             UserReadProjectCrewResponseDto userReadProjectCrewResponseDto =
-                    UserReadProjectCrewResponseDto.of(projectMember.getUser());
+                    UserReadProjectCrewResponseDto.of(user, awsS3FileService.generatePreSignedUrl(user.getProfileImgSrc()));
 
             // 프로젝트 멤버 권한 정보
             ProjectMemberAuthDto<ProjectMemberAuth> projectMemberAuthDto =
@@ -209,6 +213,7 @@ public class ProjectMemberFacade {
 
     /**
      * 프로젝트 크루 권한 수정
+     *
      * @param userId
      * @param dto
      */

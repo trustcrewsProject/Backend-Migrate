@@ -25,6 +25,7 @@ import com.example.demo.model.user.QUser;
 import com.example.demo.model.user.User;
 import com.example.demo.repository.position.PositionRepository;
 import com.example.demo.repository.technology_stack.TechnologyStackRepository;
+import com.example.demo.service.file.AwsS3FileService;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,7 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
     private final JPAQueryFactory queryFactory;
     private final PositionRepository positionRepository;
     private final TechnologyStackRepository technologyStackRepository;
+    private final AwsS3FileService awsS3FileService;
 
     public QBoard qBoard = QBoard.board;
     public QProject qProject = QProject.project;
@@ -101,7 +103,7 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
             User user = boardEntity.getUser();
 
             TrustGradeResponseDto userTrustGradeResponseDto = TrustGradeResponseDto.of(user.getTrustScore().getTrustGrade());
-            UserSearchResponseDto userSearchResponseDto = UserSearchResponseDto.of(user, userTrustGradeResponseDto);
+            UserSearchResponseDto userSearchResponseDto = UserSearchResponseDto.of(user, awsS3FileService.generatePreSignedUrl(user.getProfileImgSrc()), userTrustGradeResponseDto);
 
             boardSearchResponseDtos.add(
                     BoardSearchResponseDto.of(

@@ -80,7 +80,7 @@ public class UserFacade {
         User saveUser = userService.save(user);
 
         // 신뢰점수 저장
-        TrustScore trustScore = trustScoreService.addPoint(saveUser.getId());;
+        TrustScore trustScore = trustScoreService.addPoint(saveUser.getId());
 
         // 회원에 신뢰점수 세팅
         user.setTrustScore(trustScore);
@@ -240,7 +240,7 @@ public class UserFacade {
         User currentUser = userService.findById(user.getId());
         UserSimpleInfoResponseDto simpleMyInfoResponse =
                 UserSimpleInfoResponseDto.of(
-                        currentUser.getNickname(), currentUser.getProfileImgSrc());
+                        currentUser.getNickname(), awsS3FileService.generatePreSignedUrl(currentUser.getProfileImgSrc()));
 
         return ResponseDto.success("내 정보 조회가 완료되었습니다.", simpleMyInfoResponse);
     }
@@ -291,7 +291,7 @@ public class UserFacade {
                         currentUser.getId(),
                         currentUser.getEmail(),
                         currentUser.getNickname(),
-                        currentUser.getProfileImgSrc(),
+                        awsS3FileService.generatePreSignedUrl(currentUser.getProfileImgSrc()),
                         currentUser.getIntro(),
                         trustScore.getScore(),
                         trustGradeInfo,
@@ -350,7 +350,7 @@ public class UserFacade {
                         currentUser.getId(),
                         currentUser.getEmail(),
                         currentUser.getNickname(),
-                        currentUser.getProfileImgSrc(),
+                        awsS3FileService.generatePreSignedUrl(currentUser.getProfileImgSrc()),
                         currentUser.getIntro(),
                         trustScore.getScore(),
                         trustGradeInfo,
@@ -384,6 +384,7 @@ public class UserFacade {
 
     /**
      * 사용자 프로젝트 이력 조회
+     *
      * @param userId
      * @param pageNumber
      * @return

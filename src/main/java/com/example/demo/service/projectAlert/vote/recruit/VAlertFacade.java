@@ -17,6 +17,7 @@ import com.example.demo.model.user.User;
 import com.example.demo.model.user.UserTechnologyStack;
 import com.example.demo.repository.projectApply.ProjectApplyRepository;
 import com.example.demo.repository.projectVote.recruit.VoteRecruitRepository;
+import com.example.demo.service.file.AwsS3FileService;
 import com.example.demo.service.user.UserProjectHistoryService;
 import com.example.demo.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +42,7 @@ public class VAlertFacade {
     private final UserProjectHistoryService userProjectHistoryService;
     private final ProjectApplyRepository projectApplyRepository;
     private final VoteRecruitRepository voteRecruitRepository;
+    private final AwsS3FileService awsS3FileService;
 
     /**
      * 프로젝트 크루모집 알림 조회
@@ -116,7 +118,7 @@ public class VAlertFacade {
                         currentUser.getId(),
                         currentUser.getEmail(),
                         currentUser.getNickname(),
-                        currentUser.getProfileImgSrc(),
+                        awsS3FileService.generatePreSignedUrl(currentUser.getProfileImgSrc()),
                         currentUser.getIntro(),
                         trustScore.getScore(),
                         trustGradeInfo,

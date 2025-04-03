@@ -13,12 +13,12 @@ public class UserSearchResponseDto {
     private String profileImgSrc;
     private TrustGradeResponseDto trustGrade;
 
-    public static UserSearchResponseDto of(User user, TrustGradeResponseDto trustGradeResponseDto) {
+    public static UserSearchResponseDto of(User user, String userProfileImgSrc, TrustGradeResponseDto trustGradeResponseDto) {
 
         return UserSearchResponseDto.builder()
                 .email(user.getEmail())
                 .nickname(user.getNickname())
-                .profileImgSrc(user.getProfileImgSrc())
+                .profileImgSrc(userProfileImgSrc)
                 .trustGrade(trustGradeResponseDto)
                 .build();
     }

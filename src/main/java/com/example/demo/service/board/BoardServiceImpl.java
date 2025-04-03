@@ -9,7 +9,9 @@ import com.example.demo.dto.user.response.UserBoardDetailResponseDto;
 import com.example.demo.global.exception.customexception.BoardCustomException;
 import com.example.demo.model.board.Board;
 import com.example.demo.model.board.BoardPosition;
+import com.example.demo.model.user.User;
 import com.example.demo.repository.board.BoardRepository;
+import com.example.demo.service.file.AwsS3FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
     private final BoardRepository boardRepository;
+    private final AwsS3FileService awsS3FileService;
 
     /**
      * 게시글 목록 검색
@@ -57,7 +60,8 @@ public class BoardServiceImpl implements BoardService {
 
         Board board = findById(boardId);
         // * ============= 게시글 상세 정보 ============= *
-        UserBoardDetailResponseDto userBoardDetailResponseDto = UserBoardDetailResponseDto.of(board.getUser());
+        User user = board.getUser();
+        UserBoardDetailResponseDto userBoardDetailResponseDto = UserBoardDetailResponseDto.of(user,awsS3FileService.generatePreSignedUrl(user.getProfileImgSrc()));
 
         // 게시글 상세 - 모집 포지션
         List<BoardPositionDetailResponseDto> boardPositionDetailResponseDtos = new ArrayList<>();

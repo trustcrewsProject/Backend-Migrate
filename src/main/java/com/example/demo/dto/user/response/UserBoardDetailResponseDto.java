@@ -11,11 +11,11 @@ public class UserBoardDetailResponseDto {
     private String nickName;
     private String userProfileImgSrc;
 
-    public static UserBoardDetailResponseDto of(User user) {
+    public static UserBoardDetailResponseDto of(User user, String profileImgSrc) {
         return UserBoardDetailResponseDto.builder()
                 .userId(user.getId())
                 .nickName(user.getNickname())
-                .userProfileImgSrc(user.getProfileImgSrc())
+                .userProfileImgSrc(profileImgSrc)
                 .build();
     }
 }

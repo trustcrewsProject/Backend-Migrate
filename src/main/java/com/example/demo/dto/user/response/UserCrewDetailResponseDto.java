@@ -34,6 +34,7 @@ public class UserCrewDetailResponseDto {
 
     public static UserCrewDetailResponseDto of(
             User user,
+            String profileImgSrc,
             int trustScore,
             PositionResponseDto position,
             TrustGradeResponseDto trustGrade,
@@ -42,7 +43,7 @@ public class UserCrewDetailResponseDto {
                 .userId(user.getId())
                 .email(user.getEmail())
                 .nickname(user.getNickname())
-                .profileImgSrc(user.getProfileImgSrc())
+                .profileImgSrc(profileImgSrc)
                 .position(position)
                 .trustGrade(trustGrade)
                 .trustScore(trustScore)

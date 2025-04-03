@@ -63,9 +63,9 @@ jobs:
           username: ubuntu
           key: ${{ secrets.PRIVATE_KEY }}
           script: |
-            docker-compose -f /home/ubuntu/compose/docker-compose.yml pull
-            docker-compose -f /home/ubuntu/compose/docker-compose.yml down --rmi all
-            docker-compose -f /home/ubuntu/compose/docker-compose.yml up -d --force-recreate
+            docker compose -f /home/ubuntu/compose/docker-compose.yml pull
+            docker compose -f /home/ubuntu/compose/docker-compose.yml down --rmi all
+            docker compose -f /home/ubuntu/compose/docker-compose.yml up -d --force-recreate
 
       - name: Revoke SSH from GitHub Actions runner IP
         if: always()

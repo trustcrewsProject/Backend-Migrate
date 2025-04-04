@@ -7,4 +7,4 @@ COPY ${JAR_FILE} app.jar
 
 COPY application-prod.properties application-prod.properties
 
-ENTRYPOINT ["java", "-jar", "app.jar", "--spring.config.additional-location=optional:file:./"]
+ENTRYPOINT ["java", "-Duser.timezone=Asia/Seoul", "-jar", "app.jar", "--spring.config.additional-location=optional:file:./"]

@@ -2,7 +2,6 @@ package com.example.demo.service.file;
 
 import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -73,6 +72,7 @@ public class AwsS3FileService {
     }
 
     public String generatePreSignedUrl(String storedFileUrl) {
+        if(storedFileUrl.isEmpty()) return storedFileUrl;
         String encodedFileName = storedFileUrl.substring(storedFileUrl.lastIndexOf('/') + 1);
 
         String decodedFileName = URLDecoder.decode(encodedFileName, StandardCharsets.UTF_8);

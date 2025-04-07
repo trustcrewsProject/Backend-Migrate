@@ -4,9 +4,14 @@ import com.example.demo.constant.ProjectMemberAuth;
 import com.example.demo.constant.ProjectMemberStatus;
 import com.example.demo.constant.UserProjectHistoryStatus;
 import com.example.demo.dto.board.Response.BoardCreateResponseDto;
+import com.example.demo.dto.board.Response.BoardDetailResponseDto;
+import com.example.demo.dto.board.Response.BoardWithProjectResponseDto;
 import com.example.demo.dto.board_project.request.BoardProjectCreateRequestDto;
 import com.example.demo.dto.board_project.response.BoardProjectCreateResponseDto;
 import com.example.demo.dto.project.response.ProjectCreateResponseDto;
+import com.example.demo.dto.project.response.ProjectSummaryResponseDto;
+import com.example.demo.dto.project.setting.response.ProjectSettingInfoResponseDto;
+import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
 import com.example.demo.model.board.Board;
 import com.example.demo.model.board.BoardPosition;
 import com.example.demo.model.position.Position;
@@ -37,7 +42,7 @@ import java.util.List;
 public class BoardFacade {
     private final BoardService boardService;
     private final UserService userService;
-    private final ProjectServiceImpl projectServiceImpl;
+    private final ProjectServiceImpl projectService;
     private final TechnologyStackService technologyStackService;
     private final ProjectTechnologyService projectTechnologyService;
     private final PositionService positionService;
@@ -58,7 +63,7 @@ public class BoardFacade {
 
         // project 생성
         Project project = dto.getProject().toProjectEntity(trustGrade, tempUser);
-        Project savedProject = projectServiceImpl.save(project);
+        Project savedProject = projectService.save(project);
 
         // project 생성 - 프로젝트 기술스택
         for (Long technolgoyId : dto.getProject().getTechnologyIds()) {
@@ -115,5 +120,27 @@ public class BoardFacade {
         board.validationUser(tempUser);
 
         boardService.delete(board);
+    }
+
+    @Transactional
+    public BoardWithProjectResponseDto getBoardWithProject(Long boardId) {
+        Board board = boardService.findById(boardId);
+        BoardDetailResponseDto boardDetail = boardService.getDetail(boardId);
+
+        Project project = board.getProject();
+        List<TechnologyStackInfoResponseDto> technologyStackInfoResponseDtos = new ArrayList<>();
+        for (ProjectTechnology projectTechnology : project.getProjectTechnologies()) {
+            TechnologyStack technologyStack = projectTechnology.getTechnologyStack();
+
+            TechnologyStackInfoResponseDto technologyStackInfoResponseDto =
+                    TechnologyStackInfoResponseDto.of(
+                            technologyStack.getId(), technologyStack.getName());
+            technologyStackInfoResponseDtos.add(technologyStackInfoResponseDto);
+        }
+
+        ProjectSummaryResponseDto projectSummary = ProjectSummaryResponseDto.of(project, technologyStackInfoResponseDtos);
+
+
+        return BoardWithProjectResponseDto.of(projectSummary, boardDetail);
     }
 }

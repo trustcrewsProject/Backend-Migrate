@@ -1,5 +1,6 @@
 package com.example.demo.service.project;
 
+import com.example.demo.dto.project.response.ProjectSummaryResponseDto;
 import com.example.demo.global.exception.customexception.ProjectCustomException;
 import com.example.demo.model.project.Project;
 import com.example.demo.model.user.User;

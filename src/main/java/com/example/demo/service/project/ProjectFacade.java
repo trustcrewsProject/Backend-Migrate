@@ -6,6 +6,7 @@ import com.example.demo.constant.UserProjectHistoryStatus;
 import com.example.demo.dto.boardposition.BoardPositionDetailResponseDto;
 import com.example.demo.dto.common.PaginationResponseDto;
 import com.example.demo.dto.position.response.PositionResponseDto;
+import com.example.demo.dto.project.response.ProjectSummaryResponseDto;
 import com.example.demo.dto.project.setting.request.ProjectSettingBoardUpdRequestDto;
 import com.example.demo.dto.project.setting.request.ProjectSettingInfoUpdRequestDto;
 import com.example.demo.dto.project.setting.response.ProjectSettingBoardResponseDto;
@@ -320,7 +321,6 @@ public class ProjectFacade {
         }
         return ProjectMemberAuthDto.of(projectMember.getProjectMemberAuth());
     }
-
 
     public void validateProjectConfigAuth(Long userId, Long projectId) {
         ProjectMember projectMember = projectMemberService.findProjectMemberByPrIdAndUserId(projectId, userId);

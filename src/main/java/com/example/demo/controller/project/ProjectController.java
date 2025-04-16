@@ -1,6 +1,7 @@
 package com.example.demo.controller.project;
 
 import com.example.demo.dto.common.ResponseDto;
+import com.example.demo.dto.project.response.ProjectSummaryResponseDto;
 import com.example.demo.dto.project.setting.response.ProjectSettingInfoResponseDto;
 import com.example.demo.security.custom.PrincipalDetails;
 import com.example.demo.service.project.ProjectFacade;
@@ -43,6 +44,12 @@ public class ProjectController {
     @GetMapping("/{projectId}")
     public ResponseEntity<ResponseDto<?>> getDetail(@PathVariable("projectId") Long projectId) {
         ProjectSettingInfoResponseDto result = projectFacade.getProjectSettingInfo(projectId);
+        return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
+    }
+
+    @GetMapping("/{projectId}/public")
+    public ResponseEntity<ResponseDto<?>> getProjectPublic(@PathVariable("projectId") Long projectId) {
+        ProjectSummaryResponseDto result = projectFacade.getProjectPublicInfo(projectId);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 

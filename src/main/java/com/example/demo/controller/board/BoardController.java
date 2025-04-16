@@ -48,9 +48,9 @@ public class BoardController {
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 
-    @GetMapping("/{boardId}/public")
-    public ResponseEntity<ResponseDto<?>> getBoardDetail(@PathVariable("boardId") Long boardId) {
-        BoardWithProjectResponseDto result = boardFacade.getBoardWithProject(boardId);
+    @GetMapping("/{postId}/public")
+    public ResponseEntity<ResponseDto<?>> getBoardDetail(@PathVariable("postId") Long postId) {
+        BoardDetailResponseDto result = boardFacade.getBoardDetail(postId);
         return new ResponseEntity<>(ResponseDto.success("success", result), HttpStatus.OK);
     }
 

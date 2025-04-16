@@ -14,6 +14,7 @@ import lombok.Getter;
 @Builder
 public class BoardDetailResponseDto {
     private Long boardId;
+    private Long projectId;
     private String title;
     private String content;
     private int pageView;
@@ -35,6 +36,7 @@ public class BoardDetailResponseDto {
             List<BoardPositionDetailResponseDto> boardPositionDetailResponseDtos) {
         return BoardDetailResponseDto.builder()
                 .boardId(board.getId())
+                .projectId(board.getProject().getId())
                 .title(board.getTitle())
                 .content(board.getContent())
                 .pageView(board.getPageView())

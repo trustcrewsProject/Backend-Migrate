@@ -143,4 +143,10 @@ public class BoardFacade {
 
         return BoardWithProjectResponseDto.of(projectSummary, boardDetail);
     }
+
+    public BoardDetailResponseDto getBoardDetail(Long boardId) {
+        BoardDetailResponseDto boardDetail = boardService.getDetail(boardId);
+
+        return boardDetail;
+    }
 }

@@ -337,4 +337,19 @@ public class ProjectFacade {
             throw ProjectCustomException.ACCESS_NOT_ALLOWED;
         }
     }
+
+    public ProjectSummaryResponseDto getProjectPublicInfo(Long projectId){
+        Project project = projectService.findById(projectId);
+        List<TechnologyStackInfoResponseDto> technologyStackInfoResponseDtos = new ArrayList<>();
+        for (ProjectTechnology projectTechnology : project.getProjectTechnologies()) {
+            TechnologyStack technologyStack = projectTechnology.getTechnologyStack();
+
+            TechnologyStackInfoResponseDto technologyStackInfoResponseDto =
+                    TechnologyStackInfoResponseDto.of(
+                            technologyStack.getId(), technologyStack.getName());
+            technologyStackInfoResponseDtos.add(technologyStackInfoResponseDto);
+        }
+
+        return ProjectSummaryResponseDto.of(project, technologyStackInfoResponseDtos);
+    }
 }

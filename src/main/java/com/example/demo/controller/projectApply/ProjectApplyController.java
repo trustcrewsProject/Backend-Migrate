@@ -24,7 +24,7 @@ public class ProjectApplyController {
             @AuthenticationPrincipal PrincipalDetails user,
             @RequestBody ProjectApplyRequestDto projectApplyRequestDto) {
         projectApplyFacade.projectApply(user.getId(), projectApplyRequestDto);
-        return new ResponseEntity<>(ResponseDto.success("success", null), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseDto.success("프로젝트에 지원했습니다.", null), HttpStatus.OK);
     }
 
     @GetMapping()

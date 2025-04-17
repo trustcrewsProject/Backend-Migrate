@@ -166,23 +166,25 @@ public class BoardRepositoryCustomImpl implements BoardRepositoryCustom {
     }
 
     private BooleanExpression containsProjectTechnologyStack(List<Long> technologyIds) {
-        if (technologyIds != null && technologyIds.size() > 0) {
-            List<TechnologyStack> technologyStackList = new ArrayList<>();
-            for (Long technologyId : technologyIds) {
-                TechnologyStack technologyStack =
-                        technologyStackRepository
-                                .findById(technologyId)
-                                .orElseThrow(
-                                        () ->
-                                                TechnologyStackCustomException
-                                                        .NOT_FOUND_TECHNOLOGY_STACK);
-                technologyStackList.add(technologyStack);
-            }
-
-            return qProjectTechnology.technologyStack.in(technologyStackList);
-        } else {
+        if (technologyIds == null || technologyIds.isEmpty()) {
             return null;
         }
+
+        // 기술스택 개수만큼 매칭된 프로젝트 ID만 가져오기
+        List<Long> projectIdsWithAllStacks = queryFactory
+                .select(qProjectTechnology.project.id)
+                .from(qProjectTechnology)
+                .where(qProjectTechnology.technologyStack.id.in(technologyIds))
+                .groupBy(qProjectTechnology.project.id)
+                .having(qProjectTechnology.technologyStack.id.countDistinct().eq((long) technologyIds.size()))
+                .fetch();
+
+        if (projectIdsWithAllStacks.isEmpty()) {
+            // 결과 없으면 false 조건 반환 (항상 false)
+            return qProject.id.eq(-1L);
+        }
+
+        return qProject.id.in(projectIdsWithAllStacks);
     }
 
     private BooleanExpression eqBoardStatus(Boolean recruitmentStatus) {
